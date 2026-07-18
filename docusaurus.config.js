@@ -18,10 +18,10 @@ const config = {
   },
 
   url: 'https://itzfabb-repo.github.io',
-  baseUrl: '/fiowiki/',
+  baseUrl: '/FioWiki/',
 
   organizationName: 'ItzFabb-repo',
-  projectName: 'fiowiki',
+  projectName: 'FioWiki',
   trailingSlash: false,
 
   onBrokenLinks: 'throw',

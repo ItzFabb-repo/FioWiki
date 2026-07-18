@@ -33,5 +33,5 @@ After pushing to `main`, the workflow in `.github/workflows/deploy.yml` builds t
 The published site is:
 
 ```text
-https://itzfabb-repo.github.io/fiowiki/
+https://itzfabb-repo.github.io/FioWiki/
 ```
