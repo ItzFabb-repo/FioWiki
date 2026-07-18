@@ -1,0 +1,130 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `README.md`, and the current command handler source.
+
+:::info[Scope]
+Use this page when you need the real FioGlow command surface instead of an older shortcut list.
+:::
+
+## Root Command
+
+The plugin registers one root command:
+
+- `/fioglow`
+
+Aliases:
+
+- `/fg`
+
+## User Commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fioglow` | `fioglow.menu` | Open the glow effect menu. |
+| `/fioglow menu` | `fioglow.menu` | Open the glow effect menu. |
+| `/fioglow select <glowId>` | `fioglow.select` | Select and enable a glow effect. |
+| `/fioglow speed <speed>` | `fioglow.speed` | Change your selected glow speed. |
+| `/fioglow clear` | `fioglow.clear` | Clear and disable your selected glow. |
+| `/fioglow unselect <glowId>` | `fioglow.unselect` | Unselect the specified glow if it is currently selected. |
+| `/fioglow toggle onJoin` | `fioglow.toggle.onjoin` | Toggle whether your glow is restored on join. |
+| `/fioglow toggle visibility <all\|other\|self\|block\|none>` | `fioglow.toggle.visibility` | Change who can see your glow. |
+
+## User Permissions
+
+| Permission | Description |
+| --- | --- |
+| `fioglow.use` | Base player permission group declared in `plugin.yml`. |
+| `fioglow.help` | Allows help output when an unknown player subcommand is used. |
+| `fioglow.menu` | Allows opening the glow menu. |
+| `fioglow.select` | Allows selecting glow IDs. |
+| `fioglow.speed` | Allows changing glow speed. |
+| `fioglow.clear` | Allows clearing the active glow. |
+| `fioglow.unselect` | Allows unselecting a glow ID. |
+| `fioglow.toggle.onjoin` | Allows toggling join restore behavior. |
+| `fioglow.toggle.visibility` | Allows changing visibility mode. |
+
+## Glow Permissions
+
+Every selectable glow has a permission node using this pattern:
+
+```text
+fioglow.glow.<glowId>
+```
+
+Examples:
+
+- `fioglow.glow.red`
+- `fioglow.glow.aqua`
+- `fioglow.glow.rainbow`
+- `fioglow.glow.galaxy`
+- `fioglow.glow.royal`
+
+The bundled `fioglow.use` permission group grants all static and animated glow permission nodes by default.
+
+## Admin Commands
+
+Use admin commands through:
+
+- `/fioglow admin ...`
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `admin help` | `fioglow.admin.help` | Show admin help. |
+| `admin set <player> <glowId>` | `fioglow.admin.set` | Set a player's glow with the default speed. |
+| `admin set <player> <glowId> <speed>` | `fioglow.admin.set` | Set a player's glow and speed. |
+| `admin list` | `fioglow.admin.list` | Open the active player glow list GUI, or print glow IDs from console. |
+| `admin clear <player>` | `fioglow.admin.clear` | Clear a player's glow. |
+| `admin toggle <player> <state>` | `fioglow.admin.toggle` | Enable or disable a player's current glow state. |
+| `admin speed <glowId> <fast\|super_fast\|normal\|slow\|super_slow>` | `fioglow.admin.speed` | Change the default speed for a glow ID. |
+| `admin reload` | `fioglow.admin.reload` | Reload FioGlow configuration and language data. |
+| `admin version` | `fioglow.admin.version` | Show plugin version. |
+| `admin author` | `fioglow.admin.author` | Show plugin author. |
+| `admin check <player>` | `fioglow.admin.check` | Show a player's selected glow, previous glow, speed, state, and visibility. |
+| `admin placeholders` | `fioglow.admin.placeholders` | Print supported PlaceholderAPI placeholders. |
+| `admin lang <id\|en\|ja\|zh>` | `fioglow.admin.lang` | Change the active language. |
+| `admin menu <open\|forceOpen> <player> <menu>` | `fioglow.admin.menu` | Open a configured FioGlow menu for a player. |
+| `admin wand` | `fioglow.admin.wand` | Give the region selection wand. |
+| `admin pos1` | `fioglow.admin.pos1` | Set region position 1 from the targeted block. |
+| `admin pos2` | `fioglow.admin.pos2` | Set region position 2 from the targeted block. |
+| `admin create <regionName> [block]` | `fioglow.admin.create` | Create a block glow region from the current selection. |
+| `admin region create <regionName> [block]` | `fioglow.admin.create` | Create a block glow region from the region command path. |
+| `admin region list` | `fioglow.admin.regionlist` | Open the region list GUI, or print region names from console. |
+| `admin region remove <name>` | `fioglow.admin.region.remove` | Remove a block glow region. |
+| `admin region setColor <name> <color> [block]` | `fioglow.admin.region` | Set the glow color for a block glow region. |
+
+## Admin Permission Nodes
+
+| Permission | Description |
+| --- | --- |
+| `fioglow.admin` | Main admin permission group declared in `plugin.yml`. |
+| `fioglow.admin.help` | Admin help command. |
+| `fioglow.admin.set` | Set player glow command. |
+| `fioglow.admin.list` | Player glow list command. |
+| `fioglow.admin.clear` | Clear player glow command. |
+| `fioglow.admin.toggle` | Force player glow state command. |
+| `fioglow.admin.speed` | Default glow speed command. |
+| `fioglow.admin.reload` | Reload command. |
+| `fioglow.admin.version` | Version command. |
+| `fioglow.admin.author` | Author command. |
+| `fioglow.admin.check` | Player state check command. |
+| `fioglow.admin.placeholders` | Placeholder list command. |
+| `fioglow.admin.lang` | Language switch command. |
+| `fioglow.admin.menu` | Admin menu open command. |
+| `fioglow.admin.wand` | Region wand command. |
+| `fioglow.admin.pos1` | Region position 1 command. |
+| `fioglow.admin.pos2` | Region position 2 command. |
+| `fioglow.admin.create` | Region create command. |
+| `fioglow.admin.region` | Region color command. |
+| `fioglow.admin.region.remove` | Region remove command. |
+| `fioglow.admin.regionlist` | Region list command. |
+
+## Notes
+
+- Boolean admin toggle values accept `true`, `false`, `on`, `off`, `enable`, `enabled`, `disable`, and `disabled`.
+- Menu IDs accepted by tab completion include `glowEffectStatic`, `glowEffectAnimated`, `adminPlayerList`, `adminRegionList`, `static`, `animated`, `players`, and `regions`.
+- Region color commands accept any enabled glow ID.

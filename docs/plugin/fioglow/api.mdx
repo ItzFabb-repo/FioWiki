@@ -1,0 +1,151 @@
+---
+title: Developer API
+sidebar_position: 4
+---
+
+# Developer API
+
+This page documents the API exposed by the current FioGlow source.
+
+## Package names
+
+Use the real source package names:
+
+```java
+import com.itzfabb.fioglow.api.FioGlowAPI;
+import com.itzfabb.fioglow.api.FioGlowResult;
+import com.itzfabb.fioglow.model.GlowSpeed;
+import com.itzfabb.fioglow.model.VisibilityMode;
+```
+
+## Accessing the API
+
+Optional access:
+
+```java
+FioGlowAPI api = FioGlowAPI.get();
+if (api != null) {
+    // safe access
+}
+```
+
+Availability check:
+
+```java
+if (FioGlowAPI.available()) {
+    FioGlowAPI api = FioGlowAPI.get();
+}
+```
+
+## Glow metadata
+
+```java
+List<String> glowIds();
+List<String> staticGlowIds();
+List<String> animatedGlowIds();
+boolean isGlowId(String glowId);
+boolean isGlowEnabled(String glowId);
+String disabledReason(String glowId);
+String displayName(String glowId);
+String withMiniMessageColor(String glowId);
+GlowSpeed defaultSpeed(String glowId);
+FioGlowResult setDefaultSpeed(String glowId, GlowSpeed speed);
+```
+
+## Player data
+
+```java
+String selectedGlowId(UUID uuid);
+String previousGlowId(UUID uuid);
+GlowSpeed speed(UUID uuid);
+GlowSpeed previousSpeed(UUID uuid);
+VisibilityMode visibility(UUID uuid);
+boolean enabled(UUID uuid);
+boolean onJoin(UUID uuid);
+boolean hasGlow(UUID uuid);
+```
+
+## Player control
+
+```java
+FioGlowResult selectGlow(UUID uuid, String glowId);
+FioGlowResult selectGlow(UUID uuid, String glowId, GlowSpeed speed);
+FioGlowResult clearGlow(UUID uuid);
+FioGlowResult setSpeed(UUID uuid, GlowSpeed speed);
+FioGlowResult setVisibility(UUID uuid, VisibilityMode visibility);
+FioGlowResult setEnabled(UUID uuid, boolean enabled);
+FioGlowResult setOnJoin(UUID uuid, boolean onJoin);
+void openGlowMenu(Player player);
+void refresh(Player player);
+void refreshAll();
+void save();
+```
+
+## Block region API
+
+```java
+Set<String> regionNames();
+FioGlowResult setRegionColor(String name, String color);
+FioGlowResult setRegionColor(String name, String color, String block);
+boolean removeRegion(String name);
+```
+
+## Result type
+
+Most mutating API calls return `FioGlowResult`.
+
+```java
+boolean isSuccess();
+boolean failed();
+String reason();
+```
+
+## Example integrations
+
+Select a glow:
+
+```java
+FioGlowAPI api = FioGlowAPI.get();
+if (api != null) {
+    FioGlowResult result = api.selectGlow(player.getUniqueId(), "rainbow", GlowSpeed.NORMAL);
+    if (result.failed()) {
+        player.sendMessage(result.reason());
+    }
+}
+```
+
+Read player state:
+
+```java
+FioGlowAPI api = FioGlowAPI.get();
+if (api != null) {
+    UUID uuid = player.getUniqueId();
+    String glow = api.selectedGlowId(uuid);
+    GlowSpeed speed = api.speed(uuid);
+    VisibilityMode visibility = api.visibility(uuid);
+}
+```
+
+Update a block region color:
+
+```java
+FioGlowAPI api = FioGlowAPI.get();
+if (api != null) {
+    FioGlowResult result = api.setRegionColor("spawn", "aqua");
+}
+```
+
+## plugin.yml advice for integrations
+
+In your own plugin:
+
+```yaml
+softdepend:
+  - FioGlow
+```
+
+Then resolve the API lazily when needed.
+
+:::info[Page note]
+This page is source-backed and includes the public methods currently exposed by `FioGlowAPI`.
+:::

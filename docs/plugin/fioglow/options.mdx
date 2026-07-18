@@ -1,0 +1,190 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+This page summarizes the most important global options from the current `config.yml` and `settings.yml` bundled with FioGlow.
+
+## Formatting
+
+FioGlow language files support MiniMessage formatting.
+
+Examples:
+
+```yaml
+messages:
+  error:
+    no-permission: "<red>You do not have permission."
+  plugin:
+    reloaded: "<gradient:<green>:<aqua>:<white>Config reloaded.</gradient>"
+```
+
+Gradient can also use the standard MiniMessage format:
+
+```yaml
+messages:
+  plugin:
+    reloaded: "<gradient:green:aqua:white>Config reloaded.</gradient>"
+```
+
+Shadow tags are accepted for compatibility:
+
+```yaml
+messages:
+  plugin:
+    reloaded: "<shadow:<black>:0.6><gradient:<green>:<aqua>Config reloaded.</gradient></shadow>"
+```
+
+On Spigot 1.16, messages are sent as legacy chat, so shadow does not become a separate visual effect.
+
+## Language
+
+The active language is configured in `config.yml`:
+
+```yaml
+language: en
+```
+
+Bundled language files:
+
+- `lang/lang_en.yml`
+- `lang/lang_id.yml`
+- `lang/lang_ja.yml`
+- `lang/lang_zh.yml`
+
+Admins can change the language in game:
+
+```text
+/fioglow admin lang <id|en|ja|zh>
+```
+
+## Update checks and debug mode
+
+```yaml
+debug:
+  enabled: false
+
+update-checker:
+  enabled: true
+  notify-admins: true
+```
+
+## ProtocolLib visibility
+
+```yaml
+use-protocollib-visibility: true
+```
+
+When this is enabled and ProtocolLib is installed, FioGlow uses packets for per-player `all`, `other`, `self`, and `block` visibility. When ProtocolLib is unavailable, the plugin falls back to Bukkit's global glowing behavior.
+
+## Block glow
+
+```yaml
+block-glow:
+  max-blocks-per-region: 512
+  render-distance: 16
+```
+
+`max-blocks-per-region` limits the number of non-air blocks rendered as glowing overlays per region.
+
+`render-distance` hides block glow overlays from players farther than the configured distance in blocks. Set it to `0` or lower to disable distance-based hiding.
+
+## Storage backends
+
+Default storage uses YAML:
+
+```yaml
+storage:
+  type: YAML
+```
+
+MySQL is also supported:
+
+```yaml
+storage:
+  type: MYSQL
+  mysql:
+    host: localhost
+    port: 3306
+    database: fioglow
+    username: root
+    password: ""
+    table: fioglow_players
+    useSSL: false
+    connection-timeout-ms: 5000
+```
+
+Available values for `storage.type`:
+
+- `YAML`
+- `MYSQL`
+
+The MySQL table is created automatically when the plugin enables. If MySQL fails to connect, FioGlow falls back to YAML storage.
+
+## Static glow colors
+
+Static glow IDs map to standard Minecraft team colors in `settings.yml`:
+
+```yaml
+static:
+  glow-color:
+    dark_red: "DARK_RED"
+    red: "RED"
+    gold: "GOLD"
+    yellow: "YELLOW"
+    green: "GREEN"
+    dark_green: "DARK_GREEN"
+    aqua: "AQUA"
+    dark_aqua: "DARK_AQUA"
+    blue: "BLUE"
+    dark_blue: "DARK_BLUE"
+    dark_purple: "DARK_PURPLE"
+    light_purple: "LIGHT_PURPLE"
+    white: "WHITE"
+    gray: "GRAY"
+    dark_gray: "DARK_GRAY"
+    black: "BLACK"
+```
+
+## Animated glow colors
+
+Animated glow IDs define a color sequence and default speed:
+
+```yaml
+animated:
+  glow-color:
+    rainbow:
+      value: "RED, DARK_RED, GOLD, YELLOW, GREEN, DARK_GREEN, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_PURPLE, LIGHT_PURPLE, WHITE, GRAY, DARK_GRAY, BLACK"
+      speed: normal
+    fire:
+      value: "DARK_RED, RED, GOLD, YELLOW, GOLD, RED"
+      speed: fast
+    ocean:
+      value: "DARK_BLUE, BLUE, DARK_AQUA, AQUA, DARK_AQUA, BLUE"
+      speed: normal
+```
+
+Speed IDs:
+
+- `super_fast`
+- `fast`
+- `normal`
+- `slow`
+- `super_slow`
+
+## Requirements
+
+From `plugin.yml` and `README.md`:
+
+- Java 8+
+- Spigot or Paper 1.16+
+- PlaceholderAPI optional
+- ProtocolLib optional
+- Floodgate optional
+- MySQL optional
+
+:::info[Page note]
+This page is source-backed from the current FioGlow configuration files.
+:::

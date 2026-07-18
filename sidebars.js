@@ -115,6 +115,19 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioGlow',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fioglow/index',
+            'plugin/fioglow/commands-permissions',
+            'plugin/fioglow/api',
+            'plugin/fioglow/options',
+            'plugin/fioglow/placeholders',
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioBlackMarket',
           collapsible: true,
           collapsed: true,

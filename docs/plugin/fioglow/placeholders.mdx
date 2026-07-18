@@ -1,0 +1,44 @@
+---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+FioGlow registers a PlaceholderAPI expansion with identifier:
+
+```text
+fioglow
+```
+
+PlaceholderAPI is optional. These placeholders are available when PlaceholderAPI is installed and the expansion is registered.
+
+## Player state placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioglow_onJoin_state%` | Returns the player's on-join restore state as `true` or `false`. |
+| `%fioglow_visibility%` | Returns the player's visibility mode ID. |
+| `%fioglow_speed%` | Returns the player's current glow speed display name. |
+| `%fioglow_selected_glowId%` | Returns the selected glow display name, or blank when unavailable. |
+| `%fioglow_selected_glowId_withColor%` | Returns the selected glow display name with MiniMessage color formatting. |
+| `%fioglow_previous_glowId%` | Returns the previous glow display name, or blank when unavailable. |
+| `%fioglow_previous_speed%` | Returns the player's previous glow speed display name. |
+
+## Unlock count placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioglow_total_unlocked%` | Counts enabled glow IDs the online player can use through `fioglow.glow.<glowId>` permissions. |
+| `%fioglow_total_locked%` | Counts enabled glow IDs the online player does not have permission to use. |
+| `%fioglow_total_all%` | Counts all enabled glow IDs. |
+
+## Notes
+
+- Locked and unlocked counts require an online player instance.
+- Disabled glow IDs are excluded from total counts.
+- `%fioglow_selected_glowId_withColor%` uses the plugin's MiniMessage color output for the selected glow.
+
+:::info[Page note]
+This page is source-backed from `FioGlowPlaceholderExpansion`.
+:::
