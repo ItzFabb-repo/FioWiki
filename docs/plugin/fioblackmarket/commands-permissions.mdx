@@ -1,0 +1,133 @@
+﻿---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+:::info[Scope]
+FioBlackMarket keeps one root command and branches from it into player status, reload, admin control, hologram management, and NPC management.
+:::
+
+## Root command
+
+Main command:
+
+```text
+/blackmarket
+```
+
+Aliases from `plugin.yml`:
+
+```text
+/bm
+/fioblackmarket
+```
+
+## Player commands
+
+| Command | Permission | Behavior |
+| --- | --- | --- |
+| `/blackmarket` | `fioblackmarket.use` | Opens the main market menu for players. |
+| `/blackmarket status` | `fioblackmarket.use` | Sends the current market schedule status. |
+| `/blackmarket reload` | `fioblackmarket.reload` | Reloads the plugin and its split configuration files. |
+
+## Admin commands
+
+The current `handleAdmin(...)` flow supports:
+
+| Command | Permission | Behavior |
+| --- | --- | --- |
+| `/blackmarket admin help` | `fioblackmarket.admin` | Shows the admin help lines. |
+| `/blackmarket admin status` | `fioblackmarket.admin` | Shows schedule mode and whether the market is active. |
+| `/blackmarket admin reload` | `fioblackmarket.admin` | Reloads the full plugin. |
+| `/blackmarket admin refresh` | `fioblackmarket.admin` | Rerolls and refreshes the market items now. |
+| `/blackmarket admin open` | `fioblackmarket.admin` | Forces the market open. |
+| `/blackmarket admin close` | `fioblackmarket.admin` | Forces the market closed. |
+| `/blackmarket admin auto` | `fioblackmarket.admin` | Clears manual override and returns the schedule to automatic mode. |
+| `/blackmarket admin list` | `fioblackmarket.admin` | Lists loaded market item ids. |
+| `/blackmarket admin info [item]` | `fioblackmarket.admin` | Shows stock, material, prices, and probability for one market item. |
+| `/blackmarket admin stock [item] set\|add\|remove [amount]` | `fioblackmarket.admin` | Changes runtime stock for one item. |
+| `/blackmarket admin give [player] [item] [amount]` | `fioblackmarket.admin` | Gives a market item to an online player. |
+| `/blackmarket admin resetdata confirm` | `fioblackmarket.admin` | Resets stock, limits, history, and scheduled items. |
+
+## Hologram commands
+
+The current `handleHologram(...)` flow supports:
+
+```text
+/blackmarket hologram create [name]
+/blackmarket hologram remove [name]
+/blackmarket hologram info [name]
+/blackmarket hologram center [name]
+/blackmarket hologram move_here [name]
+/blackmarket hologram teleport [name]
+/blackmarket hologram setType [name] [FIXED|VERTICAL|HORIZONTAL|CENTER]
+/blackmarket hologram freeze [name] [true|false]
+/blackmarket hologram face [name] [NORTH|SOUTH|WEST|EAST]
+/blackmarket hologram rotate [name] [yaw]
+/blackmarket hologram scale [name] [size]
+/blackmarket hologram list
+```
+
+Permission:
+
+```text
+fioblackmarket.hologram
+```
+
+## NPC commands
+
+The current `handleNpc(...)` flow supports:
+
+```text
+/blackmarket npc create [name]
+/blackmarket npc remove [name]
+/blackmarket npc center [name]
+/blackmarket npc move_here [name]
+/blackmarket npc teleport [name]
+/blackmarket npc scale [name] [size]
+/blackmarket npc type [name] [entity-type]
+/blackmarket npc save
+/blackmarket npc attributes [name] set|clear|list ...
+/blackmarket npc turn_to_player [name] [true|false]
+/blackmarket npc turn_to_player_distance [name] [distance]
+/blackmarket npc gravity [name] [true|false]
+/blackmarket npc collideable [name] [true|false]
+/blackmarket npc equipment [name] [slot] [material]
+/blackmarket npc actions [name] add|remove|list ...
+/blackmarket npc list
+/blackmarket npc info [name]
+```
+
+Permission:
+
+```text
+fioblackmarket.npc
+```
+
+## Permission table
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fioblackmarket.use` | `true` | Opens the market and uses the status command. |
+| `fioblackmarket.reload` | `op` | Reloads the plugin. |
+| `fioblackmarket.admin` | `op` | Uses admin market commands. |
+| `fioblackmarket.hologram` | `op` | Uses hologram management commands. |
+| `fioblackmarket.npc` | `op` | Uses NPC management commands. |
+
+## Access bypass node from config
+
+The main config also reads this bypass permission:
+
+```text
+fioblackmarket.access.bypass
+```
+
+That node is separate from the command permissions. It bypasses access restrictions such as blocked worlds or blocked WorldGuard regions.
+
+## Practical distinction
+
+Use command permissions to control who can run market commands.
+
+Use `fioblackmarket.access.bypass` to control who can still access the market in protected or blocked locations.

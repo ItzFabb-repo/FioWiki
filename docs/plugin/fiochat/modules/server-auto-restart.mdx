@@ -1,0 +1,600 @@
+﻿---
+title: Server Auto Restart
+sidebar_position: 43
+---
+
+# Server Auto Restart
+
+This page documents the current `modules/alerts/Server Auto Restart/` module from the newer FioChat source.
+
+This module is not only a restart-message broadcaster. The current source runs an internal scheduler, sends checkpoint warnings before the restart, executes final actions when the countdown reaches zero, writes restart state to disk, and can run follow-up actions after the server or plugin comes back online.
+
+## Configuration Files
+
+- `modules/alerts/Server Auto Restart/config.yml`
+- `modules/alerts/Server Auto Restart/state.yml`
+
+`config.yml` is the main module configuration. `state.yml` is created automatically so the plugin can remember that a restart was triggered and that `after` actions may need to run on the next startup.
+
+Legacy path still recognized by the core migration flow:
+
+- `modules/autorestart/config.yml`
+
+## Module Toggle
+
+The module master toggle is stored in `modules/settings.yml`:
+
+```yaml
+modules:
+  autorestart: true
+```
+
+The service reads `modules.autorestart`. If the key is missing, the service fallback is `false`; the current default module settings file explicitly writes it as `true`.
+
+When the module is disabled, no scheduler is created, `/autorestart` reports that the module is disabled, and no checkpoint or restart action is executed.
+
+## Permission
+
+| Permission | Default | Detail |
+|---|---:|---|
+| `fiochat.autorestart.manage` | `op` | Allows control of `/fc autorestart <now\|delay\|stop\|freeze>` and `/autorestart <now\|delay\|stop\|freeze>`. Console can also run the control command. |
+
+The command handler also accepts FioChat's internal admin permission as an alternative, but the module-specific node written in `plugin.yml` is `fiochat.autorestart.manage`.
+
+## Commands
+
+Main command from `plugin.yml`:
+
+```text
+/autorestart <now|delay|stop|freeze>
+```
+
+FioChat also routes:
+
+```text
+/fc autorestart now
+/fc autorestart delay <time>
+/fc autorestart stop
+/fc autorestart freeze
+```
+
+### `/fc autorestart now`
+
+Shows the current countdown state.
+
+If the scheduler is stopped, the command reports that it is stopped. If it is frozen, the command reports the frozen remaining time. If a countdown is active, it shows the remaining duration and clock format.
+
+In this source, `now` does not force an immediate restart. It inspects the active countdown.
+
+### `/fc autorestart delay <time>`
+
+Replaces the next restart countdown with the provided duration.
+
+Examples:
+
+```text
+/fc autorestart delay 30s
+/fc autorestart delay 5m
+/fc autorestart delay 1h 20m
+```
+
+The service cancels active tasks, clears stopped/frozen state, and schedules a new cycle using that duration. The runtime minimum is 20 ticks, or 1 second.
+
+### `/fc autorestart stop`
+
+Stops the active auto restart scheduler.
+
+The service cancels all currently scheduled restart/checkpoint tasks, sets `schedulerStopped: true`, clears frozen state, and clears `nextRestartAtMillis`.
+
+Stopping does not change the config. After a plugin reload or module reload, the config is read again and the scheduler can become active again.
+
+### `/fc autorestart freeze`
+
+Freezes the countdown at its current remaining time.
+
+The service reads `remainingTicks()`, cancels active tasks, sets `schedulerFrozen: true`, stores the remaining time in `frozenRemainingTicks`, and clears `nextRestartAtMillis`.
+
+The current command handler provides `freeze`, but it does not provide a matching `resume` command. To continue, an admin usually uses `delay <time>` or reloads the module/plugin.
+
+## Duration Format
+
+Config values and the `delay` command support:
+
+```text
+10s
+5m
+1h 30m
+6h
+1w 2d
+```
+
+Recognized units:
+
+| Unit | Aliases | Value |
+|---|---|---:|
+| tick | `tick`, `ticks`, `t` | 1 tick |
+| second | `second`, `seconds`, `sec`, `secs`, `s` | 20 ticks |
+| minute | `minute`, `minutes`, `min`, `mins`, `m` | 1,200 ticks |
+| hour | `hour`, `hours`, `hr`, `hrs`, `h` | 72,000 ticks |
+| day | `day`, `days`, `d` | 1,728,000 ticks |
+| week | `week`, `weeks`, `w` | 12,096,000 ticks |
+
+If the input is only a number with no unit, the service treats the number as ticks, not seconds. For example, `600` means 600 ticks, or 30 seconds.
+
+The parser accepts duration segments separated by whitespace. `1h 30m` is valid. Input with non-whitespace characters between segments is rejected.
+
+## `settings`
+
+Current default:
+
+```yaml
+settings:
+  debug-log: false
+  initial-delay: "30s"
+  interval: "6h"
+```
+
+### `settings.debug-log`
+
+Enables debug logging for the auto restart module.
+
+The current default is `false`. When enabled, the service logs reload summaries and each successfully executed action.
+
+The debug key is `autorestart`. It is useful for checking how many checkpoints were loaded, how many before/after actions were loaded, and which actions were actually executed at each stage.
+
+### `settings.initial-delay`
+
+The delay after plugin load/reload before the first auto restart cycle starts.
+
+The current default is `30s`. The service converts it to ticks through the duration parser. The runtime minimum is 0 ticks.
+
+The first restart happens after:
+
+```text
+initial-delay + interval
+```
+
+With `initial-delay: "30s"` and `interval: "6h"`, the first restart happens about 6 hours and 30 seconds after the service reloads. Broadcast checkpoints are calculated relative to that final restart time.
+
+If this is set to `0s`, the first cycle begins without an extra startup delay.
+
+### `settings.interval`
+
+The duration of one auto restart cycle.
+
+The current default is `6h`. The service forces a minimum of 20 ticks. If the config value is invalid, the service fallback is 72,000 ticks, or 1 hour; however, the current default config writes `6h`.
+
+A checkpoint is only scheduled if its remaining duration is not greater than the active interval. For example, with `interval: "10m"`, a `30m` checkpoint is ignored because it cannot occur inside a 10-minute cycle.
+
+After the final action runs, the service schedules the next cycle using `settings.interval` as long as the module is still enabled and the scheduler is neither stopped nor frozen.
+
+## `before`
+
+Current default:
+
+```yaml
+before:
+  enabled: true
+  actions:
+    - "[BROADCAST] <red>Server is restarting now.</red>"
+    - "[SOUND] minecraft:block.note_block.bell:1.0:0.8"
+    - "[CONSOLE] save-on"
+    - "[CONSOLE] save-all"
+    - "[RESTART]"
+```
+
+This section runs when the countdown reaches zero.
+
+### `before.enabled`
+
+Enables or disables the final pre-restart action section.
+
+If this is `false`, the service treats `before` as empty and tries legacy fallback sections: `before-restart`, then `restart`, then `final-actions`. If all of them are empty, the countdown can still complete, but no final action from this section is executed.
+
+### `before.actions`
+
+The ordered list of actions executed when restart time arrives.
+
+Actions run from top to bottom. `%time%`, `%ticks%`, `%seconds%`, and `%minutes%` are still processed, but at the `before-restart` stage the remaining time passed to actions is 0.
+
+Default action behavior:
+
+- `[BROADCAST] <red>Server is restarting now.</red>` sends a chat announcement to all online players and console.
+- `[SOUND] minecraft:block.note_block.bell:1.0:0.8` plays the bell sound for all online players.
+- `[CONSOLE] save-on` runs `save-on` as console.
+- `[CONSOLE] save-all` runs `save-all` as console.
+- `[RESTART]` runs FioChat's internal layered restart action.
+
+### Legacy Fallback Sections
+
+The source still supports older section names:
+
+- `before-restart`
+- `restart`
+- `final-actions`
+
+Fallback is only used when `before` produces no actions. The order is `before`, `before-restart`, `restart`, then `final-actions`.
+
+## `[RESTART]`
+
+`[RESTART]` has special behavior.
+
+When executed, `ModuleActionUtil` tries:
+
+1. Calling `Bukkit.getServer().spigot().restart()` through reflection.
+2. Dispatching the console command `restart`.
+3. Scheduling fallback `Bukkit.shutdown()`.
+
+If a restart attempt was made, fallback shutdown is scheduled 40 ticks later. If no restart attempt could be made, fallback shutdown is scheduled sooner.
+
+This means `[RESTART]` is not just a command string. It is a layered restart mechanism intended to make the server actually leave the active process.
+
+## `after`
+
+Current default:
+
+```yaml
+after:
+  enabled: false
+  actions:
+    - "[CONSOLE] say FioChat auto restart completed successfully."
+```
+
+This section runs after the server/plugin comes back online, not immediately before restart.
+
+### `after.enabled`
+
+Enables or disables post-restart actions.
+
+The current default is `false`. If disabled, the service does not keep an active after-action list. On reload, if a pending after-restart state exists but no after actions are active, the service clears the pending state.
+
+### `after.actions`
+
+The ordered list of actions executed once after restart.
+
+Before running `before.actions`, the service writes:
+
+```yaml
+pending-after-restart: true
+last-restart-at-millis: <timestamp>
+```
+
+On the next plugin load/reload, if `pending-after-restart: true` and `after.actions` are active, the service clears the pending state and schedules the after actions 40 ticks later.
+
+### Legacy Fallback Section
+
+The source still supports `after-restart` if `after` produces no actions.
+
+## `broadcast`
+
+Current default:
+
+```yaml
+broadcast:
+  messages:
+    - ''
+    - '<align:center><gold><bold>Server Auto Restart</bold></gold></align>'
+    - '<align:center><dark_gray>(<smallfont:Alert Auto Restart>)</align>'
+    - ''
+    - '<align:center><gray>This server will be restart in: <white>%time%</white></align>'
+    - '<align:center><gray>If the countdown reaches 0 you will be teleported to Hub.</gray></align>'
+    - ''
+  interval:
+    - '30m'
+    - '15m'
+    - '5m'
+    - '3m'
+    - '1m'
+    - '30s'
+    - '15s'
+    - '10s'
+    - '5s'
+    - '3s'
+    - '2s'
+    - '1s'
+```
+
+`broadcast` is the newer checkpoint-warning system. The service reads `broadcast.interval`, then creates a checkpoint action for each valid interval.
+
+### `broadcast.messages`
+
+The chat-message template sent at every checkpoint interval.
+
+Each line is automatically converted into a `BROADCAST` action with `[prefix="false"]` prepended. Empty lines are still sent as blank lines to players.
+
+Placeholders such as `%time%` are replaced using the checkpoint's remaining time. At the `5m` checkpoint, `%time%` becomes `5m`; at the `30s` checkpoint, it becomes `30s`.
+
+These template messages are merged with the interval-specific actions from `broadcast.actions.<interval>`.
+
+### `broadcast.interval`
+
+The list of remaining times before restart when checkpoint actions should run.
+
+The current default runs checkpoints at:
+
+- `30m`
+- `15m`
+- `5m`
+- `3m`
+- `1m`
+- `30s`
+- `15s`
+- `10s`
+- `5s`
+- `3s`
+- `2s`
+- `1s`
+
+The service ignores intervals that are empty, invalid, zero/negative, or greater than `settings.interval`.
+
+Checkpoints are scheduled with:
+
+```text
+runAfter = initialDelay + (intervalCycle - checkpointRemaining)
+```
+
+For a 6-hour cycle and a 30-minute checkpoint, the checkpoint runs 5 hours and 30 minutes after the cycle begins, plus the initial delay for the first cycle.
+
+### `broadcast.actions`
+
+Additional actions for a specific checkpoint.
+
+The current config uses keys matching `broadcast.interval`, for example:
+
+```yaml
+broadcast:
+  actions:
+    '30m':
+      - '[SOUND] BLOCK_NOTE_BLOCK_PLING 1 2 master'
+      - '[TITLE] <yellow><bold>!</bold> Auto Restart <bold>!</bold>\n<white>Server restart in <gold>%time%</gold>'
+```
+
+When the `30m` checkpoint runs, the service executes:
+
+1. All `broadcast.messages` as `BROADCAST` actions.
+2. All actions in `broadcast.actions.'30m'`.
+
+If no interval-specific actions exist, the checkpoint can still run as long as `broadcast.messages` is not empty.
+
+## `checkpoints`
+
+Besides `broadcast`, the service still supports a legacy-style `checkpoints` section.
+
+Supported shape:
+
+```yaml
+checkpoints:
+  5m:
+    enabled: true
+    actions:
+      - "[BROADCAST] <yellow>Restart in %time%</yellow>"
+      - "[SOUND] BLOCK_NOTE_BLOCK_PLING 1 2 master"
+```
+
+The service only reads `checkpoints` if `broadcast` produces no checkpoints at all. With the current default config, `broadcast` is used, not `checkpoints`.
+
+## Action Types
+
+The action parser supports `[TYPE] payload` and several legacy prefixes such as `BROADCAST: message`.
+
+### `[CONSOLE]`
+
+Runs a command as console.
+
+Examples:
+
+```yaml
+- "[CONSOLE] save-all"
+- "[CONSOLE] say Restart soon"
+```
+
+A leading slash is removed automatically if present.
+
+Token aliases: `[COMMAND]`, `[CMD]`, and legacy `CONSOLE_COMMAND:`.
+
+### `[PLAYER]`
+
+Runs a command as every online player.
+
+Example:
+
+```yaml
+- "[PLAYER] spawn"
+```
+
+This action runs for all online players because auto restart actions are executed through `executeForOnlinePlayers`.
+
+Legacy prefix: `PLAYER_COMMAND:`.
+
+### `[BROADCAST]`
+
+Sends an announcement message to all online players and also to console when the message is not blank.
+
+Example:
+
+```yaml
+- "[BROADCAST] <red>Server restarts in %time%</red>"
+```
+
+Token alias: `[CHAT]`. Legacy prefix: `BROADCAST:`.
+
+### `[MESSAGE]`
+
+Sends a chat message to all online players, but does not mirror the message to console like `BROADCAST`.
+
+Token alias: `[MSG]`. Legacy prefix: `MESSAGE:`.
+
+### `[ACTIONBAR]`
+
+Sends an actionbar to all online players.
+
+Example:
+
+```yaml
+- "[ACTIONBAR] <yellow>Restart in %time%</yellow>"
+```
+
+Legacy prefix: `ACTIONBAR:`.
+
+### `[TITLE]`
+
+Sends a title to all online players.
+
+Separator format:
+
+```text
+[TITLE] title||subtitle||fadeIn||stay||fadeOut
+```
+
+Newline format is also supported. The default config uses `\n`, and the parser converts it into a real newline. If the payload contains a newline and no `||`, the first line becomes the title and the second line becomes the subtitle. The default fade values for newline format are `10`, `40`, `10`.
+
+Examples:
+
+```yaml
+- "[TITLE] <red>Restart Warning||<white>In %time%</white>||10||50||10"
+- "[TITLE] <yellow>Auto Restart</yellow>\n<white>Server restart in %time%</white>"
+```
+
+### `[BOSSBAR]`
+
+Creates a temporary bossbar for all online players.
+
+Format:
+
+```text
+[BOSSBAR] title||color||style||progress||seconds
+```
+
+Behavior:
+
+- `color` falls back to `WHITE` if invalid.
+- `style` falls back to `SOLID` if invalid.
+- `progress` is clamped from 0.0 to 1.0.
+- `seconds` has a minimum of 1.
+
+Example:
+
+```yaml
+- "[BOSSBAR] <red>Restart in %time%</red>||RED||SOLID||1.0||5"
+```
+
+### `[SOUND]`
+
+Plays a sound for all online players.
+
+Space-separated format:
+
+```text
+[SOUND] SOUND_NAME volume pitch category
+```
+
+Colon-separated format:
+
+```text
+[SOUND] minecraft:block.note_block.pling:1.0:1.0
+```
+
+The current default config uses both styles:
+
+```yaml
+- "[SOUND] minecraft:block.note_block.bell:1.0:0.8"
+- "[SOUND] BLOCK_NOTE_BLOCK_PLING 1 2 master"
+```
+
+If the sound cannot be resolved for the server version, the sound action is skipped.
+
+### `[RESTART]`
+
+Runs the internal layered restart mechanism documented in the `[RESTART]` section.
+
+The payload may be empty. This differs from most other action types, which usually require a payload.
+
+## Action Placeholders
+
+Placeholders replaced in every auto restart action:
+
+| Placeholder | Value |
+|---|---|
+| `%time%` | Remaining time in readable format, such as `30m`, `1m`, or `5s`. |
+| `%ticks%` | Remaining time in ticks. |
+| `%seconds%` | Remaining time in seconds, rounded down from ticks. |
+| `%minutes%` | Remaining time in minutes, rounded down from ticks. |
+
+For checkpoints, the values use the checkpoint remaining time. For `before` and `after`, the service passes 0 remaining ticks.
+
+## PlaceholderAPI/FioChat Placeholders
+
+FioChat provides these auto restart status placeholders:
+
+| Placeholder | Output |
+|---|---|
+| `%fiochat_autorestart_seconds%` | Remaining countdown in seconds. If no service is active, output is `0`. |
+| `%fiochat_autorestart_formatted%` | Remaining countdown in readable format, such as `1h 5m 3s`. |
+| `%fiochat_autorestart_hhmmss%` | Remaining countdown as compact `HHMMSS`. |
+| `%fiochat_autorestart_hh:mm_ss%` | Remaining countdown as `HH:MM SS`. |
+| `%fiochat_autorestart_hh:mm ss%` | Alias for `HH:MM SS`. |
+| `%fiochat_autorestart_lastrestart_seconds%` | Time since the latest marked restart in seconds. |
+| `%fiochat_autorestart_lastrestart_formatted%` | Time since the latest marked restart in readable format. |
+| `%fiochat_autorestart_lastrestart_hhmmss%` | Time since the latest marked restart as compact `HHMMSS`. |
+| `%fiochat_autorestart_lastrestart_hh:mm_ss%` | Time since the latest marked restart as `HH:MM SS`. |
+| `%fiochat_autorestart_lastrestart_hh:mm ss%` | Alias for `HH:MM SS`. |
+
+`lastrestart` depends on `lastRestartAtMillis`, which is set when the before-restart stage runs or is restored from `state.yml` after startup.
+
+## `state.yml`
+
+The automatic state file is:
+
+```text
+modules/alerts/Server Auto Restart/state.yml
+```
+
+Important values:
+
+```yaml
+pending-after-restart: true
+last-restart-at-millis: 1710000000000
+```
+
+### `pending-after-restart`
+
+Marks that the before-restart stage reached its final point and that after-restart actions should run on the next load.
+
+The service writes `true` before executing `before.actions`. On the next reload, if after actions are active, the service clears the flag to `false` and schedules after actions 40 ticks later.
+
+### `last-restart-at-millis`
+
+The millisecond timestamp when the service marked the restart as pending.
+
+This value is used by the `lastrestart` placeholders so the server can report how long it has been since the latest marked restart.
+
+## Runtime Flow
+
+On module reload:
+
+1. The service shuts down old tasks.
+2. It reads `modules.autorestart`.
+3. It reads `settings.debug-log`.
+4. If the module is disabled or config is missing, reload stops.
+5. It resets stopped/frozen state.
+6. It reads `settings.initial-delay`.
+7. It reads `settings.interval`.
+8. It reads checkpoints from `broadcast`; if none are produced, it reads `checkpoints`.
+9. It reads `before`; if empty, it tries legacy fallback sections.
+10. It reads `after`; if empty, it tries `after-restart`.
+11. It runs pending after-restart actions if `state.yml` requests them.
+12. It schedules the first cycle.
+
+When the countdown reaches zero:
+
+1. The service writes `state.yml` as pending after restart.
+2. It executes `before.actions`.
+3. It sets `lastRestartAtMillis`.
+4. It clears `nextRestartAtMillis`.
+5. If the server does not actually stop and the scheduler is still valid, it schedules the next cycle.
+
+Because the default `before.actions` contains `[RESTART]`, the server normally restarts or shuts down before the next scheduled cycle matters.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

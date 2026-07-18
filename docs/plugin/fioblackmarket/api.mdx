@@ -1,0 +1,148 @@
+---
+title: Developer API
+sidebar_position: 3
+---
+
+# Developer API
+
+FioBlackMarket exposes a Bukkit event API for plugins that need to react when a player successfully buys or sells an item through the Black Market.
+
+## Package names
+
+```java
+import com.itzfabb.fioblackmarket.api.BlackmarketTransactionType;
+import com.itzfabb.fioblackmarket.api.event.BlackmarketTransactionEvent;
+import com.itzfabb.fioblackmarket.market.MarketItem;
+```
+
+## Transaction event
+
+Listen to `BlackmarketTransactionEvent` to run custom logic after a successful transaction.
+
+```java
+@EventHandler
+public void onBlackmarketTransaction(BlackmarketTransactionEvent event) {
+    Player player = event.getPlayer();
+    MarketItem item = event.getItem();
+
+    if (event.getType() == BlackmarketTransactionType.BUY) {
+        player.sendMessage("You bought " + event.getAmount() + "x " + item.id());
+    }
+}
+```
+
+The event is fired after the plugin has already:
+
+- checked market access
+- checked currency provider readiness
+- checked player balance or inventory items
+- updated stock
+- moved money
+- recorded the transaction
+
+This event is not cancellable, so use it for logging, rewards, analytics, hooks, or notifications rather than blocking a transaction.
+
+## Event getters
+
+| Method | Type | Description |
+| --- | --- | --- |
+| `getPlayer()` | `Player` | Player who completed the transaction. |
+| `getItem()` | `MarketItem` | Market item that was bought or sold. |
+| `getType()` | `BlackmarketTransactionType` | Transaction direction: `BUY` or `SELL`. |
+| `getAmount()` | `int` | Amount traded in this transaction. |
+| `getUnitPrice()` | `double` | Price per unit before multiplying by amount. |
+| `getTotalPrice()` | `double` | Final normalized total price for the full transaction. |
+
+## Transaction type
+
+```java
+public enum BlackmarketTransactionType {
+    BUY,
+    SELL
+}
+```
+
+## Market item data
+
+`event.getItem()` returns a `MarketItem`.
+
+Useful accessors:
+
+```java
+String id = item.id();
+Material material = item.material();
+double probability = item.probability();
+String name = item.name();
+List<String> lore = item.lore();
+int amount = item.amount();
+double buyPrice = item.buyPrice();
+double sellPrice = item.sellPrice();
+String currency = item.currency();
+int defaultStock = item.defaultStock();
+int maxBuyAmount = item.maxBuyAmount();
+int maxSellAmount = item.maxSellAmount();
+Map<String, List<String>> actions = item.actions();
+List<String> commands = item.commands();
+```
+
+## Example: log all transactions
+
+```java
+@EventHandler
+public void onBlackmarketTransaction(BlackmarketTransactionEvent event) {
+    MarketItem item = event.getItem();
+
+    String message = String.format(
+        "%s %s %dx %s for %.2f",
+        event.getPlayer().getName(),
+        event.getType().name().toLowerCase(),
+        event.getAmount(),
+        item.id(),
+        event.getTotalPrice()
+    );
+
+    Bukkit.getLogger().info("[BlackMarket] " + message);
+}
+```
+
+## Example: reward only buys
+
+```java
+@EventHandler
+public void onBlackmarketBuy(BlackmarketTransactionEvent event) {
+    if (event.getType() != BlackmarketTransactionType.BUY) {
+        return;
+    }
+
+    Player player = event.getPlayer();
+    double spent = event.getTotalPrice();
+
+    if (spent >= 10000) {
+        player.sendMessage("Thanks for making a large Black Market purchase.");
+    }
+}
+```
+
+## plugin.yml advice
+
+For plugins that integrate with FioBlackMarket, add it as a soft dependency:
+
+```yaml
+softdepend:
+  - FioBlackMarket
+```
+
+If your plugin cannot work without FioBlackMarket, use `depend` instead:
+
+```yaml
+depend:
+  - FioBlackMarket
+```
+
+## Notes for developers
+
+- `getTotalPrice()` is the value after the plugin normalizes currency amount.
+- `getUnitPrice()` comes from the current dynamic buy or sell price.
+- Buy events use `BlackmarketTransactionType.BUY`.
+- Sell events use `BlackmarketTransactionType.SELL`.
+- The event is fired on the Bukkit main thread during inventory interaction handling.

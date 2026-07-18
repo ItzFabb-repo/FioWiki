@@ -1,0 +1,202 @@
+---
+title: TAB
+---
+
+# TAB
+
+Source file:
+
+```text
+modules/display/Server Display Tag/display_tag.yml
+```
+
+Use this page as a practical guide when you want to modify the TAB list.
+
+The usual edits are:
+
+- changing the TAB update interval
+- changing the main player-list format
+- editing per-group formats
+- hiding or reordering specific entries
+- changing the header and footer text
+
+Related file:
+
+```text
+modules/display/Server Display Tag/animations.yml
+```
+
+## How to modify it
+
+If you want to change the overall list style, edit the settings under `settings`.
+
+If you want to change how certain players are shown, edit the profile blocks under `tab.list`.
+
+TAB header, footer, and `list-name` support MiniMessage `shadow` formatting.
+Per-profile `text.list-name` has higher priority than `settings.player-list-format`.
+`animations.yml` is used for animated TAB text.
+
+## `settings` for TAB
+
+### `update-interval-ticks`
+
+Controls how often the TAB module is recalculated.
+
+### `use-placeholderapi`
+
+Enables PlaceholderAPI in TAB text and conditions.
+
+### `player-list-format`
+
+Global player name format for the TAB list.
+
+### `list-name.force-head`
+
+This section automatically injects a player-head token if the format does not already contain a sprite or head token.
+
+Fields present in the source:
+
+- `enabled`
+- `disable-shadow`
+- `token`
+
+### `group-formats`
+
+Per-primary-group player name formats for the TAB list.
+
+The current source includes:
+
+- `default`
+- `owner`
+- `vip`
+
+### `hide.settings`
+
+This section hides specific entries from TAB.
+
+- `vanish_players`
+- `spectators`
+- `unverified`
+
+### `render-player-intab`
+
+This section controls the number shown to the left of ping bars.
+
+- `enabled`
+- `format`
+
+The source comments state that `format` must resolve to an integer.
+
+### `sorting`
+
+This section controls player ordering in TAB.
+
+- `enabled`
+- `types`
+
+The current source uses this sorting order:
+
+- `GROUPS:dev,owner,staff,default`
+- `PERMS:fiochat.tab.dev,fiochat.tab.owner,fiochat.tab.staff`
+- `PAPI:%fiochat_user_platform%:java,bedrock`
+- `PAPI_ATOZ:%player_name%`
+
+## `tab.list`
+
+The current source includes these TAB profiles:
+
+- `verification_tab`
+- `default_tab`
+- `player:ItzFabb__`
+- `world:world_nether`
+
+## `verification_tab`
+
+This profile is active for players who have not completed anti-bot verification.
+
+### `display_conditions`
+
+The current source checks:
+
+```text
+%fiochat_antibot_verified%=false
+```
+
+### `text.header`
+
+The header shows the verification message and explains that the player must complete authentication before joining the server.
+
+### `text.footer`
+
+The footer shows the Discord link, webstore link, server IP, and the `fiochat` label.
+
+## `default_tab`
+
+This profile is active for verified Java players.
+
+### `display_conditions`
+
+The current source checks two conditions:
+
+- `%fiochat_user_platform%=java`
+- `%fiochat_antibot_verified%=true`
+
+### `text.header`
+
+The header shows:
+
+- blank lines
+- the `{anim:java_title}` animation
+- the TAB module label
+- account info
+- unique players
+- online users
+
+### `text.footer`
+
+The footer shows:
+
+- Discord
+- webstore
+- server IP
+- the `fiochat` label
+
+## `player:ItzFabb__`
+
+Example player-specific TAB profile.
+
+The current source marks it as `enabled: false`.
+
+This profile can use:
+
+- `text.header`
+- `text.footer`
+- `list-name`
+
+## `world:world_nether`
+
+Example world-specific TAB profile.
+
+The current source marks it as `enabled: false`.
+
+This profile uses:
+
+- `text.header`
+- `text.footer`
+
+## `animations.yml`
+
+TAB can use the shared animation registry from this file.
+
+In the source reviewed here, `animations.texts` currently includes:
+
+- `java_title`
+- `bedrock_title`
+- `java_text`
+- `bedrock_text`
+
+Each animation contains `interval_ticks` and a list of `frames`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

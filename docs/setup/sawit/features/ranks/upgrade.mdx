@@ -1,0 +1,66 @@
+---
+title: Upgrade
+sidebar_position: 4
+---
+
+# Upgrade
+
+Sawit rank upgrades are handled through `VanguardRanks`.
+
+## Verified Player Commands
+
+| Command | Purpose |
+| --- | --- |
+| `/rank` | Open the rank GUI. |
+| `/rank gui <player>` | Open the GUI for a specific player. |
+| `/rank list <page>` | Show available ranks. |
+| `/rank check [player]` | Check a player's current rank. |
+| `/rank up [player]` | Rank up a player. |
+| `/rank set [player] [rank]` | Set a player's rank manually. |
+| `/rank players <page>` | List players with their current ranks. |
+| `/rank reload` | Reload the plugin. |
+| `/rank save` | Save plugin data. |
+| `/rank version` | Show plugin version info. |
+| `/rank help` | Show help text. |
+| `/rankup` | Alias for the rank-up system. |
+
+## Verified Upgrade Path
+
+| Order | Rank ID | League |
+| --- | --- | --- |
+| 1 | `coal_t_one` | Coal |
+| 2 | `coal_t_two` | Coal |
+| 3 | `coal_t_three` | Coal |
+| 4 | `coal_t_four` | Coal |
+| 5 | `iron_t_one` | Iron |
+| 6 | `iron_t_two` | Iron |
+| 7 | `iron_t_three` | Iron |
+| 8 | `iron_t_four` | Iron |
+| 9 | `copper_t_one` | Copper |
+| 10 | `copper_t_two` | Copper |
+| 11 | `copper_t_three` | Copper |
+| 12 | `copper_t_four` | Copper |
+| 13 | `gold_t_one` | Gold |
+| 14 | `gold_t_two` | Gold |
+| 15 | `gold_t_three` | Gold |
+| 16 | `emerald_t_one` | Emerald |
+| 17 | `emerald_t_two` | Emerald |
+
+In display form, this is a league ladder from `Coal` into `Iron`, then `Copper`, then `Gold`, then `Emerald`.
+
+| Rank ID | Verified reward examples |
+| --- | --- |
+| `coal_t_two` | `eco give %player% 1`, `DIAMOND_BLOCK 8`, `EMERALD_BLOCK 8` |
+| `coal_t_three` | `eco give %player% 1`, `enchanted_book mending:1`, `enchanted_book unbreaking:3`, `enchanted_book eff:5` |
+| `coal_t_four` | `eco give %player% 1`, `netherite_ingot 1`, `enchanted_book looting:3`, `enchanted_book fortune:3` |
+
+## Important Distinction
+
+| System | Role in Sawit |
+| --- | --- |
+| `LuckPerms` | Defines the premium and staff groups. |
+| `VanguardRanks` | Defines the player league progression and `/rankup` flow. |
+
+:::info[Accuracy Note]
+This page is based directly on the Sawit `VanguardRanks` files included in the package.
+:::

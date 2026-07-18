@@ -1,0 +1,136 @@
+---
+title: Gamertag
+---
+
+# Gamertag
+
+Source file:
+
+```text
+modules/display/Server Display Tag/display_tag.yml
+```
+
+Use this page as a practical guide when you want to modify the nametag display above players.
+
+The usual edits are:
+
+- changing the default nametag behavior
+- adjusting how the nametag renders in TextDisplay mode
+- editing the profile list for world-specific or player-specific nametags
+- changing the lines that show rank, health, or ping
+
+## How to modify it
+
+If you want to change the general nametag behavior, edit `gamertag.behavior`.
+
+If you want to change how the text is rendered, edit `gamertag.behavior.display`.
+
+If you want to change what a player sees, edit the profile blocks under `gamertag.list`.
+
+## `gamertag.behavior`
+
+This section controls the general nametag behavior above player heads.
+
+### `show-own-to-self`
+
+Determines whether players can see their own gamertag.
+
+### `see-through`
+
+Determines whether the gamertag display uses see-through mode.
+
+### `shadow`
+
+Enables shadow rendering on gamertag text.
+
+## `gamertag.behavior.display`
+
+This section controls TextDisplay properties for the nametag.
+
+### `update-ticks`
+
+Refresh interval for native TextDisplay nametags.
+
+### `text-opacity`
+
+Text opacity for nametag lines.
+
+The source comments state that the supported range is `0-255`.
+
+### `color`
+
+Background color shown behind the nametag text.
+
+The source comments state that this supports `#RRGGBB` or `#AARRGGBB`.
+
+### `opacity`
+
+Background opacity for the nametag box.
+
+The source comments state that the supported range is `0.0-1.0`.
+
+### `type`
+
+Billboard mode for the TextDisplay.
+
+The source comments list these options:
+
+- `CENTER`
+- `FIXED`
+- `VERTICAL`
+- `HORIZONTAL`
+
+### `y-offset`
+
+Additional vertical offset above the player.
+
+## `gamertag.list`
+
+The current source includes these gamertag profiles:
+
+- `default`
+- `world:world_nether`
+- `player:ItzFabb__`
+
+## `default`
+
+This profile is enabled in the source.
+
+### `enabled`
+
+Enables the default profile.
+
+### `text`
+
+The `text` section contains a list of text layers.
+
+In the current source, one layer contains:
+
+- `scale`
+- `y-offset`
+- `lines`
+
+The default lines currently show:
+
+- rank prefix and player name
+- player health and player ping
+
+## `world:world_nether`
+
+Example world-specific gamertag profile.
+
+The current source marks it as `enabled: false`.
+
+Its structure matches the default profile and uses a `text` list containing `scale`, `y-offset`, and `lines`.
+
+## `player:ItzFabb__`
+
+Example player-specific gamertag profile.
+
+The current source marks it as `enabled: true`.
+
+Its structure also uses a `text` list containing `scale`, `y-offset`, and `lines`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

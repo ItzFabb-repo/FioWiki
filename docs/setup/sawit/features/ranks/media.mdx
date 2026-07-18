@@ -1,0 +1,51 @@
+---
+title: Media
+sidebar_position: 5
+---
+
+# Media
+
+Sawit media ranks are handled through `LuckPerms`.
+
+## Verified Media Groups
+
+| Group | System | Notes |
+| --- | --- | --- |
+| `twitch` | `LuckPerms` | Base media / creator rank visible in the package. |
+| `tiktok` | `LuckPerms` | Mid media rank above `twitch`. |
+| `youtube` | `LuckPerms` | Highest verified media rank in the current storage snapshot. |
+
+## Verified Permission Examples
+
+| Group | Verified permission examples |
+| --- | --- |
+| `twitch` | `chatcolor.special`, `chatcolor.use-color-codes`, `chatcolor.use-hex-codes`, `fiochat.commandhider.visibility.twitch`, `tempfly.speed.self` |
+| `tiktok` | `fiochat.commandhider.visibility.tiktok` |
+| `youtube` | `fiochat.commandhider.visibility.youtube` |
+
+## Rank Images
+
+### Twitch
+
+![Rank Media Twitch](/img/setup/sawit/rank-media-twitch.png)
+
+### Tiktok
+
+![Rank Media Tiktok](/img/setup/sawit/rank-media-tiktok.png)
+
+### Youtube
+
+![Rank Media Youtube](/img/setup/sawit/rank-media-youtube.png)
+
+## Notes
+
+| Item | Detail |
+| --- | --- |
+| Weight order | `twitch` uses weight `98`, `tiktok` uses weight `99`, and `youtube` uses weight `100`. |
+| Parent chain | The storage shows a creator-style chain where `tiktok` is linked above `twitch`, and `youtube` is linked above `tiktok`. |
+| Prefixes | Each media group also has its own configured prefix in the LuckPerms storage. |
+| Permission coverage | The provided LuckPerms editor confirms the media ladder clearly, but `tiktok` and `youtube` currently expose fewer direct custom permission nodes than `twitch`. Most of their distinction is shown through inheritance, prefix, weight, and command-hider visibility. |
+
+:::info[Accuracy Note]
+This page follows the same reference style as the staff page and is based on the Sawit LuckPerms storage snapshot.
+:::

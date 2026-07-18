@@ -1,0 +1,828 @@
+﻿---
+title: Giveaway
+sidebar_position: 17
+---
+
+# Giveaway
+
+This page documents the current `modules/alerts/Giveaway/` module from the newer FioChat source.
+
+:::warning[Source Note]
+The current giveaway system is no longer a simple countdown broadcaster. It uses a draft editor flow, player/admin creation modes, item or command rewards, reward blacklist validation, event music selection, and per-giveaway bossbar customization.
+:::
+
+## Module Preview
+
+![Giveaway GUI](../../../img/fiochat/Giveaway%20GUI.png)
+![Giveaway Notifications](../../../img/fiochat/Giveaway%20Notifications.png)
+![Giveaway Countdowns](../../../img/fiochat/Giveaway%20Countdowns.png)
+![Giveaway Win](../../../img/fiochat/Giveaway%20Win.png)
+
+## Configuration Files
+
+- `modules/alerts/Giveaway/config.yml`
+- `modules/alerts/Giveaway/gui/admin-mode.yml`
+- `modules/alerts/Giveaway/gui/player-editor.yml`
+- `modules/alerts/Giveaway/gui/admin-editor.yml`
+- `modules/alerts/Giveaway/gui/item-rewards.yml`
+- `modules/alerts/Giveaway/gui/change_music.yml`
+- `modules/alerts/Giveaway/gui/giveaway-editor.yml`
+
+`giveaway-editor.yml` still exists in the source tree, but the newer flow mainly uses `player-editor.yml` and `admin-editor.yml`. The service still contains fallback path support so older or merged GUI files can still be read in some cases.
+
+## Commands
+
+- `/giveaway`
+- `/giveaways`
+- `/fiochat giveaway`
+- `/fiochat admin giveaway`
+
+`/giveaway` and `/giveaways` are direct Bukkit commands from `plugin.yml`. `/fiochat giveaway` is the player creation flow. `/fiochat admin giveaway` is the admin creation flow, where an admin can choose command rewards or item rewards.
+
+## Permission
+
+| Permission | Default | Detail |
+|---|---:|---|
+| `fiochat.giveaway` | `false` | Base permission for player giveaway features. This does not automatically allow every editor button; specific editor actions still check more specific nodes. |
+| `fiochat.giveaway.create` | `false` | Allows creating giveaways through the player command flow. Without it, the player cannot start a giveaway draft. |
+| `fiochat.giveaway.menu` | `false` | Allows opening the giveaway menu/editor flow. This gates editor access. |
+| `fiochat.giveaway.participate` | `true` | Allows joining active giveaway events. This is the main participation permission. |
+| `fiochat.giveaway.participated` | `true` | Legacy alias for joining active giveaway events. It remains for older permission setups. |
+| `fiochat.giveaway.rewards` | `false` | Allows modifying rewards in the editor, both item rewards and command rewards. |
+| `fiochat.giveaway.winners.one` | `false` | Allows setting the winner count to 1. |
+| `fiochat.giveaway.winners.two` | `false` | Allows setting the winner count to 2. |
+| `fiochat.giveaway.winners.three` | `false` | Allows setting the winner count to 3. |
+| `fiochat.giveaway.winners.four` | `false` | Allows setting the winner count to 4. |
+| `fiochat.giveaway.winners.five` | `false` | Allows setting the winner count to 5. |
+| `fiochat.giveaway.music` | `false` | Allows all player giveaway music options. |
+| `fiochat.giveaway.music.<id>` | `false` | Allows one specific music disc option, such as `wait`, `creator`, `pigstep`, `ward`, or `11`. |
+| `fiochat.giveaway.bossbar` | `false` | Allows player giveaway bossbar features, including toggling the bossbar and toggling colored text. |
+| `fiochat.giveaway.bossbar.color` | `false` | Allows all giveaway bossbar text colors/themes. |
+| `fiochat.giveaway.bossbar.color.<id>` | `false` | Allows one specific bossbar text color/theme, such as `rainbow`, `neon_blue`, `gold`, or `white`. |
+| `fiochat.giveaway.admin.create` | `op` | Allows creating admin giveaways through `/fiochat admin giveaway`. |
+| `fiochat.giveaway.admin.music` | `op` | Allows admin giveaway music options. |
+| `fiochat.giveaway.admin.bossbar` | `op` | Allows admin giveaway bossbar features. |
+
+## `config.yml`
+
+Current default:
+
+```yaml
+settings:
+  allow-host-join: false
+  default-duration-seconds: 60
+  default-winners: 1
+  max-winners: 5
+  max-participants: 5
+  default-react:
+    chat: "IJoined"
+
+  cooldown-after-end-seconds: 600
+
+  blacklist-items:
+    - material: "BEDROCK"
+    - material: "COMMAND_BLOCK"
+    - name: "admin"
+    - lore:
+        - "soulbound"
+
+messages:
+  feature-disabled: "<gray>Giveaway feature is disabled.</gray>"
+  players-only: "<gray>Only players can use giveaway commands.</gray>"
+  no-permission: "<gray>You do not have permission.</gray>"
+  draft-created: "<gray>Giveaway draft created.</gray>"
+  draft-cancelled: "<gray>Giveaway draft cancelled.</gray>"
+  no-rewards: "<gray>You need at least one reward before starting.</gray>"
+  cooldown-active: "<gray>Giveaway cooldown is active for <white>%time%</white><gray>.</gray>"
+  blacklisted-item: "<gray>This giveaway reward contains a blacklisted item: <white>%item%</white><gray> (<white>%reason%</white><gray>).</gray>"
+```
+
+### `settings.allow-host-join`
+
+Controls whether the giveaway host may join their own giveaway.
+
+If `false`, the host cannot enter the participant list. When the host tries to join, the service uses `messages.host-join-disabled` if configured, otherwise it falls back to the internal default.
+
+If `true`, the host is treated like any other player and can join as long as the giveaway is not full, the host has not already joined, and the reaction rule is satisfied.
+
+This setting only affects host participation. It does not change the host's ability to create a draft, edit rewards, change winner count, or start the event.
+
+### `settings.default-duration-seconds`
+
+The starting duration for a newly created giveaway draft.
+
+The current default is `60`. A draft starts with 60 seconds until the host edits it through the `Giveaway Duration` button.
+
+The service clamps duration to 10 through 300 seconds. Values below 10 become 10 at runtime. Values above 300 become 300.
+
+The editor exposes `%current_duration%` for the draft duration and `%max_duration%` for the 300-second maximum.
+
+### `settings.default-winners`
+
+The starting winner count for new drafts.
+
+The current default is `1`. This is used for both player drafts and admin drafts. After the draft opens, the value can be changed with the `Winners` button.
+
+The service normalizes winner count to at least 1, so zero or negative values never create a no-winner giveaway.
+
+### `settings.max-winners`
+
+The highest winner count the editor may reach.
+
+The current default is `5`. The service also ensures `max-winners` is not lower than `default-winners`. If `default-winners` is higher, the runtime maximum is raised to match it.
+
+This setting interacts with winner permissions. Even when `max-winners` allows 5, the player still needs the matching `fiochat.giveaway.winners.*` node for the target count.
+
+### `settings.max-participants`
+
+The maximum number of players that may join one active giveaway.
+
+The current default is `5`. The service forces a minimum of 1. If the config is 0 or negative, runtime still uses at least 1 participant slot.
+
+This is not the same as winner count. `max-participants` limits who can enter; `winners` controls how many winners are selected when the event ends.
+
+### `settings.default-react.chat`
+
+The default required text for the `Chat Phrase` reaction mode.
+
+The current default is `IJoined`. Drafts start in `Chat Phrase` mode, using this value as the required join text.
+
+When `Chat Phrase` is active, players join by typing the required phrase in chat. Matching is case-insensitive and trims leading/trailing whitespace.
+
+If this setting is empty, the service falls back to `IJoined`.
+
+### `settings.cooldown-after-end-seconds`
+
+The global cooldown after a giveaway finishes.
+
+The current default is `600`, or 10 minutes. While this cooldown is active, no new giveaway can be started. The cooldown is global, not only per host.
+
+The runtime converts seconds to milliseconds. Negative values become 0, effectively disabling the cooldown.
+
+The active cooldown message is `messages.cooldown-active`, using `%time%`.
+
+### `settings.blacklist-items`
+
+Rules for item rewards that are not allowed in item-mode giveaways.
+
+This only applies to item rewards. Command rewards are text commands, not `ItemStack`s, so item blacklist rules do not inspect them.
+
+Each entry can use one or more filters:
+
+- `material`: the material must match exactly, such as `BEDROCK`.
+- `name`: the item display name must contain the configured text.
+- `lore`: the item lore must contain every configured fragment.
+
+Matching is case-insensitive. `name` and `lore` are contains checks. `material` is an exact material match.
+
+Example:
+
+```yaml
+blacklist-items:
+  - material: "BEDROCK"
+  - name: "admin"
+  - lore:
+      - "soulbound"
+```
+
+This rejects:
+
+- every `BEDROCK` reward item;
+- any reward item with a display name containing `admin`;
+- any reward item with lore containing `soulbound`.
+
+If an item reward matches a blacklist rule, the giveaway does not start and the player receives `messages.blacklisted-item`. `%item%` contains the detected item label, and `%reason%` describes the matched rule.
+
+## `messages`
+
+The following keys exist in the default `config.yml`.
+
+### `messages.feature-disabled`
+
+Sent when the giveaway module is disabled in the module settings.
+
+The service reads `modules.giveaway`. If disabled, giveaway commands/editor actions stop before draft creation or processing.
+
+### `messages.players-only`
+
+Sent when a giveaway command that requires a player is executed by console or another non-player sender.
+
+The giveaway editor is inventory-GUI based, so create/edit flows require an online player.
+
+### `messages.no-permission`
+
+Generic permission failure message.
+
+It is used for several checks: opening menus, editing rewards without `fiochat.giveaway.rewards`, selecting a winner count without the matching winner permission, selecting music without music permission, or using bossbar features without bossbar permission.
+
+### `messages.draft-created`
+
+Sent when a giveaway draft is created successfully.
+
+A draft is temporary state owned by the host before the event becomes active. While it is a draft, the host can edit rewards, winner count, duration, reaction, music, and bossbar settings.
+
+### `messages.draft-cancelled`
+
+Sent when a draft is cancelled.
+
+Cancelling a draft is not the same as stopping an active giveaway. The draft has not selected winners or started the event; the service only discards the temporary editor state.
+
+### `messages.no-rewards`
+
+Sent when the host tries to start a giveaway without rewards.
+
+Item mode requires at least one item reward. Command mode requires at least one command reward. If the reward list is empty, `Run the Giveaway` cannot start the event.
+
+### `messages.cooldown-active`
+
+Sent when the global cooldown from the previous giveaway is still active.
+
+Placeholder:
+
+- `%time%`: formatted remaining cooldown.
+
+When this message appears, the problem is cooldown time, not permission or reward validation.
+
+### `messages.blacklisted-item`
+
+Sent when an item reward is rejected by `settings.blacklist-items`.
+
+Placeholders:
+
+- `%item%`: item name or item label that matched the rule.
+- `%reason%`: matched blacklist reason, such as material, name, or lore.
+
+## Additional Messages Recognized by the Service
+
+The Java service reads many extra `messages.*` keys even though they are not all written in the default module config. If you add these keys manually, the service can use them.
+
+| Key | Purpose |
+|---|---|
+| `messages.input-expired` | Sent when chat input for command reward or react value expires. |
+| `messages.input-cancelled` | Sent when the player types `cancel` while the service is waiting for input. |
+| `messages.input-timeout` | Tells the player the input time limit. |
+| `messages.command-reward-prompt` | Prompt for entering one command reward line. |
+| `messages.command-reward-invalid` | Sent when a command reward format is invalid. |
+| `messages.command-reward-help` | Help lines sent after the command reward prompt. |
+| `messages.command-reward-added` | Sent after a command reward is added. |
+| `messages.command-reward-removed` | Sent after the latest command reward is removed. |
+| `messages.command-reward-empty` | Sent when remove is clicked but no command rewards exist. |
+| `messages.react-prompt` | Prompt for entering a `Chat Phrase` reaction value. |
+| `messages.react-invalid` | Sent when the reaction value is empty. |
+| `messages.react-command-fixed` | Sent when `Command Pattern` is selected; the command pattern is fixed by the service. |
+| `messages.reaction-updated` | Sent after the chat reaction value is changed. Uses `%value%`. |
+| `messages.winners-change-blocked-with-rewards` | Sent when the host tries to change winner count after item rewards were inserted. |
+| `messages.already-active` | Sent when the host already has an active giveaway. Uses `%id%`. |
+| `messages.created` | Sent after an active giveaway starts. Uses `%id%` and `%seconds%`. |
+| `messages.joined` | Sent when a player joins successfully. |
+| `messages.joined-actionbar` | Actionbar shown after a player joins. |
+| `messages.already-joined` | Sent when a player already joined the same giveaway. |
+| `messages.full` | Sent when the giveaway reaches `max-participants`. |
+| `messages.host-join-disabled` | Sent when the host tries to join while `allow-host-join: false`. |
+| `messages.ended-none` | Sent when the giveaway ends with no winners. |
+| `messages.ended-winners` | Sent when the giveaway ends with winners. Uses `%id%` and `%winners%`. |
+| `messages.winner-notice` | Private winner notification. |
+| `messages.refund.immediate` | Sent when item rewards are immediately refunded because nobody joined. |
+| `messages.refund.pending` | Sent when refund delivery is pending because the host is offline. |
+| `messages.refund.delivered` | Sent when a pending refund is delivered. Uses `%count%`. |
+| `messages.start.*` | Start announcement lines, including host, rewards, winner count, duration, and reaction instructions. |
+
+## Draft Flow
+
+When a player creates a giveaway, the service creates a `GiveawayDraft`.
+
+Initial draft values:
+
+- `mode`: player drafts use `ITEMS`; admin drafts initially use `COMMANDS`.
+- `durationSeconds`: from `settings.default-duration-seconds`, clamped to 10 through 300.
+- `winners`: from `settings.default-winners`, at least 1 and not above `max-winners`.
+- `reactMode`: `Chat Phrase`.
+- `reactValue`: `IJoined` or `settings.default-react.chat`.
+- `eventMusic`: empty.
+- `bossbarEnabled`: `true`.
+- `bossbarTextColored`: `true`.
+- `bossbarTextColor`: `WHITE`.
+- `bossbarBarColor`: `WHITE`.
+
+The draft is not active yet. The giveaway becomes active only after the `Run the Giveaway` button executes `CREATE_DRAFT` and all validation passes.
+
+## `admin-mode.yml`
+
+This menu is the first step of `/fiochat admin giveaway`.
+
+### `menus.title`
+
+Inventory title for the admin mode menu.
+
+```yaml
+title: "<dark_gray>Giveaway Mode</dark_gray>"
+```
+
+Changing the title only changes display text. It does not change available modes.
+
+### `menus.rows`
+
+Inventory row count. The default is `6`, or 54 slots.
+
+Default slots such as `20`, `24`, and `49` require enough rows to exist.
+
+### `items.commands`
+
+Creates an admin command-reward giveaway draft.
+
+Important action:
+
+```yaml
+- "[GIVEAWAY] COMMANDS_MODE"
+```
+
+After this click, the admin draft uses `COMMANDS` mode. Rewards are edited as command reward lines, not inventory items.
+
+### `items.items`
+
+Creates an admin item-reward giveaway draft.
+
+Important action:
+
+```yaml
+- "[GIVEAWAY] ITEMS_MODE"
+```
+
+After this click, the admin draft uses `ITEMS` mode. Rewards are inserted through `item-rewards.yml` and are checked against the item blacklist before the event starts.
+
+### `items.cancel`
+
+Cancels the admin draft before entering the editor.
+
+Important action:
+
+```yaml
+- "[GIVEAWAY] CANCEL"
+```
+
+The service normalizes this as draft cancellation.
+
+## `player-editor.yml` and `admin-editor.yml`
+
+These files are nearly identical. `player-editor.yml` is used for player drafts, while `admin-editor.yml` is used for admin drafts.
+
+### `menus.title`
+
+Editor inventory title.
+
+```yaml
+title: "<dark_gray>Giveaway Editor</dark_gray>"
+```
+
+### `menus.rows`
+
+Editor inventory row count. The default is `6`.
+
+The default editor uses slots up to `53`, so 6 rows are required if the default layout is kept.
+
+### `items.rewards`
+
+Reward button behavior depends on draft mode.
+
+In `ITEMS` mode, the `items` lore is used and `MODIFY_ITEMS_REWARDS` opens the item reward GUI. The service normalizes it to `OPEN_ITEM_REWARDS`.
+
+In `COMMANDS` mode, the `commands` lore is used. Left click runs `ADD_COMMANDS_REWARDS`, normalized to `ADD_COMMAND_REWARD`. Right click runs `REMOVE_LAST_COMMAND_REWARD`.
+
+Placeholder:
+
+- `%reward_count%`: current reward count.
+
+`command-preview` controls how command reward lines appear in lore:
+
+- `header`: text before the reward list.
+- `empty`: text when no command rewards exist.
+- `line`: one command reward line.
+- `more`: text when there are more command rewards than the preview displays.
+
+### `items.winners`
+
+Changes winner count.
+
+Default click behavior:
+
+- left click: `+1`
+- shift left click: `+3`
+- right click: `-1`
+- shift right click: `-3`
+
+The service clamps the result to at least 1 and at most `settings.max-winners`.
+
+If an `ITEMS` draft already contains item rewards, winner count changes are blocked. The item reward layout differs for 1 through 5 winners, so changing winner count after inserting items could remap rewards incorrectly. The host must remove/take item rewards first.
+
+Placeholder:
+
+- `%winners%`: current draft winner count.
+
+### `items.duration`
+
+Changes giveaway duration.
+
+Default click behavior:
+
+- left click: `+5` seconds
+- shift left click: `+10` seconds
+- right click: `-5` seconds
+- shift right click: `-10` seconds
+
+The service still clamps the final duration to 10 through 300 seconds.
+
+Placeholders:
+
+- `%current_duration%`: formatted current duration.
+- `%max_duration%`: formatted maximum, 300 seconds.
+- `%duration_raw%` and `%current_duration_raw%`: raw seconds.
+- `%max_duration_raw%`: raw maximum value, `300`.
+
+### `items.react.mode`
+
+Switches how players join the active giveaway.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] REACT_MODE"
+```
+
+The service normalizes it to `TOGGLE_REACT_MODE`.
+
+Available modes:
+
+- `Chat Phrase`: players join by typing a required phrase in chat.
+- `Command Pattern`: players join by sending a private message command to the host.
+
+Placeholder:
+
+- `%react_mode%`: current reaction mode label.
+
+### `items.react.value`
+
+Edits the reaction value.
+
+In `Chat Phrase` mode, the button closes the inventory, waits for chat input, and saves the typed text as the reaction value. Empty text is rejected.
+
+In `Command Pattern` mode, the value is not freely editable. The service forces:
+
+```text
+/msg $p <msg>
+```
+
+When the event runs, `$p` is rendered as the host name. This pattern is fixed by design; it is not a free template from config.
+
+Placeholders:
+
+- `%react_value%`: active reaction value.
+- `%react_value_hint%`: extra hint text. For `Command Pattern`, it explains that the command pattern is fixed.
+
+### `items.music`
+
+Opens the music selection menu from `change_music.yml`.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] CHANGE_MUSIC"
+```
+
+The service normalizes it to `OPEN_MUSIC_MENU`.
+
+Permission check depends on draft type:
+
+- Player draft: `fiochat.giveaway.music` or a specific music node.
+- Admin draft: `fiochat.giveaway.admin.music`.
+
+Placeholder:
+
+- `%music%`: selected music disc, or empty/default if none is selected.
+
+### `items.bossbar`
+
+Toggles the giveaway bossbar.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] TOGGLE_BOSSBAR"
+```
+
+If disabled, the event does not show the giveaway bossbar even if the global countdown bossbar path is available. If enabled, bossbar display can occur when the runtime countdown bossbar logic allows it.
+
+Permission:
+
+- Player draft: `fiochat.giveaway.bossbar`.
+- Admin draft: `fiochat.giveaway.admin.bossbar`.
+
+Placeholder:
+
+- `%status%`: `<green>Enabled</green>` or `<red>Disabled</red>`.
+
+### `items.bossbar-text`
+
+Toggles colored styling for bossbar text.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] TOGGLE_BOSSBAR_TEXT_COLOR"
+```
+
+If enabled, the service applies the selected text color/style. If disabled, the bossbar can still show, but it does not use the custom text color styling.
+
+Placeholder:
+
+- `%bossbar_text_color_state%`: enabled/disabled state for bossbar text color styling.
+
+### `items.bossbar-color`
+
+Scrolls through bossbar text colors/themes.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] SCROLL_BOSSBAR_TEXT_COLOR"
+```
+
+The service checks color permission before saving the next value.
+
+Permission-backed options include:
+
+- `rainbow`
+- `neon_blue`
+- `sunset_pastel`
+- `midnight`
+- `twilight`
+- `powder_bloom`
+- `lavender`
+- `dark_blue`
+- `dark_green`
+- `dark_aqua`
+- `dark_red`
+- `dark_purple`
+- `gold`
+- `blue`
+- `green`
+- `aqua`
+- `red`
+- `light_purple`
+- `yellow`
+- `white`
+
+Placeholders:
+
+- `%bossbar_text_color%`: prettified text color/theme.
+- `%bossbar_text_color_raw%`: raw uppercase id.
+- `%bossbar_color_raw%`: raw alias also provided by the service.
+
+### `items.bossbar-bar-color`
+
+Scrolls through bossbar bar colors.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] SCROLL_BOSSBAR_BAR_COLOR"
+```
+
+This affects the actual Minecraft bossbar bar color, not the title text color. The value must match a Bukkit `BarColor`. Draft default is `WHITE`.
+
+Placeholders:
+
+- `%bossbar_bar_color%`: prettified bar color.
+- `%bossbar_bar_color_raw%`: raw uppercase bar color.
+
+### `items.summary`
+
+Displays draft information.
+
+Default action:
+
+```yaml
+- "[NONE]"
+```
+
+It does not mutate the draft. It displays mode, reward count, winner count, and duration.
+
+Common placeholders:
+
+- `%mode%`
+- `%reward_count%`
+- `%winners%`
+- `%duration%`
+
+### `items.cancel`
+
+Cancels the current draft.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] CANCEL_DRAFT"
+```
+
+The draft is removed from host memory. No event runs and no reward is distributed.
+
+### `items.create`
+
+Starts the giveaway.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] CREATE_DRAFT"
+```
+
+Before activation, the service validates:
+
+- the module is enabled;
+- the global cooldown has ended;
+- rewards are not empty;
+- item rewards do not match the blacklist;
+- the host is not blocked by active giveaway state.
+
+If validation passes, the draft becomes an active giveaway and players receive the configured runtime notifications.
+
+## `item-rewards.yml`
+
+This file controls item reward storage for `ITEMS` mode.
+
+### `menus.title`
+
+Title for the item reward inventory.
+
+```yaml
+title: "<dark_gray>Giveaway Item Rewards</dark_gray>"
+```
+
+### `menus.rows`
+
+Inventory row count. The default is `6`.
+
+### `decorations.winner_one`
+
+Layout for 1 winner.
+
+Reward slots use:
+
+```yaml
+behavior:
+  giveaway:
+    winner: true
+    for: "1"
+```
+
+Items placed in those slots become rewards for winner 1. The default winner 1 slots are `13`, `22`, `31`, and `40`.
+
+### `decorations.winner_two`
+
+Layout for 2 winners.
+
+Default slots:
+
+- Winner 1: `9-12`, `18-21`, `27-30`, `36-39`.
+- Winner 2: `14-17`, `23-26`, `32-35`, `41-44`.
+
+### `decorations.winner_three`
+
+Layout for 3 winners.
+
+Default slots:
+
+- Winner 1: `11`, `20`, `29`, `38`.
+- Winner 2: `13`, `22`, `31`, `40`.
+- Winner 3: `15`, `24`, `33`, `42`.
+
+### `decorations.winner_four`
+
+Layout for 4 winners.
+
+Default slots:
+
+- Winner 1: `10`, `19`, `28`, `37`.
+- Winner 2: `12`, `21`, `30`, `39`.
+- Winner 3: `14`, `23`, `32`, `41`.
+- Winner 4: `16`, `25`, `34`, `43`.
+
+### `decorations.winner_five`
+
+Layout for 5 winners.
+
+Default slots:
+
+- Winner 1: `9`, `18`, `27`, `36`.
+- Winner 2: `11`, `20`, `29`, `38`.
+- Winner 3: `13`, `22`, `31`, `40`.
+- Winner 4: `15`, `24`, `33`, `42`.
+- Winner 5: `17`, `26`, `35`, `44`.
+
+### `behavior.giveaway.winner`
+
+Marks a slot as a giveaway reward slot.
+
+Only slots with `winner: true` are read as rewards. Decoration items without this behavior are not reward items.
+
+### `behavior.giveaway.for`
+
+Defines which winner receives the item from that slot.
+
+For example, `for: "3"` means the item is a reward for winner 3. This is important because the new system supports different rewards for each winner position.
+
+### `items.back`
+
+Returns to the editor without completing the reward screen.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] BACK"
+```
+
+### `items.done`
+
+Saves item rewards and returns to the editor.
+
+Action:
+
+```yaml
+- "[GIVEAWAY] DONE"
+```
+
+Items in reward slots are mapped to their winner numbers. They are still checked against blacklist rules before the event starts.
+
+## `change_music.yml`
+
+This file controls the event music picker.
+
+Each music item follows this pattern:
+
+```yaml
+actions:
+  any:
+    - "[GIVEAWAY] SET_MUSIC:MUSIC_DISC_WAIT"
+```
+
+The value after `SET_MUSIC:` is the music disc material saved to the draft.
+
+Default options:
+
+| Key | Material | GUI Name |
+|---|---|---|
+| `wait` | `MUSIC_DISC_WAIT` | `C418 - Wait` |
+| `creator` | `MUSIC_DISC_CREATOR` | `Lena Raine - Creator` |
+| `creator_music_box` | `MUSIC_DISC_CREATOR_MUSIC_BOX` | `Lena Raine - Creator (Music Box)` |
+| `lava_chicken` | `MUSIC_DISC_LAVA_CHICKEN` | `Hyper Potions - Lava Chicken` |
+| `precipice` | `MUSIC_DISC_PRECIPICE` | `Aeron Cherof - Precipice` |
+| `otherside` | `MUSIC_DISC_OTHERSIDE` | `Lena Raine - Otherside` |
+| `relic` | `MUSIC_DISC_RELIC` | `Aeron Cherof - Relic` |
+| `pigstep` | `MUSIC_DISC_PIGSTEP` | `Lena Raine - Pigstep` |
+| `five` | `MUSIC_DISC_5` | `Samuel Aberg - 5` |
+| `tears` | `MUSIC_DISC_TEARS` | `Amos Roddy - Tears` |
+| `stal` | `MUSIC_DISC_STAL` | `C418 - Stal` |
+| `strad` | `MUSIC_DISC_STRAD` | `C418 - Strad` |
+| `mellohi` | `MUSIC_DISC_MELLOHI` | `C418 - Mellohi` |
+| `mall` | `MUSIC_DISC_MALL` | `C418 - Mall` |
+| `far` | `MUSIC_DISC_FAR` | `C418 - Far` |
+| `chirp` | `MUSIC_DISC_CHIRP` | `C418 - Chirp` |
+| `blocks` | `MUSIC_DISC_BLOCKS` | `C418 - Blocks` |
+| `cat` | `MUSIC_DISC_CAT` | `C418 - Cat` |
+| `thirteen` | `MUSIC_DISC_13` | `C418 - 13` |
+| `ward` | `MUSIC_DISC_WARD` | `C418 - Ward` |
+| `eleven` | `MUSIC_DISC_11` | `C418 - 11` |
+
+### `items.back`
+
+Returns from the music menu to the giveaway editor.
+
+Default action:
+
+```yaml
+- "[BACK]"
+```
+
+## Editor Placeholders
+
+| Placeholder | Value |
+|---|---|
+| `%mode%` | Draft mode: `Commands` or `Items`. |
+| `%reward_count%` | Current reward count. In command mode this is command reward count; in item mode this is item stack reward count. |
+| `%winners%` | Draft winner count. |
+| `%duration%` | Formatted draft duration. |
+| `%duration_raw%` | Raw draft duration in seconds. |
+| `%current_duration%` | Same as `%duration%`, used by the duration button. |
+| `%current_duration_raw%` | Raw duration for the duration button. |
+| `%max_duration%` | Maximum duration, 300 seconds. |
+| `%max_duration_raw%` | Raw maximum value, `300`. |
+| `%react_mode%` | Current reaction mode label. |
+| `%react_value%` | Current reaction value. |
+| `%react_value_hint%` | Additional hint for reaction mode. |
+| `%music%` | Selected event music. |
+| `%status%` | Bossbar enabled/disabled state. |
+| `%bossbar_text_color_state%` | Bossbar text color styling state. |
+| `%bossbar_text_color%` | Prettified bossbar text color/theme. |
+| `%bossbar_text_color_raw%` | Raw bossbar text color/theme. |
+| `%bossbar_bar_color%` | Prettified bossbar bar color. |
+| `%bossbar_bar_color_raw%` | Raw bossbar bar color. |
+| `%bossbar_text%` | Draft bossbar text, or default template if empty. |

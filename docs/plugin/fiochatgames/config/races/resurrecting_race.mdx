@@ -1,0 +1,57 @@
+﻿---
+title: resurrecting_race.yml
+sidebar_position: 30
+---
+
+# resurrecting_race.yml
+
+File location:
+
+- `plugins/FioChatGames/games/races/resurrecting_race.yml`
+
+This race is built around the `RESURRECTING` objective and uses `TOTEM_OF_UNDYING` as its default source material in the bundled config.
+
+## Source-backed example
+
+```yaml
+game: RACE
+enable: true
+points: 1
+time_seconds: 300
+race:
+  type: RESURRECTING
+  material: TOTEM_OF_UNDYING
+  amount: 1
+  top-reward-count: 3
+  top-announce-count: 3
+  bossbar:
+    enabled: true
+    color: GREEN
+    style: SOLID
+```
+
+## Important options
+
+| Key | Description |
+| --- | --- |
+| `race.type` | Must be `RESURRECTING`. |
+| `race.material` | Default tracked material shown in prompts and UI. |
+| `race.amount` | Target value needed to complete the race. |
+| `race.top-reward-count` | Number of ranked top rewards supported. |
+| `race.top-announce-count` | Number of placements announced in result output. |
+| `race.bossbar` | Objective-specific bossbar settings. |
+
+## Messaging and rewards
+
+The bundled file includes the same high-level systems as other advanced race files:
+
+- start, finish, and ended message layouts
+- title and subtitle blocks
+- streak settings and streak rewards
+- ranked reward blocks
+- participation rewards
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

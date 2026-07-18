@@ -1,0 +1,244 @@
+---
+title: Options & Configuration
+sidebar_position: 1
+---
+
+# Options & Configuration
+
+This page summarizes the most important global options from the current `config.yml` bundled with the plugin source.
+
+## Formatting
+
+FioChatGames supports both:
+
+- legacy Bukkit color codes such as `&a`
+- MiniMessage-style formatting such as `<#FFAA00>`, gradients, and decoration tags
+
+Reference:
+
+- [MiniMessage format](https://docs.papermc.io/adventure/minimessage/format/)
+
+## Blacklist controls
+
+There are three different blacklist systems in the plugin:
+
+### World blacklist
+
+```yaml
+disabled-worlds:
+  - "example_world"
+
+allow_starting_from_disabled: false
+```
+
+### Player blacklist
+
+```yaml
+blacklist:
+  players:
+    - "Notch"
+    - "Mojang"
+```
+
+### Gamemode blacklist
+
+```yaml
+blacklist-gamemodes:
+  - "SPECTATOR"
+  - "ADVENTURE"
+  - "CREATIVE"
+```
+
+## Command aliases
+
+All major subcommands can be remapped from `config.yml`:
+
+```yaml
+command-aliases:
+  user:
+    leaderboard:
+      - "leaderboard"
+      - "top"
+  admin:
+    version:
+      - "version"
+      - "ver"
+```
+
+## Requirements and timing
+
+Auto-start behavior is controlled by `requirements.minimal`:
+
+```yaml
+requirements:
+  minimal:
+    online_players:
+      events: 1
+      races: 5
+    time:
+      random:
+        enabled: false
+        minutes: "5-10"
+      fixed:
+        enabled: true
+        minutes: "5"
+```
+
+The plugin also supports global per-game round-duration overrides:
+
+```yaml
+requirements:
+  minimal:
+    guess:
+      TimeperSeconds:
+        default: 30
+        game:
+          - 'GUESS_THE_WORD:60'
+          - 'GUESS_THE_NUMBER:120'
+          - 'FAST_TYPE:45'
+          - 'FILLOUT:50'
+```
+
+## Full-duration chat events
+
+The plugin can keep non-race events running until timeout even after players answer correctly:
+
+```yaml
+chat_event:
+  full_duration:
+    enabled: false
+    max_winner: 10
+    winner_policy: "FASTEST"
+    announce_rankings: true
+    top_announce_count: 10
+```
+
+## Permission gate for participation
+
+```yaml
+use-permission-toplay: false
+```
+
+When set to `true`, players must have `fiochatgames.play` to participate.
+
+## Start modes
+
+The current plugin supports five start modes:
+
+- `RANDOM`
+- `ROTATE`
+- `COMMANDS`
+- `SPECIFIC`
+- `DISABLED`
+
+Example from source-backed config:
+
+```yaml
+start_mode: "RANDOM"
+
+rotate_order:
+  - "GUESS_THE_WORD"
+  - "GUESS_THE_NUMBER"
+  - "UNSCRAMBLE"
+  - "TRIVIA"
+  - "RACE:BARTERING"
+  - "RACE:BREAK"
+  - "RACE:RESURRECTING"
+  - "RACE:WALKING"
+
+specific_games:
+  - "GUESS_THE_WORD"
+  - "GUESS_THE_NUMBER"
+  - "TRIVIA"
+  - "MATH"
+  - "RACE"
+```
+
+Important source-backed note:
+
+- `GUESS_THE_NUMBER` is valid and should be documented anywhere you list supported event ids.
+- `RACE:BARTERING` and `RACE:RESURRECTING` are valid race selectors in the current source config.
+
+## Sound system
+
+The plugin supports configurable start, win, lose, and countdown sounds:
+
+```yaml
+playsound:
+  win:
+    sound: "ENTITY_PLAYER_LEVELUP"
+    sound_volume: 100
+    sound_pitch: 0.9
+    enable: true
+  countdown:
+    enable: true
+    sound: "BLOCK_NOTE_BLOCK_HAT"
+    seconds:
+      - 10
+      - 5
+      - 4
+      - 3
+      - 2
+      - 1
+```
+
+## Storage backends
+
+Supported storage types:
+
+```yaml
+storage:
+  type: "YML"
+  yml_file: "players.yml"
+  db_file: "fiochatgames.db"
+  sql:
+    host: "localhost"
+    port: 3306
+    database: "fiochatgames"
+    username: "root"
+    password: "password"
+```
+
+Available values for `storage.type`:
+
+- `YML`
+- `DB` for SQLite
+- `SQL` for MySQL or MariaDB
+
+## Display and compatibility
+
+Global round presentation is controlled by `general`:
+
+```yaml
+general:
+  use_bossbar: true
+  use_actionbar_timer: true
+  bossbar_message: "<gold>%type%</gold> <gray>-</gray> <yellow>%time%s</yellow>"
+  bossbar_color: "BLUE"
+  bossbar_style: "SEGMENTED_10"
+  actionbar_message: "<gold>%type%</gold> <gray>|</gray> <white>%time%s</white>"
+  default_toggle: true
+  answer_cooldown_ms: 250
+```
+
+## Winner name highlight
+
+```yaml
+chat_highlight:
+  enabled: true
+  winner_format: "<yellow><bold>"
+```
+
+## Update checks and debug mode
+
+```yaml
+check-for-updates:
+  enabled: true
+
+debug:
+  mode: false
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

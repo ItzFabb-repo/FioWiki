@@ -1,0 +1,108 @@
+---
+title: AntiBot
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# AntiBot Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This is the join verification gate for new players.
+- Goal documented by source comments: require movement before full chat access.
+- While locked, chat, commands, and inventory can be blocked.
+- Fixed bypass permission documented by source comments:
+  - `fiochat.antibot.bypass`
+
+## Main keys
+```yaml
+antibot:
+  required-interactions: 1
+  reverify-grace:
+    enabled: true
+    seconds: 150
+  hide-join-message-unverified: true
+  sneak-jump-after-move:
+    enabled: true
+    require-sneak: true
+    require-jump: false
+  verification-timeout:
+    enabled: true
+    seconds: 30
+    kick-on-timeout: true
+  fail-points:
+    enabled: true
+  clear-effects-on-verify: true
+  vanish-unverified: true
+```
+
+## `verification-timeout`
+Source comments say:
+- the timer starts when anti-bot lock is applied on join
+- if the player is still unverified after `seconds`, timeout is triggered
+- if `kick-on-timeout` is `true`, the player is kicked after timeout
+
+The nested `countdown` section uses:
+- `interval-ticks`
+- `title`
+- `actionbar`
+
+## `chat`
+```yaml
+chat:
+  enabled: true
+  suppress-incoming-chat-packets-while-unverified: true
+  message: "..."
+  title:
+    enabled: false
+  actionbar:
+    enabled: false
+  sound:
+    enabled: true
+```
+
+## `commands`
+```yaml
+commands:
+  enabled: true
+  message: "..."
+  whitelist:
+    - "/login"
+    - "/l"
+    - "/register"
+    - "/reg"
+```
+
+## `inventory`
+```yaml
+inventory:
+  enabled: true
+  message: "..."
+  title:
+    enabled: false
+  actionbar:
+    enabled: false
+  sound:
+    enabled: true
+```
+Source comments say inventory contents can be temporarily stashed and restored after verification.
+
+## `on-join` and `on-verified`
+The source defines separate notification sections for:
+- `on-join`
+- `on-verified`
+
+`on-join.effects.list` also supports effect entries in this format:
+
+```text
+EFFECT:durationTicks:amplifier:ambient:particles
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

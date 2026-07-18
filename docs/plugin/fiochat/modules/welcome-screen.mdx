@@ -1,0 +1,110 @@
+﻿---
+title: Welcome Screen
+sidebar_position: 34
+---
+
+# Welcome Screen (Module)
+Configuration guide for `modules/announce/Welcome UI/config.yml`.
+
+:::warning[Important]
+Choose delivery policy first (`first join` vs `every join`), then tune delay and book content structure.
+:::
+
+## Module Preview
+
+![Welcome Screen](../../../img/fiochat/Welcome%20Screen.png)
+
+## Configuration Files
+- `modules/announce/Welcome UI/config.yml`
+
+## Delivery Policy
+
+### First Join and Repeat Join Behavior
+```yaml
+settings:
+  on-first-join: true
+  on-every-join: true
+```
+- Purpose: Controls when welcome screen is shown.
+- Options:
+  - `on-first-join`: show only for new players.
+  - `on-every-join`: show for all reconnects.
+
+### Join Delay
+```yaml
+settings:
+  delay-ticks: 40
+```
+- Purpose: Delays welcome screen to avoid overlap with other join events.
+- Options:
+  - Lower delay for instant onboarding.
+  - Higher delay when antibot/title/MOTD modules also run.
+
+## Book Payload
+
+### Book Toggle and Metadata
+```yaml
+book:
+  enabled: true
+  title: "Welcome"
+  author: "FioChat"
+```
+- Purpose: Enables and identifies the welcome book UI.
+- Options:
+  - Keep title short and brand-consistent.
+
+### Book Page Structure
+```yaml
+book:
+  pages:
+    1:
+      - "<align:center><black>Welcome, %player_name%!</black></align>"
+      - "<align:center><dark_gray>Thanks for joining <black>%server_name%</black>.</dark_gray></align>"
+    2:
+      - "<align:center>Read the rules and enjoy your stay.</align>"
+```
+- Purpose: Defines per-page onboarding content.
+- Options:
+  - Use concise sections per page.
+  - Keep core links/rules on first pages.
+
+## Content Design Guidelines
+
+### Recommended Page Order
+1. Welcome and server identity.
+2. Rule summary and behavior expectations.
+3. Useful commands and links.
+4. Community channels (Discord/store/help).
+
+### Placeholder Usage
+- Use `%player_name%` for personal greeting.
+- Use `%server_name%` for branding consistency.
+
+## Recommended Profiles
+
+### First-Time Onboarding Profile
+```yaml
+settings:
+  on-first-join: true
+  on-every-join: false
+```
+- Result: Non-intrusive onboarding only for new players.
+
+### Persistent Community Profile
+```yaml
+settings:
+  on-first-join: true
+  on-every-join: true
+  delay-ticks: 40
+```
+- Result: Repeated reminder of server identity and rules.
+
+:::note[Owner Validation]
+- Test first-join behavior with a brand-new player account.
+- Test repeat-join behavior with returning account.
+- Test delay interactions with MOTD/title/antibot modules.
+- Validate page formatting and readability in book UI.
+:::
+
+
+

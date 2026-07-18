@@ -1,0 +1,502 @@
+﻿---
+title: Black Market Items
+sidebar_position: 4
+---
+
+# Black Market Items
+
+`blackmarkets.yml` is the core item catalog for FioBlackMarket. This file does much more than list tradeable materials. It controls which items are allowed to roll into the current market, how much stock they start with, what each click should do, how graph data is opened, and which post-transaction actions should run after a successful buy or sell.
+
+If `config.yml` decides when the market opens, `blackmarkets.yml` decides what the market actually contains when it does open.
+
+## Top-level structure
+
+The current file is organized around:
+
+- `recent-transaction-actions`
+- `items.<id>`
+
+A simplified top-level view looks like this:
+
+```yaml
+recent-transaction-actions:
+  buy: "Bought"
+  sell: "Selling"
+
+items:
+  netherite_ingot:
+    material: NETHERITE_INGOT
+    probability: 0.5
+    amount: 1
+    blackmarket:
+      graphic: {}
+      max_transaction: {}
+      price: {}
+      stock: 512
+      actions: {}
+      commands: []
+    lore: []
+```
+
+Explanation:
+
+- `recent-transaction-actions` defines the text labels used by history-style lore placeholders.
+- `items` contains every possible market item entry.
+- each item key is an internal id and can be named freely, as long as it is unique
+- the item id does not need to match the material name exactly, but keeping them similar makes the file easier to manage
+
+## Example item structure
+
+The bundled file uses entries like this:
+
+```yaml
+items:
+  netherite_ingot:
+    material: NETHERITE_INGOT
+    probability: 0.5
+    amount: 1
+    blackmarket:
+      graphic:
+        enabled: true
+        default-metric: BUYERS
+        default-range:
+          unit: DAY
+          amount: 1
+        menu-title: ""
+        materials:
+          buyers: LIME_STAINED_GLASS_PANE
+          sales: ORANGE_STAINED_GLASS_PANE
+          stock: LIGHT_BLUE_STAINED_GLASS_PANE
+          empty: GRAY_STAINED_GLASS_PANE
+          background: BLACK_STAINED_GLASS_PANE
+
+      max_transaction:
+        buy_amount: 16
+        sell_amount: 16
+
+      price:
+        buy: 20
+        sell: 12.5
+        currency: "VAULT"
+
+      stock: 512
+
+      actions:
+        left:
+          - "[BUY]"
+          - "[SOUND] BLOCK_NOTE_BLOCK_XYLOPHONE 1 0.5 master"
+        left_shift:
+          - "[BUY_BULK]"
+          - "[SOUND] BLOCK_NOTE_BLOCK_XYLOPHONE 1 0.5 master"
+        right:
+          - "[SELL]"
+          - "[SOUND] BLOCK_NOTE_BLOCK_CHIME 1 0.6 master"
+        right_shift:
+          - "[SELL_BULK]"
+          - "[SOUND] BLOCK_NOTE_BLOCK_CHIME 1 0.6 master"
+        q:
+          - "[VIEW_GRAPHIC]"
+          - "[SOUND] UI_BUTTON_CLICK 1 0.8 master"
+
+      commands: []
+
+    lore:
+      - "&8On Sale"
+      - ""
+      - "&7Sell Price: &f{sell_price} {sell_dynamic_color}{sell_dynamic_arrow}{sell_dynamic_percent}%"
+      - "&7Buy Price: &f{buy_price} {buy_dynamic_color}{buy_dynamic_arrow}{buy_dynamic_percent}%"
+      - ""
+      - "&7Stock: &e{stock} &8&o(Available)"
+      - ""
+      - "{lt:&7Recent Transaction:}"
+      - "&e{recent_transaction_1_player} &6{recent_transaction_1_amount}x &f{recent_transaction_1_name} &8({recent_transaction_1_action})"
+      - ""
+      - "&eLeft-click to buy"
+      - "&eRight-click to sell"
+```
+
+This example shows how one market item is not just a material with a price. It is a full entry with trade rules, graph behavior, input behavior, dynamic placeholders, and post-click feedback.
+
+## Core item fields
+
+The source-backed fields used by the bundled entries are:
+
+- `material`
+- `probability`
+- `amount`
+- `blackmarket.graphic`
+- `blackmarket.max_transaction`
+- `blackmarket.price`
+- `blackmarket.stock`
+- `blackmarket.actions`
+- `blackmarket.commands`
+- `lore`
+- optional `name`
+
+## Field-by-field explanation
+
+### `material`
+
+`material` is the Bukkit material for the entry and the traded item itself.
+
+```yaml
+material: NETHERITE_INGOT
+```
+
+How it is used:
+
+- it controls the item icon in the Black Market GUI
+- it controls which material is bought or sold during transactions
+- it is also used in graph and history rendering unless another display rule overrides it
+
+`material.json` exists so the plugin can map normal Bukkit material ids into cleaner display names for menus, history entries, and hologram output.
+
+### `probability`
+
+`probability` controls how likely an item is to be selected when the market rerolls.
+
+```yaml
+probability: 0.5
+```
+
+The config comments describe the intended meaning:
+
+- `0.5` means `0.5%`
+- `1.5` means `1.5%`
+- `100` means always shown
+
+This matters because the schedule can ask for several listed items, but the item pool itself still needs to decide which items are eligible to appear in that cycle.
+
+### `amount`
+
+`amount` is the base trade amount used by the normal click actions.
+
+```yaml
+amount: 1
+```
+
+How it behaves:
+
+- `[BUY]` buys this amount
+- `[SELL]` sells this amount
+- bulk trading is handled separately through the bulk menu and its quantity presets
+
+If you set:
+
+```yaml
+amount: 16
+```
+
+then one normal buy or sell action is for 16 items, not 1 item.
+
+### `blackmarket.price`
+
+The `price` block controls the cost and payout per one item.
+
+```yaml
+price:
+  buy: 20
+  sell: 12.5
+  currency: "VAULT"
+```
+
+Explanation:
+
+- `buy` is how much the player pays for one item
+- `sell` is how much the player receives for one item
+- `currency` can override the provider used for this item
+
+Important behavior from the file comments:
+
+- the listed price is per single item
+- total transaction price is calculated from unit price multiplied by the transaction amount
+
+So if:
+
+- `buy: 20`
+- `amount: 8`
+
+then a normal buy costs `160` before any dynamic pricing or rank pricing adjustments are applied.
+
+### `blackmarket.stock`
+
+`stock` is the live amount available for buying.
+
+```yaml
+stock: 512
+```
+
+How it behaves:
+
+- buying reduces stock
+- selling adds stock back
+- dynamic pricing compares current stock with the configured default stock
+- stock can be reset on market refresh if `reset-stock-on-refresh` is enabled in the schedule config
+
+This is one of the most important numbers in the whole market because it affects both availability and price pressure.
+
+### `blackmarket.max_transaction`
+
+This block sets per-player limits for the item.
+
+```yaml
+max_transaction:
+  buy_amount: 16
+  sell_amount: 16
+```
+
+Explanation:
+
+- `buy_amount` limits how many units that player can buy in total for this market item
+- `sell_amount` limits how many units that player can sell in total for this market item
+- `-1` disables the limit
+
+This system is useful when you want rare items to appear in the market without letting one player completely drain the entire economic advantage from a single cycle.
+
+### `blackmarket.graphic`
+
+This block controls how the item's performance graph should behave.
+
+```yaml
+graphic:
+  enabled: true
+  default-metric: BUYERS
+  default-range:
+    unit: DAY
+    amount: 1
+  menu-title: ""
+  materials:
+    buyers: LIME_STAINED_GLASS_PANE
+    sales: ORANGE_STAINED_GLASS_PANE
+    stock: LIGHT_BLUE_STAINED_GLASS_PANE
+    empty: GRAY_STAINED_GLASS_PANE
+    background: BLACK_STAINED_GLASS_PANE
+```
+
+Explanation:
+
+- `enabled` decides whether this item can open the performance view
+- `default-metric` sets the first metric players see
+- `default-range` controls the starting period in the graph screen
+- `menu-title` can override the default title from the shared graph config
+- `materials` can override the graph colors for this item only
+
+This is important because the graphic screen can be configured globally in `menu/view_graphic.yml`, but the item entry can still customize how its own analytics should appear.
+
+### `blackmarket.actions`
+
+This block is the click map for the item.
+
+```yaml
+actions:
+  left:
+    - "[BUY]"
+    - "[SOUND] BLOCK_NOTE_BLOCK_XYLOPHONE 1 0.5 master"
+  left_shift:
+    - "[BUY_BULK]"
+  right:
+    - "[SELL]"
+  right_shift:
+    - "[SELL_BULK]"
+  q:
+    - "[VIEW_GRAPHIC]"
+```
+
+Supported click keys from the source comments:
+
+- `left`
+- `left_shift`
+- `right`
+- `right_shift`
+- `q`
+
+How the bundled items use them:
+
+- `left` for normal buy
+- `left_shift` for bulk buy
+- `right` for normal sell
+- `right_shift` for bulk sell
+- `q` for graph view
+
+This block is extremely important because it defines the actual player interaction model for each item.
+
+### `blackmarket.commands`
+
+This block stores post-transaction actions that run after a successful trade.
+
+```yaml
+commands:
+  - "[MESSAGE] Thanks for trading."
+  - "[SOUND] UI_BUTTON_CLICK 1 2 master"
+```
+
+These do not replace the item click actions. Instead, they run after a successful buy or sell flow.
+
+This makes the block useful for:
+
+- reward messages
+- console-side follow-up commands
+- extra sounds
+- actionbar or title feedback
+- item rewards after market trades
+
+### `lore`
+
+The lore block is where the GUI explanation for the item is built.
+
+```yaml
+lore:
+  - "&7Sell Price: &f{sell_price}"
+  - "&7Buy Price: &f{buy_price}"
+  - "&7Stock: &e{stock}"
+  - "&eLeft-click to buy"
+  - "&eRight-click to sell"
+```
+
+This lore is not static text only. It is one of the main places where the plugin exposes live market state to players through placeholders.
+
+### optional `name`
+
+The bundled file comments show that a custom `name` can be added:
+
+```yaml
+name: "&eNetherite Ingot"
+```
+
+If you do not set it, the plugin can fall back to its normal material-based naming behavior.
+
+## Supported market action tags
+
+The file explicitly documents these action tags:
+
+- `[BUY]`
+- `[SELL]`
+- `[BUY_BULK]`
+- `[SELL_BULK]`
+- `[VIEW_GRAPHIC]`
+- `[CONSOLE]`
+- `[PLAYER]`
+- `[ITEM]`
+- `[MESSAGE]`
+- `[TITLE]`
+- `[SUBTITLE]`
+- `[ACTIONBAR]`
+- `[BOSSBAR;COLOR;TYPE]`
+- `[SOUND]`
+
+## What the action tags are for
+
+### Trading actions
+
+These are the primary item transaction actions:
+
+- `[BUY]`
+- `[SELL]`
+- `[BUY_BULK]`
+- `[SELL_BULK]`
+- `[VIEW_GRAPHIC]`
+
+Use them when the item should directly participate in the market flow.
+
+### Utility and reward actions
+
+These are secondary or post-transaction actions:
+
+- `[CONSOLE]`
+- `[PLAYER]`
+- `[ITEM]`
+- `[MESSAGE]`
+- `[TITLE]`
+- `[SUBTITLE]`
+- `[ACTIONBAR]`
+- `[BOSSBAR;COLOR;TYPE]`
+- `[SOUND]`
+
+Use them when the trade should also trigger feedback, rewards, or external command handling.
+
+## Lore placeholders
+
+The file comments document these common placeholders:
+
+- `{buy_price}`
+- `{sell_price}`
+- `{buy_discount_percent}`
+- `{sell_boost_percent}`
+- `{stock}`
+- `{amount}`
+- `{item}`
+- `{recent_transaction_<num>_player}`
+- `{recent_transaction_<num>_amount}`
+- `{recent_transaction_<num>_name}`
+- `{recent_transaction_<num>_action}`
+
+There is also a conditional helper:
+
+- `{lt:<text>}`
+
+That line only renders when recent transactions exist.
+
+## How the recent transaction placeholders work
+
+The recent transaction system is meant to let each item show a short live market history directly in its lore.
+
+Example:
+
+```yaml
+recent-transaction-actions:
+  buy: "Bought"
+  sell: "Selling"
+```
+
+and:
+
+```yaml
+lore:
+  - "{lt:&7Recent Transaction:}"
+  - "&e{recent_transaction_1_player} &6{recent_transaction_1_amount}x &f{recent_transaction_1_name} &8({recent_transaction_1_action})"
+```
+
+Explanation:
+
+- if no recent transaction exists, `{lt:...}` can hide the section label
+- `recent_transaction_1_*` reads the newest matching transaction
+- the `buy` and `sell` labels come from `recent-transaction-actions`
+
+This is why the item lore in this plugin feels more alive than a static price tag.
+
+## GUI item meta support
+
+The file comments also document optional GUI item-meta settings such as:
+
+- player heads
+- custom textures
+- item flags
+- enchants
+- glint behavior
+
+That means the market entry can be visually customized beyond only `material`, `name`, and `lore`.
+
+## Practical flow of one market item
+
+One item entry in `blackmarkets.yml` participates in several plugin systems at once:
+
+1. the scheduler rolls the item based on `probability`
+2. the market loads its base `stock`
+3. the GUI renders its display from `material`, optional `name`, and `lore`
+4. click actions decide whether the player buys, sells, bulk trades, or opens the graph
+5. price calculation uses base `price`, current stock state, and optional rank pricing
+6. transaction limits use `max_transaction`
+7. graph view uses `blackmarket.graphic`
+8. successful trades can run follow-up entries from `blackmarket.commands`
+
+That full flow is the reason this file should be treated as a gameplay configuration file, not just a static list of items.
+
+## Practical interpretation
+
+At a high level, `blackmarkets.yml` controls three things at the same time:
+
+1. which items can roll into the market
+2. how those items trade, limit stock, and change value
+3. how those items present themselves in the GUI, graph, and recent-transaction display
+
+That is why this file is central to the plugin and should usually be understood before editing the split menu files.

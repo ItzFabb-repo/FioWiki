@@ -1,0 +1,377 @@
+﻿---
+title: GUI Types & Actions
+sidebar_position: 3
+---
+
+# GUI Types & Actions
+
+![FioMenu Java GUI](../../../img/fiomenu/Java%20GUI.png)
+
+![FioMenu Bedrock UI](../../../img/fiomenu/Bedrock%20UI.png)
+
+FioMenu has two major GUI families:
+
+- Java inventory and dialogue screens
+- Bedrock Floodgate forms
+
+The action syntax is mostly shared between both, but the GUI structure and input placeholders are different.
+
+## Java GUI types
+
+The current bundled source shows these Java-facing menu types:
+
+- `CHEST`
+- `MERCHANT`
+- `DIALOGUE`
+- `ANVIL`
+- `BARREL`
+- `BEACON`
+- `BLAST_FURNACE`
+- `BREWING`
+- `CARTOGRAPHY`
+- `CRAFTER`
+- `CRAFTING`
+- `DISPENSER`
+- `DROPPER`
+- `ENCHANTING`
+- `FURNACE`
+- `GRINDSTONE`
+- `HOPPER`
+- `LOOM`
+- `SMITHING`
+- `SMOKER`
+- `STONECUTTER`
+- `WORKBENCH`
+
+### Java type examples
+
+Standard inventory:
+
+```yaml
+menu:
+  title: "<dark_gray>Example</dark_gray>"
+  rows: 6
+  type: "CHEST"
+```
+
+Merchant:
+
+```yaml
+menu:
+  title: "<gold>Merchant Showcase</gold>"
+  type: "MERCHANT"
+
+trades:
+  1:
+    ingredient_1:
+      material: EMERALD
+      amount: 4
+    result:
+      material: COOKED_BEEF
+      amount: 6
+```
+
+Dialogue:
+
+```yaml
+menu:
+  title: "<dark_gray>Dialogue Example</dark_gray>"
+  type: "DIALOGUE"
+  dialogue:
+    behavior:
+      contain-exit: false
+      escapeable: false
+      columns: 1
+```
+
+Workbench-style:
+
+```yaml
+menu:
+  title: "<gold>Workbench Showcase</gold>"
+  type: "WORKBENCH"
+```
+
+## Bedrock GUI types
+
+The Bedrock side uses:
+
+- `type: "FLOODGATE"`
+
+and then chooses one form family through:
+
+- `form: "SIMPLE"`
+- `form: "CUSTOM"`
+- `form: "MODAL"`
+
+### `SIMPLE`
+
+Used for button-driven forms.
+
+```yaml
+menu:
+  title: "<dark_gray>Bedrock Hub</dark_gray>"
+  type: "FLOODGATE"
+  form: "SIMPLE"
+```
+
+### `CUSTOM`
+
+Used for mixed input controls.
+
+```yaml
+menu:
+  title: "<dark_gray>Dropdown UI</dark_gray>"
+  type: "FLOODGATE"
+  form: "CUSTOM"
+```
+
+### `MODAL`
+
+Used for accept or deny confirmation screens.
+
+```yaml
+menu:
+  title: "<dark_red>Confirmation</dark_red>"
+  type: "FLOODGATE"
+  form: "MODAL"
+```
+
+## Bedrock custom control types
+
+The bundled Bedrock examples show these control styles inside `form:`:
+
+- `button`
+- `input`
+- `dropdown`
+- `slider`
+- `checkmark`
+
+### `button`
+
+Common in `SIMPLE` forms:
+
+```yaml
+'SETTINGS':
+  button:
+    line1: "<green><bold>Settings</bold></green>"
+    line2: "<black>Open preferences</black>"
+```
+
+### `input`
+
+Seen in `label_option_ui.yml`:
+
+```yaml
+'lorem_ipsum':
+  input:
+    behavior:
+      mustInput: true
+      respectBannedChars: true
+```
+
+Returned input placeholder:
+
+- `%bedrockLabelInput%`
+
+### `dropdown`
+
+Seen in `dropdown_ui.yml`:
+
+```yaml
+'lorem_ipsum':
+  dropdown:
+    options:
+      - 'Survival'
+      - 'Creative'
+```
+
+Returned selection placeholder:
+
+- `%bedrockDropdown%`
+
+### `slider`
+
+The bundle shows both slider modes:
+
+- value mode in `slider_ui_value.yml`
+- text mode in `slider_ui_text.yml`
+
+Value slider:
+
+```yaml
+slider:
+  behavior:
+    type: "value"
+    value:
+      min: 1
+      max: 67
+```
+
+Returned placeholder:
+
+- `%bedrockSliderValue%`
+
+Text slider:
+
+```yaml
+slider:
+  behavior:
+    type: "text"
+    text:
+      - 'A a'
+      - 'B b'
+```
+
+Returned placeholder:
+
+- `%bedrockSliderText%`
+
+### `checkmark`
+
+Seen in `checkmark_ui.yml` and `checkmark_ui_basic.yml`:
+
+```yaml
+'afk_toggle':
+  checkmark:
+    behavior:
+      mustRememberValue: true
+```
+
+This is the Bedrock toggle-style control used for boolean or yes/no settings.
+
+## Shared action style
+
+Java and Bedrock both use bracketed action syntax in the source bundle.
+
+Common examples:
+
+- `[OPEN_MENU]`
+- `[PLAYER]`
+- `[CONSOLE]`
+- `[MESSAGE]`
+- `[SOUND]`
+- `[CLOSE]`
+- `[REFRESH]`
+
+Java inventory items can scope those action lists by click key:
+
+- `any`
+- `left`
+- `right`
+- `shift_left`
+- `shift_right`
+- `q`
+- `middle`
+
+The `middle` key is the middle-click action scope. The current Java source maps both `ClickType.MIDDLE` and creative clone-wheel clicks to `actions.middle`.
+
+## Actions found in the current bundle
+
+The current bundled YAML examples show these action ids:
+
+- `[OPEN_MENU]`
+- `[PLAYER]`
+- `[CONSOLE]`
+- `[MESSAGE]`
+- `[SOUND]`
+- `[CLOSE]`
+- `[REFRESH]`
+- `[SET_LANG]`
+- `[SELL_GUI]`
+- `[SCROLL_UP_SORT]`
+- `[SCROLL_DOWN_SORT]`
+- `[CHOOSE_CUSTOM_SLOT]`
+- `[CLEAR_CUSTOM_SLOT]`
+- `[OPEN_SHORTCUT_CHOOSE]`
+- `[CLICK_SET]`
+- `[CLICK_ADD]`
+- `[CLICK_REMOVE]`
+- `[APROMPT]`
+- `[BPROMPT]`
+- `[CPROMPT]`
+- `[SPROMPT]`
+
+The bundle also shows helper tokens used inside action chains:
+
+- `[DELAY=<ticks>]`
+- `[IF_EMPTY]`
+
+## Action examples
+
+### Open another menu
+
+```yaml
+actions:
+  any:
+    - '[OPEN_MENU] settings'
+```
+
+### Handle middle click
+
+```yaml
+actions:
+  middle:
+    - '[MESSAGE] <gray>Middle Click!</gray>'
+    - '[SOUND] UI_BUTTON_CLICK 100 1'
+```
+
+### Run a player command
+
+```yaml
+actions:
+  any:
+    - '[PLAYER] warp market'
+```
+
+### Run a console command
+
+```yaml
+actions:
+  any:
+    - '[CONSOLE] crate openfor %player_name% featured -s'
+```
+
+### Send feedback and close
+
+```yaml
+actions:
+  any:
+    - '[MESSAGE] <green>Done.</green>'
+    - '[SOUND] UI_BUTTON_CLICK 100 1 master'
+    - '[CLOSE]'
+```
+
+### Refresh a Java settings menu
+
+```yaml
+actions:
+  any:
+    - '[PLAYER] msgtoggle'
+    - '[REFRESH]'
+    - '[SOUND] BLOCK_NOTE_BLOCK_PLING 100 1'
+```
+
+### Prompt input
+
+```yaml
+actions:
+  any:
+    - '[CPROMPT] [MESSAGE=&7Type your nickname] [REOPEN=true] [COMMAND_EXECUTION=/nick %fiomenuValue%]'
+```
+
+## Spigot API references
+
+These are useful when you want to know what standard Bukkit or Spigot values can be used in FioMenu YAML:
+
+- [InventoryType](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/inventory/InventoryType.html)
+- [Material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+- [Sound](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+- [ItemFlag](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html)
+- [Enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
+- [PatternType](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/banner/PatternType.html)
+- [PotionEffectType](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html)
+
+:::info[How to use these references]
+If a FioMenu field expects a Bukkit enum such as `material`, `sound`, `item_flags`, `enchant`, or banner `patterns`, these Spigot API pages are the safest standard reference for valid names.
+:::

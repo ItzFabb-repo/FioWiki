@@ -1,0 +1,84 @@
+---
+title: 開発者 API
+sidebar_position: 5
+---
+
+# 開発者 API
+FioChat は、外部連携のための公開 API を提供しています。
+
+---
+
+# API インスタンスの取得
+```java
+import com.itzfabb.fiochat.api.FioChatApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+FioChatApi api = FioChatApiProvider.get();
+if (api != null) {
+    // safe to use
+}
+```
+
+Join/Quit 専用の連携を行う場合:
+```java
+import com.itzfabb.fiochat.api.JoinQuitApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+JoinQuitApi joinQuitApi = FioChatApiProvider.getJoinQuitApi();
+```
+
+---
+
+# コア API 機能
+:::info[概要]
+公開 API は、プレイヤー向けチャットシステム、機能トグル、主要モジュール連携ポイントに重点を置いています。
+:::
+
+主な連携領域:
+- メンションとプライベートメッセージの挙動
+- Join/Quit モジュール連携
+- チャンネルと受信対象に関する制御
+- プレイヤー設定/トグルに追従する UX
+
+---
+
+# 推奨される連携パターン
+```java
+public void runIntegration(Player player) {
+    FioChatApi api = FioChatApiProvider.get();
+    if (api == null) {
+        return;
+    }
+
+    // Example: call available API methods in your plugin flow
+    // (exact methods depend on the FioChat version you compile against)
+}
+```
+
+---
+
+# softdepend 設定の推奨
+プラグインの `plugin.yml` に:
+```yaml
+softdepend:
+  - FioChat
+```
+
+その後、サーバー起動後の `onEnable()` で API を解決してください。
+
+---
+
+# バージョン互換性
+:::warning[互換性]
+デプロイするものと同じメジャー/マイナー API バージョンで必ずコンパイルしてください。
+複数の FioChat ビルドを対象にする場合は、Provider 取得時に null チェックを行い、安全にフォールバックしてください。
+:::
+
+---
+
+# ソース参照
+提供されたソース配布から確認した API パッケージ:
+- `com.itzfabb.fiochat.api.FioChatApi`
+- `com.itzfabb.fiochat.api.FioChatApiProvider`
+- `com.itzfabb.fiochat.api.JoinQuitApi`
+- internal impl: `com.itzfabb.fiochat.api.internal.*`

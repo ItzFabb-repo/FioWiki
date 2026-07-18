@@ -1,0 +1,235 @@
+﻿---
+title: Config
+sidebar_position: 23
+---
+
+# Mentions Config
+
+Source file:
+
+```text
+modules/chat/Player Mentions/config.yml
+```
+
+:::warning[Important]
+Tune anti-abuse controls first (`cooldown`, visibility hiding), then tune formatting and notification style.
+:::
+
+## Module Preview
+
+![Mentions 1](../../../img/fiochat/Mentions%201.png)
+![Mentions 2](../../../img/fiochat/Mentions%202.png)
+![Mentions 3](../../../img/fiochat/Mentions%203.png)
+
+## Configuration Files
+- `modules/chat/Player Mentions/config.yml`
+
+## Core Mention Rules
+
+### Self and Case Behavior
+```yaml
+settings:
+  notify-self: true
+  case-sensitive-player-name: false
+  self-mentions:
+    enabled: true
+```
+- Purpose: Controls mention matching and self-notification behavior.
+- Options:
+  - `case-sensitive-player-name: false` is safer for user experience.
+  - Disable `self-mentions` if users abuse self pinging.
+
+### Hidden Target Protection
+```yaml
+settings:
+  hide-unavailable-target-names:
+    enabled: true
+    vanish: true
+    spectator: true
+    vanish-respect-can-see: true
+```
+- Purpose: Prevents exposing unavailable/hidden players via mentions.
+- Options:
+  - Keep enabled on moderated servers to reduce information leaks.
+
+## Player Mention (`@player`)
+
+### Player Mention Toggle and Highlight
+```yaml
+mentions:
+  player:
+    enabled: true
+    chat-highlight:
+      enabled: true
+      sender-format: "<yellow>@%name%</yellow>"
+      target-format: "<dark_aqua>@%name%</dark_aqua>"
+      others-format: "<dark_aqua>@%name%</dark_aqua>"
+      disabled-format: "<red>@%name%</red>"
+```
+- Purpose: Handles direct player-name ping formatting.
+- Options:
+  - Use distinct target format for clear personal ping visibility.
+
+### Player Mention Cooldown
+```yaml
+mentions:
+  player:
+    cooldown:
+      enabled: true
+      seconds: 10
+```
+- Purpose: Reduces direct-mention spam.
+- Options:
+  - Increase cooldown on high-population public servers.
+
+### Player Mention Notifications
+```yaml
+mentions:
+  player:
+    notifications:
+      title:
+        enabled: true
+        title: "<gold>%sender%</gold>"
+        subtitle: "<gray>Mentioned you!</gray>"
+      actionbar:
+        enabled: false
+        text: "<yellow>%sender%</yellow> <gray>mentioned you.</gray>"
+      sound:
+        enabled: true
+        name: "BLOCK_NOTE_BLOCK_COW_BELL"
+        volume: 1.0
+        pitch: 1.2
+```
+- Purpose: Defines recipient-side ping feedback channels.
+- Options:
+  - Keep one primary notification channel to avoid sensory overload.
+
+## `@here` Mention
+
+### Here Tag and Highlight
+```yaml
+mentions:
+  here:
+    enabled: true
+    tagging: "@here"
+    chat-highlight:
+      enabled: true
+      sender-format: "<yellow>@%name%</yellow>"
+```
+- Purpose: Group mention for local/active audience context.
+- Options:
+  - Keep tag literal short and clear (`@here`).
+
+### Here Cooldown and Notifications
+```yaml
+mentions:
+  here:
+    cooldown:
+      enabled: true
+      seconds: 10
+    notifications:
+      sound:
+        enabled: true
+        name: "BLOCK_NOTE_BLOCK_CHIME"
+```
+- Purpose: Limits broadcast ping frequency and defines feedback style.
+- Options:
+  - Apply stricter cooldown than player mentions if needed.
+
+## `@everyone` Mention
+
+### Everyone Tag and Highlight
+```yaml
+mentions:
+  everyone:
+    enabled: true
+    tagging: "@everyone"
+    chat-highlight:
+      enabled: true
+      sender-format: "<yellow>@%name%</yellow>"
+```
+- Purpose: Global mention trigger for all eligible recipients.
+- Options:
+  - Consider permission gating in command/permission layer.
+
+### Everyone Cooldown and Notifications
+```yaml
+mentions:
+  everyone:
+    cooldown:
+      enabled: true
+      seconds: 10
+    notifications:
+      actionbar:
+        enabled: true
+        text: "<yellow>%sender%</yellow> <gray>mentioned <white>%everyone%</white><gray>."
+      sound:
+        enabled: true
+        name: "BLOCK_NOTE_BLOCK_CHIME"
+        volume: 1.0
+        pitch: 1.2
+```
+- Purpose: Controls high-impact mention alert behavior.
+- Options:
+  - Use stronger cooldown for `@everyone` than `@player`.
+
+## Cooldown Feedback Layer
+
+### Cooldown Notification (Shared Pattern)
+```yaml
+cooldown:
+  notifications:
+    title:
+      enabled: true
+      title: "<gold>Mention Cooldown</gold>"
+      subtitle: "<gray>Wait <white>%seconds%s</white> before mentioning again.</gray>"
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+    actionbar:
+      enabled: false
+      text: "<red>Mention cooldown: <white>%seconds%s</white>"
+```
+- Purpose: Informs sender when mention action is throttled.
+- Options:
+  - Prefer actionbar for low-noise cooldown messaging.
+
+## Recommended Policy Profiles
+
+### Community-Friendly Profile
+```yaml
+mentions:
+  player:
+    cooldown:
+      seconds: 8
+  here:
+    cooldown:
+      seconds: 20
+  everyone:
+    cooldown:
+      seconds: 45
+```
+- Result: permissive direct mentions, controlled mass mentions.
+
+### Strict Moderated Profile
+```yaml
+settings:
+  notify-self: false
+mentions:
+  everyone:
+    enabled: false
+  here:
+    cooldown:
+      seconds: 45
+```
+- Result: reduced ping abuse risk.
+
+:::note[Owner Validation]
+- Test `@player`, `@here`, and `@everyone` in active chat.
+- Verify hidden/vanished players are not leaked by mention parsing.
+- Verify cooldown triggers at expected intervals per mention type.
+- Verify title/actionbar/sound alerts do not overlap with other modules.
+:::
+
+
+

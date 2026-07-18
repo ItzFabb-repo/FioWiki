@@ -1,0 +1,77 @@
+---
+title: Cooldown
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Cooldown Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Module Preview
+
+![Anti Spam Commands](../../../img/fiochat/Anti%20Spam%20Commands.png)
+
+## Notes from source comments
+- This is the chat-cooldown sub-module inside chat-management.
+- It controls delay for chat and commands.
+- Blocked sends are cancelled.
+- `%seconds%` is replaced with remaining time.
+- Fixed bypass permissions documented by source comments:
+  - `fiochat.chat.cooldown.bypass`
+  - `fiochat.command.cooldown.bypass`
+- Source comments also note that when `anti-repeat.chat.global-duplicate.enabled = true`, classic chat cooldown checks are skipped by design.
+
+## `spy`
+```yaml
+spy:
+  chat: "..."
+  command: "..."
+  command-blacklist:
+    - '/login'
+```
+This section defines staff spy messages and command blacklist entries for cooldown logs.
+
+## `chat`
+```yaml
+chat:
+  enabled: true
+  cooldown: 3
+  message: "..."
+  title:
+    enabled: false
+  actionbar:
+    enabled: false
+  sound:
+    enabled: false
+  whitelist: []
+```
+This section controls cooldown for normal chat.
+
+## `commands`
+```yaml
+commands:
+  enabled: true
+  cooldown: 3
+  message: "..."
+  title:
+    enabled: false
+  actionbar:
+    enabled: false
+  sound:
+    enabled: false
+  whitelist:
+    - "/login"
+    - "/l"
+    - "/register"
+    - "/reg"
+```
+This section controls cooldown for commands.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

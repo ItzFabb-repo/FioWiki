@@ -1,0 +1,227 @@
+﻿---
+title: Mailbox
+sidebar_position: 22
+---
+
+# Mailbox (Module)
+Configuration guide for `modules/announce/Mailbox/config.yml`.
+
+:::warning[Important]
+Configure unread notification behavior and reward-claim cooldown first. This prevents spam clicks and duplicated reward claims.
+:::
+
+## Module Preview
+
+![Mailbox 1](../../../img/fiochat/Mailbox1%20.png)
+![Mailbox 2](../../../img/fiochat/Mailbox%202.png)
+![Mailbox 3](../../../img/fiochat/Mailbox%203.png)
+![Mailbox 4](../../../img/fiochat/Mailbox%204.png)
+![Mailbox 5](../../../img/fiochat/Mailbox%205.png)
+
+## Configuration Files
+- `modules/announce/Mailbox/config.yml`
+
+## Notification Flow
+
+### Incoming Mail Notifications
+```yaml
+notifications:
+  incoming:
+    player-message: "<yellow>New mailbox from <white>%sender%</white>.</yellow>"
+    server-message: "<yellow>New mailbox received <gray>(<white>%count%</white>)</gray>.</yellow>"
+```
+- Purpose: Announces new mailbox entries for player and server mail.
+- Options:
+  - Keep sender/count placeholders for context.
+
+### Unread Notification State
+```yaml
+notifications:
+  unread:
+    message-state: true
+    sound-state: true
+    message: "<yellow>You have <white>%unread%</white> unread mail.</yellow>"
+```
+- Purpose: Controls unread reminder output channels.
+- Options:
+  - Disable sound if alerts are too frequent.
+  - Keep message concise and actionable.
+
+### Unread Hover and Click Actions
+```yaml
+notifications:
+  unread:
+    hover:
+      enabled: true
+    click:
+      enabled: true
+      action: "OPEN_MAILBOX"
+      value: "/mailbox"
+```
+- Purpose: Enables interactive notification behavior.
+- Options:
+  - `OPEN_MAILBOX` gives one-click inbox access.
+  - Keep click action aligned with your command aliases.
+
+### Unread Sound
+```yaml
+notifications:
+  unread:
+    sound:
+      name: "ENTITY_EXPERIENCE_ORB_PICKUP"
+      volume: 1.0
+      pitch: 1.0
+```
+- Purpose: Audio cue for unread status.
+- Options:
+  - Lower volume for quiet-server profile.
+
+## Prompt and Message Lifecycle
+
+### Prompt Messaging
+```yaml
+messages:
+  prompt:
+    message: "<gray>Type mailbox message, or <white>cancel</white>.</gray>"
+    target: "<gray>Type target player, or <white>cancel</white>.</gray>"
+    cancelled: "<gray>Mailbox prompt cancelled.</gray>"
+    expired: "<gray>Mailbox prompt expired.</gray>"
+```
+- Purpose: Guides user through mailbox compose flow.
+- Options:
+  - Include multiline hint token if your server supports it.
+
+### Send and Validation Messages
+```yaml
+messages:
+  sent: "<yellow>Mailbox sent to <white>%player%</white>.</yellow>"
+  invalid-target: "<red>That player was not found.</red>"
+  self-target: "<red>You cannot send mailbox to yourself.</red>"
+```
+- Purpose: Confirms delivery or validation failures.
+- Options:
+  - Keep errors explicit to reduce support tickets.
+
+### Reply and Reward Messages
+```yaml
+messages:
+  reward-claimed: "<green>You claimed mailbox rewards.</green>"
+  reward-none: "<gray>No rewards to claim.</gray>"
+  reward-claim-cooldown: "<gray>Please wait before claiming again.</gray>"
+  reply-expired: "<gray>You can only reply within 7 days.</gray>"
+  reply-server: "<gray>You cannot reply to server mail.</gray>"
+```
+- Purpose: Controls claim/reply state feedback.
+- Options:
+  - Keep cooldown/reply messages short and policy-driven.
+
+## Reward Claim Control
+
+### Anti-Double-Click Guard
+```yaml
+settings:
+  reward-claim-click-cooldown-millis: 600
+```
+- Purpose: Prevents rapid multi-click claim exploitation.
+- Options:
+  - Raise for laggy servers where double-clicking is common.
+
+## Server Mailbox Entries
+
+### Entry Metadata
+```yaml
+server-mailboxes:
+  entries:
+    rules:
+      title: "Server Rules"
+      material: "BOOK"
+      texture: ""
+```
+- Purpose: Defines visual identity of a server mailbox entry.
+- Options:
+  - Use `texture` only when custom heads are required.
+
+### Command Reward Payload
+```yaml
+server-mailboxes:
+  entries:
+    rules:
+      rewards:
+        - type: COMMANDS
+          placeholder:
+            commands:
+              "1":
+                material: "DIAMOND"
+                amount: 3
+                name: "<yellow>Newbie Reward</yellow>"
+                commands:
+                  - "CONSOLE:give %player_name% DIAMOND 3"
+```
+- Purpose: Executes command-based rewards on claim.
+- Options:
+  - Use console commands for economy/items/permissions.
+
+### Item Reward Payload
+```yaml
+server-mailboxes:
+  entries:
+    rules:
+      rewards:
+        - type: ITEMS
+          placeholder:
+            items:
+              "1":
+                material: "BREAD"
+                amount: 3
+```
+- Purpose: Gives direct item rewards from mailbox entry.
+- Options:
+  - Keep reward bundles balanced for progression.
+
+### Entry Message Body
+```yaml
+server-mailboxes:
+  entries:
+    rules:
+      message:
+        - "<gray>Please read the rules.</gray>"
+        - "<gray>Be respectful and have fun.</gray>"
+```
+- Purpose: Delivers server-authored mailbox content lines.
+- Options:
+  - Use short paragraphs for clarity.
+
+## Operational Profiles
+
+### Lightweight Mailbox Profile
+```yaml
+notifications:
+  unread:
+    sound-state: false
+    hover:
+      enabled: false
+```
+- Result: Minimal notification overhead.
+
+### Interactive Mailbox Profile
+```yaml
+notifications:
+  unread:
+    message-state: true
+    sound-state: true
+    click:
+      enabled: true
+      action: "OPEN_MAILBOX"
+```
+- Result: Strong engagement with one-click inbox flow.
+
+:::note[Owner Validation]
+- Test player-to-player send flow, invalid target, and self-target protection.
+- Test unread click action opens mailbox correctly.
+- Test claim cooldown by rapid repeated clicks.
+- Test command rewards and item rewards separately.
+- Test reply-expired and reply-server restrictions.
+:::
+
+
+

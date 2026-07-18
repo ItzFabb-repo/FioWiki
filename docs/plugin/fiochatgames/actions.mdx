@@ -1,0 +1,582 @@
+---
+title: Menu Actions
+sidebar_position: 1
+toc_max_heading_level: 2
+---
+This page is source-backed from the current FioChatGames menu handler and documents the action tags used inside `menu/admin/`.
+
+The menus execute actions in order from top to bottom, so the order in each `actions:` list matters.
+
+---
+
+# Basic Action Tags
+:::info[Basic]
+You can use these across the menu.
+:::
+**Syntax:** `SOUND:ENTITY_VILLAGER_NO:1:1`
+:::info[Description]
+Play a custom sound when the item is clicked.
+:::
+> ```yaml
+> SOUND:ENTITY_VILLAGER_NO:1:1
+> SOUND:UI_BUTTON_CLICK:1:1
+> SOUND:BLOCK_CHEST_CLOSE:1:1
+> ```
+>
+> [Interface Sound](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html) SpigotAPI standard list.
+<br />
+**Syntax:** `REOPEN`
+:::info[Description]
+Reopen the current menu. Useful after prompts or state changes.
+:::
+> ```yaml
+> REOPEN
+> ```
+<br />
+**Syntax:** `OPEN:main`
+:::info[Description]
+Open another menu by its id (filename without `.yml`).
+:::
+> ```yaml
+> OPEN:main
+> OPEN_MENU:main
+> OPEN_MENU:blacklisted_gamemodes_selector
+> OPEN_MENU:blacklisted_gamemodes
+> OPEN_MENU:command_aliases_category
+> OPEN_MENU:command_aliases_user
+> ```
+<br />
+**Syntax:** `CLOSE`
+:::info[Description]
+Close the current menu.
+:::
+> ```yaml
+> CLOSE
+> ```
+<br />
+**Syntax:** `RELOAD`
+:::info[Description]
+Reload plugin configuration and menus.
+:::
+> ```yaml
+> RELOAD
+> ```
+<br />
+**Syntax:** `PLAYER_COMMAND:fiochatgames admin current`
+:::info[Description]
+Run a command as the player who clicked.
+:::
+> ```yaml
+> PLAYER_COMMAND:fiochatgames admin current
+> ```
+<br />
+**Syntax:** `INPUT_DOUBLE:config:general.some_value:0.0:1.0`
+:::info[Description]
+Open a decimal prompt and write the result into the given config path.
+:::
+> ```yaml
+> INPUT_DOUBLE:config:general.some_value:0.0:1.0
+> ```
+<br />
+
+# Advanced / Menu-Specific Action Tags
+:::info[Advanced]
+These actions are used by specific admin menus (lists, selectors, prompts, race editors, etc).
+:::
+**Syntax:** `ADD_EVENT_TYPE_PROMPT`
+:::info[Description]
+Menu action for: add event type prompt.
+:::
+> ```yaml
+> ADD_EVENT_TYPE_PROMPT
+> ```
+<br />
+**Syntax:** `ADD_FULL_DURATION_REWARD_SLOT`
+:::info[Description]
+Menu action for: add full duration reward slot.
+:::
+> ```yaml
+> ADD_FULL_DURATION_REWARD_SLOT
+> ```
+<br />
+**Syntax:** `ADD_RACE_REWARD_SLOT`
+:::info[Description]
+Menu action for: add race reward slot.
+:::
+> ```yaml
+> ADD_RACE_REWARD_SLOT
+> ```
+<br />
+**Syntax:** `BLACKLIST_ADD_CHAT_PROMPT`
+:::info[Description]
+Menu action for: blacklist add chat prompt.
+:::
+> ```yaml
+> BLACKLIST_ADD_CHAT_PROMPT
+> ```
+<br />
+**Syntax:** `BLACKLIST_REMOVE:%player%`
+:::info[Description]
+Menu action for: blacklist remove.
+:::
+> ```yaml
+> BLACKLIST_REMOVE:%player%
+> ```
+<br />
+**Syntax:** `BLACKLIST_REMOVE_CHAT_PROMPT`
+:::info[Description]
+Menu action for: blacklist remove chat prompt.
+:::
+> ```yaml
+> BLACKLIST_REMOVE_CHAT_PROMPT
+> ```
+<br />
+**Syntax:** `CYCLE_BOSSBAR_COLOR`
+:::info[Description]
+Menu action for: cycle bossbar color.
+:::
+> ```yaml
+> CYCLE_BOSSBAR_COLOR
+> ```
+<br />
+**Syntax:** `CYCLE_BOSSBAR_STYLE`
+:::info[Description]
+Menu action for: cycle bossbar style.
+:::
+> ```yaml
+> CYCLE_BOSSBAR_STYLE
+> ```
+<br />
+**Syntax:** `CYCLE_BRUSH_REQUIRED_BLOCK`
+:::info[Description]
+Menu action for: cycle brush required block.
+:::
+> ```yaml
+> CYCLE_BRUSH_REQUIRED_BLOCK
+> ```
+<br />
+**Syntax:** `CYCLE_CHAT_EVENT_WINNER_POLICY`
+:::info[Description]
+Menu action for: cycle chat event winner policy.
+:::
+> ```yaml
+> CYCLE_CHAT_EVENT_WINNER_POLICY
+> ```
+<br />
+**Syntax:** `CYCLE_FULL_DURATION_REWARD_GAME`
+:::info[Description]
+Menu action for: cycle full duration reward game.
+:::
+> ```yaml
+> CYCLE_FULL_DURATION_REWARD_GAME
+> ```
+<br />
+**Syntax:** `CYCLE_GAME_INT:FILLOUT:difficulty:1:6`
+:::info[Description]
+Cycle a game integer option within a min/max range.
+:::
+> ```yaml
+> CYCLE_GAME_INT:FILLOUT:difficulty:1:6
+> CYCLE_GAME_INT:MATH:difficulty:1:5
+> ```
+<br />
+**Syntax:** `CYCLE_GAME_TEXT:ACTIVITY:race.bossbar.color:BLUE|GREEN|PINK|PURPLE|RED|WHITE|YELLOW`
+:::info[Description]
+Cycle a game text option through a fixed list of values.
+:::
+> ```yaml
+> CYCLE_GAME_TEXT:ACTIVITY:race.bossbar.color:BLUE|GREEN|PINK|PURPLE|RED|WHITE|YELLOW
+> CYCLE_GAME_TEXT:ACTIVITY:race.bossbar.style:SOLID|SEGMENTED_6|SEGMENTED_10|SEGMENTED_12|SEGMENTED_20
+> CYCLE_GAME_TEXT:RANDOM:character_type:ALPHA|ALPHANUMERIC|NUMERIC|SYMBOLIC|RANDOMIZED
+> CYCLE_GAME_TEXT:REACTION:character_type:ALPHA|ALPHANUMERIC|NUMERIC|SYMBOLIC|RANDOMIZED
+> ```
+<br />
+**Syntax:** `CYCLE_START_MODE`
+:::info[Description]
+Menu action for: cycle start mode.
+:::
+> ```yaml
+> CYCLE_START_MODE
+> ```
+<br />
+**Syntax:** `DROP:OPEN_FULL_DURATION_REWARD_MENU:FAST_TYPE`
+:::info[Description]
+Menu action for: drop.
+:::
+> ```yaml
+> DROP:OPEN_FULL_DURATION_REWARD_MENU:FAST_TYPE
+> DROP:OPEN_FULL_DURATION_REWARD_MENU:FILLOUT
+> DROP:OPEN_FULL_DURATION_REWARD_MENU:MATH
+> DROP:OPEN_FULL_DURATION_REWARD_MENU:RANDOM
+> DROP:OPEN_FULL_DURATION_REWARD_MENU:REACTION
+> ```
+<br />
+**Syntax:** `INPUT_INT:game:FAST_TYPE:points:1:1000`
+:::info[Description]
+Open a number prompt and write the result into the given config path (with min/max).
+:::
+> ```yaml
+> INPUT_INT:game:FAST_TYPE:points:1:1000
+> INPUT_INT:game:FILLOUT:points:1:1000
+> INPUT_INT:game:MATH:points:1:1000
+> INPUT_INT:game:ACTIVITY:%race_amount_input_path%:1:100000000
+> INPUT_INT:game:ACTIVITY:time_seconds:3:86400
+> ```
+<br />
+**Syntax:** `INPUT_LIST:game:FAST_TYPE:phrases`
+:::info[Description]
+Open a list editor prompt for the given config list path.
+:::
+> ```yaml
+> INPUT_LIST:game:FAST_TYPE:phrases
+> INPUT_LIST:game:FILLOUT:words
+> INPUT_LIST:game:REWRITE:phrases
+> INPUT_LIST:game:UNREVERSE:words
+> INPUT_LIST:game:UNSCRAMBLE:words
+> ```
+<br />
+**Syntax:** `INPUT_TEXT:config:chat_highlight.winner_format`
+:::info[Description]
+Open a text prompt and write the result into the given config path.
+:::
+> ```yaml
+> INPUT_TEXT:config:chat_highlight.winner_format
+> INPUT_TEXT:config:general.bossbar_message
+> INPUT_TEXT:config:general.actionbar_message
+> INPUT_TEXT:game:FAST_TYPE:messages.started
+> INPUT_TEXT:game:FAST_TYPE:messages.correct
+> ```
+<br />
+**Syntax:** `LANGUAGE_PAGE_NEXT`
+:::info[Description]
+Go to the next language page.
+:::
+> ```yaml
+> LANGUAGE_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `LANGUAGE_PAGE_PREV`
+:::info[Description]
+Go to the previous language page.
+:::
+> ```yaml
+> LANGUAGE_PAGE_PREV
+> ```
+<br />
+**Syntax:** `LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.help`
+:::info[Description]
+Menu action for: left.
+:::
+> ```yaml
+> LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.help
+> LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.reload
+> LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.version
+> LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.author
+> LEFT:LIST_CURSOR_NEXT:config:command-aliases.admin.current
+> ```
+<br />
+**Syntax:** `LIST_PAGE_NEXT`
+:::info[Description]
+Go to the next page on list-based menus.
+:::
+> ```yaml
+> LIST_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `LIST_PAGE_PREV`
+:::info[Description]
+Go to the previous page on list-based menus.
+:::
+> ```yaml
+> LIST_PAGE_PREV
+> ```
+<br />
+**Syntax:** `OPEN_BRUSH_LOOT_SELECTOR`
+:::info[Description]
+Menu action for: open brush loot selector.
+:::
+> ```yaml
+> OPEN_BRUSH_LOOT_SELECTOR
+> ```
+<br />
+**Syntax:** `OPEN_FULL_DURATION_REWARD_MENU:FAST_TYPE`
+:::info[Description]
+Menu action for: open full duration reward menu.
+:::
+> ```yaml
+> OPEN_FULL_DURATION_REWARD_MENU:FAST_TYPE
+> OPEN_FULL_DURATION_REWARD_MENU:FILLOUT
+> OPEN_FULL_DURATION_REWARD_MENU:MATH
+> OPEN_FULL_DURATION_REWARD_MENU:RANDOM
+> OPEN_FULL_DURATION_REWARD_MENU:REACTION
+> ```
+<br />
+**Syntax:** `OPEN_STREAK_MENU:FAST_TYPE`
+:::info[Description]
+Menu action for: open streak menu.
+:::
+> ```yaml
+> OPEN_STREAK_MENU:FAST_TYPE
+> OPEN_STREAK_MENU:FILLOUT
+> OPEN_STREAK_MENU:MATH
+> OPEN_STREAK_MENU:RANDOM
+> OPEN_STREAK_MENU:REACTION
+> ```
+<br />
+**Syntax:** `Q:BLACKLIST_GAMEMODE_REMOVE:%gamemode_id%`
+:::info[Description]
+Menu action for: q.
+:::
+> ```yaml
+> Q:BLACKLIST_GAMEMODE_REMOVE:%gamemode_id%
+> Q:LIST_CURSOR_REMOVE:config:command-aliases.admin.help
+> Q:LIST_CURSOR_REMOVE:config:command-aliases.admin.reload
+> Q:LIST_CURSOR_REMOVE:config:command-aliases.admin.version
+> Q:LIST_CURSOR_REMOVE:config:command-aliases.admin.author
+> ```
+<br />
+**Syntax:** `RACE_CONSUME_POTION_PAGE_NEXT`
+:::info[Description]
+Go to the next potion selector page.
+:::
+> ```yaml
+> RACE_CONSUME_POTION_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `RACE_CONSUME_POTION_PAGE_PREV`
+:::info[Description]
+Go to the previous potion selector page.
+:::
+> ```yaml
+> RACE_CONSUME_POTION_PAGE_PREV
+> ```
+<br />
+**Syntax:** `RACE_CONSUME_POTION_SELECT:%consume_potion_id%`
+:::info[Description]
+Select the current potion id.
+:::
+> ```yaml
+> RACE_CONSUME_POTION_SELECT:%consume_potion_id%
+> ```
+<br />
+**Syntax:** `RACE_ENCHANT_PAGE_NEXT`
+:::info[Description]
+Go to the next enchant selector page.
+:::
+> ```yaml
+> RACE_ENCHANT_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `RACE_ENCHANT_PAGE_PREV`
+:::info[Description]
+Go to the previous enchant selector page.
+:::
+> ```yaml
+> RACE_ENCHANT_PAGE_PREV
+> ```
+<br />
+**Syntax:** `RACE_ENCHANT_SELECT:%enchant_id%`
+:::info[Description]
+Select the current enchant id.
+:::
+> ```yaml
+> RACE_ENCHANT_SELECT:%enchant_id%
+> ```
+<br />
+**Syntax:** `RACE_MATERIAL_PAGE_NEXT`
+:::info[Description]
+Go to the next material selector page.
+:::
+> ```yaml
+> RACE_MATERIAL_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `RACE_MATERIAL_PAGE_PREV`
+:::info[Description]
+Go to the previous material selector page.
+:::
+> ```yaml
+> RACE_MATERIAL_PAGE_PREV
+> ```
+<br />
+**Syntax:** `RACE_MATERIAL_SEARCH_PROMPT`
+:::info[Description]
+Open a prompt to search/filter race materials.
+:::
+> ```yaml
+> RACE_MATERIAL_SEARCH_PROMPT
+> ```
+<br />
+**Syntax:** `RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.help`
+:::info[Description]
+Menu action for: right.
+:::
+> ```yaml
+> RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.help
+> RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.reload
+> RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.version
+> RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.author
+> RIGHT:LIST_CURSOR_PREV:config:command-aliases.admin.current
+> ```
+<br />
+**Syntax:** `SET_LANG:%lang_code%`
+:::info[Description]
+Set the active language using the selected language code.
+:::
+> ```yaml
+> SET_LANG:%lang_code%
+> ```
+<br />
+**Syntax:** `SET_RACE_PLACEHOLDER_OPERATOR:>=`
+:::info[Description]
+Set the placeholder comparison operator for PlaceholderAPI races.
+:::
+> ```yaml
+> SET_RACE_PLACEHOLDER_OPERATOR:>=
+> SET_RACE_PLACEHOLDER_OPERATOR:<=
+> SET_RACE_PLACEHOLDER_OPERATOR:>
+> SET_RACE_PLACEHOLDER_OPERATOR:<
+> SET_RACE_PLACEHOLDER_OPERATOR:==
+> ```
+<br />
+**Syntax:** `SET_RACE_TYPE:%race_key%`
+:::info[Description]
+Set the race type to the selected race key.
+:::
+> ```yaml
+> SET_RACE_TYPE:%race_key%
+> ```
+<br />
+**Syntax:** `SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.help`
+:::info[Description]
+Menu action for: shift left.
+:::
+> ```yaml
+> SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.help
+> SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.reload
+> SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.version
+> SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.author
+> SHIFT_LEFT:LIST_CURSOR_EDIT:config:command-aliases.admin.current
+> ```
+<br />
+**Syntax:** `SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.help`
+:::info[Description]
+Menu action for: shift right.
+:::
+> ```yaml
+> SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.help
+> SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.reload
+> SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.version
+> SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.author
+> SHIFT_RIGHT:LIST_CURSOR_ADD:config:command-aliases.admin.current
+> ```
+<br />
+**Syntax:** `STREAK_REWARD_ADD_PROMPT`
+:::info[Description]
+Menu action for: streak reward add prompt.
+:::
+> ```yaml
+> STREAK_REWARD_ADD_PROMPT
+> ```
+<br />
+**Syntax:** `TOGGLE_BLACKLIST_GAMEMODE:%gamemode_id%`
+:::info[Description]
+Menu action for: toggle blacklist gamemode.
+:::
+> ```yaml
+> TOGGLE_BLACKLIST_GAMEMODE:%gamemode_id%
+> ```
+<br />
+**Syntax:** `TOGGLE_CONFIG:chat_highlight.enabled`
+:::info[Description]
+Toggle a config boolean at the given path.
+:::
+> ```yaml
+> TOGGLE_CONFIG:chat_highlight.enabled
+> TOGGLE_CONFIG:debug.mode
+> TOGGLE_CONFIG:general.use_bossbar
+> TOGGLE_CONFIG:general.use_actionbar_timer
+> TOGGLE_CONFIG:chat_event.full_duration.enabled
+> ```
+<br />
+**Syntax:** `TOGGLE_DISABLED_WORLD:%world_name%`
+:::info[Description]
+Menu action for: toggle disabled world.
+:::
+> ```yaml
+> TOGGLE_DISABLED_WORLD:%world_name%
+> ```
+<br />
+**Syntax:** `TOGGLE_FULL_DURATION_REWARD_REMOVE_MODE`
+:::info[Description]
+Menu action for: toggle full duration reward remove mode.
+:::
+> ```yaml
+> TOGGLE_FULL_DURATION_REWARD_REMOVE_MODE
+> ```
+<br />
+**Syntax:** `TOGGLE_GAME:FAST_TYPE`
+:::info[Description]
+Enable/disable a game type.
+:::
+> ```yaml
+> TOGGLE_GAME:FAST_TYPE
+> TOGGLE_GAME:FILLOUT
+> TOGGLE_GAME:MATH
+> TOGGLE_GAME:ACTIVITY
+> TOGGLE_GAME:RANDOM
+> ```
+<br />
+**Syntax:** `TOGGLE_GAME_VALUE:MATH:ignore-symbols`
+:::info[Description]
+Toggle a game boolean value at the given path.
+:::
+> ```yaml
+> TOGGLE_GAME_VALUE:MATH:ignore-symbols
+> TOGGLE_GAME_VALUE:ACTIVITY:race.unique-player-kills
+> TOGGLE_GAME_VALUE:ACTIVITY:race.obtain-items.remove-on-progress
+> TOGGLE_GAME_VALUE:ACTIVITY:streak.reset_on_loss
+> TOGGLE_GAME_VALUE:ACTIVITY:streak.announce
+> ```
+<br />
+**Syntax:** `TOGGLE_RACE_REWARD_REMOVE_MODE`
+:::info[Description]
+Menu action for: toggle race reward remove mode.
+:::
+> ```yaml
+> TOGGLE_RACE_REWARD_REMOVE_MODE
+> ```
+<br />
+**Syntax:** `TRIVIA_ADD_CHAT_PROMPT`
+:::info[Description]
+Menu action for: trivia add chat prompt.
+:::
+> ```yaml
+> TRIVIA_ADD_CHAT_PROMPT
+> ```
+<br />
+**Syntax:** `TRIVIA_STREAK_PAGE_PREV`
+:::info[Description]
+Menu action for: trivia streak page prev.
+:::
+> ```yaml
+> TRIVIA_STREAK_PAGE_PREV
+> ```
+<br />
+**Syntax:** `WORLD_PAGE_NEXT`
+:::info[Description]
+Go to the next world page.
+:::
+> ```yaml
+> WORLD_PAGE_NEXT
+> ```
+<br />
+**Syntax:** `WORLD_PAGE_PREV`
+:::info[Description]
+Go to the previous world page.
+:::
+> ```yaml
+> WORLD_PAGE_PREV
+> ```
+<br />
+

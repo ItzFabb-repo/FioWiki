@@ -1,0 +1,408 @@
+﻿---
+title: Options & Configuration
+sidebar_position: 3
+---
+
+# Options & Configuration
+
+FioBlackMarket splits its behavior between one main config and several supporting files. `config.yml` is where the runtime rules, economy selection, access filters, dynamic pricing, and market schedule are controlled.
+
+## Main sections in `config.yml`
+
+The current file is organized around:
+
+- `database`
+- `settings.language`
+- `settings.command-aliases`
+- `settings.access`
+- `settings.currency`
+- `settings.rank-pricing`
+- `settings.dynamic-pricing`
+- `blackmarket-schedule`
+
+## Database
+
+The source documents two runtime storage modes:
+
+- `YAML`
+- `MYSQL`
+
+YAML stores runtime state in `blackmarket-data.yml`. MySQL stores the same runtime snapshot in database tables with the configured prefix.
+
+```yaml
+database:
+  type: YAML # YAML or MYSQL
+
+  mysql:
+    host: "127.0.0.1"
+    port: 3306
+    database: "fioblackmarket"
+    username: "root"
+    password: ""
+    table-prefix: "fioblackmarket_"
+    parameters: "useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8"
+```
+
+Explanation:
+
+- `type` chooses where runtime market data is stored.
+- `YAML` is the simplest setup and writes stock, limits, and history into `blackmarket-data.yml`.
+- `MYSQL` is useful if you want database-backed runtime storage.
+- `table-prefix` helps separate FioBlackMarket tables from other plugins in the same database.
+
+## Language
+
+`settings.language` loads a file such as:
+
+```text
+lang/lang_en.yml
+```
+
+That language file controls command messages, menu text, hologram labels, graph labels, and transaction responses.
+
+```yaml
+settings:
+  language: en
+```
+
+Explanation:
+
+- `en` loads `lang/lang_en.yml`.
+- This affects the wording shown in commands, GUIs, holograms, and graph displays.
+
+## Command aliases
+
+`settings.command-aliases` controls the root command aliases that should be registered after reload or restart.
+
+The default config includes:
+
+- `blackmarket`
+- `fioblackmarket`
+
+`plugin.yml` also declares `bm` as a static alias.
+
+```yaml
+settings:
+  command-aliases:
+    - blackmarket
+    - fioblackmarket
+```
+
+Explanation:
+
+- This block controls the custom aliases for the market command.
+- `bm` still exists from `plugin.yml`, so this config is not the only alias source in the plugin.
+- After changing aliases, reload the plugin so the command map is refreshed.
+
+## Access control
+
+The access block controls where the market may be opened.
+
+```yaml
+settings:
+  access:
+    enabled: true
+    bypass-permission: fioblackmarket.access.bypass
+    worlds:
+      whitelist: []
+      blacklist: []
+    regions:
+      whitelist: []
+      blacklist: []
+```
+
+Key behavior from the source:
+
+- empty world whitelist means worlds are allowed unless blacklisted
+- region checks are case-insensitive
+- region checks require WorldGuard
+- the bypass permission skips access filtering
+
+Explanation:
+
+- `enabled: true` turns world and region filtering on.
+- `bypass-permission` lets trusted players ignore blocked access locations.
+- `worlds.whitelist` is restrictive mode if you fill it.
+- `worlds.blacklist` blocks specific worlds without closing the market everywhere else.
+- `regions.whitelist` and `regions.blacklist` are checked through WorldGuard region names.
+- The same access logic is also used when players interact through Black Market NPCs.
+
+## Currency providers
+
+The current config explicitly documents these provider styles:
+
+- `VAULT`
+- `PLAYERPOINTS`
+- `EXCELLENTECONOMY:MONEY`
+- `EXCELLENTECONOMY:GEMS`
+- `PLAYER_EXP_LEVELS`
+- `PLAYER_EXP_POINTS`
+
+It also supports:
+
+- display formatting
+- trimming behavior
+- per-provider prefixes and suffixes
+- compact number labels such as thousands, millions, billions, and trillions
+
+```yaml
+settings:
+  currency:
+    provider: VAULT
+    format: ","
+    trim: false
+    onlist-price-prefix:
+      enabled: true
+      prefix: "$"
+    currencyPrefix:
+      "1":
+        type: "VAULT"
+        prefix: "$"
+        suffix: ""
+      "2":
+        type: "PLAYERPOINTS"
+        prefix: "P"
+        suffix: ""
+      "3":
+        type: "EXCELLENTECONOMY:MONEY"
+        prefix: ""
+        suffix: "Coin"
+    valueFormats:
+      thousands: "k"
+      millions: "m"
+      billions: "b"
+      trillions: "t"
+```
+
+Explanation:
+
+- `provider` selects the main currency source used by the market.
+- `format` controls digit grouping for displayed numbers.
+- `trim` controls whether extra decimals should be trimmed from output.
+- `onlist-price-prefix` affects how prices appear directly inside market lore or listings.
+- `currencyPrefix` lets different provider types show different prefix and suffix styles.
+- `valueFormats` defines the compact labels used when large values are shortened.
+
+## Rank pricing
+
+The `rank-pricing` block lets the plugin modify prices based on:
+
+- permission nodes
+- Vault primary group names
+
+For each rule, the config can define:
+
+- `discount_buy_percent`
+- `sell_boost_percent`
+
+This means the current build supports both permission-based and group-based market bonuses.
+
+```yaml
+settings:
+  rank-pricing:
+    enabled: true
+    perms:
+      1:
+        permission: "fioblackmarket.vip"
+        discount_buy_percent: "10%"
+        sell_boost_percent: "5%"
+    ranks:
+      1:
+        group: "vip"
+        discount_buy_percent: "10%"
+        sell_boost_percent: "5%"
+```
+
+Explanation:
+
+- `enabled` turns the rank pricing system on or off.
+- `perms` checks direct permission nodes on the player.
+- `ranks` checks the player's primary Vault group name.
+- `discount_buy_percent` reduces the price players pay when buying.
+- `sell_boost_percent` increases the value players receive when selling.
+
+## Dynamic pricing
+
+The `dynamic-pricing` block is one of the most important systems in this plugin.
+
+Broadly, the source describes it like this:
+
+- stock below default stock can raise buy and sell pressure
+- stock above default stock can reduce player sell value
+- global min and max multipliers clamp the final result
+
+The config is split into:
+
+- global buy and sell multiplier limits
+- `stock-pressure`
+- legacy `demand`
+- `supply`
+
+The source comments explicitly say that the current model is stock-based, while the older demand transaction settings are retained mainly for compatibility.
+
+```yaml
+settings:
+  dynamic-pricing:
+    enabled: true
+
+    min-buy-multiplier: 0.25
+    max-buy-multiplier: 3.0
+    min-sell-multiplier: 0.25
+    max-sell-multiplier: 2.0
+
+    stock-pressure:
+      enabled: true
+      max-buy-increase-percent: 75.0
+      max-sell-increase-percent: 50.0
+
+    demand:
+      enabled: true
+      lookback-hours: 24
+      buy-amount-for-max-effect: 64
+      max-buy-increase-percent: 50.0
+      max-sell-decrease-percent: 35.0
+
+    supply:
+      enabled: true
+      stock-above-default-for-max-effect: 16
+      max-sell-decrease-percent: 50.0
+```
+
+Explanation:
+
+- `enabled` activates dynamic pricing.
+- `min-*` and `max-*` multiplier values are safety clamps so prices do not become extreme.
+- `stock-pressure` reacts when stock becomes scarce.
+- low stock can raise buy price and can also improve the player's sell value.
+- `supply` reacts when stock is far above the configured default stock.
+- surplus stock mainly reduces player sell value.
+- `demand` is still present in config for compatibility, but the source comments describe the current model as stock-based.
+
+## Market schedule
+
+The market schedule block controls when the Black Market is available and how often its items reroll.
+
+Important fields:
+
+- `enabled`
+- `mode`
+- `timezone`
+- `display-date-format`
+- `today-date-format`
+- `next-day-date-format`
+- `listed_items`
+- `active-duration`
+- `interval`
+- `dates`
+- `reroll-items-on-refresh`
+- `ensure-at-least-one-item`
+- `reset-stock-on-refresh`
+
+```yaml
+blackmarket-schedule:
+  enabled: true
+  mode: INTERVAL
+  timezone: "SYSTEM"
+  display-date-format: "dd MMM yyyy HH:mm z"
+  today-date-format: "dd MMM yyyy, EEEE"
+  next-day-date-format: "dd MMM yyyy, EEEE"
+  listed_items: 6
+
+  active-duration:
+    value: 1
+    unit: DAYS
+
+  interval:
+    start: "2026-01-01 00:00"
+    every:
+      value: 3
+      unit: DAYS
+
+  dates:
+    - "MONDAY:23:00"
+    - "TUESDAY:23:00"
+
+  reroll-items-on-refresh: true
+  ensure-at-least-one-item: true
+  reset-stock-on-refresh: true
+```
+
+Explanation:
+
+- `enabled: true` makes the market follow a timed schedule.
+- `enabled: false` keeps the market permanently available.
+- `mode` decides whether the market follows interval timing or weekly dates.
+- `timezone` controls how those time values are interpreted.
+- `listed_items` is the number of items that should appear in one market cycle.
+- `active-duration` controls how long one Black Market opening remains active.
+- `interval.start` and `interval.every` define repeating openings in `INTERVAL` mode.
+- `dates` is used in `WEEKLY` mode for recurring day-based openings.
+- `reroll-items-on-refresh` rerolls the market contents when a refresh happens.
+- `ensure-at-least-one-item` prevents the market from ending up empty after probability rolls.
+- `reset-stock-on-refresh` restores runtime stock when a new market cycle starts.
+
+### Current schedule modes
+
+The config comments describe:
+
+- `INTERVAL`
+- `WEEKLY`
+
+The file also notes that `DATES` is retained as a legacy alias.
+
+### Active duration
+
+`active-duration` controls how long one market event stays open.
+
+Supported units:
+
+- `HOURS`
+- `DAYS`
+- `WEEKS`
+
+### Interval block
+
+The interval block defines a starting timestamp and a repeating cadence:
+
+```yaml
+interval:
+  start: "2026-01-01 00:00"
+  every:
+    value: 3
+    unit: DAYS
+```
+
+### Weekly dates
+
+When weekly mode is used, the `dates` list controls recurring openings such as:
+
+```text
+MONDAY:23:00
+TUESDAY:23:00
+```
+
+That means the market can be scheduled either as a repeating timer or as fixed weekly openings, depending on how you want the event flow to feel on your server.
+
+## Supporting config files
+
+The main config works together with:
+
+- `blackmarkets.yml`
+- `hologram.yml`
+- `menu/menu.yml`
+- `menu/history.yml`
+- `menu/bulk.yml`
+- `menu/view_graphic.yml`
+- `lang/lang_<key>.yml`
+- `material.json`
+
+## Recommended reading order
+
+If you are documenting or configuring a fresh server, the most useful order is:
+
+1. access rules
+2. currency provider
+3. rank pricing
+4. dynamic pricing
+5. schedule
+6. item list in `blackmarkets.yml`

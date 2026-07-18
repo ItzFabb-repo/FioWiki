@@ -1,0 +1,181 @@
+---
+title: Config
+---
+
+# Custom Death Msg Config
+
+Source file:
+
+```text
+modules/announce/Custom Death Msg/config.yml
+```
+
+The Custom Death Msg module controls where custom death messages are active and how FioChat behaves around vanilla and third-party death output.
+
+The module is controlled by `modules.death-message` in `modules/settings.yml`. The current default is `true`.
+
+The actual death-line templates are stored separately in:
+
+```text
+modules/announce/Custom Death Msg/custom-death-messages.yml
+modules/announce/Custom Death Msg/mobs_en.json
+modules/announce/Custom Death Msg/items_en.json
+```
+
+## `modules.death-message`
+
+```yaml
+modules:
+  death-message: true
+```
+
+This is the master toggle for the module. The current default is `true`.
+
+When disabled, FioChat does not rewrite custom death chat announcements.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`settings.debug-log` controls module debug logging. The current value is `false`.
+
+## `settings.only-if-vanilla-visible`
+
+```yaml
+settings:
+  only-if-vanilla-visible: true
+```
+
+This controls whether FioChat only reacts when the source death was already visible to vanilla.
+
+The current default is `true`.
+
+## `settings.suppress-when-formatted-empty`
+
+```yaml
+settings:
+  suppress-when-formatted-empty: false
+```
+
+This controls whether the broadcast is cancelled when the final formatted line is empty.
+
+The current default is `false`.
+
+## `settings.default-notifications-enabled`
+
+```yaml
+settings:
+  default-notifications-enabled: true
+```
+
+This controls the default per-player toggle state for death notifications.
+
+The current default is `true`.
+
+## `settings.world-whitelist` and `settings.world-blacklist`
+
+```yaml
+settings:
+  world-whitelist: []
+  world-blacklist: []
+```
+
+These filters control which worlds can run custom death messages.
+
+## `settings.region-whitelist` and `settings.region-blacklist`
+
+```yaml
+settings:
+  region-whitelist: []
+  region-blacklist: []
+```
+
+These filters control which WorldGuard regions can run custom death messages.
+
+## `compatibility.respect-main-config`
+
+```yaml
+compatibility:
+  respect-main-config: true
+```
+
+This is the main compatibility toggle for the module's defer behavior.
+
+## `compatibility.defer-to-mythicmobs`
+
+```yaml
+compatibility:
+  defer-to-mythicmobs: true
+```
+
+This tells FioChat to defer to MythicMobs-related handling when that plugin is producing the death output.
+
+## `compatibility.defer-to-third-party-player-death`
+
+```yaml
+compatibility:
+  defer-to-third-party-player-death: false
+```
+
+This controls whether FioChat skips its own player death formatting when the source death message contains a configured signature token.
+
+## `compatibility.third-party-message-signatures`
+
+```yaml
+compatibility:
+  third-party-message-signatures:
+    - "MythicMobs"
+```
+
+These are the signature tokens used when matching third-party death messages.
+
+## Useful placeholders
+
+Common placeholders used by this module include:
+
+```text
+%player_name%
+%killer_name%
+%killer_entity_name%
+%killer_entity_type%
+%killer_mob_name%
+%killer_weapon_name%
+%killer_item_name%
+%falling_block_name%
+%falling_block_key%
+%falling_block_material%
+%killer_mythicmob_type%
+%killer_mythicmob_internal_name%
+%killer_mythicmob_name%
+%killer_mythicmob_display_name%
+%mythicmob_type%
+%mythicmob_name%
+%death_message_key%
+%death_cause_pretty%
+%message%
+%third_party_rule%
+```
+
+## Legacy Path Note
+
+The active config path for this build is:
+
+```text
+modules/announce/Custom Death Msg/config.yml
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/death-messages/config.yml
+modules/death-message/config.yml
+```
+
+This page follows the current announce-module path and the current custom death-message layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

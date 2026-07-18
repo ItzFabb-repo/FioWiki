@@ -1,0 +1,276 @@
+---
+title: Particles
+---
+
+# Custom Join Quit Msg Particles
+
+`particles.yml` controls the particle options available for join and quit events. It also contains the parameter selector lists used by particles that need block data, item data, color data, dust size, or spell power.
+
+Source file:
+
+```text
+modules/announce/Custom Join Quit Msg/particles.yml
+```
+
+## Join particle selector
+
+```yaml
+selectors:
+  particles:
+    join:
+      enabled:
+        - FIREWORK
+        - FLAME
+        - HEART
+        - DUST
+      disabled: []
+```
+
+`selectors.particles.join.enabled` is the allow-list for join particles. Values are Bukkit particle ids and are normalized to uppercase by the service.
+
+The current source includes particles such as `POOF`, `EXPLOSION`, `FIREWORK`, `BUBBLE`, `CRIT`, `SMOKE`, `WITCH`, `PORTAL`, `REVERSE_PORTAL`, `FLAME`, `SOUL_FIRE_FLAME`, `SOUL`, `FLASH`, `HAPPY_VILLAGER`, `ANGRY_VILLAGER`, `HEART`, `NOTE`, `DUST`, `DUST_COLOR_TRANSITION`, `FALLING_DUST`, `DUST_PILLAR`, `BLOCK_MARKER`, and `BLOCK_CRUMBLE`.
+
+## `selectors.particles.join.disabled`
+
+```yaml
+selectors:
+  particles:
+    join:
+      disabled:
+        - EXPLOSION_EMITTER
+        - BLOCK_CRUMBLE
+```
+
+`selectors.particles.join.disabled` removes particle ids from the join selector after the enabled list is loaded.
+
+If a particle appears in both `enabled` and `disabled`, the disabled rule wins.
+
+## Quit particle selector
+
+```yaml
+selectors:
+  particles:
+    quit:
+      enabled:
+        - SMOKE
+        - SOUL
+        - PORTAL
+      disabled: []
+```
+
+`selectors.particles.quit.enabled` is the allow-list for quit particles. It is independent from the join list. The current source gives join and quit the same particle pool.
+
+## `selectors.particles.quit.disabled`
+
+```yaml
+selectors:
+  particles:
+    quit:
+      disabled:
+        - FIREWORK
+        - HEART
+```
+
+`selectors.particles.quit.disabled` removes particles from the quit selector only.
+
+## Feature switch interaction
+
+The particle selector depends on the main config:
+
+```yaml
+what-feature-enabled:
+  join:
+    particles: true
+  quit:
+    particles: true
+```
+
+When `what-feature-enabled.join.particles` is `false`, the normal join profile does not spawn the selected join particle.
+
+When `what-feature-enabled.quit.particles` is `false`, the normal quit profile does not spawn the selected quit particle.
+
+Particle style is controlled separately by `what-feature-enabled.join.styles` and `what-feature-enabled.quit.styles`.
+
+## Particle permissions
+
+Each particle id can be permission-gated:
+
+```text
+fiochat.joinquit.join.particle.<particle-id>
+fiochat.joinquit.quit.particle.<particle-id>
+```
+
+For example:
+
+```text
+fiochat.joinquit.join.particle.flame
+fiochat.joinquit.quit.particle.soul
+```
+
+The selected particle is stored per player as:
+
+```text
+join-particle
+quit-particle
+```
+
+## Parameter selector overview
+
+Some Bukkit particles need extra data. `selectors.particle-params` defines the options used by those parameter selectors.
+
+Block data is used by particles such as `BLOCK`, `BLOCK_CRUMBLE`, `BLOCK_MARKER`, `FALLING_DUST`, and `DUST_PILLAR`.
+
+Item data is used by item-style particles.
+
+Color data is used by `ENTITY_EFFECT`.
+
+Dust size is used by `DUST`.
+
+Dust color transition data is used by `DUST_COLOR_TRANSITION`.
+
+Spell power is used by effect-style particles such as `EFFECT` and `INSTANT_EFFECT`.
+
+The base particle and its movement style are separate choices. `particles.yml` controls the base particle and parameter choices; `styles.yml` controls the visual movement pattern.
+
+## Block parameter selector
+
+```yaml
+selectors:
+  particle-params:
+    block:
+      enabled:
+        - WHITE_WOOL
+        - BLUE_STAINED_GLASS
+        - RED_CONCRETE
+      disabled: []
+```
+
+`selectors.particle-params.block.enabled` lists Bukkit materials that can be used as block data.
+
+The current source provides wool, stained glass, and concrete materials across the standard color set: white, orange, magenta, light blue, yellow, lime, pink, gray, light gray, cyan, purple, blue, brown, green, red, and black.
+
+`selectors.particle-params.block.disabled` removes block materials from the parameter selector. The source comments also allow using `*` as a broad selector when supported by the module's parser.
+
+## Item parameter selector
+
+```yaml
+selectors:
+  particle-params:
+    item:
+      enabled:
+        - BAMBOO
+        - STICK
+        - FISHING_ROD
+        - BONE
+        - BLAZE_ROD
+        - MAGMA_CREAM
+        - PAPER
+        - BOOK
+        - ENCHANTED_BOOK
+        - EGG
+      disabled: []
+```
+
+`selectors.particle-params.item.enabled` lists Bukkit materials that can be used as item data.
+
+`selectors.particle-params.item.disabled` removes item materials from that selector.
+
+## Color parameter selector
+
+```yaml
+selectors:
+  particle-params:
+    colors:
+      enabled:
+        "1":
+          color: "#ff0000"
+          material: LEATHER_CHESTPLATE
+          flags:
+            - HIDE_ATTRIBUTES
+            - HIDE_DYE
+      disabled: []
+```
+
+`selectors.particle-params.colors.enabled.<id>.color` is the hex color value used by the particle parameter.
+
+`selectors.particle-params.colors.enabled.<id>.material` is the selector icon material.
+
+`selectors.particle-params.colors.enabled.<id>.flags` controls item flags on the selector icon.
+
+The current source defines seven color slots:
+
+```text
+1 = #ff0000
+2 = #00ff00
+3 = #0000ff
+4 = #ffff00
+5 = #ff00ff
+6 = #00ffff
+7 = #ffffff
+```
+
+`selectors.particle-params.colors.disabled` removes color slot ids from the selector.
+
+## Dust size selector
+
+```yaml
+selectors:
+  particle-params:
+    dust-sizes:
+      enabled:
+        "1":
+          size: "0.25"
+          material: GOLD_NUGGET
+      disabled: []
+```
+
+`selectors.particle-params.dust-sizes.enabled.<id>.size` is the dust particle size value.
+
+`selectors.particle-params.dust-sizes.enabled.<id>.material` is the selector icon.
+
+The current source defines eight dust size slots:
+
+```text
+1 = 0.25
+2 = 0.5
+3 = 1.0
+4 = 1.5
+5 = 2.0
+6 = 0.5
+7 = 1.0
+8 = 1.5
+```
+
+The duplicate numeric sizes can still be useful because they use different selector materials.
+
+## Spell power selector
+
+```yaml
+selectors:
+  particle-params:
+    spell:
+      enabled:
+        "1":
+          power: "0.5"
+          material: GUNPOWDER
+      disabled: []
+```
+
+`selectors.particle-params.spell.enabled.<id>.power` is the power value used by the effect-style particle parameter.
+
+`selectors.particle-params.spell.enabled.<id>.material` is the selector icon.
+
+The current source defines four spell power slots:
+
+```text
+1 = 0.5
+2 = 1.0
+3 = 1.5
+4 = 2.0
+```
+
+`selectors.particle-params.spell.disabled` removes spell power slot ids from the selector.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

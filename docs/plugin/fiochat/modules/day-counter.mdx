@@ -1,0 +1,147 @@
+﻿---
+title: Day Counter
+sidebar_position: 12
+---
+
+# Day Counter
+
+This module shows the current Minecraft day as a short animated notification.
+
+## Configuration Files
+
+- `modules/announce/Days Counter/config.yml`
+- `lang/lang_en.yml -> overrides.modules.day-counter.messages`
+- `lang/lang_id.yml -> overrides.modules.day-counter.messages`
+- `lang/lang_ch.yml -> overrides.modules.day-counter.messages`
+- `lang/lang_jp.yml -> overrides.modules.day-counter.messages`
+
+## Notes from source comments
+
+- The source comment says the animation defaults to prioritizing actionbar output.
+- Title and subtitle are available, but the default source leaves them disabled.
+- MiniMessage formatting with `shadow` is supported in actionbar, title, and subtitle formats.
+- The animation frames use `%day%` and `%world%` placeholders.
+
+## `settings.debug-log`
+
+Writes debug logs while the module runs.
+
+## `settings.detect-current-day-on-join`
+
+When `true`, the module shows the world day when a player joins.
+
+## `settings.join-check-delay-ticks`
+
+Delay after join before the day check runs.
+
+## `settings.detect-on-world-change`
+
+When `true`, changing worlds triggers a new world-day display.
+
+## `settings.skip-after-antibot-verification`
+
+When `true`, after anti-bot verification finishes, the player's world day is only recorded silently instead of being shown.
+
+## `settings.world-change-delay-ticks`
+
+Delay after a world change before the day animation is shown.
+
+## `settings.world-whitelist`
+
+If this list is not empty, Day Counter only runs in the worlds listed here.
+
+## `settings.world-blacklist`
+
+Worlds in this list are blocked from Day Counter.
+
+Default source entries:
+
+- `world_nether`
+- `world_the_end`
+
+## `settings.region-whitelist`
+
+If this list is not empty, Day Counter only runs in the WorldGuard regions listed here.
+
+## `settings.region-blacklist`
+
+WorldGuard regions in this list are blocked from Day Counter.
+
+## `settings.watch-online-day-change`
+
+When `true`, online players are checked periodically for day changes.
+
+## `settings.poll-interval-ticks`
+
+Polling interval used while checking for day changes on online players.
+
+## `settings.clear-title-after-animation`
+
+Clears the title and subtitle after the animation finishes.
+
+## `display.actionbar`
+
+This section controls actionbar output.
+
+- `enabled` turns actionbar on or off.
+- `format` is the actionbar text format.
+- `hold-refresh-ticks` re-sends the final frame during the hold period so it stays visible longer.
+
+## `display.title`
+
+This section controls title output.
+
+- `enabled` turns title on or off.
+- `format` is the title text format.
+- `fade-in` is the fade-in duration.
+- `fade-out` is the fade-out duration.
+
+## `display.subtitle`
+
+This section controls subtitle output.
+
+- `enabled` turns subtitle on or off.
+- `format` is the subtitle text format.
+
+## `animation.step-delay-ticks`
+
+Delay between animation frames. The source comment uses `4 ticks = 0.2s` as an example for smoother playback.
+
+## `animation.fade-away-ticks`
+
+How long the last frame stays visible before it is cleared.
+
+## `animation.frames`
+
+The list of animation frames shown in order.
+
+Default source frames include:
+
+- `--`
+- `- D -`
+- `- Da -`
+- `- Day -`
+- `- Day %day% -`
+- `-- Day %day% --`
+
+## `sounds.typing`
+
+Sound used while the animation is still running.
+
+- `enabled` turns the sound on or off.
+- `name` is the sound name.
+- `volume` is the sound volume.
+- `pitch` is the sound pitch.
+
+## `sounds.completed`
+
+Sound used when the animation finishes.
+
+- `enabled` turns the sound on or off.
+- `name` is the sound name.
+- `volume` is the sound volume.
+- `pitch` is the sound pitch.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

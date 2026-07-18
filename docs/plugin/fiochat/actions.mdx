@@ -1,0 +1,246 @@
+﻿---
+title: Actions
+sidebar_position: 3
+---
+
+# Actions
+
+FioChat uses two related action layers in the current source:
+
+- `ModuleActionUtil` for runtime module actions
+- `GuiActionUtil` for menu click actions
+
+That split is important. The module layer is used when config-driven gameplay or announcement systems need to execute something. The GUI layer is used when inventory menus need to react to clicks and normalize their action text first.
+
+## Module action system
+
+`ModuleActionUtil.parseAction(...)` reads text actions and turns them into executable actions.
+
+### Supported module action tags
+
+The current parser supports these bracketed tags:
+
+- `[CONSOLE]`
+- `[PLAYER]`
+- `[BROADCAST]`
+- `[MESSAGE]`
+- `[ACTIONBAR]`
+- `[TITLE]`
+- `[BOSSBAR]`
+- `[SOUND]`
+- `[RESTART]`
+
+### Example module actions
+
+```text
+[CONSOLE] give %player_name% diamond 1
+[PLAYER] help
+[BROADCAST] <gold>Server restart soon</gold>
+[MESSAGE] <gray>Hello</gray>
+[ACTIONBAR] <yellow>Watch chat</yellow>
+[TITLE] <gold>Warning||<gray>Restart soon||10||40||10
+[BOSSBAR] <red>Restarting||RED||SOLID||1.0||5
+[SOUND] UI_BUTTON_CLICK 1 1 master
+[RESTART]
+```
+
+## Legacy text prefixes
+
+The current parser also accepts these legacy prefixes:
+
+```text
+CONSOLE_COMMAND:
+PLAYER_COMMAND:
+BROADCAST:
+MESSAGE:
+ACTIONBAR:
+TITLE:
+BOSSBAR:
+SOUND:
+```
+
+If no recognized action prefix is found, the parser falls back to treating the line as a console command.
+
+## What each module action actually does
+
+| Action | Behavior in source |
+| --- | --- |
+| `[CONSOLE]` | Runs a command from the console sender. |
+| `[PLAYER]` | Runs a command as the target player. |
+| `[BROADCAST]` | Sends a rendered message to online players and also to console when it is not blank. |
+| `[MESSAGE]` | Sends a direct chat message to target players. |
+| `[ACTIONBAR]` | Sends an actionbar to target players. |
+| `[TITLE]` | Sends a title and subtitle with timings. |
+| `[BOSSBAR]` | Creates a temporary bossbar, assigns players, then removes it later. |
+| `[SOUND]` | Plays a sound with optional volume, pitch, and category. |
+| `[RESTART]` | Calls the restart flow used by the auto-restart system. |
+
+## Payload formats
+
+### `[TITLE]`
+
+The title parser supports payloads like:
+
+```text
+[TITLE] Title line||Subtitle line||10||40||10
+```
+
+Meaning:
+
+- title
+- subtitle
+- fade in ticks
+- stay ticks
+- fade out ticks
+
+The source also supports newline-based splitting when that format is used by a config path.
+
+### `[BOSSBAR]`
+
+The bossbar parser expects:
+
+```text
+[BOSSBAR] Text||COLOR||STYLE||progress||seconds
+```
+
+Broadly, this controls:
+
+- displayed text
+- bossbar color
+- bossbar style
+- progress value
+- lifetime in seconds
+
+### `[SOUND]`
+
+The sound parser supports the normalized form:
+
+```text
+[SOUND] UI_BUTTON_CLICK 1 1 master
+```
+
+which becomes an internal `SOUND:name:volume:pitch:category` style string after GUI normalization when used in menus.
+
+## Where module actions are used
+
+The current source uses this module action system across many feature families, including:
+
+- advancements
+- auto restart
+- giveaway
+- login streak rewards
+- custom fonts
+- chat colors
+- mailbox rewards and command flows
+
+That is why the action system matters outside one single module.
+
+## GUI action system
+
+`GuiActionUtil` is the current menu-click normalization layer.
+
+### Supported click keys
+
+The current source reads these click keys:
+
+- `any`
+- `left`
+- `right`
+- `shift_left`
+- `shift_right`
+- `q`
+
+### Example GUI action block
+
+```yaml
+actions:
+  any:
+    - "[CLOSE]"
+  left:
+    - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+    - "[PLAYER] help"
+  right:
+    - "[CONSOLE] say right click used"
+```
+
+Explanation:
+
+- `any` runs for every click type
+- `left` only runs on left click
+- `right` only runs on right click
+- `shift_left` and `shift_right` are separate click paths
+- `q` matches drop or control-drop clicks
+
+## GUI normalization behavior
+
+The current `GuiActionUtil.normalizeAction(...)` logic does two important things:
+
+1. it keeps bracketed action syntax readable in YAML
+2. it converts those values into a normalized internal format used by menu handlers
+
+Example:
+
+```yaml
+- "[SOUND] UI_BUTTON_CLICK 1 1 master"
+- "[CLOSE]"
+- "[BACK]"
+- "[PLAYER] help"
+- "[CONSOLE] eco give %player_name% 1000"
+```
+
+The current GUI utility especially normalizes `[SOUND]` into colon-style internal data.
+
+## Common GUI control actions
+
+Common menu control actions seen across the current source include:
+
+- `[CLOSE]`
+- `[BACK]`
+- `[REFRESH]`
+- `[REOPEN]`
+
+Menu services can also define feature-specific actions beyond the shared utility layer.
+
+Examples from current FioChat menu systems include patterns such as:
+
+```text
+JOIN_CHANNEL
+SELECT_COLOR
+CUSTOM_FONT:<id>
+CHAT_COLOR:<id>
+OPEN_MENU:emoji-list:all
+```
+
+These are not global FioChat actions by themselves. They are interpreted by the menu service that owns the screen.
+
+## Practical examples
+
+### Announcement-style module actions
+
+```yaml
+actions:
+  - "[BROADCAST] <green>Welcome to the server!</green>"
+  - "[SOUND] ENTITY_EXPERIENCE_ORB_PICKUP 1 1 master"
+```
+
+### Auto-restart action flow
+
+```yaml
+before:
+  - "[BROADCAST] Server restart in 10 seconds."
+  - "[SOUND] BLOCK_NOTE_BLOCK_BELL 1 1 master"
+  - "[RESTART]"
+```
+
+### GUI click actions
+
+```yaml
+actions:
+  left:
+    - "[BACK]"
+    - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+```
+
+:::info[Reading tip]
+If you are documenting a module config, first decide whether it is using runtime actions or GUI click actions. That distinction matches the current source and prevents action syntax from being mixed incorrectly.
+:::

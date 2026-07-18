@@ -1,0 +1,93 @@
+---
+title: Explanation
+sidebar_position: 3
+---
+
+# Sawit Plugin Explanation
+
+This page explains how the plugins in the current Sawit package are typically used in practice.
+
+:::info[Accuracy Note]
+The notes below are based on the plugins currently installed in the Sawit package, their names, versions, and their detected config folders. They describe the normal way each plugin is used in practice. Exact commands, menus, NPC actions, prices, rewards, and permissions can still be customized by the server owner.
+:::
+
+### Economy, Trading, And Progression
+
+| Plugin | Main use | How it is usually used |
+|---|---|---|
+| `ExcellentEconomy` | Main economy backend | Players usually do not interact with the backend directly. It powers balances, shop prices, auction values, and money rewards used by other plugins. |
+| `AdvancedRegionMarket` | Rent or sell regions | Staff define rentable or sellable regions first, then players interact with those regions through signs, GUIs, or purchase prompts. |
+| `AxTrade` | Player-to-player trading | Two players open a protected trade session, place items or money into the trade window, then both sides confirm before the exchange completes. |
+| `PlayerAuctions` | Auction house | Players list items for sale in a global auction menu, then other players browse listings and buy them with the configured economy. |
+| `QuickShop-Hikari` | Chest shop system | Players create a shop chest, attach the required shop setup, then other players buy from or sell to that chest through the shop interaction. |
+| `NotBounties` | Bounty gameplay | Staff or players set rewards on target players, and the bounty is usually paid out when the tracked objective or PvP kill requirement is met. |
+| `VanguardRanks` | Rank progression | Players progress through server ranks by meeting the configured requirements, usually money, levels, tasks, or admin promotion rules. |
+| `CyberLevels` | General level progression | Players gain level progress from the activities configured by the server, then use that level system for unlocks, displays, or progression tracking. |
+| `AuraSkills` | Skills and stats | Players level up skills by doing relevant actions such as mining, farming, combat, or other tracked activities, then benefit from the stat bonuses those skills provide. |
+| `CommunityQuests` | Shared quests | Players contribute to the same server-wide objectives together, and rewards are usually claimed after the community target is reached. |
+| `ODailyQuests` | Daily quests | Players open the quest list, check the current daily objectives, complete them during normal gameplay, then claim the configured rewards. |
+| `ExcellentCrates` | Reward crates | Players obtain keys from rewards, voting, or admins, then open the crate interface to roll for the configured prize pool. |
+| `VotingPlugin` | Vote rewards | Players vote on supported listing sites, then return in game to receive vote rewards, streak rewards, or vote shop progress. |
+| `CookieClickerZ` | Custom progression feature | This is likely a custom or themed progression system. Players probably interact with it through a menu, NPC, or command configured by the server. |
+| `EvenMoreFish` | Fishing progression and events | Players fish normally, but catches, competitions, and fish rewards are enhanced by the plugin's custom fishing system. |
+| `SpawnerCollectors` | Spawner handling | Players usually collect, move, place, or manage mob spawners according to the server's configured farming and economy rules. |
+| `Minepacks` | Backpack storage | Players open their backpack to store extra items and use it as portable inventory space while farming, mining, or traveling. |
+
+### Travel, Claims, Worlds, And Survival Utility
+
+| Plugin | Main use | How it is usually used |
+|---|---|---|
+| `Essentials` | Core player utility | Players and staff typically use its basic utility layer for teleport requests, homes, messaging, item tools, and many standard server conveniences. |
+| `EssentialsSpawn` | Spawn management | Staff define the main spawn point, then players are returned or teleported there through the server's configured spawn flow. |
+| `AdvancedPortals` | Portal travel | Staff create portal regions first, then players step into or interact with those portals to move between areas or worlds. |
+| `AxPlayerWarps` | Player-owned warps | Players create their own warp locations, publish them if allowed, and other players travel to those warps through the warp browser or warp command flow. |
+| `AxAFKZone` | AFK reward or AFK area system | Players stand in the configured AFK area or use the server's AFK flow, then receive whatever idle rewards or status handling the server has enabled. |
+| `BetterRTP` | Random teleport | Players use the server's random-teleport feature to land in a safe random location inside the configured world borders and biome rules. |
+| `SimpleClaimSystem` | Land claims | Players claim land to protect builds, then expand, trust, or manage access according to the claim settings allowed on the server. |
+| `Multiverse-Core` | Multiworld support | Staff manage additional worlds with it, while players only notice it when the server provides travel routes or features tied to different worlds. |
+| `PvPToggle` | Personal PvP state | Players enable or disable PvP if the server allows personal PvP control, with combat restrictions depending on the current rules. |
+| `TempFly` | Temporary flight time | Players consume or receive timed flight access, then use flight until the granted time expires or the server disables it in certain zones. |
+| `sleep-most` | Night skip quality-of-life | Players sleep as usual, and the night skips once the configured minimum number or percentage of players are in bed. |
+| `WIT` | Inspection utility | This appears to be an inspection-focused utility. Players or staff usually look at a block, entity, or item and use the plugin's help flow to inspect extra information. |
+| `HeadBlocks` | Decorative heads | Players browse the custom head collection and place those heads as decoration, if the server exposes the plugin through a GUI or command. |
+| `ajParkour` | Parkour courses | Players join a configured parkour course, run checkpoints, try to beat records, and claim rewards or leaderboard positions. |
+
+### Social, Display, Menus, And Cosmetic Systems
+
+| Plugin | Main use | How it is usually used |
+|---|---|---|
+| `FioChat` | Custom chat features | Players use it passively through the server chat itself, while staff configure channels, message format, filters, mentions, mail, reports, and related social tools. |
+| `FioTags` | Tag and display system | Players equip chat or display tags through the provided menus or permissions, then the selected tag appears in supported displays. |
+| `ChatColor2` | Colored chat formatting | Players with access use special formatting or color codes in chat, subject to the permissions and formatting rules chosen by the server. |
+| `ChatGames` | Chat minigames | Players watch chat for event prompts, answer quickly, and win rewards by being the first to respond correctly. |
+| `DecentHolograms` | Hologram text displays | Staff create floating text displays for warps, shops, rules, or info boards, while players simply view and follow them. |
+| `FancyNpcs` | Interactive NPCs | Staff place and configure NPCs, then players click or approach them to open menus, teleport, start quests, or trigger server actions. |
+| `CommandPanels` | Menu-based navigation | Staff build clickable GUI panels first, then players use those menus as a friendly front-end for server features and shortcuts. |
+| `UltraCosmetics` | Cosmetic effects | Players activate trails, hats, gadgets, or visual effects if they have access to the cosmetic menus or permissions. |
+| `GMusic` | In-game music system | Players usually hear or trigger music through a menu, area, or event configured by the server rather than through a raw backend command. |
+| `ajLeaderboards` | Ranked displays | Staff connect leaderboards to tracked stats, then players view their placement on holograms, signs, or leaderboard menus. |
+| `RegionParticles` | Area particle effects | Staff define which regions should display particles, and players only experience the visual effect while moving through those regions. |
+| `MyCommand` | Custom command layer | Staff use it to create custom shortcuts, menu actions, or scripted command behavior; players only use the custom commands exposed to them. |
+| `NOrder` | Custom utility plugin | This plugin should be treated as server-specific until its exact purpose is verified from its own config or source. Players should use only the menus or commands that the server explicitly exposes for it. |
+
+### Moderation, Staff, And Admin Tools
+
+| Plugin | Main use | How it is usually used |
+|---|---|---|
+| `LuckPerms` | Permissions and groups | Staff create groups, assign permissions, and manage prefixes or inheritance. Players normally interact with it only through the ranks they receive. |
+| `LibertyBans` | Punishments | Staff use it to mute, ban, warn, or otherwise discipline players, while punished players only experience the restriction and any related notification. |
+| `InventoryRollbackPlus` | Inventory rollback | Staff restore player inventories, experience, or related rollback states after deaths, bugs, or administrative incidents. |
+| `OpenInv` | Open player inventories | Staff inspect or edit a player's inventory, including offline access where supported, for recovery, moderation, or support work. |
+| `WorldEdit` | Fast world editing | Staff or builders select regions, copy structures, paste builds, and perform mass edits. It is generally not a normal player-facing plugin. |
+| `WorldGuard` | Region protection rules | Staff define protected regions, flags, and interaction rules. Players mainly interact with the result, such as denied PvP or blocked block-breaking. |
+| `HiveChecker` | Verification or anti-abuse layer | This looks like an account, session, or client-check utility. Players may only see it when the server requires verification or blocks suspicious activity. |
+| `LagFixer` | Performance helper | Staff use it as a background optimization tool and should review its cleanup behavior carefully before relying on it in production. |
+
+### Framework, Hook, And Background Components
+
+| Plugin | Main use | How it is usually used |
+|---|---|---|
+| `PlaceholderAPI` | Placeholder bridge | Players do not usually use it directly. It feeds dynamic values into chat formats, scoreboards, holograms, menus, and other plugins. |
+| `ProtocolLib` | Packet library | This is a backend library used by other plugins. Staff only touch it for compatibility checks, troubleshooting, or updates. |
+| `Vault` | Economy and permission bridge | This is another backend bridge. It lets economy, permission, and shop plugins talk to each other using a shared interface. |
+| `nightcore` | Shared framework | This is a support framework used by plugins from the same ecosystem. Players generally never interact with it directly. |

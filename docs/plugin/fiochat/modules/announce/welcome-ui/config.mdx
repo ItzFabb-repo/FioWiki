@@ -1,0 +1,217 @@
+---
+title: Config
+---
+
+# Welcome UI Config
+
+Source file: `modules/announce/Welcome UI/config.yml`
+
+The Welcome UI module shows a written-book welcome screen when a player joins. In the current FioChat build, this module is book-only: the service creates a temporary `WRITTEN_BOOK`, opens it for the joining player, then restores the player's original main-hand item and removes the temporary book from the inventory.
+
+The module is enabled by the master toggle `modules.welcome-screen` in `modules/settings.yml`. The current default is `true`.
+
+## `settings.debug-log`
+
+`settings.debug-log` controls whether the module's debug flag is registered as enabled. The current value is `false`.
+
+When this is `true`, FioChat's debug logger can write Welcome UI diagnostic messages under the `welcome-screen` debug channel. The service uses that channel when it reloads, skips a player because display rules do not allow showing the book, or fails to open the book. This setting does not change the visible welcome book, does not affect timing, and does not force the book to open.
+
+## `settings.on-first-join`
+
+`settings.on-first-join` is present in the YAML with the current value `true`, but the current service no longer uses the YAML value.
+
+During reload, the service explicitly sets `onFirstJoin` to `false`. This means the old first-join-only behavior is not controlled by this key in the current build. The key is still kept in the file for readability and compatibility with older configs, but changing it does not change the current join display decision.
+
+## `settings.on-every-join`
+
+`settings.on-every-join` is present in the YAML with the current value `true`, but the current service forces this behavior internally.
+
+During reload, the service explicitly sets `onEveryJoin` to `true`. Because of that, the welcome book is intended to appear on every player join as long as the module is enabled and the player is online. If this key is changed to `false` in the YAML, the current service still behaves as every-join.
+
+## Current display rule
+
+The effective display rule is:
+
+```text
+modules.welcome-screen must be true
+player must be online
+WelcomeScreenService must exist
+onEveryJoin is forced true
+```
+
+The listener runs on `PlayerJoinEvent` at `MONITOR` priority and calls `handleJoin`. The service then waits for `settings.delay-ticks` before trying to open the welcome book.
+
+## `settings.delay-ticks`
+
+`settings.delay-ticks` controls the delay after join before FioChat tries to open the welcome book. The current value is `40`.
+
+Minecraft runs at 20 ticks per second, so `40` ticks is two seconds. The service clamps this value between `0` and `200`. If the YAML is missing, the fallback is `40`. Values below zero become `0`; values above `200` become `200`.
+
+This delay is important because player inventory state and other join-time modules may still be settling immediately after login. A small delay makes the book opening more reliable.
+
+## Anti-bot inventory retry behavior
+
+The Welcome UI service checks whether FioChat's chat format service reports that the player's inventory is still blocked by anti-bot handling.
+
+If the inventory is blocked, FioChat does not immediately give up. It retries every `20` ticks, up to `240` retry attempts. This retry behavior is code-level behavior and is not controlled by the YAML. Once the inventory is no longer blocked, the service attempts to open the book.
+
+## `book.enabled`
+
+`book.enabled` is present in the YAML with the current value `true`, but the current service forces book delivery on whenever the module itself is enabled.
+
+During reload, the service explicitly sets `bookEnabled` to `true`. Changing `book.enabled` to `false` in the current config file does not disable the book. To disable the Welcome UI module in this build, use `modules.welcome-screen: false` in `modules/settings.yml`.
+
+## `book.title`
+
+`book.title` controls the internal title written into the temporary Minecraft book. The current value is `Welcome`.
+
+The service applies Welcome UI placeholders to the title, strips Minecraft color codes from the final title, and then trims it to a maximum of `32` characters before calling `BookMeta#setTitle`. If the resolved title is blank, the fallback is `Welcome`. If setting the title fails on the server implementation, the service also falls back to `Welcome`.
+
+This title is book metadata. It is not automatically printed as the first visible line of page text unless you also put it inside `book.pages`.
+
+## `book.author`
+
+`book.author` controls the internal author written into the temporary Minecraft book. The current value is `FioChat`.
+
+The service applies placeholders, strips color codes, and trims the result to `32` characters. If the resolved author is blank, the fallback is `Server`. If setting the author fails, the service also falls back to `Server`.
+
+Like `book.title`, this is metadata. It is separate from the visible page body.
+
+## `book.pages`
+
+`book.pages` is the root section for the book body. The current config defines page `1` and page `2`.
+
+Each page id can contain a list of lines. FioChat joins those lines with real newline characters before rendering the page. Empty strings are kept, so an empty list item creates a blank line inside the book.
+
+The loader sorts page keys before building the book. Numeric keys are sorted numerically first, so `1`, `2`, and `10` appear in the expected numeric order. Non-numeric keys are sorted after numeric keys using case-insensitive text order.
+
+## `book.pages.1`
+
+`book.pages.1` is the first visible page. The current page contains:
+
+```yaml
+book:
+  pages:
+    1:
+      - "<align:center><black>Welcome, %player_name%!</black></align>"
+      - ""
+      - "<align:center><dark_gray>Thanks for joining <black>%server_name%</black>.</dark_gray></align>"
+      - "<align:center><black>Have fun and enjoy your stay.</black>"
+      - ""
+```
+
+The first line is centered and includes `%player_name%`, so every player sees their own name. The third line uses `%server_name%`, which resolves to the Bukkit server name. The blank lines create spacing inside the written book.
+
+The fourth line opens `<align:center>` but does not close it. The book renderer handles alignment per line by detecting alignment tags on that line, so the line can still be centered. Closing the tag is still cleaner when you edit the file because it makes the intended scope obvious.
+
+## `book.pages.2`
+
+`book.pages.2` is the second visible page. The current page contains:
+
+```yaml
+book:
+  pages:
+    2:
+      - "<align:center>Lorem Ipsum</align>"
+```
+
+This page is a placeholder-style content page in the current defaults. Replace the text with actual server guidance, rules, links, or commands while keeping the book's page length limits in mind.
+
+## Page fallback behavior
+
+If `book.pages` has no usable pages, the book cannot open through the normal `openWelcomeBook` path because the service refuses to open when `bookPages` is empty.
+
+Inside the book builder itself, there is a defensive fallback to a single blank page, but the normal open path checks for empty pages before building. In practical config terms, keep at least one non-empty page entry.
+
+## Placeholder support
+
+Welcome UI supports these built-in placeholders:
+
+```text
+%player_name%
+%player%
+%displayname%
+%server_name%
+```
+
+`%player_name%` and `%player%` resolve to the player's account name. `%displayname%` resolves to the player's Bukkit display name. `%server_name%` resolves to `plugin.getServer().getName()`.
+
+The current Welcome UI service does not call PlaceholderAPI for book pages. Use the built-in placeholders above unless the service is changed to add PlaceholderAPI support.
+
+## Formatting support
+
+Book pages are rendered through FioChat's book color translator. This is why tags such as `<black>`, `<dark_gray>`, and `<align:center>` are valid in the current defaults.
+
+The renderer builds component pages first and falls back to plain translated pages if component pages are not supported by the server implementation. This keeps the module compatible with multiple Bukkit/Spigot variants.
+
+## `<align:left>`, `<align:center>`, and `<align:right>`
+
+Book pages support alignment tags per line. The service recognizes opening tags:
+
+```text
+<align:left>
+<align:center>
+<align:right>
+```
+
+It also recognizes closing tags such as `</align>`, `</left>`, `</center>`, and `</right>`. The alignment renderer removes these tags from the final visible text and pads the line for book display.
+
+Alignment is calculated for written-book pages, not for chat. The service uses a book page width of `114` pixels, a space width of `4` pixels, and a center-left bias of `8` pixels. These values are internal constants designed to make book text visually align better in Minecraft's book UI.
+
+## Markdown links in book pages
+
+Welcome UI supports clickable HTTP and HTTPS markdown links inside book pages.
+
+Normal syntax:
+
+```text
+[Website](https://example.com)
+```
+
+Small-font syntax:
+
+```text
+<[Website](https://example.com)>
+```
+
+Optional hover text syntax:
+
+```text
+<[Website](https://example.com):<gray>Open website</gray>>
+```
+
+When rendered as components, the link opens the URL and can show hover text. When rendered as fallback plain text, normal links display as `[Website]`, and small-font links display as `<smallfont:[Website]>`.
+
+## Page length limit
+
+Each rendered book page is limited to `256` visible characters.
+
+The component renderer truncates visible component text to this limit. The fallback plain-page renderer also truncates to `256` characters after link display rewriting and book color translation. This limit helps prevent oversized written-book pages from behaving poorly in the client.
+
+## Temporary book handling
+
+When the welcome book opens, FioChat temporarily stores the player's original main-hand item, places the generated written book into the main hand, opens it, and then spoofs the old held item back to the client to reduce visual flicker.
+
+Cleanup runs after `1`, `5`, and `20` ticks. During cleanup, the service restores the original main-hand item if the current item still looks like the generated welcome book, sweeps marked welcome books from the inventory, updates the inventory, and removes pending tracking data after the final cleanup.
+
+The generated book is marked with persistent data key `welcome_screen_book` and marker value `welcome-screen-book`. This marker lets the cleanup code recognize the temporary item instead of removing a real book that belongs to the player.
+
+## Anti-bot verified cleanup
+
+The service has `handleAntiBotVerified(Player player)`, which purges temporary welcome books for that player.
+
+This is a safety cleanup path for cases where anti-bot flow and welcome-book opening overlap. It removes tracked temporary books and restores the original item when the current main-hand item matches the generated welcome book.
+
+## Legacy path note
+
+The active config path for this build is:
+
+```text
+modules/announce/Welcome UI/config.yml
+```
+
+The plugin code still knows a legacy path named `modules/welcome-screen/config.yml`, but the current module resource and the documentation page use the new announce-module path.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

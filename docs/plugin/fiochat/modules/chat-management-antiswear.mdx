@@ -1,0 +1,69 @@
+---
+title: AntiSwear
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# AntiSwear Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- Blocks configured badwords in chat, commands, and signs.
+- Source comments say advanced regex should use explicit `regex:` prefix.
+
+## Main keys
+```yaml
+antiswear:
+  words: []
+  replace: {}
+  censor:
+    enabled: false
+    word: "***"
+  spy:
+    chat: "..."
+    command: "..."
+    sign: "..."
+  settings:
+    ignore-case: true
+    map-unicode-confusables: true
+    collapse-repeated-characters: false
+    repeated-character-limit: 3
+```
+
+## Target sections
+The source file contains three targets:
+- `chat`
+- `commands`
+- `signs`
+
+Each target includes:
+- `enabled`
+- `message`
+- `title`
+- `actionbar`
+- `sound`
+- `whitelist`
+
+The `signs` target also includes:
+- `break-sign`
+- `drop-item-on-break`
+
+## Spy placeholders from source comments
+- `%player%`
+- `%world%`
+- `%input%`
+- `%location%`
+- `%module%`
+- `%type%`
+
+## Source examples
+The source file includes sample blocked words and regex examples directly in comments.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,174 @@
+---
+title: Bossbar
+---
+
+# Bossbar
+
+Source file:
+
+```text
+modules/display/Server Display Tag/display_tag.yml
+```
+
+Use this page as a practical guide when you want to modify the bossbar display.
+
+The usual edits are:
+
+- changing the refresh interval
+- changing the default enabled state
+- editing the profile list for different worlds, players, or verification states
+- replacing the animated text, color, style, or progress behavior
+
+Related file:
+
+```text
+modules/display/Server Display Tag/animations.yml
+```
+
+## How to modify it
+
+If you want to change the visible bossbar, edit the profile blocks under `bossbar.list`.
+
+If you want to change how often it updates, edit `settings.bossbar`.
+
+Bossbar text supports MiniMessage `shadow` formatting.
+`animations.yml` is used as the shared animation registry for Display Tag, including bossbar.
+
+## `settings.bossbar`
+
+### `update-interval-ticks`
+
+Controls how often the bossbar is recalculated.
+
+### `use-placeholderapi`
+
+Enables PlaceholderAPI in bossbar text and conditions.
+
+### `default-enabled`
+
+Sets the default toggle state for players who can use the bossbar.
+
+## `bossbar.list`
+
+The current source includes these bossbar profiles:
+
+- `bs_verify`
+- `bs_default`
+- `player:ItzFabb__`
+- `world:world_nether`
+
+## `bs_verify`
+
+The current source marks this profile as `enabled: false`.
+
+### `text_animation`
+
+Uses the `{anim:verify_text}` animation.
+
+### `color`
+
+Sets the bossbar color to `RED`.
+
+### `style`
+
+Sets the bossbar style to `SOLID`.
+
+### `progress`
+
+Sets the progress value to `1.0`.
+
+### `display_conditions`
+
+The current source checks:
+
+```text
+%fiochat_antibot_verified%=false
+```
+
+## `bs_default`
+
+The current source marks this profile as `enabled: false`.
+
+### `text_animation`
+
+Uses a combination of `{anim:java_text}` and extra placeholders.
+
+### `color`
+
+The bossbar color is taken from this animation reference:
+
+```text
+{anim:bossbar_color}
+```
+
+### `style`
+
+The bossbar style is taken from this animation reference:
+
+```text
+{anim:bossbar_style}
+```
+
+### `progress`
+
+The bossbar progress is taken from this animation reference:
+
+```text
+{anim:bossbar_progress}
+```
+
+### `display_conditions`
+
+The current source checks two conditions:
+
+- `%fiochat_user_platform%=java`
+- `%fiochat_antibot_verified%=true`
+
+## `player:ItzFabb__`
+
+Example player-specific bossbar profile.
+
+The current source marks it as `enabled: false`.
+
+This profile uses these fields:
+
+- `text`
+- `color`
+- `style`
+- `progress`
+
+## `world:world_nether`
+
+Example world-specific bossbar profile.
+
+The current source marks it as `enabled: false`.
+
+This profile uses these fields:
+
+- `text`
+- `color`
+- `style`
+- `progress`
+
+## Source note
+
+The current source references the animations `verify_text`, `bossbar_color`, `bossbar_style`, and `bossbar_progress` inside `display_tag.yml`.
+
+A search across the source resources reviewed in this session did not find definitions for those animation keys in other files.
+
+## `animations.yml`
+
+The bossbar can use the shared animation registry from this file.
+
+In the source reviewed here, `animations.texts` currently includes:
+
+- `java_title`
+- `bedrock_title`
+- `java_text`
+- `bedrock_text`
+
+Each entry contains `interval_ticks` and a list of `frames`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,212 @@
+﻿---
+title: Vanish
+sidebar_position: 33
+---
+
+# Vanish (Module)
+Configuration guide for `modules/moderation/Vanish/config.yml`.
+
+:::warning[Important]
+Set visibility and interaction policy first, then tune status feedback. Vanish affects moderation workflow and player trust signals.
+:::
+
+## Module Preview
+
+![Vanish 1](../../../img/fiochat/Vanish%201.png)
+![Vanish 2](../../../img/fiochat/Vanish%202.png)
+
+## Configuration Files
+- `modules/moderation/Vanish/config.yml`
+
+## Backend Visibility Engine
+
+### Engine Selection
+```yaml
+backend:
+  visibility-engine:
+    player-hide-api: true
+    entity-hide-api: true
+    scoreboard-team: true
+    packet-fallback: false
+```
+- Purpose: Defines which internal visibility methods are used.
+- Options:
+  - Keep API-based methods enabled first.
+  - Use packet fallback only when required by compatibility constraints.
+
+### Refresh Triggers
+```yaml
+backend:
+  refresh:
+    join: true
+    quit: true
+    world-change: true
+    gamemode-change: true
+    respawn: true
+    teleport: true
+    permission-change: true
+    plugin-reload: true
+```
+- Purpose: Reapplies vanish state on key lifecycle events.
+- Options:
+  - Keep all enabled for consistent hidden-state reliability.
+
+## Visibility Policy
+
+### Hidden-State Surface Control
+```yaml
+visibility:
+  hide-player-model: true
+  hide-from-tab: true
+  hide-name-tag: true
+  hide-from-death-messages: true
+  hide-from-join-message: true
+  hide-from-quit-message: true
+  hide-from-advancement-broadcast: true
+```
+- Purpose: Controls which public channels hide vanished staff presence.
+- Options:
+  - Keep broad hiding enabled for true stealth moderation.
+
+### Suggestion and Count Visibility
+```yaml
+visibility:
+  hide-from-command-target-suggestions: true
+  hide-from-nearby-player-count-features: true
+  hide-in-player-list-placeholder-count: false
+  hide-locator-bar-while-vanished: true
+```
+- Purpose: Prevents indirect discovery of vanished staff.
+- Options:
+  - Enable list-placeholder hiding if your server depends on public online counters.
+
+## Collision and Targeting
+
+### Physics and Push Rules
+```yaml
+collision-and-targeting:
+  disable-collision: true
+  disable-push-by-players: true
+  disable-push-by-entities: true
+```
+- Purpose: Removes physical interaction leaks while vanished.
+- Options:
+  - Keep enabled to avoid accidental reveal via movement collision.
+
+### Mob and AI Targeting Rules
+```yaml
+collision-and-targeting:
+  prevent-mob-targeting: true
+  clear-existing-mob-targets-on-vanish: true
+  prevent-villager-gossip-reaction: false
+  prevent-warden-anger-increase: false
+```
+- Purpose: Stops AI systems from exposing hidden moderators.
+- Options:
+  - Enable extra AI protections on hardcore survival moderation servers.
+
+## Interaction Policy
+
+### Blocked Interaction Set
+```yaml
+interactions:
+  default-blocked: []
+```
+- Purpose: Optional list of actions blocked while vanished.
+- Options:
+  - Add interaction IDs your moderation policy disallows.
+
+### Silent Container Access
+```yaml
+interactions:
+  silent-container-open:
+    enabled: true
+```
+- Purpose: Opens containers without noisy/opening visibility indicators.
+
+### Persistence Rules
+```yaml
+interactions:
+  persistence:
+    remember-vanish-state: true
+    remember-interaction-state: true
+    restore-vanish-on-join: true
+    auto-vanish-on-join: true
+```
+- Purpose: Maintains hidden state across reconnect/restart cycles.
+- Options:
+  - Disable auto-vanish-on-join if staff should re-enter visible by default.
+
+## Status Feedback Channels
+
+### Chat Message Feedback
+```yaml
+status:
+  message:
+    enabled: true
+    vanished: "<gray>Vanish enabled.</gray>"
+    revealed: "<gray>Vanish disabled. You are visible now.</gray>"
+```
+- Purpose: Basic textual confirmation for state toggle.
+
+### Actionbar Feedback
+```yaml
+status:
+  actionbar:
+    enabled: true
+    vanished: "<green>You are vanished</green>"
+    revealed: "<red>You are visible again</red>"
+```
+- Purpose: Lightweight real-time state reminder.
+
+### Title and Bossbar Feedback
+```yaml
+status:
+  title:
+    enabled: true
+  bossbar:
+    enabled: true
+    vanished:
+      color: "GREEN"
+    revealed:
+      color: "RED"
+      seconds: 3
+```
+- Purpose: High-visibility confirmation channels.
+- Options:
+  - Disable one channel if feedback feels excessive.
+
+## Recommended Profiles
+
+### Stealth Moderation Profile
+```yaml
+visibility:
+  hide-from-tab: true
+  hide-from-command-target-suggestions: true
+collision-and-targeting:
+  prevent-mob-targeting: true
+```
+- Result: strongest hidden-state behavior.
+
+### Soft Vanish Profile
+```yaml
+visibility:
+  hide-in-player-list-placeholder-count: false
+status:
+  message:
+    enabled: true
+  bossbar:
+    enabled: false
+```
+- Result: moderated stealth with lighter visual impact.
+
+:::note[Owner Validation]
+- Test vanish toggle across join/world-change/teleport/respawn events.
+- Test command suggestions and tab visibility from non-staff account.
+- Test mob targeting and collision behavior while vanished.
+- Test persistence across relog and plugin reload.
+- Test status feedback readability in all themes.
+:::
+
+
+

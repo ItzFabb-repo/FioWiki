@@ -1,0 +1,221 @@
+---
+title: Config
+---
+
+# Advancements Config
+
+Source file:
+
+```text
+modules/announce/Advancements/config.yml
+```
+
+The Advancements module controls custom vanilla advancement chat announcements. In the current build, it can rewrite the chat line by advancement type, apply world and region filters, and optionally run actions when a player completes an advancement.
+
+The module is controlled by `modules.advancement-message` in `modules/settings.yml`. The current default is `true`.
+
+The title registry for this module is stored separately in:
+
+```text
+modules/announce/Advancements/advancements.json
+```
+
+## `modules.advancement-message`
+
+```yaml
+modules:
+  advancement-message: true
+```
+
+This is the master toggle for the module. The current default is `true`.
+
+When disabled, FioChat does not rewrite vanilla advancement messages or run the configured advancement actions.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`settings.debug-log` controls module debug logging. The current value is `false`.
+
+When enabled, FioChat can log reload details, filter decisions, and action dispatch results for advancement announcements.
+
+## `settings.only-if-vanilla-visible`
+
+```yaml
+settings:
+  only-if-vanilla-visible: true
+```
+
+This controls whether FioChat only rewrites advancements that vanilla was already going to announce.
+
+The current default is `true`.
+
+## `settings.suppress-when-formatted-empty`
+
+```yaml
+settings:
+  suppress-when-formatted-empty: false
+```
+
+This controls whether the advancement announcement is suppressed when the final formatted line is blank.
+
+The current default is `false`.
+
+## `settings.world-whitelist` and `settings.world-blacklist`
+
+```yaml
+settings:
+  world-whitelist: []
+  world-blacklist: []
+```
+
+These filters control which worlds can run advancement announcements.
+
+Use the whitelist when you want the module to run only in selected worlds. Use the blacklist when you want to block only specific worlds.
+
+## `settings.region-whitelist` and `settings.region-blacklist`
+
+```yaml
+settings:
+  region-whitelist: []
+  region-blacklist: []
+```
+
+These filters control which WorldGuard regions can run advancement announcements.
+
+The whitelist allows only selected regions. The blacklist blocks selected regions.
+
+## `settings.advancements-blacklist`
+
+```yaml
+settings:
+  advancements-blacklist:
+    - "Minecraft"
+    - "Husbandry"
+    - "Nether"
+    - "Adventure"
+    - "The End"
+```
+
+This list blocks specific advancements from being announced.
+
+The current source supports exact keys, namespaced keys, category wildcards, and tab aliases such as `Minecraft`, `Husbandry`, `Nether`, `Adventure`, and `The End`.
+
+## `message.task-format`
+
+```yaml
+message:
+  task-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has made the advancement</italic></white>> <smallfont:<green><italic>[%advancement_title%]</italic></green>>"
+```
+
+This is the chat format used for task advancements.
+
+## `message.goal-format`
+
+```yaml
+message:
+  goal-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has reached the goal</italic></white>> <smallfont:<gold><italic>[%advancement_title%]</italic></gold>>"
+```
+
+This is the chat format used for goal advancements.
+
+## `message.challenge-format`
+
+```yaml
+message:
+  challenge-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has completed the challenge</italic></white>> <smallfont:<#ff55ff><italic>[%advancement_title%]</italic></#ff55ff>>"
+```
+
+This is the chat format used for challenge advancements.
+
+## `message.task-hover`, `message.goal-hover`, `message.challenge-hover`
+
+```yaml
+message:
+  task-hover:
+    - "<green>%advancement_description%</green>"
+  goal-hover:
+    - "<gold>%advancement_description%</gold>"
+  challenge-hover:
+    - "<#ff55ff>%advancement_description%</#ff55ff>"
+```
+
+These lines are shown on hover for each advancement type.
+
+## `actions.task`, `actions.goal`, `actions.challenge`
+
+```yaml
+actions:
+  challenge: []
+```
+
+These action lists run when the matching advancement type is completed.
+
+Supported actions include:
+
+```text
+[CONSOLE] <command>
+[PLAYER] <command>
+[MESSAGE] <message>
+[ACTIONBAR] <message>
+[TITLE] title||subtitle||fadeIn||stay||fadeOut
+[BOSSBAR] title||color||style||progress||seconds
+[SOUND] sound:volume:pitch
+```
+
+## `commands.*`
+
+```yaml
+commands:
+  task: []
+  goal: []
+  challenge: []
+```
+
+The legacy `commands.*` section is still supported and is merged with `actions.*`.
+
+## Useful placeholders
+
+Common placeholders used by this module include:
+
+```text
+%player%
+%player_name%
+%displayname%
+%player_displayname%
+%advancement_title%
+%advancement%
+%advancement_description%
+%advancement_desc%
+%advancement_key%
+%advancement_key_pretty%
+%advancement_namespace%
+%advancement_full_key%
+%advancement_type%
+%advancement_type_label%
+%vanilla_message%
+%player_uuid%
+```
+
+## Legacy Path Note
+
+The active config path for this build is:
+
+```text
+modules/announce/Advancements/config.yml
+```
+
+The plugin still knows the older legacy path:
+
+```text
+modules/advancement-message/config.yml
+```
+
+This page follows the current announce-module path and the current advancement-message layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

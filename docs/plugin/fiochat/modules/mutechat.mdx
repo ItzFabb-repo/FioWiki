@@ -1,0 +1,97 @@
+﻿---
+title: Mutechat
+sidebar_position: 25
+---
+
+# Mutechat (Module)
+Configuration guide for `modules/announce/Mute Chat/config.yml`.
+
+:::warning[Important]
+Define bypass role policy first, then configure which private/chat commands are blocked during mutechat.
+:::
+
+## Module Preview
+
+![MuteChat 1](../../../img/fiochat/MuteChat%201.png)
+![MuteChat 2](../../../img/fiochat/MuteChat%202.png)
+
+## Configuration Files
+- `modules/announce/Mute Chat/config.yml`
+
+## Core Controls
+
+### Bypass Permission
+```yaml
+settings:
+  bypass-permission: "fiochat.mutechat.bypass"
+```
+- Purpose: Allows trusted roles to bypass global chat mute restrictions.
+- Options:
+  - Assign to staff/moderation roles only.
+  - Keep node name stable for permission audits.
+
+### Command Blocking Toggle
+```yaml
+settings:
+  disable_command: false
+```
+- Purpose: Enables/disables command-level restrictions while mutechat is active.
+- Options:
+  - `false`: only normal chat muted, commands remain available.
+  - `true`: selected commands are blocked during mutechat.
+
+## Blocked Command List
+
+### Disabled Command Entries
+```yaml
+settings:
+  disabled_command_list:
+    - "/message"
+    - "/msg"
+    - "/m"
+    - "/tell"
+    - "/t"
+    - "/whisper"
+    - "/w"
+    - "/me"
+    - "/reply"
+    - "/r"
+```
+- Purpose: Defines commands that are blocked when command blocking is active.
+- Options:
+  - Keep aliases together to avoid bypass via shorthand.
+  - Add custom plugin aliases if your server uses them.
+
+## Operational Profiles
+
+### Chat-Only Mute Profile
+```yaml
+settings:
+  disable_command: false
+```
+- Result: Public chat muted, private messaging still possible.
+
+### Strict Silence Profile
+```yaml
+settings:
+  disable_command: true
+  disabled_command_list:
+    - "/msg"
+    - "/reply"
+    - "/me"
+```
+- Result: Strong lockdown with reduced communication vectors.
+
+:::info[Moderation Recommendation]
+Use strict profile only during raids/spam events. Use chat-only profile for routine moderation.
+:::
+
+:::note[Owner Validation]
+- Test mutechat with normal player and bypass-permission role.
+- Verify each alias in `disabled_command_list` is actually blocked.
+- Verify non-listed commands still work as expected.
+- Verify unmute restores normal chat and command behavior.
+:::
+
+
+

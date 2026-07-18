@@ -1,0 +1,882 @@
+﻿---
+title: Opsi & Konfigurasi
+sidebar_position: 4
+---
+
+# Opsi & Konfigurasi
+:::info[Purpose]
+This page is a production-focused configuration guide for FioChat.
+It is organized by module, with deep operational notes for real server administration.
+:::
+
+---
+
+# Configuration Tree
+```yaml
+plugins/FioChat/
+  config.yml
+  modules/
+    settings.yml
+    advancement-message/config.yml
+    afk/config.yml
+    announcements/announce.yml
+    auto-reply/config.yml
+    biome-discovery/config.yml
+    chat-channels/config.yml
+    chat-history/config.yml
+    chat-management/config.yml
+    chat-radius/config.yml
+    command-hider/config.yml
+    custom-font/config.yml
+    day-counter/config.yml
+    death-message/config.yml
+    display-tag/display_tag.yml
+    display-tag/animations.yml
+    emojis/config.yml
+    formats/config.yml
+    giveaway/config.yml
+    inventory-full-alert/config.yml
+    item-displays/config.yml
+    itemtag/config.yml
+    joinquit/config.yml
+    mailbox/config.yml
+    mentions/config.yml
+    messages/config.yml
+    mutechat/config.yml
+    per-world-chat/config.yml
+    player-motd/motd.yml
+    quickchat/config.yml
+    redeem-code/config.yml
+    replying-message/config.yml
+    reports/config.yml
+    server-motd/config.yml
+    vanish/config.yml
+    welcome-screen/config.yml
+```
+
+:::tip[Editing Rule]
+Apply changes in small batches:
+1) one module,
+2) validate,
+3) deploy,
+4) move to next module.
+:::
+
+---
+
+# Global Core
+## `config.yml`
+
+### What this file controls
+- Global prefix behavior
+- Default language strategy
+- Storage backend
+- Command aliases
+- Debug/spy baseline behavior
+- Player action logging
+- Geyser/Floodgate bedrock prefix mapping
+
+### Critical keys
+```yaml
+prefix:
+  enabled: true
+  format: '<dark_gray>[</dark_gray><gradient:#7289da:#9966cc>FioChat</gradient><dark_gray>]</dark_gray>'
+
+language:
+  current: "en"
+  detection_player_language: true
+
+database:
+  type: "yaml" # yaml | sqlite | mysql
+```
+
+:::warning[Database Migration]
+Do not switch to MySQL on a live peak-time window.
+Run migration during low traffic and keep rollback backups.
+:::
+
+---
+
+# Module Master Switches
+## `modules/settings.yml`
+This file decides whether each module is active.
+
+```yaml
+modules:
+  mentions: true
+  messages: true
+  reports: true
+  chat-management:
+    enabled: true
+```
+
+:::note[Operational Impact]
+If a module is disabled here, command-level config in that module file will not matter until re-enabled.
+:::
+
+---
+
+# Modules
+
+## `modules/vanish/config.yml`
+### Function
+Controls vanish state, visibility behavior, and interaction restrictions.
+
+### Recommended tuning goals
+- Make staff invisible to normal players.
+- Prevent hidden-staff interactions that leak presence.
+- Keep admin recovery path available (via permissions).
+
+### Configuration strategy
+1. Define strict interaction restrictions first (pickup/drop/container/entity edits).
+2. Test with two accounts: one vanished moderator, one normal player.
+3. Validate compatibility with anti-cheat and moderation tools.
+
+### Permissions to validate with this module
+```yaml
+fiochat.vanish.use
+fiochat.vanish.others
+fiochat.vanish.see
+fiochat.vanish.interaction
+fiochat.vanish.autojoin
+```
+
+:::warning[Security]
+Grant `fiochat.vanish.see` only to trusted staff roles.
+If regular players receive this node, vanish loses moderation value.
+:::
+
+---
+
+## `modules/chat-management/config.yml`
+### Function
+Main anti-abuse pipeline:
+- cooldown
+- flood
+- antiunicode
+- antibot
+- antirepeat
+- warn-points
+- grammar
+- anti-caps
+- clear-chat
+- antiswear
+- anti-adv
+
+### Recommended rollout plan
+1. Enable `cooldown`, `flood`, `antirepeat`.
+2. Monitor false positives.
+3. Enable `antiswear` and `anti-adv` with conservative patterns.
+4. Enable `warn-points` after thresholds are stable.
+
+### Bypass governance
+Use bypass nodes sparingly:
+```yaml
+fiochat.chat.cooldown.bypass
+fiochat.chat.flood.bypass
+fiochat.chat.antiswear.bypass
+fiochat.chat.antiadvertising.bypass
+```
+
+:::tip[Best Practice]
+Keep bypass permissions role-based, not user-by-user.
+Use LP groups (`helper`, `mod`, `admin`) to avoid permission drift.
+:::
+
+---
+
+## `modules/chat-channels/config.yml`
+### Function
+Multi-channel conversation architecture (global/trade/staff/custom channels).
+
+### Design recommendations
+- Keep one default channel as fail-safe.
+- Restrict staff/trade channels with explicit permission nodes.
+- Keep channel naming short and stable for placeholders/UI.
+
+### Key permission integration
+```yaml
+fiochat.channel.use
+fiochat.channel.list
+fiochat.channel.join
+fiochat.channel.trade
+fiochat.channel.staff
+```
+
+:::warning[Channel Lockout]
+Never remove all accessible channels for default players, or they lose effective chat routing.
+:::
+
+---
+
+## `modules/reports/config.yml`
+### Function
+Moderation reporting workflow:
+- report types
+- report submission
+- review interface
+- report browsing
+
+### Operational policy recommendations
+- Keep report type list short and clear.
+- Require review permission separation from general moderation.
+- Define SLA for report response (for staff handbook).
+
+### Permissions
+```yaml
+fiochat.report.use
+fiochat.report.receive
+fiochat.report.review
+fiochat.report.cooldown.bypass
+```
+
+:::info[Moderation Quality]
+Pair reports with chat-history logs for context before taking action.
+:::
+
+---
+
+## `modules/chat-history/config.yml`
+### Function
+Stores and exposes player chat/action history for investigation.
+
+### Best practices
+- Enable for auditability.
+- Define internal retention policy.
+- Restrict access to senior moderation/staff.
+
+### Core permission
+```yaml
+fiochat.chathistory
+```
+
+---
+
+## `modules/messages/config.yml`
+### Function
+Private messaging behavior (`/msg`, `/reply`) and related toggles.
+
+### Configuration priorities
+- Keep UX clear when PMs are disabled.
+- Define bypass behavior for staff support flow.
+- Ensure consistency with AFK and ignore modules.
+
+### Important permissions
+```yaml
+fiochat.message.use
+fiochat.message.bypass.toggle
+```
+
+---
+
+## `modules/mentions/config.yml`
+### Function
+Mention notification system (`@player`, `@here`, `@everyone`).
+
+### Stability checklist
+- Configure mention cooldowns.
+- Restrict global mentions if needed.
+- Validate permission segmentation.
+
+### Permissions
+```yaml
+fiochat.mentions.use
+fiochat.mentions.player
+fiochat.mentions.here
+fiochat.mentions.everyone
+fiochat.mentions.cooldown.bypass
+```
+
+---
+
+## `modules/mutechat/config.yml`
+### Function
+Controls global or channel-level mute state management.
+
+### Deployment notes
+- Verify fallback feedback message when muted.
+- Ensure admin bypass is explicit.
+- Test both `/fiochat mutechat ...` and admin aliases.
+
+### Permissions
+```yaml
+fiochat.admin.mutechat
+fiochat.admin.channel.mutechat
+```
+
+---
+
+## `modules/joinquit/config.yml`
+### Function
+Join/quit message, sound, particle, style behavior.
+
+### Practical tuning order
+1. Message templates
+2. Sound levels/pitch
+3. Particle density
+4. Style complexity
+
+### Related wildcard nodes (selector system)
+```yaml
+fiochat.joinquit.join.message.*
+fiochat.joinquit.join.sound.*
+fiochat.joinquit.join.particle.*
+fiochat.joinquit.join.style.*
+fiochat.joinquit.quit.message.*
+fiochat.joinquit.quit.sound.*
+fiochat.joinquit.quit.particle.*
+fiochat.joinquit.quit.style.*
+```
+
+:::warning[Noise Control]
+Over-tuned join/quit effects can cause visual/audio fatigue on high-player servers.
+:::
+
+---
+
+## `modules/display-tag/display_tag.yml`
+### Function
+Controls tablist, scoreboard, gamertag, and bossbar display system.
+
+:::warning[High Impact Module]
+This is one of the most performance-sensitive and readability-sensitive FioChat modules.
+Poor placeholder choices, too many animated frames, or overly long lines can affect UX and stability.
+:::
+
+### File Scope
+```yaml
+modules/display-tag/display_tag.yml
+modules/display-tag/animations.yml
+modules/display-tag/data.yml
+modules/settings.yml # modules.tab + sub-settings controls
+```
+
+### Core Structure Breakdown
+The file is divided into these main branches:
+```yaml
+settings:
+  scoreboard: ...
+  bossbar: ...
+  update-interval-ticks: ...
+  use-placeholderapi: ...
+  player-list-format: ...
+  group-formats: ...
+  hide: ...
+  render-player-intab: ...
+  sorting: ...
+  placeholder:
+    refresh: ...
+    aliases: ...
+    replace: ...
+
+tab:
+  list: ...
+
+scoreboard:
+  list: ...
+
+bossbar:
+  list: ...
+
+gamertag:
+  settings: ...
+  vanilla: ...
+  list: ...
+```
+
+### `settings.scoreboard` (Global Scoreboard Engine)
+```yaml
+settings:
+  scoreboard:
+    update-interval-ticks: 10
+    use-placeholderapi: true
+    default-enabled: true
+    restore-main-scoreboard-on-disable: true
+    hide-score-numbers: false
+    shadow_settings:
+      enabled: true
+      color: "#000000"
+      opacity: "0.8"
+```
+
+What each key changes:
+- `update-interval-ticks`
+  - Lower value = faster refresh + more CPU work.
+  - Higher value = less responsive but cheaper.
+- `use-placeholderapi`
+  - `true` enables non-FioChat PlaceholderAPI placeholders.
+- `default-enabled`
+  - Default personal toggle state for players with scoreboard permission.
+- `restore-main-scoreboard-on-disable`
+  - Prevents players being left with broken/empty scoreboard state.
+- `hide-score-numbers`
+  - Tries to hide numeric score values on the right side.
+- `shadow_settings`
+  - Adds consistent visual readability for title/lines.
+
+:::tip[Recommended Interval]
+For medium servers, start with `10-20` ticks.
+For high-population servers with heavy placeholders, test `20-40` ticks first.
+:::
+
+### Calendar Formatting (`settings.scoreboard.calendar`)
+```yaml
+calendar:
+  date-format: dd/MMM/yy
+  time-format: (H:mm:ss a)
+  time-offset: 0
+  locale: en-US
+```
+- `date-format` and `time-format`: visible date/time styling.
+- `time-offset`: timezone adjustment offset.
+- `locale`: month/day language style.
+
+### Tab Global Settings (`settings` root tab branch)
+```yaml
+settings:
+  update-interval-ticks: 10
+  use-placeholderapi: true
+  player-list-format: ""
+```
+- Controls refresh and placeholder handling for TAB list layer.
+- `player-list-format` acts as global fallback format for player rows.
+
+### Forced Head Injection (`settings.list-name.force-head`)
+```yaml
+list-name:
+  force-head:
+    enabled: true
+    disable-shadow: true
+    token: "[p:%player_name%]"
+```
+- Auto-injects a player head token when list-name format has no head/sprite.
+- Good for visual identity consistency in large player lists.
+
+### Group Formats (`settings.group-formats`)
+```yaml
+group-formats:
+  default: "<#7a7a7a><smallfont:[user]> <gray>%player_name%</gray>"
+  owner: "<gradient:#FF0000:#FF9999><smallfont:[owner]></gradient> <white>%player_name%</white>"
+  vip: "<green><smallfont:[vip]></green> <white>%player_name%</white>"
+```
+- Driven by primary permission group.
+- Use this for role visibility without changing gamertag logic.
+
+:::info[Design Recommendation]
+Keep group prefixes short. Long decorative prefixes reduce scan readability in crowded tab lists.
+:::
+
+### Hidden Rows Logic (`settings.hide.settings`)
+```yaml
+hide:
+  settings:
+    vanish_players: true
+    spectators: true
+    unverified: true
+```
+- Controls viewer-target row filtering.
+- Essential for anti-bot verification flow and vanish privacy.
+
+### Player Number Rendering in TAB (`render-player-intab`)
+```yaml
+render-player-intab:
+  enabled: false
+  format: "%player_ping%"
+```
+- Uses player-list objective style number on the left.
+- `format` must resolve to integer output.
+
+### Sorting Engine (`settings.sorting`)
+```yaml
+sorting:
+  enabled: true
+  types:
+    - "GROUPS:dev,owner,staff,default"
+    - "PERMS:fiochat.tab.dev,fiochat.tab.owner,fiochat.tab.staff"
+    - "PAPI:%fiochat_user_platform%:java,bedrock"
+    - "PAPI_ATOZ:%player_name%"
+```
+- Supports layered sorting priorities.
+- You can combine:
+  - group ordering
+  - permission-based ordering
+  - placeholder value ordering
+  - alphabetical fallback
+
+:::warning[Sorting Pitfall]
+Do not create contradictory sort chains (for example multiple inverse sort rules on same value).
+It can cause unstable row order.
+:::
+
+### Placeholder Refresh Registry (`settings.placeholder.refresh`)
+```yaml
+placeholder:
+  refresh:
+    default: 500
+    '%player_health%': 100
+    '%player_ping%': 1000
+    '%vault_group%': 1000
+```
+- Per-placeholder refresh overrides.
+- Lower value = more frequent updates.
+- Use low refresh only for truly dynamic stats (health, combat status).
+
+### Placeholder Aliases (`settings.placeholder.aliases`)
+```yaml
+aliases:
+  - 'fio_thing': "%fiochat_antibot_verified%%fiochat_afk_state% %fiochat_vanish_state%"
+```
+- Converts long placeholder chains into reusable short keys.
+- Use as: `%fiochat_custom_fio_thing%`
+
+### Placeholder Replace Map (`settings.placeholder.replace`)
+```yaml
+replace:
+  '%fiochat_afk_state%':
+    'true': ' &7(á´€)'
+    'false': ''
+```
+- A global output substitution layer for display-tag placeholders.
+- Useful for icon/compact status rendering.
+
+---
+
+### `tab.list` Profiles
+Profile examples in your file:
+- `verification_tab`
+- `default_tab`
+- `player:ItzFabb__`
+- `world:world_nether`
+
+How profiles work:
+1. Each profile has `enabled` and optional `display_conditions`.
+2. If conditions match, that profile renders.
+3. Use player/world profiles for targeted UX.
+
+:::tip[Profile Strategy]
+Keep one safe generic default profile enabled.
+Special profiles (player/world) should be additive, not your only fallback.
+:::
+
+### `scoreboard.list` Profiles
+Profile examples:
+- `sb_verify`
+- `sb_vanished`
+- `sb_default`
+- player-specific/world-specific variants
+
+Configuration design pattern:
+1. Verification profile (anti-bot pending state)
+2. Vanished profile (staff state)
+3. Default profile (normal gameplay)
+4. Optional player/world overrides
+
+### `bossbar.list` Profiles
+Example keys:
+```yaml
+bs_verify
+bs_default
+player:ItzFabb__
+world:world_nether
+```
+- Each profile supports text/color/style/progress and conditions.
+- For animations, values can reference `{anim:...}` keys.
+
+### `gamertag` Branch
+Main parts:
+- `settings.self-perspective`
+- `settings.text-display` (billboard, view-range, opacity, background, scale)
+- `vanilla.name_tag` and `vanilla.line`
+- profile overrides in `gamertag.list`
+
+:::warning[Visual Clutter]
+Gamertag lines are always high-visibility.
+Avoid excessive line count and long color-heavy content.
+:::
+
+---
+
+### `modules/display-tag/animations.yml`
+Animation registry used by tab/scoreboard/bossbar.
+
+Pattern:
+```yaml
+animations:
+  texts:
+    java_title:
+      interval_ticks: 4
+      frames:
+        - "<gradient:#9966cc:#7289da><bold>FIOCHAT</bold></gradient>"
+```
+
+Best practices:
+- Keep frame count short (3-8 frames for most titles).
+- Keep `interval_ticks` moderate.
+- Avoid many simultaneous high-frequency animations.
+
+:::tip[Performance Rule]
+Start static first. Add animations only after layout and placeholders are stable.
+:::
+
+---
+
+### Production Tuning Checklist (Display Tag)
+```yaml
+placeholderapi_usage_audited: true
+expensive_placeholders_rate_limited: true
+default_profile_fallback_present: true
+verification_profile_tested: true
+vanish_profile_tested: true
+world_profile_tested: true
+bedrock_java_render_tested: true
+scoreboard_update_interval_safe: true
+animation_density_safe: true
+```
+
+---
+
+## `modules/display-tag/animations.yml`
+### Function
+Animation definitions consumed by display-tag visuals.
+
+### Best practice
+- Prefer low-frequency animation cycles.
+- Avoid aggressive multi-line effects in competitive contexts.
+
+---
+
+## `modules/formats/config.yml`
+### Function
+Chat format templates (rank/context driven formatting).
+
+### Governance notes
+- Keep one canonical format style guide.
+- Ensure prefix/suffix logic is consistent with other chat tools.
+- Validate MiniMessage compatibility in all major languages used by your server.
+
+---
+
+## `modules/mailbox/config.yml`
+### Function
+Mailbox lifecycle: unread tracking, notifications, logs, and GUI behavior.
+
+### Admin checklist
+- Ensure unread notification policy is not too spammy.
+- Validate mailbox state placeholders on UI surfaces.
+- Test with high-volume sender/receiver scenarios.
+
+---
+
+## `modules/inventory-full-alert/config.yml`
+### Function
+Inventory full/prewarn alert behavior and threshold management.
+
+### Tuning suggestions
+- Set sane default threshold.
+- Allow players to tune threshold via command.
+- Prevent repetitive alerts in short intervals.
+
+---
+
+## `modules/item-displays/config.yml`
+### Function
+Controls `[item]`, `[inventory]`, `[enderchest]`, `[profile]` display behavior.
+
+### Risk area
+Cooldowns that are too permissive can create chat noise and visual spam.
+
+---
+
+## `modules/itemtag/config.yml`
+### Function
+Dropped-item hologram display behavior.
+
+### Guidance
+- Keep text concise.
+- Balance readability vs particle clutter.
+- Test in farms/high-entity areas.
+
+---
+
+## `modules/announcements/announce.yml`
+### Function
+Scheduled/manual announcement channel behavior.
+
+### Good practice
+- Keep announcement cadence predictable.
+- Use placeholder tokens from `announcements/placeholder.yml`.
+- Split urgent vs informational channels.
+
+---
+
+## `modules/advancement-message/config.yml`
+### Function
+Customizes vanilla advancement announcements.
+
+### Recommendation
+Mirror your global chat brand style for consistency.
+
+---
+
+## `modules/death-message/config.yml`
+### Function
+Custom death feed format and text behavior.
+
+### Recommendation
+Keep death messages readable and informative; avoid over-stylized clutter.
+
+---
+
+## `modules/player-motd/motd.yml`
+### Function
+Player join MOTD content delivery.
+
+### Recommendation
+Prioritize onboarding essentials only (rules/links/help), avoid very long first-join walls of text.
+
+---
+
+## `modules/server-motd/config.yml`
+### Function
+Server list ping MOTD appearance.
+
+### Recommendation
+Match server list branding with in-game style but keep line length concise.
+
+---
+
+## `modules/auto-reply/config.yml`
+### Function
+Keyword/regex auto-reply behavior.
+
+### Recommendation
+Validate regex scope to avoid accidental trigger storms.
+
+---
+
+## `modules/biome-discovery/config.yml`
+### Function
+Biome discovery title/subtitle/sound/actionbar delivery.
+
+### Recommendation
+Keep this immersive, not intrusive. Use conservative audio and timing.
+
+---
+
+## `modules/day-counter/config.yml`
+### Function
+In-game day progression notification behavior.
+
+### Recommendation
+Use lightweight display channels; avoid noisy repeated effects.
+
+---
+
+## `modules/chat-radius/config.yml`
+### Function
+Distance-based local chat behavior.
+
+### Recommendation
+Great for roleplay. Test radius values with real map scale.
+
+---
+
+## `modules/per-world-chat/config.yml`
+### Function
+World-isolated chat visibility.
+
+### Recommendation
+Use this for multiworld communities with separate economy or gameplay tracks.
+
+---
+
+## `modules/command-hider/config.yml`
+### Function
+Tab completion filtering and command visibility hardening.
+
+### Recommendation
+Combine with permission hygiene to reduce information leakage.
+
+---
+
+## `modules/custom-font/config.yml`
+### Function
+Custom chat font selection/behavior.
+
+### Recommendation
+Keep default readable; avoid forcing novelty fonts globally.
+
+---
+
+## `modules/emojis/config.yml`
+### Function
+Emoji replacement and menu behavior.
+
+### Recommendation
+Prevent collisions with formatting syntax and command-like tokens.
+
+---
+
+## `modules/giveaway/config.yml`
+### Function
+Giveaway creation/flow behavior.
+
+### Recommendation
+Tune rules for fairness and avoid too frequent global interruption.
+
+---
+
+## `modules/redeem-code/config.yml`
+### Function
+Redeem code campaign configuration.
+
+### Recommendation
+Keep code lifecycle explicit: limits, expiry, permission gates, and claim status visibility.
+
+---
+
+## `modules/replying-message/config.yml`
+### Function
+Interactive reply UX in chat.
+
+### Recommendation
+Validate behavior with PM toggles and ignore states.
+
+---
+
+## `modules/welcome-screen/config.yml`
+### Function
+Welcome screen/book onboarding flow.
+
+### Recommendation
+Keep the first-touch UX focused: quick intro, rules, support links.
+
+---
+
+# Validation Matrix (Production)
+:::warning[Pre-Deployment Checklist]
+- YAML syntax valid (spaces only, no tabs).
+- Module enable states match intended behavior.
+- Command tests:
+  - `/fiochat help`
+  - `/fiochat admin help`
+  - `/toggle ...`
+  - `/report ...`
+  - `/mailbox`
+  - `/channel`
+- Role tests:
+  - default player
+  - moderator
+  - admin
+- Platform tests:
+  - Java account
+  - Bedrock account (if Geyser/Floodgate enabled)
+:::
+
+:::tip[Change Management]
+Deploy configuration changes in narrow slices:
+- 1 to 2 modules per change window,
+- verify,
+- then continue.
+:::
+

@@ -1,0 +1,137 @@
+﻿---
+title: Developer API
+sidebar_position: 5
+---
+
+# Developer API
+
+- `com.itzfabb.fiochat.api.FioChatApi`
+- `com.itzfabb.fiochat.api.FioChatApiProvider`
+- `com.itzfabb.fiochat.api.JoinQuitApi`
+
+The current public FioChat API is intentionally small. The source does not expose a huge general-purpose control API for every feature family. Instead, the current public surface focuses on one provider and one JoinQuit integration entry point.
+
+## Public API types
+
+The current source exposes these public types:
+
+- `FioChatApi`
+- `FioChatApiProvider`
+- `JoinQuitApi`
+
+## `FioChatApi`
+
+Current interface:
+
+```java
+public interface FioChatApi {
+    String version();
+
+    JoinQuitApi joinQuit();
+}
+```
+
+Explanation:
+
+- `version()` returns the API or plugin version string from the active implementation
+- `joinQuit()` exposes the public JoinQuit integration surface
+
+## `FioChatApiProvider`
+
+Current provider class:
+
+```java
+public final class FioChatApiProvider {
+    public static FioChatApi get();
+    public static boolean available();
+    public static void set(FioChatApi instance);
+}
+```
+
+Explanation:
+
+- `get()` returns the current published API instance
+- `available()` is the safe way to check if FioChat has already published an API instance
+- `set(...)` is used by FioChat internally to publish the active API
+
+The provider stores the current API instance in a static field, so integrations should always null-check or call `available()` first.
+
+## `JoinQuitApi`
+
+Current public interface:
+
+```java
+public interface JoinQuitApi {
+    boolean enabled();
+    void openJoinMenu(Player player);
+    void openQuitMenu(Player player);
+    List<String> availableJoinPresets(Player player);
+    List<String> availableQuitPresets(Player player);
+    String selectedJoinPreset(Player player);
+    String selectedQuitPreset(Player player);
+    boolean selectJoinPreset(Player player, String presetId);
+    boolean selectQuitPreset(Player player, String presetId);
+}
+```
+
+What this current API supports:
+
+- checking whether the JoinQuit module is enabled
+- opening the join menu
+- opening the quit menu
+- listing join presets available to a player
+- listing quit presets available to a player
+- reading the selected join preset
+- reading the selected quit preset
+- selecting a join preset by id
+- selecting a quit preset by id
+
+## Practical interpretation
+
+This API is not a broad chat-control API. In the current source, the public integration goal is much narrower:
+
+1. expose the plugin version
+2. expose a provider singleton
+3. expose JoinQuit preset integration
+
+That means older assumptions about a wider public API would not match the current source tree.
+
+## Minimal usage example
+
+```java
+import com.itzfabb.fiochat.api.FioChatApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+import com.itzfabb.fiochat.api.JoinQuitApi;
+import org.bukkit.entity.Player;
+
+public void openJoinPresetMenu(Player player) {
+    if (!FioChatApiProvider.available()) {
+        return;
+    }
+
+    FioChatApi api = FioChatApiProvider.get();
+    if (api == null) {
+        return;
+    }
+
+    JoinQuitApi joinQuit = api.joinQuit();
+    if (joinQuit != null && joinQuit.enabled()) {
+        joinQuit.openJoinMenu(player);
+    }
+}
+```
+
+## Soft dependency suggestion
+
+If another plugin integrates with FioChat, the safe plugin-side setup is:
+
+```yaml
+softdepend:
+  - FioChat
+```
+
+Then resolve the provider after plugin startup and check `FioChatApiProvider.available()` before using the API.
+
+:::info[Page note]
+This page matches the current public API classes in the source. The exposed API is intentionally focused and should not be documented as if it covered every internal module.
+:::

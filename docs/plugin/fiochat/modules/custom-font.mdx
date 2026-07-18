@@ -1,0 +1,573 @@
+---
+title: Config
+sidebar_position: 11
+---
+
+# Custom Font Config
+
+Source file:
+
+```text
+modules/chat/Custom Fonts/config.yml
+```
+
+Custom Font lets players select a chat text transform. The selected font is saved per player, then applied to normal chat messages when the Custom Font chat listener handles the chat event.
+
+Related files:
+
+```text
+modules/chat/Custom Fonts/config.yml
+modules/chat/Custom Fonts/gui/menu.yml
+```
+
+Runtime player selections are stored in:
+
+```text
+modules/chat/Custom Fonts/players.yml
+```
+
+If database storage is enabled, selections are stored in the `custom-font.players` database namespace instead.
+
+## Module toggle
+
+The module is enabled from the global module settings file:
+
+```yaml
+modules:
+  custom-font: true
+```
+
+When `modules.custom-font` is `false`, `/fonts` is unavailable, the selector listener is not active, the chat listener is not active, and saved selections are cleared from the service's runtime memory until the module is enabled again.
+
+## Commands
+
+The standalone command is:
+
+```text
+/fonts [font]
+```
+
+The command alias is:
+
+```text
+/font [font]
+```
+
+The FioChat command route also supports the fonts command from the main command system.
+
+When no font argument is provided, the selector menu opens. When a font key is provided, the service tries to select that font directly.
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.fonts.use` | Base permission for the Custom Font selector and font selection. |
+| `fiochat.fonts.default` | Allows selecting the default font. |
+| `fiochat.fonts.bubble` | Allows selecting the bubble font. |
+| `fiochat.fonts.small_caps` | Allows selecting the small caps font. |
+| `fiochat.fonts.antrophobia` | Allows selecting the antrophobia font. |
+| `fiochat.fonts.upside_down` | Allows selecting the upside-down font. |
+| `fiochat.fonts.latin_1` | Allows selecting the Latin 1 font. |
+| `fiochat.fonts.latin_2` | Allows selecting the Latin 2 font. |
+
+`fiochat.fonts.use` allows opening the Custom Font selector and selecting fonts. In the current `plugin.yml`, its default is `false`, so players need the permission granted before they can use the module.
+
+Each font can also have its own permission through the `fiochat.fonts.<font>` pattern.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls module debug entries. The service reports reload state, including whether the module is enabled, how many fonts were loaded, and which font is currently the default.
+
+Use this only while checking configuration loading or troubleshooting a font selection issue.
+
+## `settings.default-font`
+
+```yaml
+settings:
+  default-font: "default"
+```
+
+`default-font` is the font key used when a player has no saved custom selection.
+
+When a player selects the default font, the service removes that player's saved entry instead of writing `default` into `players.yml`. That keeps storage focused on players who changed away from the default.
+
+If the configured default key is blank or does not exist in the loaded `fonts` section, the service falls back to the first loaded font. If no fonts exist, it falls back to the literal key `default`.
+
+## `settings.permissions.per-font-pattern`
+
+```yaml
+settings:
+  permissions:
+    per-font-pattern: "fiochat.fonts.{font}"
+```
+
+This pattern is used when a font's own permission resolves through a font placeholder.
+
+Supported placeholders:
+
+```text
+{font}
+%font%
+<font>
+```
+
+For example, the current font entries use:
+
+```yaml
+permission: "fiochat.fonts.<font>"
+```
+
+For `bubble`, that resolves to:
+
+```text
+fiochat.fonts.bubble
+```
+
+If a font permission is empty, that font does not require a per-font permission, but the player still needs `fiochat.fonts.use`.
+
+## Font entry structure
+
+Each key under `fonts` is a selectable font id:
+
+```yaml
+fonts:
+  bubble:
+    enabled: true
+    permission: "fiochat.fonts.<font>"
+    mode: "replace"
+    replace-map:
+      a: "\u24D0"
+```
+
+The font id is used by commands, saved player selections, GUI actions, placeholders, and permission generation. Do not rename a font key casually after players have selected it, because saved selections point to the key.
+
+## `fonts.<font>.enabled`
+
+```yaml
+fonts:
+  bubble:
+    enabled: true
+```
+
+When `true`, the font is loaded.
+
+When `false`, the font is ignored. Disabled fonts do not appear in the selector, are not offered in tab completion, and invalid saved selections pointing to disabled fonts are pruned.
+
+## `fonts.<font>.permission`
+
+```yaml
+fonts:
+  bubble:
+    permission: "fiochat.fonts.<font>"
+```
+
+This is the permission needed to select that font.
+
+The service resolves placeholders in the permission string using the font key. The final permission is also included in the dynamic permission node set exposed by FioChat.
+
+## `fonts.<font>.mode`
+
+```yaml
+fonts:
+  bubble:
+    mode: "replace"
+```
+
+`mode` decides how chat text is transformed.
+
+Supported modes:
+
+```text
+none
+replace
+replace-map
+replace_map
+smallfont
+small-font
+small_font
+fullwidth
+full-width
+full_width
+```
+
+`none` leaves the message unchanged unless the font also defines a non-empty `format`.
+
+`replace`, `replace-map`, and `replace_map` use `replace-map`.
+
+`smallfont`, `small-font`, and `small_font` wrap the message in FioChat smallfont syntax.
+
+`fullwidth`, `full-width`, and `full_width` converts visible ASCII characters into fullwidth Unicode characters while preserving spaces.
+
+## `fonts.<font>.format`
+
+```yaml
+fonts:
+  custom:
+    mode: "none"
+    format: "[%message%]"
+```
+
+`format` is optional. If it is non-empty, the service uses it before mode transformation and replaces `%message%` with the original chat message.
+
+The current source fonts do not use `format`, but the service supports it.
+
+## `fonts.<font>.replace-map`
+
+```yaml
+fonts:
+  bubble:
+    replace-map:
+      a: "\u24D0"
+      b: "\u24D1"
+```
+
+`replace-map` maps individual characters to replacement strings.
+
+The service reads the first character of each map key. During replacement, it first checks the exact character, then checks the lowercase version of that character. Characters not present in the map are left unchanged.
+
+This means an uppercase `A` can still use the lowercase `a` mapping if there is no explicit uppercase `A` mapping.
+
+## Current default fonts
+
+### `default`
+
+```yaml
+default:
+  enabled: true
+  permission: "fiochat.fonts.<font>"
+  mode: "none"
+```
+
+`default` is enabled, requires `fiochat.fonts.default`, and does not change the chat message. Selecting it removes the player's saved custom selection because it matches `settings.default-font`.
+
+### `bubble`
+
+`bubble` uses `mode: "replace"` and maps `a` through `z` to circled Unicode letters.
+
+This is a pure character replacement font. Characters outside the configured map remain unchanged.
+
+### `small_caps`
+
+`small_caps` uses `mode: "replace"` and maps many lowercase letters to small-cap Unicode variants.
+
+Some letters intentionally remain normal because the source map does not provide a decorative replacement for every character.
+
+### `antrophobia`
+
+`antrophobia` uses `mode: "replace"` and maps letters to a mixed decorative set using Greek, Cyrillic, Hebrew, and symbol-like replacements.
+
+Any key missing from the map stays as the original typed character.
+
+### `upside_down`
+
+`upside_down` uses `mode: "replace"` and maps letters to upside-down-looking variants where available.
+
+This mode does not reverse the message order. It replaces characters in place.
+
+### `latin_1`
+
+`latin_1` uses `mode: "replace"` and maps letters to the first decorative Latin-style set in the source config.
+
+It mixes normal letters with stylized replacements depending on what the source map defines.
+
+### `latin_2`
+
+`latin_2` uses `mode: "replace"` and maps letters to the second decorative Latin-style set in the source config.
+
+Like `latin_1`, it only changes characters that exist in the map.
+
+## Chat transform behavior
+
+The Custom Font chat listener runs on `AsyncPlayerChatEvent` at `MONITOR` priority and ignores cancelled chat events.
+
+When the selected font changes the message, the listener replaces the event message with the transformed text.
+
+Before accepting the transformed text, the service checks the outgoing chat policy through the chat format service. If the transformed text is not allowed by active chat policies, the original message is kept.
+
+Resource-pack tokens are preserved when configured by the core plugin. The service protects tokens such as glyph, image, shift, and colon-style resource pack tokens from being converted by the font transform.
+
+Item-display replacements are also protected. FioChat wraps item-display text with internal protection tokens so a replacement such as an item name and amount can stay readable while the rest of the chat message uses the selected font.
+
+## Menu file
+
+The selector GUI is configured in:
+
+```text
+modules/chat/Custom Fonts/gui/menu.yml
+```
+
+The service reads the GUI root from `menus`.
+
+## `menus.title`
+
+```yaml
+menus:
+  title: "<dark_gray>Chat Fonts</dark_gray>"
+```
+
+This is the inventory title shown when the selector opens.
+
+## `menus.rows`
+
+```yaml
+menus:
+  rows: 6
+```
+
+`rows` controls the inventory height. The service clamps this value from `1` to `6`.
+
+## `menus.settings.selected.glow`
+
+```yaml
+menus:
+  settings:
+    selected:
+      glow: true
+```
+
+When `true`, the selected font item receives the selected visual treatment. The service adds enchant-hide metadata for selected items when possible.
+
+## `menus.settings.selected.lore.selected`
+
+```yaml
+lore:
+  selected:
+    - "<green>Selected</green>"
+```
+
+These lore lines are appended when the font is currently selected by the player.
+
+## `menus.settings.selected.lore.available`
+
+```yaml
+lore:
+  available:
+    - "<yellow>Click to select</yellow>"
+```
+
+The service uses the first available lore line as the availability indicator appended to unlocked, unselected font items.
+
+## `menus.settings.selected.lore.locked`
+
+```yaml
+lore:
+  locked:
+    - "<red>No permission</red>"
+```
+
+These lore lines are appended when the viewer can see the font item but cannot select it because they do not have the required permission.
+
+## `menus.settings.selected.lore.fontRendered`
+
+```yaml
+lore:
+  fontRendered:
+    - "Dummy Lorem Ipsum"
+```
+
+This text is transformed through the font and inserted into font item lore through `%fontRendered%`.
+
+It is the preview text used to show what the font looks like before the player selects it.
+
+## `menus.decorations`
+
+```yaml
+menus:
+  decorations:
+    BLACK_GLASS:
+      slots:
+        - "45-53"
+      material: BLACK_STAINED_GLASS_PANE
+      hide_tooltip: true
+```
+
+Each decoration entry fills exact slots or slot ranges with a decorative item.
+
+`slots` supports ranges such as `45-53`.
+
+`material` is the Bukkit material.
+
+`name` and `lore` can be added when a decoration needs visible text.
+
+`texture` can be used with player-head materials.
+
+`hide_tooltip` hides the default tooltip when supported.
+
+The current source uses black glass for the bottom row and gray glass for the top row.
+
+## `menus.items.fonts.<font>.slot`
+
+```yaml
+menus:
+  items:
+    fonts:
+      bubble:
+        slot: 10
+```
+
+`slot` decides where the font appears in the selector inventory. If multiple configured items use the same slot, the later loaded entry replaces the slot mapping.
+
+## `menus.items.fonts.<font>.display-name`
+
+```yaml
+display-name: "<light_purple>Bubble Font</light_purple>"
+```
+
+`display-name` is the human-readable font name used by the service for display and messages.
+
+## `menus.items.fonts.<font>.show-if-no-permission`
+
+```yaml
+show-if-no-permission: true
+```
+
+When `true`, the item is still visible to players who do not have that font's permission. The item will show the locked lore and selection will fail.
+
+When `false`, players without permission do not see that font item in the selector.
+
+## `menus.items.fonts.<font>.material`
+
+```yaml
+material: FIREWORK_STAR
+```
+
+This is the Bukkit material used for the selector item.
+
+## `menus.items.fonts.<font>.texture`
+
+`texture` is optional. When the material is `PLAYER_HEAD` and texture is not empty, the service applies that custom skull texture.
+
+## `menus.items.fonts.<font>.hide_tooltip`
+
+`hide_tooltip` is optional. When `true`, the service hides the default item tooltip where supported.
+
+## `menus.items.fonts.<font>.name`
+
+```yaml
+name: "<light_purple>Bubble Font</light_purple>"
+```
+
+This is the actual item display name shown in the selector.
+
+## `menus.items.fonts.<font>.lore`
+
+```yaml
+lore:
+  - "<gray>Example Font:</gray>"
+  - "<white>%fontRendered%</white>"
+```
+
+Font lore supports:
+
+```text
+%font_name%
+%font_key%
+%fontRendered%
+```
+
+`%fontRendered%` is replaced with the configured preview text after applying that font's transform.
+
+## `menus.items.fonts.<font>.actions`
+
+```yaml
+actions:
+  any:
+    - "[CUSTOM_FONT] bubble"
+    - "[SOUND] ENTITY_BAT_TAKEOFF 1 2 master"
+```
+
+Actions are resolved by click type. `any` applies to any click unless a click-specific action list overrides it.
+
+`[CUSTOM_FONT] <font>` selects the target font.
+
+`[SOUND] ...` plays the configured sound action.
+
+The menu action system also supports:
+
+```text
+[CLOSE]
+[MESSAGE] <text>
+[ACTIONBAR] <text>
+[TITLE] <title||subtitle||fadeIn||stay||fadeOut>
+[CONSOLE] <command>
+[PLAYER] <command>
+```
+
+Action placeholders include:
+
+```text
+%player%
+%font_key%
+%font%
+%font_name%
+%font_display%
+%selected_font_key%
+%selected_font_name%
+```
+
+## Current selector items
+
+The current source places the font items in these slots:
+
+```text
+default = 9
+bubble = 10
+small_caps = 11
+antrophobia = 12
+upside_down = 13
+latin_1 = 14
+latin_2 = 15
+```
+
+Every current font item uses `show-if-no-permission: true`, so locked fonts still appear with locked lore.
+
+## `menus.items.buttons.close`
+
+```yaml
+menus:
+  items:
+    buttons:
+      close:
+        slot: 49
+        material: BARRIER
+        name: "<red>Close</red>"
+        actions:
+          any:
+            - "[CLOSE]"
+            - "[SOUND] BLOCK_SHULKER_BOX_CLOSE 1 2 master"
+```
+
+The close button is loaded as a menu button instead of a font item.
+
+Its slot is added to the same slot map as the fonts, with an internal button key. When clicked, `[CLOSE]` closes the inventory and the configured sound action plays.
+
+## Language message overrides
+
+Custom Font command feedback is provided through:
+
+```text
+overrides.modules.custom-font.messages
+```
+
+The service reads these message keys after language overrides are applied:
+
+```text
+messages.feature-disabled
+messages.players-only
+messages.no-permission
+messages.font-selected
+messages.font-already-selected
+messages.font-unknown
+messages.font-no-permission
+```
+
+These messages are command and selection feedback. They do not define the font transform itself.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

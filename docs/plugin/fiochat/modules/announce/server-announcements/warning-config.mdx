@@ -1,0 +1,149 @@
+---
+title: Config
+---
+
+# Warning Config
+
+Source file:
+
+```text
+modules/announce/Server Announcements/warning.yml
+```
+
+This page explains the dedicated `warning` typed announcement. It is used by `/warning <message>` and `/fiochat admin warning <message>`. The admin command requires `fiochat.admin.warning` or the parent admin permission. Receivers still need `fiochat.announcement.use`, and the Server Announcements module must be enabled through `modules.announcements`.
+
+Dedicated typed files override same-named entries from `admin-announcements` in `announce.yml`. If `warning.yml` provides a valid `warning` section, that section is loaded as the `warning` type.
+
+## `warning.enabled`
+
+`warning.enabled` controls whether the warning type can be delivered. The current value is `true`.
+
+When false, the entry loads as disabled and the service refuses to broadcast it. This does not disable the whole announcement module and does not change the broadcast or alerts typed styles.
+
+## `warning.message.enabled`
+
+`warning.message.enabled` controls the normal chat message channel. The current value is `true`.
+
+If true, the warning sends the lines under `warning.message.lines`. If false, the warning can still use enabled actionbar, title, bossbar, toast, or sound channels.
+
+## `warning.message.lines`
+
+`warning.message.lines` defines the chat layout for warning announcements. The current default sends an empty spacer line, a centered orange `Attention Required` heading, a centered `%message%` line, and another spacer line.
+
+`%message%` is replaced with the text supplied through the command. Typed announcements also provide `%type%`, `%announcement_type%`, `%announcement_message%`, `%announce_message%`, and `%admin_announcement_message%`.
+
+## `warning.actionbar.enabled`
+
+`warning.actionbar.enabled` decides whether the warning appears above the hotbar. The current value is `false`.
+
+When enabled, this visual channel uses `warning.actionbar.text`. It is still controlled by the receiver's announcement message toggle, so players who disabled announcement messages will not see it.
+
+## `warning.actionbar.text`
+
+`warning.actionbar.text` is the hotbar text. The current value is `<#FF8A65>%message%</#FF8A65>`.
+
+This field should stay short because actionbar text is a single-line display. It supports FioChat color formatting and typed placeholders.
+
+## `warning.title.enabled`
+
+`warning.title.enabled` decides whether the warning sends a Minecraft title. The current value is `true`.
+
+This makes warnings more intrusive than normal broadcasts. The title display is a visual channel, so player message toggles can hide it.
+
+## `warning.title.title`
+
+`warning.title.title` is the large center-screen title. The current value is `<#FF8A65>Warning</#FF8A65>`.
+
+Use this as the fixed category label. The specific warning text is currently placed in the subtitle.
+
+## `warning.title.subtitle`
+
+`warning.title.subtitle` is the smaller line under the title. The current value is `<white>%message%</white>`.
+
+Because this line contains `%message%`, it changes for every command invocation.
+
+## `warning.title.fade-in`
+
+`warning.title.fade-in` controls the title fade-in duration in ticks. The current value is `5`.
+
+At 20 ticks per second, this is a quarter-second fade-in.
+
+## `warning.title.stay`
+
+`warning.title.stay` controls how long the warning title remains fully visible. The current value is `45`, or 2.25 seconds.
+
+This duration only affects the title channel.
+
+## `warning.title.fade-out`
+
+`warning.title.fade-out` controls the title fade-out duration in ticks. The current value is `10`, or half a second.
+
+## `warning.bossbar.enabled`
+
+`warning.bossbar.enabled` decides whether a warning bossbar is shown. The current value is `false`.
+
+When true, the service shows the bossbar to eligible recipients and removes it after `warning.bossbar.seconds`.
+
+## `warning.bossbar.title`
+
+`warning.bossbar.title` is the text inside the bossbar. The current value is `<#FF8A65>%message%</#FF8A65>`.
+
+It supports typed placeholders and FioChat formatting.
+
+## `warning.bossbar.color`
+
+`warning.bossbar.color` controls the Bukkit bossbar color. The current value is `RED`.
+
+Invalid values fall back to `BLUE` in the service parser.
+
+## `warning.bossbar.style`
+
+`warning.bossbar.style` controls the Bukkit bossbar style. The current value is `SOLID`.
+
+Invalid values fall back to `SOLID`.
+
+## `warning.bossbar.progress`
+
+`warning.bossbar.progress` controls the filled bossbar amount. The current value is `1.0`.
+
+FioChat clamps this value between `0.0` and `1.0`.
+
+## `warning.bossbar.seconds`
+
+`warning.bossbar.seconds` controls how long the bossbar stays visible. The current value is `5`.
+
+The service enforces a minimum duration of one second when loading the profile.
+
+## `warning.sound.enabled`
+
+`warning.sound.enabled` controls whether the warning sound plays. The current value is `true`.
+
+This is controlled by the player's announcement sound toggle, separate from visual message toggles.
+
+## `warning.sound.name`
+
+`warning.sound.name` is the Bukkit sound id. The current value is `BLOCK_NOTE_BLOCK_BELL`.
+
+If the compatibility resolver cannot find the sound, no sound is played.
+
+## `warning.sound.volume`
+
+`warning.sound.volume` is passed to Bukkit as the playback volume. The current value is `1.0`.
+
+## `warning.sound.pitch`
+
+`warning.sound.pitch` is passed to Bukkit as the playback pitch. The current value is `0.9`, making it slightly lower than normal pitch.
+
+## Rich quick warning arguments
+
+The admin quick command also supports rich tagged arguments:
+
+```text
+/fiochat admin warning m:<message> t:<title> s:<subtitle> a:<actionbar> b:<bossbar;COLOR;STYLE;VALUE>
+```
+
+When a message is supplied through `m:`, FioChat sends the typed warning defined in this file. The extra `t:`, `s:`, `a:`, and `b:` parts are sent directly as additional live title, subtitle, actionbar, or temporary bossbar broadcasts.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

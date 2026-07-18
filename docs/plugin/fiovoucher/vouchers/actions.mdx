@@ -1,0 +1,29 @@
+---
+title: Actions
+---
+
+# Actions
+
+Voucher file actions are bracketed commands executed after a claim result.
+
+Supported action ids in the source:
+
+- `[MESSAGE]`
+- `[SOUND]`
+- `[CONSOLE]`
+- `[ITEM]`
+- `[EXP_LEVELS]`
+- `[EXP_POINTS]`
+- `[ACTIONBAR]`
+- `[TITLE]`
+- `[SUBTITLE]`
+
+Example:
+
+```yaml
+actions:
+  - "[MESSAGE] <gray>You got the reward.</gray>"
+  - "[CONSOLE] eco give %player_name% 1000"
+  - "[ITEM] DIAMOND 3"
+```
+

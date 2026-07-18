@@ -1,0 +1,67 @@
+﻿---
+title: Prompts
+sidebar_position: 6
+---
+
+# Prompts
+
+FioMenu includes prompt-style input examples for cases where a click should collect text from the player instead of only running a fixed command.
+
+## Chat prompt example
+
+`chat_prompt_ex.yml` shows a chat-based prompt action:
+
+```text
+[CPROMPT] [MESSAGE=&7Type in your new nickname, Type &cexit&7 to exit the prompt] [CANCEL_KW=cancel, exit] [REOPEN=true] [COMMAND_EXECUTION=/nick %fiomenuValue%]
+```
+
+What this does:
+
+- opens a chat prompt
+- sends an instruction message
+- accepts cancel keywords
+- reopens the menu afterward
+- inserts the typed value into `%fiomenuValue%`
+
+Use this when the target action is naturally text-driven, such as nickname entry or search input.
+
+## Anvil prompt example
+
+`anvil_prompt_ex.yml` shows a structured anvil prompt flow with both visual prompt configuration and the execution action.
+
+The item defines:
+
+```yaml
+anvil_prompt:
+  material:
+  name:
+  lore:
+  anvil_placeholder:
+```
+
+and then the click action uses:
+
+```text
+[APROMPT] [REOPEN=true] [FORMAT=false] [COMMAND_EXECUTION=/pets rename %fiomenuValue%]
+```
+
+This pattern is useful when the player should type inside an anvil-style rename interface rather than the normal chat line.
+
+## Shared prompt behavior
+
+The two bundled examples make these design patterns clear:
+
+- prompt entry starts from a normal menu item click
+- the entered text is exposed as `%fiomenuValue%`
+- reopening the parent menu is controlled directly from the action arguments
+- the final command is still declared in YAML, not hardcoded in Java
+
+## When to use prompts
+
+Use prompts when a menu needs user input such as:
+
+- nickname text
+- rename flows
+- custom command arguments
+- search strings
+- one-line player input

@@ -1,0 +1,347 @@
+﻿---
+title: Options & Configuration
+sidebar_position: 4
+---
+
+# Options & Configuration
+
+FioChat uses one root config for global behavior and one module switchboard for enabling or disabling feature families. After that, each enabled module reads its own YAML files under the `modules/` tree.
+
+## Root files
+
+The current root configuration surface is:
+
+```text
+plugins/FioChat/
+  config.yml
+  modules/
+    settings.yml
+```
+
+## Root `config.yml`
+
+The current root config controls:
+
+- prefix formatting
+- language selection
+- player locale detection
+- database settings
+- command aliases
+- spy auto-enable behavior
+- player action logger
+- Geyser or Floodgate Bedrock prefix handling
+
+### Prefix block
+
+```yaml
+prefix:
+  enabled: true
+  format: '<dark_gray>[</dark_gray><gradient:#7289da:#9966cc>FioChat</gradient><dark_gray>]</dark_gray>'
+```
+
+Explanation:
+
+- `enabled` decides whether the plugin prefix is injected into plugin messages
+- `format` uses MiniMessage formatting
+- the source comments also document `[prefix="false"]` as a per-message opt-out directive
+
+### Language block
+
+```yaml
+language:
+  current: "en"
+  detection_player_language: true
+```
+
+Explanation:
+
+- `current` is the active default language
+- `detection_player_language: true` lets command, help, and language-pack messages follow the player's locale when supported
+- the source comments document built-in ids such as `en`, `ch`, `id`, and `jp`
+
+### Database block
+
+```yaml
+database:
+  type: "yaml"
+  table: "fiochat_store"
+
+  sqlite:
+    file: "storage/fiochat.db"
+
+  mysql:
+    host: "127.0.0.1"
+    port: 3306
+    database: "fiochat"
+    username: "root"
+    password: "change-me"
+    parameters: "useSSL=false&characterEncoding=utf8&serverTimezone=UTC"
+    table: "fiochat_store"
+
+  options:
+    log-failures: true
+```
+
+Explanation:
+
+- `type` supports `yaml`, `sqlite`, and `mysql`
+- the source comments explicitly say failed driver or connection setups fall back to YAML
+- `table` controls the storage table name used by database-backed modes
+- `sqlite.file` is the local database path
+- `mysql.parameters` appends JDBC query options
+- `options.log-failures` controls storage failure logging
+
+### Command aliases block
+
+```yaml
+command-aliases:
+  player:
+    fiochat:
+      alias:
+        - "fc"
+        - "chat"
+        - "fchat"
+    fonts:
+      alias:
+        - "font"
+    quickchat:
+      alias:
+        - "qc"
+  admin:
+    code:
+      alias:
+        - "codes"
+    setlang:
+      alias:
+        - "language"
+```
+
+Explanation:
+
+- this file does not only document aliases, it stores them in runtime config
+- `player` contains normal command alias routes
+- `admin` contains aliases for admin subcommands under `/fiochat admin`
+- this structure is more detailed than the static alias list in `plugin.yml`
+
+## Module switchboard
+
+The current `modules/settings.yml` is the master feature toggle file.
+
+### Example structure
+
+```yaml
+modules:
+  emojis: true
+  server-motd: true
+  player-motd: true
+  chat-channels: true
+  mutechat: true
+  mentions: true
+  messages: true
+  announcements: true
+  reports: true
+  afk: true
+  ignore: true
+  joinquit: true
+  giveaway: true
+  redeem-code: true
+  loginstreak: true
+```
+
+Explanation:
+
+- each entry here acts as a master switch for a feature family
+- disabling a module here prevents its feature from driving runtime behavior
+- the nested config files may still exist, but the module is no longer active until re-enabled
+
+### Sub-settings groups
+
+Some module families use nested sub-settings instead of a flat boolean.
+
+Current examples:
+
+```yaml
+modules:
+  tab:
+    enabled: true
+    sub-settings:
+      tab: true
+      nametag: true
+      scoreboard: true
+      bossbar: true
+
+  chat-management:
+    enabled: true
+    sub-settings:
+      cooldown: true
+      flood: true
+      antiunicode: true
+      antibot: true
+      antirepeat: true
+      warn-points: true
+      grammar: true
+      anti-caps: true
+      clear-chat: true
+      antiswear: true
+      anti-adv: true
+
+  region:
+    enabled: true
+    sub-settings:
+      music: true
+      particle: true
+```
+
+Explanation:
+
+- `tab` is the master group for scoreboard, bossbar, tab, and nametag systems
+- `chat-management` is the master group for anti-spam and moderation helpers
+- `region` controls the region music and region particle systems
+
+## Current source tree
+
+The current `src/main/resources/modules` tree includes these real module families:
+
+```text
+modules/chat/
+modules/announce/
+modules/moderation/
+modules/display/
+modules/rewards/
+modules/alerts/
+modules/commands/
+```
+
+### `modules/chat/`
+
+Current chat-family files include:
+
+- `Bot Replying/config.yml`
+- `Chat Channels/config.yml`
+- `Chat Color/config.yml`
+- `Chat Formats/config.yml`
+- `Chat History/config.yml`
+- `Chat Per World/config.yml`
+- `Chat Radius/config.yml`
+- `Custom Fonts/config.yml`
+- `Emojis/config.yml`
+- `Moderations/config.yml`
+- `Player Mentions/config.yml`
+- `Player Reply Msg/config.yml`
+- `Private Message/config.yml`
+- `Quick Chat/config.yml`
+
+### `modules/announce/`
+
+Current announcement-family files include:
+
+- `Advancements/config.yml`
+- `Away from Keyboard/config.yml`
+- `Away from Keyboard/gui/afk-history.yml`
+- `Biome Discovery/config.yml`
+- `Biome Discovery/biome.json`
+- `Custom Death Msg/config.yml`
+- `Custom Death Msg/custom-death-messages.yml`
+- `Custom Death Msg/items_en.json`
+- `Custom Death Msg/mobs_en.json`
+- `Custom Join Quit Msg/config.yml`
+- `Custom Join Quit Msg/particles.yml`
+- `Custom Join Quit Msg/sound.yml`
+- `Custom Join Quit Msg/styles.yml`
+- `Days Counter/config.yml`
+- `Mailbox/config.yml`
+- `Mailbox/gui/*.yml`
+- `Message of the Day/motd.yml`
+- `Message of the Day/placeholder.yml`
+- `Mute Chat/config.yml`
+- `Server Announcements/announce.yml`
+- `Server Announcements/alerts.yml`
+- `Server Announcements/broadcast.yml`
+- `Server Announcements/placeholder.yml`
+- `Server Announcements/warning.yml`
+- `Welcome UI/config.yml`
+
+### `modules/moderation/`
+
+Current moderation-family files include:
+
+- `Player Reports/config.yml`
+- `Player Reports/gui/browser.yml`
+- `Player Reports/gui/confirmation.yml`
+- `Player Reports/gui/draft_report.yml`
+- `Player Reports/gui/review_report.yml`
+- `Player Reports/gui/type_browser.yml`
+- `Server Message of the Day/config.yml`
+- `Vanish/config.yml`
+
+### `modules/display/`
+
+Current display-family files include:
+
+- `Inventory See/config.yml`
+- `Item Display/config.yml`
+- `Item Display/item_en.json`
+- `Item Display/menu.yml`
+- `Item Drop Tag/config.yml`
+- `Regions/music/config.yml`
+- `Regions/particle/config.yml`
+- `Server Display Tag/display_tag.yml`
+- `Server Display Tag/animations.yml`
+- `Server Display Tag/data.yml`
+
+### `modules/rewards/`
+
+Current reward-family files include:
+
+- `Login Streak Rewards/config.yml`
+- `Login Streak Rewards/gui/menu.yml`
+- `Redeem Code/config.yml`
+
+### `modules/alerts/`
+
+Current alert-family files include:
+
+- `Giveaway/config.yml`
+- `Giveaway/gui/admin-editor.yml`
+- `Giveaway/gui/admin-mode.yml`
+- `Giveaway/gui/change_music.yml`
+- `Giveaway/gui/giveaway-editor.yml`
+- `Giveaway/gui/item-rewards.yml`
+- `Giveaway/gui/player-editor.yml`
+- `Inventory Full/config.yml`
+- `Server Auto Restart/config.yml`
+
+### `modules/commands/`
+
+Current command-family files include:
+
+- `Commands Hider/config.yml`
+- `Commands Schedule/config.yml`
+
+## Practical editing order
+
+If you are setting up a fresh server, the most stable reading order is:
+
+1. root `config.yml`
+2. `modules/settings.yml`
+3. chat modules
+4. announcement modules
+5. moderation modules
+6. display modules
+7. reward and alert modules
+
+## High-impact files
+
+These current files are especially important because they affect many player-facing systems:
+
+- `config.yml`
+- `modules/settings.yml`
+- `modules/chat/Moderations/config.yml`
+- `modules/display/Server Display Tag/display_tag.yml`
+- `modules/display/Server Display Tag/animations.yml`
+- `modules/announce/Custom Join Quit Msg/*.yml`
+- `modules/announce/Server Announcements/*.yml`
+
+:::info[Page note]
+This page follows the real FioChat resource tree from the current source and uses the actual grouped module structure instead of older flattened documentation paths.
+:::

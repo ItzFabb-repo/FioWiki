@@ -1,0 +1,21 @@
+---
+title: Permission Example
+---
+
+# Permission Example
+
+This pattern matches `permission_kit.yml`.
+
+```yaml
+settings:
+  redeem:
+    permissions:
+      whitelist:
+        enable: true
+        value: "fiovoucher.kit"
+        actions:
+          - "[MESSAGE] <gray>You don't have the <red>{value}</red> permission for this voucher.</gray>"
+```
+
+Use it when the voucher should only work for a permissioned group or role.
+

@@ -1,0 +1,181 @@
+﻿---
+title: Config
+sidebar_position: 24
+---
+
+# Messages Config
+
+Source file:
+
+```text
+modules/chat/Private Message/config.yml
+```
+
+:::warning[Important]
+Set privacy and target-validation rules first, then tune formatting and receive notifications.
+:::
+
+## Module Preview
+
+![Messages 1](../../../img/fiochat/Messages%201.png)
+![Messages 2](../../../img/fiochat/Messages%202.png)
+![Messages 3](../../../img/fiochat/Messages%203.png)
+
+## Configuration Files
+- `modules/chat/Private Message/config.yml`
+
+## Targeting and Privacy Rules
+
+### Self and Reply Behavior
+```yaml
+settings:
+  allow-message-self: false
+  reply-expiry-seconds: 300
+```
+- Purpose: Controls self-message policy and `/reply` memory window.
+- Options:
+  - `allow-message-self: false` prevents accidental self-PM spam.
+  - Increase `reply-expiry-seconds` for long-form conversations.
+
+### Availability and Visibility Filters
+```yaml
+settings:
+  block-vanished-targets: true
+  block-spectator-targets: true
+  hide-unavailable-target-names: true
+  vanish-respect-can-see: true
+```
+- Purpose: Prevents messaging unavailable/hidden players and avoids information leaks.
+- Options:
+  - Keep these enabled on moderated servers.
+
+## Message Format Pipeline
+
+Each block in `formats` defines:
+1. `structure`
+2. `player` segment
+3. `msg` segment
+4. optional hover/action behaviors
+
+### Sender Format
+```yaml
+formats:
+  sender:
+    structure: "<dark_gray>[</dark_gray>%player%<dark_gray>]</dark_gray> %msg%"
+    player:
+      format: "<yellow><smallfont:you></yellow> <dark_gray>-></dark_gray> <smallfont:%target%>"
+    msg:
+      format: "<dark_gray>></dark_gray> <white>%message%</white>"
+```
+- Purpose: Defines how outgoing private message appears to sender.
+
+### Target Format
+```yaml
+formats:
+  target:
+    structure: "<dark_gray>[</dark_gray>%player%<dark_gray>]</dark_gray> %msg%"
+    player:
+      format: "<smallfont:%sender%> <dark_gray>-></dark_gray> <yellow><smallfont:you></yellow>"
+    msg:
+      format: "<dark_gray>></dark_gray> <white>%message%</white>"
+```
+- Purpose: Defines how incoming private message appears to recipient.
+
+### Self Format
+```yaml
+formats:
+  self:
+    structure: "<dark_gray>[</dark_gray>%player%<dark_gray>]</dark_gray> %msg%"
+    player:
+      format: "<yellow><smallfont:you></yellow> <dark_gray>-></dark_gray> <yellow><smallfont:yourself></yellow>"
+    msg:
+      format: "<dark_gray>></dark_gray> <white>%message%</white>"
+```
+- Purpose: Defines loopback message style when self-messaging is enabled.
+
+## Interactive Actions
+
+### Suggest Reply / Report Actions
+```yaml
+player:
+  action:
+    suggest_command:
+      - "PLAYER_COMMAND:/msg %target% "
+msg:
+  action:
+    run_command:
+      - "PLAYER_COMMAND:/report %target% private-message"
+```
+- Purpose: Adds quick-action controls from PM lines.
+- Options:
+  - Keep report action consistent with moderation workflow.
+
+## On-Receive Notifications
+
+### Title Notification
+```yaml
+on-receive:
+  title:
+    enabled: true
+    title: "<gold>New Message</gold>"
+    subtitle: "<gray>From: <white>%sender%</white></gray>"
+    fade-in: 5
+    stay: 40
+    fade-out: 10
+```
+- Purpose: High-visibility PM alert.
+- Options:
+  - Lower `stay` for less intrusive display time.
+
+### Actionbar and Sound
+```yaml
+on-receive:
+  actionbar:
+    enabled: true
+    text: "<yellow>%sender%</yellow> <gray>messaged you.</gray>"
+  sound:
+    enabled: true
+    name: "ENTITY_EXPERIENCE_ORB_PICKUP"
+    volume: 1.0
+    pitch: 1.2
+```
+- Purpose: Lightweight PM awareness channels.
+- Options:
+  - Disable one channel if alerts feel redundant.
+
+## Recommended Profiles
+
+### Quiet PM Profile
+```yaml
+on-receive:
+  title:
+    enabled: false
+  actionbar:
+    enabled: true
+  sound:
+    enabled: false
+```
+- Result: Minimal-disruption notification style.
+
+### High-Attention PM Profile
+```yaml
+on-receive:
+  title:
+    enabled: true
+  actionbar:
+    enabled: true
+  sound:
+    enabled: true
+```
+- Result: Strong notification visibility for busy chats.
+
+:::note[Owner Validation]
+- Test `/msg` and `/reply` flow including expiry timeout.
+- Test vanished/spectator target restrictions.
+- Test sender/target/self format rendering with placeholders.
+- Test suggest/reply and report click actions.
+- Test receive notifications in dark/light/sunset themes.
+:::
+
+
+

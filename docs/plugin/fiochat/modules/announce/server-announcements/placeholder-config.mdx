@@ -1,0 +1,139 @@
+---
+title: Config
+---
+
+# Placeholder Config
+
+Source file:
+
+```text
+modules/announce/Server Announcements/placeholder.yml
+```
+
+This page explains the interactive placeholder file for Server Announcements. These placeholders are not PlaceholderAPI placeholders. They are FioChat tokens written as `{vote}`, `{kit}`, `{crossplay}`, and similar values inside announcement chat lines.
+
+Interactive placeholders apply to chat message components. They can show custom visible text, hover text, and one click action. They do not make actionbars, titles, bossbars, or sounds clickable.
+
+## `placeholders`
+
+`placeholders` is the root map. Every child key becomes the token id.
+
+For example, the `vote` child is used in announcement lines as `{vote}`. During loading, ids are normalized to lowercase, so `{Vote}` in text is matched by the regular expression but the configured id is stored as `vote`.
+
+The current defaults define `vote`, `kit`, `disposal`, `playtime`, `crossplay`, `discord`, `trade`, `settings`, and `webstore`.
+
+## `placeholders.<id>.format`
+
+`format` controls the visible text that replaces the token. The current defaults use small-font labels such as `<smallfont:vote>`, `<smallfont:kit>`, and `<smallfont:crossplay>`.
+
+This value supports FioChat announcement formatting and standard announcement placeholders. The visible text is inserted into the chat line before hover and click ranges are applied. If `format` is missing, FioChat uses the raw token text, such as `{vote}`.
+
+## `placeholders.<id>.hover.lines`
+
+`hover.lines` is the hover tooltip shown when the player points at the placeholder text in chat. The current defaults use one or two lines depending on the placeholder.
+
+The loader also accepts `hover` as a direct list fallback. Each hover line supports FioChat formatting and standard placeholders. Multiple lines are joined with newline characters before being converted into the hover component.
+
+## `placeholders.<id>.action`
+
+`action` defines what happens when the player clicks the placeholder. FioChat accepts one click action per placeholder, and the loader checks the supported action keys in this order: run command, suggest command, copy to clipboard, then open URL.
+
+If no supported action is found, the placeholder can still replace text and show hover text, but it will not click.
+
+## `action.run_command`
+
+`action.run_command` makes the player execute a command when clicked. The current defaults use it for `vote`, `kit`, `disposal`, `playtime`, `trade`, and `settings`.
+
+The current values are `/vote`, `/kit`, `/disposal`, `/playtime`, `/trade`, and `/settings`. Prefixes such as `PLAYER_COMMAND:`, `CONSOLE_COMMAND:`, `COMMAND:`, and `RUN_COMMAND:` are stripped if present, then the remaining command is trimmed.
+
+The loader also accepts `run-command` and `command` as aliases.
+
+## `action.suggest_command`
+
+`action.suggest_command` is supported even though the current default file does not use it.
+
+This action places text into the player's chat input instead of executing it. Prefixes such as `PLAYER_COMMAND:`, `CONSOLE_COMMAND:`, `COMMAND:`, and `SUGGEST_COMMAND:` are stripped if present. Unlike run command, the service preserves intentional right-side spacing and only removes leading whitespace before sending the click event.
+
+The loader also accepts `suggest-command`.
+
+## `action.copy_to_clipboard`
+
+`action.copy_to_clipboard` copies text to the player's clipboard. The current default uses it for `crossplay`, copying `play.sawit.com:19132`.
+
+This is useful for addresses, codes, and links that players may need outside chat. The value is trimmed after normal placeholder replacement. The loader also accepts `copy-to-clipboard` and `copy`.
+
+## `action.open_url`
+
+`action.open_url` opens a URL confirmation prompt for the player. The current defaults use it for `discord` and `webstore`.
+
+The current URL examples are `https://discord.gg/example` and `https://yourwebsite.com/store`. The value is trimmed after placeholder replacement. The loader also accepts `open-url` and `url`.
+
+## `vote`
+
+`vote` renders as `<smallfont:vote>`. Its hover explains that the server voting command is `/vote`, and its click action runs `/vote`.
+
+Use `{vote}` in `announce.yml` when the announcement should point players toward voting without requiring them to remember the command.
+
+## `kit`
+
+`kit` renders as `<smallfont:kit>`. Its hover points to starter kits, and its click action runs `/kit`.
+
+Use `{kit}` for onboarding or starter-help announcements.
+
+## `disposal`
+
+`disposal` renders as `<smallfont:disposal>`. Its hover explains that it clears unwanted inventory items, and its click action runs `/disposal`.
+
+Use `{disposal}` when announcements talk about inventory cleanup or long survival sessions.
+
+## `playtime`
+
+`playtime` renders as `<smallfont:playtime>`. Its hover explains that it checks activity stats, and its click action runs `/playtime`.
+
+Use `{playtime}` when an announcement should guide players toward progress or activity tracking.
+
+## `crossplay`
+
+`crossplay` renders as `<smallfont:crossplay>`. Its hover shows that it copies the Bedrock connection address and displays `play.sawit.com:19132`.
+
+Its click action copies `play.sawit.com:19132` to the clipboard. This is intentionally different from command placeholders because the target value is an address, not an in-game command.
+
+## `discord`
+
+`discord` renders as `<smallfont:discord>`. Its hover describes the community invite, and its click action opens `https://discord.gg/example`.
+
+Replace the URL before production use if that invite is only a placeholder for your server's real Discord invite.
+
+## `trade`
+
+`trade` renders as `<smallfont:trade>`. Its hover points to the protected trade menu, and its click action runs `/trade`.
+
+Use `{trade}` in announcements that explain safe trading or player-to-player exchange features.
+
+## `settings`
+
+`settings` renders as `<smallfont:settings>`. Its hover points to personal player settings, and its click action runs `/settings`.
+
+The current scheduled announcement `1` already uses `{settings}` beside `{kit}` and `{vote}`.
+
+## `webstore`
+
+`webstore` renders as `<smallfont:webstore>`. Its hover points to the official store website, and its click action opens `https://yourwebsite.com/store`.
+
+Replace the URL with the real store URL before using this placeholder in public announcements.
+
+## Behavior when a token is missing
+
+If an announcement line contains `{something}` and there is no matching placeholder id, the service leaves the original token text in the line.
+
+This makes unknown tokens visible during testing instead of silently deleting them. It also means typos in `announce.yml` are easy to spot in chat.
+
+## Discord relay behavior
+
+When an announcement is summarized for Discord, FioChat can collect interactive placeholders that use `open_url` and append those URLs to the relayed text.
+
+Command and clipboard placeholders are not appended as Discord links because they are not URLs. This is why `discord` and `webstore` can appear as links in a Discord relay summary, while `vote` or `kit` remain in-game actions only.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

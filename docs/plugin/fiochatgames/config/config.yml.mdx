@@ -1,0 +1,393 @@
+---
+title: config.yml
+sidebar_position: 1
+---
+
+# config.yml
+
+---
+File Location: `plugins\FioChatGames\config.yml`
+
+```yaml
+############################################################
+#                                                          #
+#                       FioChatGames                          #
+#               Advanced Configuration File                #
+#                                                          #
+#   Edit this file carefully. Changes require /cg reload  #
+#                                                          #
+############################################################
+
+
+############################################################
+#                         WORLDS                           #
+############################################################
+# Worlds where FioChatGames events cannot run.
+# Players inside these worlds will not receive events.
+disabled-worlds:
+  - "example_world"
+
+# If set to true, players can still manually start games
+# even while being inside a disabled world.
+allow_starting_from_disabled: false
+
+
+############################################################
+#                        BLACKLIST                         #
+############################################################
+# Players listed here cannot join FioChatGames events.
+# They are excluded from participation and auto-start checks.
+blacklist:
+  players:
+    - "Notch"
+    - "Mojang"
+    - "Microsoft"
+    - "Google"
+
+
+############################################################
+#                         LANGUAGE                         #
+############################################################
+# Language file located in /messages folder.
+# Example: lang_en.yml, lang_es.yml, lang_id.yml
+lang: "en"
+
+############################################################
+#                       RACE EVENT                         #
+############################################################
+# Players in these gamemodes cannot participate in Chat/Race events.
+blacklist-gamemodes:
+  - "SPECTATOR"
+  - "ADVENTURE"
+  - "CREATIVE"
+
+############################################################
+#                          DEBUG                           #
+############################################################
+# Master debug toggle used by the admin debug menu.
+debug:
+  mode: false
+
+############################################################
+#                    COMMAND ALIASES                       #
+############################################################
+# Editable in admin menu:
+# Main -> Command Aliasses -> User/Admin Aliasses
+command-aliases:
+  user:
+    help:
+      - "help"
+    toggle:
+      - "toggle"
+    current:
+      - "current"
+    leaderboard:
+      - "leaderboard"
+      - "top"
+    info:
+      - "info"
+    admin:
+      - "admin"
+
+  admin:
+    help:
+      - "help"
+    reload:
+      - "reload"
+    version:
+      - "version"
+      - "ver"
+    author:
+      - "author"
+    current:
+      - "current"
+    list:
+      - "list"
+    start:
+      - "start"
+    stop:
+      - "stop"
+    menu:
+      - "menu"
+    info:
+      - "info"
+    toggle:
+      - "toggle"
+    points:
+      - "points"
+    win:
+      - "win"
+    winstreak:
+      - "winstreak"
+    blacklist:
+      - "blacklist"
+
+
+############################################################
+#                    CHECK FOR UPDATES                     #
+############################################################
+# Checks for new versions and notifies staff.
+check-for-updates:
+  # Master toggle for update checking.
+  enabled: true
+############################################################
+#                    GAME REQUIREMENTS                     #
+############################################################
+# Minimum players online required for auto-start.
+requirements:
+  minimal:
+    online_players:
+      events: 1 # Event FioChatGames in order to start it requires 1 player
+      races: 5 # Races FioChatGames in order to start it requires 5 player
+    # This meants in order the event/races to get started
+    # there must be atleast 1 player/user online
+    time:
+      random:
+        enabled: false
+        minutes: "5-10"
+        # FioChatGames will set the game to be started at a random value
+        # Between value1-value2, this time is counted as minutes not second.
+      fixed:
+        enabled: true
+        minutes: "5"
+        # FioChatGames will set the game to begun always 5 minutes
+    guess:
+      TimeperSeconds:
+        default: 30 # Fallback default second if the game is not defined
+        game:
+        - 'FAST_TYPE:45'
+        - 'FILLOUT:50'
+        #- 'RACES;BREAK_RACE:100' # This option will override the default settings of "time_seconds: 100" in BREAK_RACE race type.
+        # If the gamemode is not defined FioChatGames will fallback to "guess.TimeperSeconds.default: 30"
+
+############################################################
+#                CHAT EVENT FULL DURATION                  #
+############################################################
+# If enabled, chat events (non-race) will keep running until timer ends
+# even after players answer correctly.
+#
+# During the running time, all correct players are recorded with their
+# completion time (first to last), then winner is decided at timeout.
+chat_event:
+  full_duration:
+    enabled: false
+    # Maximum number of correct players to record before ending the event early.
+    # Set <= 0 to disable this cap and keep running until timeout.
+    max_winner: 10
+
+    # Winner selection mode:
+    # FASTEST -> fastest recorded player wins
+    # RANDOM_CORRECT -> random winner from recorded correct players
+    winner_policy: "FASTEST"
+
+    # Broadcast ranking summary after event ends
+    announce_rankings: true
+
+    # Maximum ranking lines shown in chat summary
+    top_announce_count: 10
+
+# If enabled, players must have "fiochatgames.play"
+# permission in order to participate.
+use-permission-toplay: false
+
+
+############################################################
+#                     START MODES                          #
+############################################################
+# Available modes:
+#
+# RANDOM   - Picks a random enabled game
+# ROTATE   - Follows the order defined below
+# COMMANDS - Only starts via /fiochatgames admin start event/race <type>
+# SPECIFIC - Random from specific_games list
+# DISABLED - Completely disables all game starts
+#
+start_mode: "RANDOM"
+
+# Used only when start_mode = ROTATE
+rotate_order:
+  - "UNSCRAMBLE"
+  - "UNSHUFFLE"
+  - "UNREVERSE"
+  - "TRIVIA"
+  - "MATH"
+  - "FAST_TYPE"
+  - "REWRITE"
+  - "RANDOM"
+  - "FILLOUT"
+  - "REACTION"
+  - "VARIABLE"
+  - "RACE:BREAK"
+  - "RACE:BREEDING"
+  - "RACE:BREWING"
+  - "RACE:COMPOSTING"
+  - "RACE:CURING"
+  - "RACE:DEAL_DAMAGE"
+  - "RACE:HATCHING"
+  - "RACE:ITEM_DAMAGE"
+  - "RACE:ITEM_BREAKING"
+  - "RACE:PLACEHOLDERAPI"
+  - "RACE:PROJECTILE_LAUNCHING"
+  - "RACE:CARVE_PUMPKIN"
+  - "RACE:CONSUME"
+  - "RACE:CRAFT"
+  - "RACE:ENCHANT"
+  - "RACE:EXP_LEVELS"
+  - "RACE:EXP_POINTS"
+  - "RACE:FISHING"
+  - "RACE:HARVEST"
+  - "RACE:HUNT"
+  - "RACE:MILKING"
+  - "RACE:OBTAIN_ITEMS"
+  - "RACE:PLACE"
+  - "RACE:PLAYER_DEATH"
+  - "RACE:PLAYER_KILLS"
+  - "RACE:SHEAR"
+  - "RACE:SHOOT_AT_ENTITY"
+  - "RACE:SMITHING"
+  - "RACE:SMELT"
+  - "RACE:SPY_ENTITY"
+  - "RACE:STAND_ON"
+  - "RACE:STRIPPING"
+  - "RACE:TAMING"
+  - "RACE:TRADING"
+  - "RACE:WALKING"
+  - "RACE:ITEM_MENDING"
+  - "RACE:BRUSH"
+
+# Used only when start_mode = SPECIFIC
+specific_games:
+  - "TRIVIA"
+  - "MATH"
+  - "RACE"
+
+
+############################################################
+#                       SOUND SYSTEM                       #
+############################################################
+# Plays sound effects when events start, win, lose, or countdown.
+playsound:
+  win: # Bukkit sound name.
+    sound: "ENTITY_PLAYER_LEVELUP"
+    # Sound volume (0.0 - 1.0+)
+    sound_volume: 100
+    # Sound pitch (0.5 - 2.0 recommended)
+    sound_pitch: 0.9
+    # Enable the winning sound effect
+    enable: true
+
+  start: # Bukkit sound name.
+    sound: "UI_LOOM_SELECT_PATTERN"
+    # Sound volume (0.0 - 1.0+)
+    sound_volume: 100
+    # Sound pitch (0.5 - 2.0 recommended)
+    sound_pitch: 1.0
+    # Enable the started event sound effect
+    enable: true
+
+  lose: # Bukkit sound name.
+    sound: "ENTITY_VILLAGER_NO"
+    # Sound volume (0.0 - 1.0+)
+    sound_volume: 100
+    # Sound pitch (0.5 - 2.0 recommended)
+    sound_pitch: 1.0
+    # Enable the losing sound effect
+    enable: true
+
+  countdown: # Plays when the round is about to expire.
+    # Enable per-second countdown sound (example: 5,4,3,2,1)
+    enable: true
+    # Bukkit sound name.
+    sound: "BLOCK_NOTE_BLOCK_HAT"
+    # Sound volume (0.0 - 1.0+)
+    sound_volume: 100
+    # Sound pitch (0.5 - 2.0 recommended)
+    sound_pitch: 1.0
+    # Only play the countdown sound on these remaining seconds.
+    seconds:
+      - 60
+      - 30
+      - 10
+      - 5
+      - 4
+      - 3
+      - 2
+      - 1
+
+############################################################
+#                       STORAGE SYSTEM                     #
+############################################################
+# Choose how player data is stored.
+#
+# YML  - Local YAML file (default, simple)
+# DB   - SQLite database (.db file)
+# SQL  - MySQL / MariaDB
+#
+storage:
+  type: "YML"
+
+  # Used if type = YML
+  yml_file: "players.yml"
+
+  # Used if type = DB (SQLite)
+  db_file: "fiochatgames.db"
+
+  # Used if type = SQL
+  sql:
+    host: "localhost"
+    port: 3306
+    database: "fiochatgames"
+    username: "root"
+    password: "password"
+    params: "useUnicode=true<red>haracterEncoding=utf8<green>utoReconnect=true"
+
+
+############################################################
+#                  DISPLAY & COMPATIBILITY                 #
+############################################################
+general:
+  # Shows bossbar during active rounds
+  use_bossbar: true
+
+# Displays countdown timer in actionbar
+  use_actionbar_timer: true
+
+  # BossBar display text for active rounds.
+  # Placeholders: %type%, %time%, %seconds_left%, %seconds_total%, %progress%
+  bossbar_message: "<gold>%type%</gold> <gray>-</gray> <yellow>%time%s</yellow>"
+
+  # BossBar color enum.
+  # Valid: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  bossbar_color: "BLUE"
+
+  # BossBar style/type enum.
+  # Valid: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+  bossbar_style: "SEGMENTED_10"
+
+  # ActionBar display text for active rounds.
+  # Placeholders: %type%, %time%, %seconds_left%, %seconds_total%, %progress%
+  actionbar_message: "<gold>%type%</gold> <gray>|</gray> <white>%time%s</white>"
+
+  # Default participation toggle state for players
+  default_toggle: true
+
+  # Delay between answer submissions (milliseconds)
+  # Prevents spam and exploits
+  answer_cooldown_ms: 250
+
+############################################################
+#                   WINNER CHAT HIGHLIGHT                  #
+############################################################
+# Highlights only the event winner name in chat result messages.
+chat_highlight:
+  # Enable winner name highlight in result messages.
+  enabled: true
+
+  # Prefix added to winner name mention in chat.
+  # Supports legacy (&) and MiniMessage-compatible colors.
+  winner_format: "<yellow><bold>"
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::
+```

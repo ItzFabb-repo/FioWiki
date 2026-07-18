@@ -1,0 +1,127 @@
+﻿---
+title: Animation
+sidebar_position: 5
+---
+
+# Animation
+
+:::info[Two animation systems]
+FioMenu separates decorative slot animation from animated text. Both are driven from `animations.yml`, but they are used differently inside menu YAML.
+:::
+
+## Text animation
+
+Text animations use:
+
+```yaml
+type: "text"
+ticks: 20
+text:
+```
+
+The current source ships with these text animation ids:
+
+- `wave_gradient`
+- `shadow_text`
+- `rainbow_text`
+
+Use them through:
+
+```text
+%fiomenu_at:<animation_id>%
+```
+
+Example:
+
+```yaml
+menu:
+  title: "%fiomenu_at:rainbow_text%"
+```
+
+## Item animation
+
+Item animations use:
+
+```yaml
+type: "item"
+structure:
+items:
+logic:
+```
+
+The bundled item animations include:
+
+- `rainbow`
+- `door_animation`
+
+Use them through:
+
+```yaml
+menu:
+  animated: "rainbow"
+```
+
+## Single feedback animation
+
+The source also includes `type: "single"` entries:
+
+- `error`
+- `sucess`
+
+These are short status-style effects rather than full menu frame layouts.
+
+## Behavior modes
+
+The source comments document these behavior values:
+
+- `LOOP`
+- `REVERT`
+- `ONCE`
+
+Meaning:
+
+- `LOOP` plays forward and backward in a ping-pong cycle.
+- `REVERT` plays forward and jumps back to the first frame.
+- `ONCE` plays one time and stops.
+
+## How `rainbow` is structured
+
+The `rainbow` animation shows the normal item-animation pattern:
+
+- `structure.animation` defines the symbol grid per frame
+- `items` defines how each symbol renders
+- `logic` decides which visual state index is used per frame
+- `settings['?'] = ITEM_PLACEHOLDER` preserves menu-owned content in those slots
+
+This makes it suitable for animated borders that should move around real clickable items without replacing the whole menu content.
+
+## How `door_animation` is structured
+
+`door_animation` is a one-time opening effect:
+
+- `type: "item"`
+- `behavior: ONCE`
+- `after_animation` restores the placeholder layout
+
+Use it when you want the menu to animate in, then return control to the normal item layout.
+
+## Refresh and animated text
+
+The menu examples show that animated text works best together with refresh-driven rendering:
+
+- `menu.always_refresh`
+- item `refresh: true`
+
+That is especially important when the animated text is inside item `name` or `lore`, because the item has to be re-rendered to show the next frame.
+
+## Practical setup flow
+
+1. Define the animation id in `animations.yml`.
+2. Use `menu.animated` for item animation.
+3. Use `%fiomenu_at:<id>%` for text animation.
+4. Add `always_refresh` and item `refresh: true` where live text should visibly update.
+5. Reload the plugin with `/fiomenu admin reload`.
+
+## Source-backed caution
+
+The current file contains the id `sucess` spelled exactly that way. If you reference it from YAML, use the source spelling rather than silently renaming it in your config.

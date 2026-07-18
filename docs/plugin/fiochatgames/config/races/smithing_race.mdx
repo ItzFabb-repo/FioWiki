@@ -1,0 +1,159 @@
+---
+title: smithing_race.yml
+sidebar_position: 1
+---
+
+# smithing_race.yml
+
+---
+
+# Game Preview (SMITHING_RACE)
+
+![FioChatGames SMITHING_RACE](../../../../img/fiochatgames/FioChatGames%20SMITHING_RACE.png)
+
+---
+
+File Location: `plugin\\fiochatgames\\config\\races\smithing_race.yml`
+
+```yaml
+game: RACE
+folder: games/races/smithing_race.yml
+
+enable: true
+points: 1
+time_seconds: 300
+race:
+  type: SMITHING
+  material: NETHERITE_SWORD
+  amount: 1
+  top-reward-count: 3
+  top-announce-count: 3
+  bossbar:
+    enabled: true
+    color: PURPLE
+    style: SOLID
+    text: '<yellow>Race</yellow> <dark_gray>|</dark_gray> <gold>%objective%</gold> <gray>(%material%)</gray> <dark_gray>|</dark_gray> <green>%progress%</green><gray>/</gray><white>%target%</white>'
+
+messages:
+  started: '%prefix%<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '%prefix%<green><bold>%player%</bold> solved the <gold>%type%</gold> game and earned <gold>%points%</gold> points!</green>'
+  streak: '%prefix%<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+  race-winner:
+    - '<gold><bold>%objective_display% Race Event</bold></gold>'
+    - '<#707070>[<smallfont:top %top_count% participation player>]'
+    - ''
+    - '<dark_red><bold>1st</bold></dark_red> <white>%winner_1_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_1_value%</yellow> <#7a7a7a><italic>(%winner_1_seconds%s)</italic>'
+    - '<red><bold>2nd</bold></red> <white>%winner_2_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_2_value%</yellow> <#7a7a7a><italic>(%winner_2_seconds%s)</italic>'
+    - '<gold><bold>3rd</bold></gold> <white>%winner_3_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_3_value%</yellow> <#7a7a7a><italic>(%winner_3_seconds%s)</italic>'
+    - '<yellow><bold>4th</bold></yellow> <white>%winner_4_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_4_value%</yellow> <#7a7a7a><italic>(%winner_4_seconds%s)</italic>'
+    - '<#fff175>5. <white>%winner_5_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_5_value%</yellow> <#7a7a7a><italic>(%winner_5_seconds%s)</italic>'
+    - '<#fff175>6. <white>%winner_6_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_6_value%</yellow> <#7a7a7a><italic>(%winner_6_seconds%s)</italic>'
+    - '<#fff175>7. <white>%winner_7_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_7_value%</yellow> <#7a7a7a><italic>(%winner_7_seconds%s)</italic>'
+    - '<#fff175>8. <white>%winner_8_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_8_value%</yellow> <#7a7a7a><italic>(%winner_8_seconds%s)</italic>'
+    - '<#fff175>9. <white>%winner_9_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_9_value%</yellow> <#7a7a7a><italic>(%winner_9_seconds%s)</italic>'
+    - '<#fff175>10. <white>%winner_10_name%</white> <dark_gray>-</dark_gray> <yellow>%winner_10_value%</yellow> <#7a7a7a><italic>(%winner_10_seconds%s)</italic>'
+    - ''
+    - '<#7a7a7a><italic>(<smallfont:there are %total_participated% player participated on this event.>)</italic>'
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#6d6875><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:smithing race></center>'
+    - ''
+    - '<center><gray><smallfont:be the first to win the race!></gray></center>'
+    - '<center><gray>Complete this objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#6d6875><shadow:#000000:1.0>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#6d6875><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:smithing race></center>'
+    - ''
+    - '<center><gray><smallfont:%player% completed the %objective_display% race!></gray></center>'
+    - '<center><gray>Target objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#6d6875><shadow:#00FF00:0.3>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#6d6875><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:smithing race></center>'
+    - ''
+    - '<center><gray><smallfont:The race event has ended without a winner></gray></center>'
+    - '<center><gray>Target objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#6d6875><shadow:#FF0000:0.3>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+title:
+  text: '<#6d6875>Smithing Race'
+  enabled: true
+subtitle:
+  text: '<gray>%amount%x %material%</gray>'
+  enabled: true
+
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  3:
+    commands:
+      - 'MESSAGE:<green>3 streak in %game%!'
+
+rewards:
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+      - 'CONSOLE:exp give %player_name% 100'
+      - 'ITEM:DIAMOND 1'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You''ve won the <#00ff00>%raceType% Event<gray>!'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+      - 'CONSOLE:exp give %player_name% 50'
+      - 'ITEM:STICK 2'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You won at 2nd place: <#00ff00>%raceType% Event<gray>!'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'CONSOLE:exp give %player_name% 5'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You won at 3rd place: <#00ff00>%raceType% Event<gray>!'
+  4th_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You won at 4th place: <#00ff00>%raceType% Event<gray>!'
+  5th_reward:
+    enabled: false
+    commands: []
+  6th_reward:
+    enabled: false
+    commands: []
+  participated:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 5'
+      - 'TITLE:<red><bold>You Lost!\n<gray>Better luck next time!'
+      - 'ACTIONBAR:<gray>You''ve been given a participation reward from the server'
+      - 'TOAST:<gray>Keep it a good work!</gray>'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'MESSAGE:<yellow><bold>!</bold> <gray>You''re at %raceTypePlace% but you were still given a reward as participating to the event!'
+```
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,140 @@
+﻿---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+:::info[Scope]
+FioMenu keeps the public permission tree small, but it also exposes a full admin tree and runtime menu commands.
+:::
+
+## Admin commands
+
+| Command | Permission | What it does |
+| --- | --- | --- |
+| `/fiomenu` | `fiomenu.use` | Base entry point. Players also need an admin permission node before the help screen appears. |
+| `/fiomenu admin help` | `fiomenu.admin.help` | Shows the admin help list. |
+| `/fiomenu admin reload` | `fiomenu.admin.reload` | Reloads menus, config, and runtime state. |
+| `/fiomenu admin placeholders` | `fiomenu.admin.placeholders` | Prints the `custom_papi` report and all registered FioMenu tokens. |
+| `/fiomenu admin list` | `fiomenu.admin.list` | Lists all known menu ids. |
+| `/fiomenu admin enabled <menu>` | `fiomenu.admin.enabled` | Enables a menu file so it can be loaded and opened. |
+| `/fiomenu admin disable <menu>` | `fiomenu.admin.disable` | Disables a menu file. |
+| `/fiomenu admin create <name>` | `fiomenu.admin.create` | Creates a menu from a viewed container. Player-only. |
+| `/fiomenu admin delete <menu>` | `fiomenu.admin.delete` | Deletes a menu file. |
+| `/fiomenu admin clone <menu> <newName>` | `fiomenu.admin.clone` | Clones an existing menu file into a new id. |
+| `/fiomenu admin rename <oldMenu> <newMenu>` | `fiomenu.admin.rename` | Renames the menu id and file allocation. |
+| `/fiomenu admin open <player> <menu>` | `fiomenu.admin.open` | Opens a loaded and enabled menu for a target player. |
+| `/fiomenu admin forceopen <player> <menu>` | `fiomenu.admin.forceopen` | Opens a menu file directly even if it is not enabled yet. |
+| `/fiomenu admin close <player>` | `fiomenu.admin.close` | Closes the target player's current inventory. |
+| `/fiomenu admin version` | `fiomenu.admin.version` | Shows the plugin version. |
+| `/fiomenu admin author` | `fiomenu.admin.author` | Shows the plugin author. |
+| `/fiomenu admin debug` | `fiomenu.admin.debug` | Shows the plugin debug summary string. |
+| `/fiomenu admin meta <target> <action> ...` | `fiomenu.admin.meta` or `fiomenu.admin.meta.<action>` | Manages namespaced player meta under `fiomenu:*`. |
+| `/fiomenu admin custom_slot <player> <action> <id_custom_slot>` | `fiomenu.admin.custom_slot` or `fiomenu.admin.custom_slot.<action>` | Lists, clears, adds, or removes stored custom slot values. |
+
+## Dynamic menu commands
+
+Any menu file can register its own runtime command through `command:` and `aliases:` in the menu YAML.
+
+| Runtime command | Permission | What it does |
+| --- | --- | --- |
+| `/<menu command>` | `fiomenu.command.<label>` | Opens the matching FioMenu route for that command label. |
+| `/<registered alias>` | `fiomenu.command.<registeredName>` | Same route, if the alias is the one that was actually registered. |
+| `/<menu command>` | `fiomenu.menu.<menuId>.command` | Menu-specific fallback permission. |
+
+Wildcards also work:
+
+- `fiomenu.command.*`
+- `fiomenu.menu.*.command`
+- `fiomenu.admin`
+
+## Console behavior
+
+- Console can run the same `/fiomenu admin ...` routes.
+- `/fiomenu admin create` is blocked from console because it requires a player looking at a chest.
+- `open`, `forceopen`, `close`, `meta`, and `custom_slot` still need valid online player targets.
+
+## Permission table
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fiomenu.use` | `true` | Allows access to `/fiomenu`. |
+| `fiomenu.admin` | `op` | Umbrella permission for every admin command and action. |
+| `fiomenu.admin.help` | `op` | Allows `/fiomenu admin help`. |
+| `fiomenu.admin.reload` | `op` | Allows `/fiomenu admin reload`. |
+| `fiomenu.admin.list` | `op` | Allows `/fiomenu admin list`. |
+| `fiomenu.admin.enabled` | `op` | Allows `/fiomenu admin enabled`. |
+| `fiomenu.admin.disable` | `op` | Allows `/fiomenu admin disable`. |
+| `fiomenu.admin.create` | `op` | Allows `/fiomenu admin create`. |
+| `fiomenu.admin.delete` | `op` | Allows `/fiomenu admin delete`. |
+| `fiomenu.admin.clone` | `op` | Allows `/fiomenu admin clone`. |
+| `fiomenu.admin.rename` | `op` | Allows `/fiomenu admin rename`. |
+| `fiomenu.admin.open` | `op` | Allows `/fiomenu admin open`. |
+| `fiomenu.admin.forceopen` | `op` | Allows `/fiomenu admin forceopen`. |
+| `fiomenu.admin.close` | `op` | Allows `/fiomenu admin close`. |
+| `fiomenu.admin.version` | `op` | Allows `/fiomenu admin version`. |
+| `fiomenu.admin.author` | `op` | Allows `/fiomenu admin author`. |
+| `fiomenu.admin.debug` | `op` | Allows `/fiomenu admin debug`. |
+| `fiomenu.admin.placeholders` | `op` | Allows `/fiomenu admin placeholders`. |
+| `fiomenu.admin.meta` | `op` | Allows every `/fiomenu admin meta` action. |
+| `fiomenu.admin.meta.list` | `op` | Allows `/fiomenu admin meta ... list`. |
+| `fiomenu.admin.meta.set` | `op` | Allows `/fiomenu admin meta ... set`. |
+| `fiomenu.admin.meta.remove` | `op` | Allows `/fiomenu admin meta ... remove`. |
+| `fiomenu.admin.meta.removeall` | `op` | Allows `/fiomenu admin meta ... removeall`. |
+| `fiomenu.admin.meta.modify` | `op` | Allows `/fiomenu admin meta ... modify`. |
+| `fiomenu.admin.meta.add` | `op` | Allows `/fiomenu admin meta ... add`. |
+| `fiomenu.admin.meta.subtract` | `op` | Allows `/fiomenu admin meta ... subtract`. |
+| `fiomenu.admin.custom_slot` | `op` | Allows every `/fiomenu admin custom_slot` action. |
+| `fiomenu.admin.custom_slot.clear` | `op` | Allows `/fiomenu admin custom_slot clear`. |
+| `fiomenu.admin.custom_slot.list` | `op` | Allows `/fiomenu admin custom_slot list`. |
+| `fiomenu.admin.custom_slot.add` | `op` | Allows `/fiomenu admin custom_slot add`. |
+| `fiomenu.admin.custom_slot.remove` | `op` | Allows `/fiomenu admin custom_slot remove`. |
+| `fiomenu.command.*` | `op` | Allows every runtime menu command. |
+| `fiomenu.menu.*.command` | `op` | Allows every menu-specific runtime command. |
+| `fiomenu.update.notify` | `op` | Receives update notices on join. |
+
+## `open` vs `forceopen`
+
+Use `/fiomenu admin open <player> <menu>` when the target menu is already enabled and loaded.
+
+Use `/fiomenu admin forceopen <player> <menu>` when you want FioMenu to open the file directly from disk even if that menu is not in the enabled set yet.
+
+:::note[Why both exist]
+The command handler explicitly checks `hasLoadedMenu(menuId)` for `open`, while `forceopen` calls `forceOpenMenu(...)` and only fails if the file itself is missing.
+:::
+
+## `list` output behavior
+
+For players, `list` is not only a plain menu id dump. The command builds hover text that includes:
+
+- allocation file
+- enabled or disabled status
+- current viewer count
+- menu type
+- platform name
+
+That makes it useful for checking whether a menu lives under Java menus, Bedrock menus, or another supported family before you open or edit it.
+
+## `custom_slot` flow
+
+The current command handler exposes these actions:
+
+- `list`
+- `clear`
+- `add`
+- `remove`
+
+This command is tied to the plugin's stored custom slot selections rather than general GUI editing, so use it when you need to inspect or clean player-specific custom slot state.
+
+## Meta types accepted by the command parser
+
+```text
+INT
+LONG
+DOUBLE
+STRING
+BOOLEAN
+```
+
+See [Meta](/plugin/fiomenu/meta) for the full usage guide.

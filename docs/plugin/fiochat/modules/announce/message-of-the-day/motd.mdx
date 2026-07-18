@@ -1,0 +1,368 @@
+---
+title: Config
+---
+
+# Message of the Day Config
+
+`motd.yml` controls the player MOTD shown to one player when they join or after anti-bot verification. This is not the multiplayer server-list MOTD. The server-list MOTD is a separate `server-motd` module.
+
+Source file:
+
+```text
+modules/announce/Message of the Day/motd.yml
+```
+
+The interactive `{placeholder}` tokens used inside chat MOTD lines are configured in:
+
+```text
+modules/announce/Message of the Day/placeholder.yml
+```
+
+Player toggle overrides are stored in:
+
+```text
+modules/announce/Message of the Day/toggles.yml
+```
+
+If database storage is enabled, the toggle data is stored in the `player-motd.toggles` database namespace instead.
+
+## Module toggle
+
+```yaml
+modules:
+  player-motd: true
+```
+
+`modules.player-motd` is the current module switch for this feature.
+
+When it is `false`, the player MOTD is disabled and no join MOTD is delivered.
+
+The service still has compatibility for the legacy `modules.motd` key, but the new source uses `player-motd`.
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.motd.use` | Allows the player to receive the player MOTD and use MOTD toggles. |
+| `fiochat.motd.toggle.message` | Allows the player to toggle MOTD message delivery. |
+
+`fiochat.motd.use` allows the player to receive the player MOTD and use MOTD toggles. Its default in `plugin.yml` is `true`.
+
+`fiochat.motd.toggle.message` allows the player to use:
+
+```text
+/fiochat toggle motd message
+```
+
+The toggle controls whether that player receives the MOTD visual/message channels. The default state is enabled unless the player has a saved disabled override.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls debug entries for the player MOTD module. The reload debug output includes whether player MOTD is enabled, whether message delivery is enabled, how many player toggle overrides exist, whether anti-bot wait mode is enabled, how many chat lines were loaded, and whether bossbar output is enabled.
+
+Keep this disabled for normal use. Enable it only while checking delivery, reload, or toggle behavior.
+
+## `settings.antibot.wait-until-verified`
+
+```yaml
+settings:
+  antibot:
+    wait-until-verified: true
+```
+
+When `true`, the MOTD waits if the player is locked by FioChat anti-bot verification. After the player passes verification, the MOTD is sent with the internal trigger value `verified`.
+
+When `false`, the MOTD can send immediately on join even while anti-bot is active.
+
+The service prevents duplicate delivery in the same join session. If join delivery and verification delivery both try to run, the first successful delivery wins and the later one is skipped.
+
+## `settings.placeholderapi.message`
+
+```yaml
+settings:
+  placeholderapi:
+    message: true
+```
+
+When `true`, PlaceholderAPI placeholders are resolved in MOTD text processing.
+
+This affects `message.lines`, title text, subtitle text, actionbar text, bossbar title, interactive placeholder visible text, hover text, and click action values because they all pass through the same player MOTD placeholder renderer.
+
+When `false`, the module still resolves its own standard placeholders and `{placeholder}` tokens, but PlaceholderAPI expansion values are not applied.
+
+## Standard MOTD placeholders
+
+The service prepares these standard placeholders when delivering MOTD:
+
+```text
+%module%
+%type%
+%player%
+%player_name%
+%world%
+```
+
+`%module%` is `player-motd`.
+
+`%type%` is the trigger, such as `join` or `verified`.
+
+`%player%` and `%player_name%` are the player's name.
+
+`%world%` is the player's current world name.
+
+The source comments also use server placeholders such as `%server_online%`, `%server_max_players%`, and `%server_unique_joins%`. Those depend on the wider FioChat placeholder system and PlaceholderAPI availability.
+
+## `message.enabled`
+
+```yaml
+message:
+  enabled: true
+```
+
+When `true`, the chat-message MOTD channel is active.
+
+When `false`, `message.lines` are not sent, but title, actionbar, bossbar, and supported toast output can still run if enabled and if the player's MOTD message toggle allows visual delivery.
+
+## `message.lines`
+
+```yaml
+message:
+  lines:
+    - ""
+    - "<align:center><gradient:#FFBB00:#FFFF00><smallfont:welcome, %player_name%!></gradient>"
+```
+
+`lines` is the list of chat lines sent only to the joining player.
+
+Empty strings are allowed and are sent as blank chat lines.
+
+Each non-empty line supports FioChat player-MOTD formatting, including alignment, gradients, smallfont, and text shadow syntax.
+
+The source file documents this text shadow format:
+
+```text
+<shadow:#RRGGBB:opacity>text</shadow>
+```
+
+The opacity range is `0.0` to `1.0`.
+
+## Interactive `{placeholder}` tokens in `message.lines`
+
+```yaml
+message:
+  lines:
+    - "<align:center>{link} <dark_gray>|</dark_gray> {store} <dark_gray>|</dark_gray> {discord}"
+```
+
+Tokens such as `{link}`, `{store}`, and `{discord}` are loaded from `placeholder.yml`.
+
+In chat message lines, those tokens can become clickable and hoverable text components.
+
+If a token is unknown, it remains as the original `{token}` text.
+
+## `title.enabled`
+
+```yaml
+title:
+  enabled: true
+```
+
+When `true`, the module sends a title/subtitle to the player.
+
+When `false`, the title channel is skipped.
+
+The player's MOTD message toggle also affects this channel. If the player disabled MOTD messages with `/fiochat toggle motd message`, title output is skipped.
+
+## `title.title`
+
+```yaml
+title:
+  title: "<gradient:#9D0000:#F36B6B><bold>! WELCOME !"
+```
+
+This is the main large title text.
+
+It supports player MOTD formatting, standard placeholders, `{placeholder}` visible text replacement, and PlaceholderAPI when enabled.
+
+Hover and click events from `{placeholder}` tokens do not apply to title output.
+
+## `title.subtitle`
+
+```yaml
+title:
+  subtitle: "<#7a7a7a><smallfont:enjoy your stay.>"
+```
+
+This is the subtitle text below the main title.
+
+If the title text resolves to empty but the subtitle is not empty, the service sends a single-space title so the subtitle can display correctly.
+
+## `title.fade-in`
+
+```yaml
+title:
+  fade-in: 5
+```
+
+`fade-in` is the title fade-in duration in ticks. The service clamps this value to `0` or higher.
+
+## `title.stay`
+
+```yaml
+title:
+  stay: 100
+```
+
+`stay` is the title stay duration in ticks. The service uses at least `1` tick.
+
+## `title.fade-out`
+
+```yaml
+title:
+  fade-out: 10
+```
+
+`fade-out` is the title fade-out duration in ticks. The service clamps this value to `0` or higher.
+
+## `actionbar.enabled`
+
+```yaml
+actionbar:
+  enabled: false
+```
+
+When `true`, the module sends one actionbar message above the hotbar.
+
+When `false`, the actionbar channel is skipped.
+
+The player's MOTD message toggle also affects this channel.
+
+## `actionbar.text`
+
+```yaml
+actionbar:
+  text: "<green><smallfont:motd delivered.>"
+```
+
+This is the actionbar text.
+
+It supports the same text placeholder processing as the title and message channels, but hover and click behavior does not exist in actionbar output.
+
+## `bossbar.enabled`
+
+```yaml
+bossbar:
+  enabled: false
+```
+
+When `true`, the module creates a temporary bossbar for the player.
+
+When `false`, bossbar output is skipped.
+
+The player's MOTD message toggle also affects this channel.
+
+## `bossbar.title`
+
+```yaml
+bossbar:
+  title: "<gold><smallfont:welcome to the server></gold>"
+```
+
+This is the text displayed inside the bossbar.
+
+It supports player MOTD text formatting and placeholders.
+
+## `bossbar.color`
+
+```yaml
+bossbar:
+  color: "YELLOW"
+```
+
+`color` is the Bukkit bossbar color. If parsing fails, the service falls back to a safe bossbar color.
+
+## `bossbar.style`
+
+```yaml
+bossbar:
+  style: "SOLID"
+```
+
+`style` is the Bukkit bossbar style. If parsing fails, the service falls back to `SOLID`.
+
+## `bossbar.progress`
+
+```yaml
+bossbar:
+  progress: 1.0
+```
+
+`progress` is the bossbar fill amount. The service clamps it between `0.0` and `1.0`.
+
+## `bossbar.seconds`
+
+```yaml
+bossbar:
+  seconds: 5
+```
+
+`seconds` controls how long the temporary bossbar stays visible.
+
+## Toast support
+
+The current source file contains comments describing compact icon notifications, but it does not define an active `toast:` section by default.
+
+The service can load toast output through the shared notification settings path when such a section is present. Treat toast as supported by the runtime, but not active in the current default `motd.yml`.
+
+## Toggle storage
+
+The player toggle command stores UUIDs under:
+
+```text
+message.enabled
+message.disabled
+```
+
+The YAML path is:
+
+```text
+modules/announce/Message of the Day/toggles.yml
+```
+
+In database mode, the namespace is:
+
+```text
+player-motd.toggles
+```
+
+The service saves explicit toggle states. A player with no saved state is treated as enabled.
+
+## Language message overrides
+
+Command and toggle feedback is loaded through:
+
+```text
+overrides.modules.player-motd.messages
+```
+
+The service reads:
+
+```text
+messages.feature-disabled
+messages.players-only
+messages.no-permission
+messages.toggle-usage
+messages.toggle-message-enabled
+messages.toggle-message-disabled
+```
+
+These messages are command feedback. They do not change MOTD content.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

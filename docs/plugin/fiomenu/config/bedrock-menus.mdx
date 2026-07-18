@@ -1,0 +1,121 @@
+﻿---
+title: Bedrock Menus
+sidebar_position: 4
+---
+
+# Bedrock Menus
+
+![FioMenu Bedrock UI](../../../img/fiomenu/Bedrock%20UI.png)
+
+FioMenu keeps Bedrock menus in a separate folder: `bedrock_fio_menus/`. These files are form-driven rather than inventory-grid driven.
+
+## How Java menus route to Bedrock menus
+
+The Java menu examples use:
+
+```yaml
+menu:
+  bedrock: "example"
+```
+
+or:
+
+```yaml
+menu:
+  bedrock: "settings"
+```
+
+That id points to a file in `bedrock_fio_menus/<id>.yml`, allowing one feature to have a Java layout and a Bedrock form layout at the same time.
+
+## Core Bedrock menu structure
+
+The bundled examples use:
+
+```yaml
+menu:
+  type: "FLOODGATE"
+  form: "SIMPLE"
+```
+
+The source comments list supported form types:
+
+- `SIMPLE`
+- `CUSTOM`
+- `MODAL`
+
+## Main sections used by the source
+
+Bedrock menu files use these top-level areas:
+
+- `menu`
+- `priority`
+- `form`
+
+`priority` controls button order, and `form` contains the actual button or rule entries.
+
+## Bedrock button structure
+
+The current examples use this shape:
+
+```yaml
+form:
+  'Settings_Button':
+    button:
+      line1:
+      line2:
+    image:
+      type:
+      url:
+    actions:
+      any:
+```
+
+Image source modes documented in the YAML comments:
+
+- `NONE`
+- `CUSTOM`
+- `PATH`
+
+## Conditional Bedrock buttons
+
+`bedrock_fio_menus/example.yml` shows that Bedrock entries can use numbered rules just like Java menus:
+
+```yaml
+'Advance':
+  rules0:
+  rules1:
+```
+
+That means button text, image, and actions can all change depending on placeholders or other rule results.
+
+## Bedrock settings flow
+
+`bedrock_fio_menus/settings.yml` is a good practical reference because it shows repeated toggle logic for:
+
+- private messages
+- AFK
+- teleport requests
+- pay access
+
+Each button swaps between two states through `rules0` and `rules1`, then reopens the linked settings flow after the command runs.
+
+## Action style
+
+The Bedrock files use the same bracketed action format as the Java menu files, including:
+
+- `[OPEN_MENU]`
+- `[PLAYER]`
+- `[MESSAGE]`
+- `[SOUND]`
+- `[CLOSE]`
+
+That consistency is important when documenting or editing both menu families together.
+
+## When to use Bedrock forms instead of Java menus
+
+Use the Bedrock folder when the target experience must be friendly to Floodgate or Geyser users and you want:
+
+- button-first navigation
+- text and image-based entries
+- modal or custom form input flow
+- a dedicated Bedrock experience instead of forcing an inventory GUI concept

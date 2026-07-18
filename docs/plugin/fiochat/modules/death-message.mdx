@@ -1,0 +1,217 @@
+﻿---
+title: Death Message
+sidebar_position: 13
+---
+
+# Death Message
+
+This module controls global death message behavior, compatibility with other plugins, and custom death message templates.
+
+## Configuration Files
+
+- `modules/announce/Custom Death Msg/config.yml`
+- `modules/announce/Custom Death Msg/custom-death-messages.yml`
+- `modules/announce/Custom Death Msg/mobs_en.json`
+- `modules/announce/Custom Death Msg/items_en.json`
+- `lang/lang_<key>.yml -> overrides.modules.death-message.messages`
+
+## Notes from source comments
+
+- `config.yml` controls global behavior, compatibility behavior, and player toggle behavior.
+- The main message templates are stored in `custom-death-messages.yml`.
+- Mob display names are stored in `mobs_en.json`.
+- Item or weapon display names are stored in `items_en.json`.
+
+## `settings`
+
+### `debug-log`
+
+Writes debug logs while the module runs.
+
+### `only-if-vanilla-visible`
+
+When `true`, the player death handler only runs when the original event has a visible death message.
+
+### `suppress-when-formatted-empty`
+
+When `true`, the message is cancelled when every rendered result is empty.
+
+### `default-notifications-enabled`
+
+Sets the default notification state for players.
+
+### `world-whitelist`
+
+If this list is not empty, death messages only run in the listed worlds.
+
+### `world-blacklist`
+
+Worlds in this list are blocked from death messages.
+
+### `region-whitelist`
+
+If this list is not empty, the death location must be inside one of the listed WorldGuard regions.
+
+### `region-blacklist`
+
+Death messages are blocked inside the listed WorldGuard regions.
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.deathmessage.toggle` | Allows the player to toggle their personal death-message delivery. |
+| `fiochat.deathmessage.use` | Base permission for death-message features when a server uses permission gating. |
+| `fiochat.deathmessage.admin` | Allows admin-level death-message management commands where exposed. |
+
+## `compatibility`
+
+### `respect-main-config`
+
+Main toggle for this module's defer behavior.
+
+### `defer-to-mythicmobs`
+
+When `true`, player deaths caused by MythicMobs entities are handed off to third-party handling when compatibility is active.
+
+### `defer-to-third-party-player-death`
+
+When `true`, the module skips player-death rendering when the source death message contains a third-party signature from the list below.
+
+### `third-party-message-signatures`
+
+Tokens used to detect third-party death messages.
+
+The source says case is ignored.
+
+Examples from the source:
+
+- `MythicMobs`
+- `[MythicMobs]`
+
+Default config contains:
+
+- `MythicMobs`
+
+## `custom-death-messages.yml`
+
+## Notes from source comments
+
+The source comment describes the following:
+
+- The file uses nested keys.
+- Example mapping: `player-death.vanilla-templates.death.attack.player` maps to the vanilla key `death.attack.player`.
+- The file uses placeholders such as `%player_name%`, `%killer_name%`, `%killer_entity_name%`, `%killer_mob_name%`, `%killer_weapon_name%`, `%death_message_key%`, `%death_cause_pretty%`, `%message%`, and `%third_party_rule%`.
+- Variant-specific killer characteristics can be stored under `characteristics.<entity_type>`.
+- Falling block support can use material-based characteristics.
+
+## `Mythic-Mobs-Entities`
+
+This section provides special templates based on the internal MythicMobs id.
+
+The source says this rule is processed before the generic or characteristic templates when the killer is a MythicMobs entity.
+
+The supported causes mentioned in the source include:
+
+- `Melee`
+- `Weapon`
+- `TNT`
+- `Projectile`
+- `Trident`
+- `Fireball`
+- `Magic`
+- `Default`
+
+Each cause can have random variations using numeric keys such as `1`, `2`, and so on.
+
+## `player-death`
+
+This section controls player death messages.
+
+### `enabled`
+
+Turns the player-death template on or off.
+
+### `audience`
+
+The source includes:
+
+- `world-only`
+- `console`
+
+`world-only` controls whether the audience is limited to the same world, while `console` controls whether the message is also sent to console.
+
+### `lines`
+
+Default lines used for the player death message.
+
+### `fallback-lines`
+
+Fallback lines used when no specific template is found.
+
+### `vanilla-templates`
+
+This section contains nested templates for vanilla Minecraft translation keys.
+
+The source structure includes branches such as:
+
+- `death.attack.generic`
+- `death.attack.genericKill`
+- `death.attack.player`
+- `death.attack.mob`
+- `death.attack.arrow`
+- `death.attack.trident`
+- `death.attack.thrown`
+
+Some branches include sub-sections such as:
+
+- numeric variants like `1`
+- `item`
+- `player`
+- `characteristics`
+
+For `death.attack.mob`, the source also provides many `characteristics` templates for entities such as `bee`, `blaze`, `creeper`, `drowned`, `ender_dragon`, `guardian`, `hoglin`, `iron_golem`, `phantom`, `skeleton`, `spider`, `warden`, `witch`, `wither`, `wolf`, `zombie`, and more.
+
+## `mobs_en.json`
+
+This file contains a `display-names` registry for entity types.
+
+The source list includes names such as:
+
+- `PLAYER`
+- `BLAZE`
+- `CREEPER`
+- `ENDER_DRAGON`
+- `IRON_GOLEM`
+- `PIGLIN_BRUTE`
+- `SKELETON`
+- `SPIDER`
+- `WARDEN`
+- `WITHER`
+- `ZOMBIE`
+
+## `items_en.json`
+
+This file contains a `display-names` registry for items, weapons, projectiles, and some item-based death causes.
+
+The source list includes names such as:
+
+- `WOODEN_SWORD`
+- `DIAMOND_SWORD`
+- `NETHERITE_AXE`
+- `BOW`
+- `CROSSBOW`
+- `TRIDENT`
+- `MACE`
+- `ARROW`
+- `TNT`
+- `RESPAWN_ANCHOR`
+- `END_CRYSTAL`
+- `ANVIL`
+- `POINTED_DRIPSTONE`
+- `LAVA_BUCKET`
+- `WITHER_ROSE`
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

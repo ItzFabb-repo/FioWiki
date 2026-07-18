@@ -1,0 +1,161 @@
+﻿---
+title: Meta
+sidebar_position: 4
+---
+
+# Meta
+
+:::info[Namespace]
+The current command implementation stores meta under the `fiomenu` namespace through `NamespacedKey("fiomenu", key)`.
+:::
+
+## Command format
+
+```text
+/fiomenu admin meta <*|player> <list|set|remove|removeall|modify|add|subtract> ...
+```
+
+## Supported types
+
+```text
+INT
+LONG
+DOUBLE
+STRING
+BOOLEAN
+```
+
+## What each type is for
+
+### `BOOLEAN`
+
+Use `BOOLEAN` for true or false switches such as menu access flags, onboarding completion, or temporary unlock states.
+
+Example:
+
+```text
+/fiomenu admin meta Steve set vip_access BOOLEAN true
+```
+
+The parser treats `true`, `yes`, and `1` as true. Anything else becomes false.
+
+### `STRING`
+
+Use `STRING` when the value is descriptive text rather than math.
+
+Example:
+
+```text
+/fiomenu admin meta Steve set profile_state STRING verified
+```
+
+### `DOUBLE`
+
+Use `DOUBLE` for decimal values such as progress fractions or non-integer counters.
+
+Example:
+
+```text
+/fiomenu admin meta Steve set coins DOUBLE 2500.5
+```
+
+### `LONG`
+
+Use `LONG` for large whole-number values that can grow past the normal integer range.
+
+Example:
+
+```text
+/fiomenu admin meta Steve set total_points LONG 5000000000
+```
+
+### `INT`
+
+Use `INT` for normal whole-number counters such as rank tier, menu state index, or token count.
+
+Example:
+
+```text
+/fiomenu admin meta Steve set rank_tier INT 3
+```
+
+## Action table
+
+| Action | Behavior |
+| --- | --- |
+| `list` | Lists stored keys for the requested type view, eight entries per page. |
+| `set` | Writes a typed value into the player's `fiomenu:*` PDC namespace. |
+| `remove` | Removes the key only when the stored typed value matches the value you supplied. |
+| `removeall` | Removes all keys under the `fiomenu` namespace. |
+| `modify` | Displays the current value and detected type for a key. |
+| `add` | Adds a numeric delta to `INT`, `LONG`, or `DOUBLE`. |
+| `subtract` | Subtracts a numeric delta from `INT`, `LONG`, or `DOUBLE`. |
+
+## Target behavior
+
+`<target>` accepts:
+
+- `*` for all online players
+- an exact online player name
+
+If the target cannot be resolved, the command returns `No valid target player(s) found.`
+
+## Practical command examples
+
+### Set values
+
+```text
+/fiomenu admin meta Steve set vip_access BOOLEAN true
+/fiomenu admin meta Steve set rank_tier INT 3
+/fiomenu admin meta Steve set coins DOUBLE 2500.5
+/fiomenu admin meta Steve set profile_state STRING verified
+```
+
+### Inspect values
+
+```text
+/fiomenu admin meta Steve list BOOLEAN
+/fiomenu admin meta Steve list INT
+/fiomenu admin meta Steve modify vip_access
+```
+
+### Change values
+
+```text
+/fiomenu admin meta Steve add rank_tier INT 1
+/fiomenu admin meta Steve subtract coins DOUBLE 100
+```
+
+### Clear values
+
+```text
+/fiomenu admin meta Steve remove profile_state STRING verified
+/fiomenu admin meta Steve removeall
+/fiomenu admin meta * set event_pass BOOLEAN true
+```
+
+## Using meta inside menu rules
+
+The bundled `example.yml` documents the source-backed meta rule format:
+
+```yaml
+rules0:
+  type: "meta"
+  meta:
+    key: "vip_access"
+    type: "BOOLEAN"
+    value: "true"
+```
+
+That means the admin meta command and menu rule system are designed to work together:
+
+1. Write a typed value with `/fiomenu admin meta`.
+2. Check that same key and type inside a menu rule.
+3. Use `action.failed` or item `actions.failed` to block access or show feedback.
+
+## Important behavior notes
+
+- `remove` is value-sensitive and does not blindly delete the key.
+- `add` and `subtract` only apply to numeric types.
+- `modify` reports the value; it does not edit it.
+- `list` is filtered by the type view you request.

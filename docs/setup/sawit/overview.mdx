@@ -1,0 +1,99 @@
+---
+title: Overview
+sidebar_position: 1
+---
+
+# SAWIT Overview
+
+This section documents the current `SAWIT PROPERTY` server package from:
+
+`C:\Users\idfab\Downloads\SAWIT PROPERTY`
+
+:::info[Scope]
+This overview is based on the files currently present in the `plugins` folder, including plugin jars, plugin data folders, compatibility modules, and support components.
+:::
+
+## Plugin Picture
+
+The `plugins` folder is a large mixed stack. It includes core gameplay plugins, several custom Fio plugins, support libraries, and compatibility add-ons.
+
+The main takeaway is simple: SAWIT is built around economy, trading, progression, protection, custom systems, and staff tooling.
+
+## Core Groups
+
+### Economy, Shops, Trading, And Rewards
+
+- `ExcellentEconomy` is the main money backend.
+- `Vault` bridges economy and permission data for other plugins.
+- `AxTrade`, `QuickShop-Hikari`, and `PlayerAuctions` cover player trading, chest shops, and auction flow.
+- `AdvancedRegionMarket` handles rentable or sellable regions.
+- `NotBounties` adds bounty gameplay.
+- `ExcellentCrates` and `VotingPlugin` handle reward loops.
+
+### Progression And Gameplay
+
+- `VanguardRanks` drives rank progression.
+- `AuraSkills` handles skills and stat growth.
+- `CommunityQuests` and `ODailyQuests` add shared and daily quest loops.
+- `EvenMoreFish` adds fishing gameplay and progression.
+- `ajParkour` adds parkour content.
+- `ExecutableItems` suggests custom item-driven gameplay or scripted item behavior.
+
+### Chat, Display, And Presentation
+
+- `FioChat` handles chat systems and social tools.
+- `FioTags` manages tags and display-tag features.
+- `FioChatGames` adds chat games.
+- `DecentHolograms` provides floating text.
+- `FancyNpcs` provides NPC interaction.
+- `CommandPanels` provides panel-based GUI navigation.
+- `UltraCosmetics` and `HeadBlocks` cover cosmetics and decoration.
+
+### Worlds, Travel, And Survival Utility
+
+- `Essentials` handles the usual player utility layer.
+- `BetterRTP` handles random teleport.
+- `AxPlayerWarps` handles player warps.
+- `Multiverse-Core` handles world management.
+- `SimpleClaimSystem` and `WorldGuard` handle land and region protection.
+- `AxAFKZone` and `sleep-most` handle AFK or night-skip quality of life.
+
+### Staff, Moderation, And Background Tools
+
+- `LuckPerms` handles permissions.
+- `LibertyBans` handles moderation actions.
+- `InventoryRollbackPlus` handles recovery.
+- `OpenInv` handles inventory inspection.
+- `WorldEdit` handles build work.
+- `LagFixer` handles background cleanup or optimization.
+- `PlaceholderAPI` feeds placeholders into other plugins.
+
+### Custom SAWIT Plugins
+
+These are the local plugins that define a lot of the server's identity:
+
+- `FioSawit`
+- `FioBlackMarket`
+- `FioChat`
+- `FioChatGames`
+- `FioSpawner`
+- `FioTags`
+- `FioVoucher`
+
+Read these plugin pages first if you want the SAWIT-specific systems.
+
+## Practical Reading Order
+
+If you are learning the server from scratch, start in this order:
+
+1. economy and trading
+2. progression and rewards
+3. protection and world systems
+4. custom Fio plugins
+5. staff tools and support components
+
+For the full plugin inventory, read [Plugins](/setup/sawit/plugins). For how the systems behave in practice, read [Explanation](/setup/sawit/explanation).
+
+## Folder Note
+
+The SAWIT `plugins` folder currently contains both plugin jars and plugin data folders. That is why the directory looks larger than a simple plugin list.

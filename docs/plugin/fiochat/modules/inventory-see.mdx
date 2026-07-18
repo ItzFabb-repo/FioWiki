@@ -1,0 +1,31 @@
+﻿---
+title: Config
+sidebar_position: 41
+---
+
+# Inventory See Config
+
+Source file:
+
+```text
+modules/display/Inventory See/config.yml
+```
+
+## What this module covers
+- `/invsee <player>` inventory inspection,
+- `/ecsee <player>` ender chest inspection,
+- staff-side inspection flow for moderation or support.
+
+## Audit notes
+- This module is present in the current source tree but was previously missing from the public FioWiki module set.
+- Related permissions exposed by `plugin.yml` are:
+  - `fiochat.inventorymanagement.invsee`
+  - `fiochat.inventorymanagement.invsee.edit`
+  - `fiochat.inventorymanagement.ecsee`
+  - `fiochat.inventorymanagement.ecsee.edit`
+- Test view-only and editable staff roles separately after config changes.
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

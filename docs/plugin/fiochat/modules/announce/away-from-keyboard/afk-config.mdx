@@ -1,0 +1,202 @@
+---
+title: Config
+---
+
+# AFK Config
+
+Source file:
+
+```text
+modules/announce/Away from Keyboard/config.yml
+```
+
+The AFK module controls AFK state, AFK reasons, silent mode, unread previous-message storage, and AFK broadcast messages. In the current build, it is controlled by `modules.afk` in `modules/settings.yml`.
+
+The current default for `modules.afk` is `true`.
+
+The unread-message GUI is stored separately in:
+
+```text
+modules/announce/Away from Keyboard/gui/afk-history.yml
+```
+
+## Commands
+
+The source comments document these commands:
+
+```text
+/afk
+/afk <message>
+/afk <player>
+/afk <player> <message>
+```
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.afk.use` | Base AFK command access. |
+| `fiochat.afk.reason` | Allows using an AFK reason or message. |
+| `fiochat.afk.check` | Allows checking another player's AFK state. |
+| `fiochat.afk.others` | Allows setting AFK for other players. |
+| `fiochat.afk.blacklist.bypass` | Bypasses AFK blacklist checks. |
+| `fiochat.afk.message.bypass` | Bypasses AFK message restrictions. |
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`settings.debug-log` controls module debug logging. The current value is `false`.
+
+When enabled, FioChat can write extra diagnostic information while loading AFK settings, toggling AFK state, and storing unread previous messages.
+
+## `settings.previous-message.enabled`
+
+```yaml
+settings:
+  previous-message:
+    enabled: true
+```
+
+This controls whether AFK unread-message history is enabled. The current default is `true`.
+
+When enabled, AFK stores player chat messages for the unread-message history GUI.
+
+## `settings.auto-afk-time`
+
+```yaml
+settings:
+  auto-afk-time: 0
+```
+
+This controls automatic AFK after idle time, in seconds.
+
+`0` disables automatic AFK. Any positive number becomes the idle timeout before AFK starts.
+
+## Auto-clear settings
+
+```yaml
+settings:
+  move: true
+  head-rotate: false
+  interact: false
+  chat: true
+  command: true
+```
+
+These controls decide what kind of activity clears AFK state.
+
+`move` is enabled by default. `chat` and `command` are also enabled by default. `head-rotate` and `interact` are disabled by default.
+
+## `settings.world-blacklist`
+
+```yaml
+settings:
+  world-blacklist: []
+```
+
+This blocks AFK inside selected worlds unless the player has the bypass permission.
+
+## `settings.region-blacklist`
+
+```yaml
+settings:
+  region-blacklist: []
+```
+
+This blocks AFK inside selected WorldGuard regions unless the player has the bypass permission.
+
+## `broadcast.afk`
+
+```yaml
+broadcast:
+  afk: "<gray><white>%target%</white> <gray>is now in AFK mode.</gray>"
+```
+
+This is the broadcast used when a player enters AFK without a reason.
+
+## `broadcast.reason`
+
+```yaml
+broadcast:
+  reason: "<gray><white>%target%</white> <gray>is now in AFK mode: <white>%reason%</white><gray>.</gray>"
+```
+
+This is the broadcast used when a player enters AFK with a reason.
+
+## `silent.enabled`
+
+```yaml
+silent:
+  enabled: true
+```
+
+This controls silent chat mode while AFK. The current default is `true`.
+
+When enabled, AFK players do not receive live public chat and unread messages are stored for `/prevmsg` or `/previousmsg`.
+
+## `silent.message`
+
+```yaml
+silent:
+  message:
+    - '[prefix="false"]<align:center><dark_gray><strikethrough>                                                                          </strikethrough></dark_gray></align>'
+```
+
+This is the message shown when AFK silent mode is enabled. The current source uses a multi-line centered warning.
+
+## `messages`
+
+The source comments note that AFK feedback messages are provided from language files.
+
+Common keys include:
+
+```text
+enabled
+enabled-with-reason
+disabled
+status
+status-with-reason
+target-afk
+target-afk-with-reason
+blocked-world
+blocked-region
+```
+
+These are command and state feedback messages. They do not change the AFK logic itself.
+
+## Useful placeholders
+
+Common placeholders used by AFK messages include:
+
+```text
+%target%
+%reason%
+%duration%
+%world%
+%region%
+```
+
+## Legacy Path Note
+
+The active config path for this build is:
+
+```text
+modules/announce/Away from Keyboard/config.yml
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/afk/config.yml
+modules/afk/config.yml
+```
+
+This page follows the current announce-module path and the current AFK module layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

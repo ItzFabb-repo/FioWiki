@@ -1,0 +1,58 @@
+﻿---
+title: Explanation
+sidebar_position: 1
+---
+
+# Config Overview
+
+FioMenu is not one single menu file format. The project is split into several YAML families, and each family has a different job.
+
+## Main YAML families
+
+| Folder or file | Purpose |
+| --- | --- |
+| `config.yml` | global plugin behavior, integrations, debug, storage, join events, Bedrock detection |
+| `animations.yml` | item and text animation definitions |
+| `placeholders.yml` | FioMenu-owned placeholder utilities |
+| `sounds.yml` | reusable menu sound sequences |
+| `translation.yml` | language profiles and translation keys |
+| `fio_menus/*.yml` | Java inventory menus and related runtime menus |
+| `bedrock_fio_menus/*.yml` | Bedrock form menus |
+| `fio_menus/dialog/*.yml` | Java dialogue layouts |
+| `fio_menus/prompt/*.yml` | prompt-based input examples |
+
+## How these files work together
+
+The bundled examples show this common pattern:
+
+1. A Java menu is defined under `fio_menus/`.
+2. That menu may point Bedrock players to a Bedrock form using `menu.bedrock: "<id>"`.
+3. The menu may use `%...%` placeholders, translation keys, sounds, and animations.
+4. `config.yml` decides whether integrations and Bedrock detection are active.
+
+## Source examples worth studying first
+
+If you want to understand the current build from real YAML instead of assumptions, start with these files:
+
+- `fio_menus/example.yml`
+- `fio_menus/settings.yml`
+- `fio_menus/profile.yml`
+- `fio_menus/dynamic_menu.yml`
+- `fio_menus/warps.yml`
+- `bedrock_fio_menus/example.yml`
+- `bedrock_fio_menus/settings.yml`
+- `fio_menus/dialog/dialogue_main.yml`
+- `fio_menus/prompt/chat_prompt_ex.yml`
+- `fio_menus/prompt/anvil_prompt_ex.yml`
+
+## What this section covers next
+
+- [Core Settings](/plugin/fiomenu/config/core-settings)
+- [GUI Types & Actions](/plugin/fiomenu/config/gui-types-actions)
+- [Requirements Overview](/plugin/fiomenu/config/requirements-overview)
+- [Java Menus](/plugin/fiomenu/config/java-menus)
+- [Bedrock Menus](/plugin/fiomenu/config/bedrock-menus)
+- [Dialogue](/plugin/fiomenu/config/dialogue)
+- [Prompts](/plugin/fiomenu/config/prompts)
+- [Translations](/plugin/fiomenu/config/translations)
+- [Sounds](/plugin/fiomenu/config/sounds)

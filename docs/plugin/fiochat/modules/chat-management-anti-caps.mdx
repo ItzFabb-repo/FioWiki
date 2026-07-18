@@ -1,0 +1,36 @@
+---
+title: Anti-Caps
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Anti-Caps Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This rewrites long all-uppercase words.
+- Example documented by source comments:
+  - input: `AAAAAAAAAA`
+  - output: `AAAAaaaaaa`
+- Fixed bypass permission documented by source comments:
+  - `fiochat.chat.caps.bypass`
+
+## Main keys
+```yaml
+anti-caps:
+  minimum-letter-length: 6
+  preserve-leading-uppercase: 4
+  only-full-uppercase-words: true
+  whitelist: []
+```
+
+Source comments say the whitelist supports plain text and basic rules.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,295 @@
+---
+title: Config
+sidebar_position: 26
+---
+
+# Per World Chat Config
+
+Per World Chat controls whether normal chat can be seen across different Minecraft worlds. It also provides an optional world prefix that can be rendered before the channel or chat prefix.
+
+Source file:
+
+```text
+modules/chat/Chat Per World/config.yml
+```
+
+The module filters normal chat recipients before channel and mention delivery. It is designed to work together with chat channels, mentions, ignore checks, chat management, and Chat Radius.
+
+## Module toggle
+
+The module is enabled from the global module settings file:
+
+```yaml
+modules:
+  per-world-chat: false
+```
+
+When `modules.per-world-chat` is `false`, this module does not restrict chat recipients by world and does not render the per-world prefix.
+
+When `modules.per-world-chat` is `true`, the service loads this module's settings and applies them through the shared chat audience scope service.
+
+## Permission
+
+```text
+fiochat.perworldchat.bypass
+```
+
+This permission allows bypassing Per World Chat visibility restrictions.
+
+The source permission default is `false`, so players do not receive bypass access unless you grant it.
+
+The service also accepts the global bypass permission:
+
+```text
+fiochat.bypass.all
+```
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls debug output for this module's reload/action flow. The chat audience scope debug message reports whether Per World Chat is enabled, whether same-world-only mode is active, whether the prefix system is active, and how many world prefix mappings were loaded.
+
+Keep this disabled for normal use. Enable it when checking reload behavior or confirming that the module loaded the expected prefix map.
+
+## `settings.same-world-only`
+
+```yaml
+settings:
+  same-world-only: true
+```
+
+When `true`, normal chat is only visible to players in the same world unless the sender or receiver has the bypass permission.
+
+The service checks each chat recipient. If the recipient is in a different world and neither side has bypass access, that recipient is removed from the chat event's recipient list.
+
+The sender can always see their own message because the service allows the same player before applying world restrictions.
+
+When `false`, this module does not block cross-world recipients. The module can still render the world prefix if the module is enabled and `settings.world-prefix.enabled` is `true`.
+
+## `settings.bypass-permission`
+
+```yaml
+settings:
+  bypass-permission: "fiochat.perworldchat.bypass"
+```
+
+This is the permission node checked by the recipient filter.
+
+Bypass works from both directions:
+
+```text
+sender has bypass -> the sender's chat can be seen across worlds
+viewer has bypass -> that viewer can receive cross-world chat
+```
+
+If this config value is blank, the service falls back to:
+
+```text
+fiochat.perworldchat.bypass
+```
+
+The service normalizes the permission string before checking it, so accidental surrounding spaces are ignored.
+
+## Interaction with Chat Radius
+
+Per World Chat and Chat Radius are handled by the same audience scope service.
+
+The order is important:
+
+1. Per World Chat checks same-world visibility first.
+2. Chat Radius checks distance visibility after that when Chat Radius is enabled.
+
+If Per World Chat blocks a recipient because they are in another world, Chat Radius does not re-add that recipient.
+
+If Per World Chat allows a recipient, Chat Radius can still remove them if radius restrictions apply.
+
+## `settings.world-prefix.enabled`
+
+```yaml
+settings:
+  world-prefix:
+    enabled: true
+```
+
+When `true`, the module resolves a prefix from the sender's world and makes it available to the chat format system.
+
+When `false`, no Per World Chat prefix is rendered, even if `settings.world-prefix.worlds` contains mappings.
+
+The service only enables this prefix system when the module itself is enabled through `modules.per-world-chat`.
+
+## `settings.world-prefix.separator`
+
+```yaml
+settings:
+  world-prefix:
+    separator: " "
+```
+
+`separator` is inserted between the world prefix and the channel or chat prefix.
+
+The separator supports FioChat text formatting. If the configured separator resolves to an empty value, the service falls back to a single space.
+
+Example:
+
+```text
+[WorldPrefix] [ChannelPrefix] Player: message
+```
+
+## `settings.world-prefix.default-prefix`
+
+```yaml
+settings:
+  world-prefix:
+    default-prefix: ""
+```
+
+`default-prefix` is used when the sender's world is not listed under `settings.world-prefix.worlds`.
+
+When this is empty, unmapped worlds do not display a fallback prefix.
+
+This value supports the same formatting style used by the mapped world prefixes.
+
+## `settings.world-prefix.default-hover`
+
+```yaml
+settings:
+  world-prefix:
+    default-hover: []
+```
+
+`default-hover` is the hover text used with `default-prefix`.
+
+Each list entry becomes one hover line. Empty and whitespace-only lines are ignored by the service.
+
+Supported placeholders in hover lines:
+
+```text
+%world%
+%world_name%
+%world_id%
+```
+
+`%world%` and `%world_name%` resolve to the actual world name. `%world_id%` resolves to the lowercase normalized world id.
+
+## `settings.world-prefix.worlds`
+
+```yaml
+settings:
+  world-prefix:
+    worlds:
+      world:
+        prefix: "<dark_gray>[</dark_gray><#37ed3d><smallfont:s></#37ed3d><dark_gray>]</dark_gray>"
+        hover:
+          - "<#37ed3d>Overworld"
+          - "<gray><smallfont:you are talking on the overworld>"
+```
+
+This map defines explicit prefixes for specific worlds.
+
+The map key is the world name. Matching is case-insensitive because the service stores world ids in lowercase.
+
+Each world entry can be a section with `prefix` and `hover`, as shown in the current source. The service also supports a plain string value for simple prefix-only mappings.
+
+## `settings.world-prefix.worlds.<world>.prefix`
+
+```yaml
+world:
+  prefix: "<dark_gray>[</dark_gray><#37ed3d><smallfont:s></#37ed3d><dark_gray>]</dark_gray>"
+```
+
+`prefix` is the text rendered for that world.
+
+The current source uses compact one-letter smallfont labels:
+
+```text
+world = green survival/overworld marker
+world_nether = orange nether marker
+world_the_end = purple end marker
+```
+
+If `prefix` is missing or blank, the service can fall back to a `format` key for compatibility.
+
+## `settings.world-prefix.worlds.<world>.hover`
+
+```yaml
+world:
+  hover:
+    - "<#37ed3d>Overworld"
+    - "<gray><smallfont:you are talking on the overworld>"
+```
+
+`hover` is the list of hover lines attached to the world prefix.
+
+The service trims the list and removes blank lines. Hover lines support:
+
+```text
+%world%
+%world_name%
+%world_id%
+```
+
+Use hover text for the expanded world name or short context, while keeping the visible prefix compact.
+
+## Current default world mappings
+
+The current source maps these worlds:
+
+```text
+world
+world_nether
+world_the_end
+```
+
+If your server uses custom world names such as `survival`, `resource_world`, `pvp`, or `spawn`, add those exact world names under `settings.world-prefix.worlds`.
+
+## Recipient filtering examples
+
+With this setup:
+
+```yaml
+settings:
+  same-world-only: true
+  bypass-permission: "fiochat.perworldchat.bypass"
+```
+
+A player in `world` can chat with another player in `world`.
+
+A player in `world` cannot chat with a player in `world_nether` unless the sender or receiver has `fiochat.perworldchat.bypass`.
+
+A staff member with `fiochat.perworldchat.bypass` can receive messages from other worlds and can send messages across worlds.
+
+With this setup:
+
+```yaml
+settings:
+  same-world-only: false
+  world-prefix:
+    enabled: true
+```
+
+Chat can travel across worlds, but each message can still show the sender's world prefix.
+
+## Reload behavior
+
+The module can be reloaded through FioChat's module reload path. On reload, the service reads:
+
+```text
+modules.per-world-chat
+settings.same-world-only
+settings.bypass-permission
+settings.world-prefix.enabled
+settings.world-prefix.separator
+settings.world-prefix.default-prefix
+settings.world-prefix.default-hover
+settings.world-prefix.worlds
+```
+
+The loaded world prefix map replaces the previous in-memory map. World names are normalized at load time, so changing only capitalization does not create a different mapping.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

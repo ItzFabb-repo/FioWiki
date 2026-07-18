@@ -1,0 +1,132 @@
+---
+title: Compose
+---
+
+# Compose
+
+`compose.yml` controls the editor used to create a player mailbox. It contains the compose title, reward summary formatting, draft summary item, back/close controls, message prompt button, reward editor button, player selector button, and send button.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/compose.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Compose Mail</dark_gray>"
+  rows: 6
+```
+
+`title` is the inventory title. `rows` controls the inventory size. The current source uses a six-row inventory.
+
+## `menus.decorations`
+
+The current source uses `BLACK_GLASS` on slots `45-53` and `GRAY_GLASS` on slots `0-8`. These are visual filler items and do not define compose behavior.
+
+## `menus.rewards-summary.max-lines`
+
+```yaml
+menus:
+  rewards-summary:
+    max-lines: 8
+```
+
+This limits how many attached reward lines are shown in the compose summary. Extra rewards are collapsed into the `more-format` line.
+
+## `menus.rewards-summary.item-format`
+
+```yaml
+item-format: "<dark_gray>-</dark_gray> <gray>{material}</gray> <dark_gray>(</dark_gray><white>x{amount}</white><dark_gray>)</dark_gray>"
+```
+
+This formats one reward line in the compose summary.
+
+`{material}` is the translated or raw material name. `{amount}` is the formatted item amount.
+
+## `menus.rewards-summary.more-format`
+
+```yaml
+more-format: "<dark_gray>... and <white>{more}</white> more</dark_gray>"
+```
+
+This line appears when the reward count is higher than `max-lines`.
+
+`{more}` is the number of hidden rewards.
+
+## `menus.rewards-summary.amount-format`
+
+```yaml
+amount-format:
+  decimal-separator: ","
+  suffixes:
+    thousand: "k"
+    million: "m"
+    billion: "b"
+    trillion: "t"
+```
+
+`decimal-separator` controls the separator used by compact amount rendering.
+
+The suffixes are used when large reward amounts are shortened.
+
+## `menus.items.info`
+
+The info item is currently in slot `4`. It shows the draft state:
+
+```text
+%target%
+%reply_to%
+%rewards_count%
+%message%
+```
+
+`%target%` is the selected recipient. `%reply_to%` identifies the message being replied to when the draft is a reply. `%rewards_count%` is the number of attached rewards. `%message%` is the current message preview.
+
+The configured action `[MAILBOX] VIEW_INFO` is accepted by the service as an informational click and does not change screens.
+
+## `menus.items.back`
+
+The back button is currently in slot `45`. Its `[MAILBOX] BACK` action uses the plugin back service when possible. If no back history is available, the compose flow returns to the inbox.
+
+## `menus.items.close`
+
+The close button is currently in slot `49`. Its `[CLOSE]` action closes the inventory.
+
+## `menus.items.message`
+
+The message button is currently in slot `19`.
+
+Its `[MAILBOX] SET_MESSAGE` action starts a chat prompt. The player types the mailbox message in chat, can type `cancel` to cancel, and can use `|` for multiline input according to the language prompt.
+
+Formatting in the typed message is filtered by:
+
+```text
+fiochat.mailbox.format.hex
+fiochat.mailbox.format.color
+fiochat.mailbox.format.modifier
+```
+
+## `menus.items.rewards`
+
+The rewards button is currently in slot `21`.
+
+Its `[MAILBOX] EDIT_REWARDS` action opens the Rewards editor. The current item uses `BUNDLE` and `HIDE_BUNDLE_CONTENTS`, so attached rewards can be represented without exposing the full bundle tooltip.
+
+## `menus.items.player`
+
+The player button is currently in slot `23`.
+
+Its `[MAILBOX] SELECT_PLAYER` action opens the Selector screen. After a player is chosen, the draft stores that player's UUID and name as the target.
+
+## `menus.items.send`
+
+The send button is currently in slot `25`.
+
+Its `[MAILBOX] SEND` action attempts to send the draft. The service validates the selected target, prevents self-target sends, uses the configured language messages for failure or success feedback, then writes the mailbox and sent log data.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,139 @@
+---
+title: Config
+---
+
+# Alerts Config
+
+Source file:
+
+```text
+modules/announce/Server Announcements/alerts.yml
+```
+
+This page explains the dedicated `alerts` typed announcement. It is used by `/alerts <message>`, `/alert <message>`, and `/fiochat admin alerts <message>`. The admin command requires `fiochat.admin.alerts` or the parent admin permission. Receivers still need `fiochat.announcement.use`.
+
+Dedicated typed files override same-named entries from `admin-announcements` in `announce.yml`. If `alerts.yml` provides a valid `alerts` section, that section is loaded as the `alerts` type.
+
+## `alerts.enabled`
+
+`alerts.enabled` controls whether this typed style can be delivered. The current value is `true`.
+
+Turning it off disables the alerts typed style only. It does not disable scheduled announcements, broadcast announcements, or warning announcements.
+
+## `alerts.message.enabled`
+
+`alerts.message.enabled` controls whether the alert sends normal chat lines. The current value is `true`.
+
+If false, enabled actionbar, title, bossbar, toast, and sound channels can still run.
+
+## `alerts.message.lines`
+
+`alerts.message.lines` defines the chat layout. The current default sends a spacer line, a centered blue `Live Alert` heading, a centered `%message%` line, and another spacer line.
+
+`%message%` is replaced by the command text. Typed announcements also provide `%type%`, `%announcement_type%`, `%announcement_message%`, `%announce_message%`, and `%admin_announcement_message%`.
+
+## `alerts.actionbar.enabled`
+
+`alerts.actionbar.enabled` decides whether the alert appears above the hotbar. The current value is `true`.
+
+This makes alerts more immediate than broadcast by default. It is still a visual channel, so players who disabled announcement messages will not see it.
+
+## `alerts.actionbar.text`
+
+`alerts.actionbar.text` is the actionbar payload. The current value is `<#7DD3FC>%message%</#7DD3FC>`.
+
+Keep this concise because actionbar delivery is single-line.
+
+## `alerts.title.enabled`
+
+`alerts.title.enabled` decides whether the alert sends a center-screen title. The current value is `false`.
+
+The title text and timing remain defined so the channel can be enabled without adding new keys.
+
+## `alerts.title.title`
+
+`alerts.title.title` is the main title text. The current value is `<#7DD3FC>Alert</#7DD3FC>`.
+
+## `alerts.title.subtitle`
+
+`alerts.title.subtitle` is the subtitle text. The current value is `<white>%message%</white>`.
+
+Because it contains `%message%`, it changes per command invocation.
+
+## `alerts.title.fade-in`
+
+`alerts.title.fade-in` controls title fade-in duration in ticks. The current value is `5`.
+
+## `alerts.title.stay`
+
+`alerts.title.stay` controls how long the title remains fully visible. The current value is `40`, or two seconds.
+
+## `alerts.title.fade-out`
+
+`alerts.title.fade-out` controls fade-out duration in ticks. The current value is `10`.
+
+## `alerts.bossbar.enabled`
+
+`alerts.bossbar.enabled` decides whether the alert shows a bossbar. The current value is `false`.
+
+When enabled, the bossbar is displayed to eligible recipients and removed after `alerts.bossbar.seconds`.
+
+## `alerts.bossbar.title`
+
+`alerts.bossbar.title` is the bossbar text. The current value is `<#7DD3FC>%message%</#7DD3FC>`.
+
+## `alerts.bossbar.color`
+
+`alerts.bossbar.color` controls the Bukkit bossbar color. The current value is `BLUE`.
+
+Invalid values fall back to `BLUE`.
+
+## `alerts.bossbar.style`
+
+`alerts.bossbar.style` controls the Bukkit bossbar style. The current value is `SOLID`.
+
+Invalid values fall back to `SOLID`.
+
+## `alerts.bossbar.progress`
+
+`alerts.bossbar.progress` controls the filled amount of the bossbar. The current value is `1.0`.
+
+FioChat clamps this between `0.0` and `1.0`.
+
+## `alerts.bossbar.seconds`
+
+`alerts.bossbar.seconds` controls how long the bossbar remains visible. The current value is `5`.
+
+## `alerts.sound.enabled`
+
+`alerts.sound.enabled` controls whether a sound plays with the alert. The current value is `true`.
+
+This is controlled by the player's announcement sound toggle, separate from the visual message toggle.
+
+## `alerts.sound.name`
+
+`alerts.sound.name` is the Bukkit sound id. The current value is `BLOCK_NOTE_BLOCK_PLING`.
+
+If the sound cannot be resolved for the server version, sound playback is skipped.
+
+## `alerts.sound.volume`
+
+`alerts.sound.volume` controls playback volume. The current value is `1.0`.
+
+## `alerts.sound.pitch`
+
+`alerts.sound.pitch` controls playback pitch. The current value is `1.3`, making the alert sound sharper and more noticeable.
+
+## Rich quick alerts arguments
+
+The admin quick command also supports rich tagged arguments:
+
+```text
+/fiochat admin alerts m:<message> t:<title> s:<subtitle> a:<actionbar> b:<bossbar;COLOR;STYLE;VALUE>
+```
+
+When `m:` is present, this file's typed alerts profile is sent. The additional tagged parts are sent directly as live title, actionbar, or bossbar broadcasts outside the YAML profile.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

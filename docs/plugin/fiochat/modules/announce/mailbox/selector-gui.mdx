@@ -1,0 +1,75 @@
+---
+title: Selector
+---
+
+# Selector
+
+`selector.yml` controls the player selection screen used by Compose. It lists known players, lets the sender choose a target, and provides paging, back, and close controls.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/selector.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Select Player</dark_gray> <black>(%page%/%max_page%)</black>"
+  rows: 6
+```
+
+The title supports `%page%` and `%max_page%`. The current layout uses six rows.
+
+## `menus.content-slots`
+
+```yaml
+menus:
+  content-slots:
+    - "9-44"
+```
+
+These slots are used for player target entries.
+
+## `menus.items.player`
+
+```yaml
+menus:
+  items:
+    player:
+      material: PLAYER_HEAD
+      flags:
+        - HIDE_ADDITIONAL_TOOLTIP
+      name: "<yellow>%player%</yellow>"
+```
+
+This template renders each selectable player.
+
+`%player%` is replaced with the known player name.
+
+The configured `[MAILBOX] SELECT_TARGET` action reads the UUID mapped to the clicked slot, prevents selecting yourself, stores the target in the compose draft, then returns to Compose.
+
+## `menus.items.buttons.previous`
+
+The previous button is currently in slot `45`. `[MAILBOX] PAGE_PREVIOUS` opens the previous selector page.
+
+`behavior.ifnoPrevious` changes the button to a disabled gray item when no previous page exists.
+
+## `menus.items.buttons.back`
+
+The back button is currently in slot `46`. `[MAILBOX] GO_BACK` returns to Compose from the selector.
+
+## `menus.items.buttons.next`
+
+The next button is currently in slot `53`. `[MAILBOX] PAGE_NEXT` opens the next selector page.
+
+`behavior.ifnoNext` changes the button to a disabled gray item when no next page exists.
+
+## `menus.items.buttons.close`
+
+The close button is currently in slot `49`. `[CLOSE]` closes the selector.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

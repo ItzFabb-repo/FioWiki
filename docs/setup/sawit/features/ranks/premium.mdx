@@ -1,0 +1,63 @@
+---
+title: Premium
+sidebar_position: 3
+---
+
+# Premium
+
+Sawit premium-style paid or perk ranks are handled through `LuckPerms`.
+
+## Verified Premium Groups
+
+| Group | Type | Notes |
+| --- | --- | --- |
+| `default` | Base | Starting player group. |
+| `honey` | Premium | First verified premium-style group. |
+| `apple` | Premium | Higher than `honey`. |
+| `melon` | Premium | Higher than `apple`. |
+| `cookie` | Premium | Higher than `melon`. |
+| `amethyst` | Premium | Highest verified premium-style group in the package snapshot. |
+
+## Verified Inheritance Order
+
+| Group | Parent / progression order | Weight |
+| --- | --- | --- |
+| `default` | starting point | `1` |
+| `honey` | after `default` | `2` |
+| `apple` | after `honey` | `3` |
+| `melon` | after `apple` | `4` |
+| `cookie` | after `melon` | `5` |
+| `amethyst` | after `cookie` | `6` |
+
+## Verified Permissions Per Rank
+
+The table below lists permissions that can be directly tied to each premium group from the Sawit LuckPerms storage.
+
+| Rank | Directly verified permissions |
+| --- | --- |
+| `honey` | `essentials.back`, `essentials.back.ondeath`, `essentials.ext`, `essentials.ext.others`, `essentials.hat`, `essentials.kit.honey`, `essentials.ptime`, `essentials.realname`, `fiochat.afk.check`, `fiochat.afk.message`, `fiochat.commandhider.visibility.honey`, `fiochat.fonts.antrophobia`, `fiochat.format.chat.markup.bold`, `fiochat.format.chat.markup.italic`, `fiochat.quickchat.max.5` |
+| `apple` | `essentials.back.onteleport`, `essentials.ice`, `essentials.kit.apple`, `essentials.ptime.others`, `essentials.pweather`, `essentials.recipe`, `essentials.seen`, `essentials.seen.alts`, `essentials.seen.banreason`, `essentials.seen.firstlogin`, `essentials.seen.location`, `fiochat.commandhider.visibility.apple`, `fiochat.fonts.bubble`, `fiochat.format.chat.markup.strikethrough`, `fiochat.quickchat.max.10` |
+| `melon` | `essentials.depth`, `essentials.hat.ignore-binding`, `essentials.ice.others`, `essentials.kit.melon`, `essentials.pweather.others`, `essentials.rest`, `essentials.sell.bulk`, `fiochat.commandhider.visibility.melon`, `fiochat.fonts.upside_down`, `fiochat.quickchat.max.20` |
+| `cookie` | `essentials.bottom`, `essentials.kit.cookie`, `fiochat.commandhider.visibility.cookie`, `fiochat.fonts.latin_1`, `fiochat.fonts.latin_2`, `fiochat.mentions.here`, `fiochat.quickchat.max.30`, `tempfly.speed.self` |
+| `amethyst` | `essentials.chat.ignoreexempt`, `essentials.kit.amethyst`, `essentials.thunder`, `essentials.time`, `essentials.time.set`, `essentials.tpauto`, `essentials.tpoffline`, `essentials.weather`, `fiochat.commandhider.visibility.amethyst`, `fiochat.fonts.small_caps`, `fiochat.format.chat.markup.spoiler`, `fiochat.mentions.everyone`, `fiochat.quickchat.max.40`, `fiochat.redeem.use`, `fiochat.report.use`, `tempfly.speed.other` |
+
+## Notes On Accuracy
+
+| Item | Detail |
+| --- | --- |
+| Direct vs inherited | This table focuses on permissions directly visible on each premium group in storage. Higher ranks may also inherit lower-rank permissions through the parent chain. |
+| Excluded ambiguous nodes | I intentionally excluded nodes that appear to have been later removed or unset in the same storage snapshot. |
+| Premium system split | These premium permissions belong to the LuckPerms ladder, while `VanguardRanks` is used for player league progression. |
+| Editor check | The direct permission list has now been cross-checked against the provided LuckPerms web editor link. |
+
+## Interpretation
+
+| Point | Detail |
+| --- | --- |
+| Verified ladder | `honey`, `apple`, `melon`, `cookie`, and `amethyst` are the premium ladder names actually visible in the Sawit package. |
+| Highest verified tier | `amethyst` is the highest verified premium group in this storage snapshot. |
+| Accuracy limit | The hierarchy and the listed direct permissions are storage-verified, but a full clean LuckPerms export would still be better if you want a perfect inherited-permission matrix. |
+
+:::info[Accuracy Note]
+This page intentionally does not describe `VanguardRanks` as premium, because the Sawit package shows `VanguardRanks` being used for league progression instead.
+:::

@@ -1,0 +1,117 @@
+---
+title: Placeholders
+sidebar_position: 1
+---
+
+# Placeholders
+
+FioChatGames has a built-in placeholder service and can also register a PlaceholderAPI expansion when PlaceholderAPI is installed.
+
+Prefix used by the source plugin:
+
+- `%fiochatgames_...%`
+
+## Player placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_player_name%` | Current player name. |
+| `%fiochatgames_points%` | Total stored points. |
+| `%fiochatgames_streak%` | Global streak value. |
+| `%fiochatgames_toggle%` | Whether the player is currently opted in. |
+
+## Active round placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_current_game%` | Active game display name. |
+| `%fiochatgames_current_game_id%` | Active game id, such as `trivia` or `race`. |
+| `%fiochatgames_current_prompt%` | Current prompt text. |
+| `%fiochatgames_current_time%` | Remaining round time in seconds. |
+| `%fiochatgames_race_type%` | Current race objective id. |
+| `%fiochatgames_race_type_display%` | Current race objective display name. |
+| `%fiochatgames_race_material%` | Current race material id. |
+| `%fiochatgames_race_material_display%` | Human-readable race material name. |
+| `%fiochatgames_race_amount%` | Current race target amount. |
+
+## Plugin state placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_status%` | `Running` or `Idling`. |
+| `%fiochatgames_start_mode%` | Formatted start mode label. |
+| `%fiochatgames_min_players_online%` | Configured online-player requirement used by auto start. |
+| `%fiochatgames_time_minutes%` | Configured auto-start interval label. |
+| `%fiochatgames_eligible_players%` | Current eligible-player count. |
+| `%fiochatgames_next_event_in%` | Time remaining until the next automatic round. |
+| `%fiochatgames_next_event_at%` | Clock time of the next automatic round. |
+
+## History placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_previous_event%` | Latest finished round type. |
+| `%fiochatgames_previous_event_winner%` | Latest winner name. |
+| `%fiochatgames_previous_event_1%` to `%fiochatgames_previous_event_5%` | Previous finished event types, newest to older. |
+| `%fiochatgames_previous_winner_1%` to `%fiochatgames_previous_winner_5%` | Previous winner names, newest to older. |
+
+## Per-game stat placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_win_<game>%` | Wins for one event game type. |
+| `%fiochatgames_winstreak_<game>%` | Winstreak for one event game type. |
+| `%fiochatgames_points_<game>%` | Returns points while scoped through a game token. |
+
+Supported `<game>` values from source examples:
+
+- `trivia`
+- `math`
+- `unscramble`
+- `unreverse`
+- `unshuffle`
+- `fast_type`
+- `rewrite`
+- `random`
+- `fillout`
+- `guess_the_word`
+- `guess_the_number`
+- `reaction`
+- `variable`
+- `race`
+
+## Leaderboard placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiochatgames_leaderboard_<game>_<rank>_<field>%` | Per-game leaderboard field for one rank. |
+| `%fiochatgames_top_<rank>_name%` | Top player by total points. |
+| `%fiochatgames_top_<rank>_points%` | Top points by rank. |
+
+Supported `<field>` values in source:
+
+- `player`
+- `name`
+- `point`
+- `points`
+- `win`
+- `wins`
+- `winstreak`
+- `streak`
+- `game_streak`
+- `rank`
+- `place`
+
+Supported `<rank>` values:
+
+- `1` to `10`
+
+## Usage notes
+
+- The placeholder service also works internally even without PlaceholderAPI when the plugin renders its own text.
+- PlaceholderAPI is still recommended if you want to use these values in scoreboards, tab lists, holograms, or third-party plugins.
+- For race placeholders, values such as type, material, and amount are only populated while a race round is active.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,146 @@
+---
+id: intro
+title: FioWiki
+slug: /
+hide_title: true
+hide_table_of_contents: false
+---
+
+import ScrollStory from '@site/src/components/ScrollStory';
+import MouseGradientButton from '@site/src/components/MouseGradientButton';
+import CodeBlock from '@theme/CodeBlock';
+import styles from './index.module.css';
+import TypingText from '@site/src/components/TypingText';
+import CountUpNumber from '@site/src/components/CountUpNumber';
+
+export const AboutLeft = () => (
+  <>
+    <div>Hello, I am <strong>Fabio</strong> from Indonesia.</div>
+    <div>
+      Minecraft is trully one of my favorite game not only for building but you can do much
+      more for the game itself such as: <strong>Developing</strong>, <strong>Crafting</strong>, <strong>Creating</strong> and
+      much more possibilities.
+    </div>
+    <div>
+      I started playing in 2016 (<strong>MCPE 0.15.0</strong>), and since then I have been
+      building servers, configs, and systems.
+    </div>
+    <div className={styles.buttons} style={{ margin: "1rem 0" }}>
+      <MouseGradientButton
+        href="https://www.minecraft.net/"
+        target="_blank"
+        rel="noreferrer"
+        gradientFrom="#56e871"
+        gradientTo="#23b502">
+        Minecraft
+      </MouseGradientButton>
+      <MouseGradientButton
+        href="https://minecraft.wiki/"
+        target="_blank"
+        rel="noreferrer"
+        gradientFrom="#52d9d0"
+        gradientTo="#0ba5b3">
+        Wiki
+      </MouseGradientButton>
+    </div>
+  </>
+);
+
+<div className={styles.hero}>
+  <div className={styles.heroTitleSlot}>
+    <TypingText />
+  </div>
+  <p className={styles.subText}>Is within this page</p>
+  <div className={styles.buttons}>
+    <MouseGradientButton
+      href="https://discord.gg/Vm6JAA38JC"
+      target="_blank"
+      rel="noreferrer"
+      gradientFrom="#2e4ebf"
+      gradientTo="#7289da">
+      <span className={styles.btnLabel}>Discord</span>
+    </MouseGradientButton>
+    <MouseGradientButton href="/" gradientFrom="#52d9d0" gradientTo="#0ba5b3">
+      <span className={styles.btnLabel}>FioWiki</span>
+    </MouseGradientButton>
+  </div>
+</div>
+
+<ScrollStory />
+
+---
+
+## Features
+<div>What is this page is about?, and why there is a Feature section underneath this page?</div>
+
+<div className={styles.cardGrid}>
+  <div className={styles.card}>
+    <img src="/img/minecraft1.jpg" alt="Feature one" />
+    <h3>What is this ?</h3>
+    <p>A Dedicated page to explain how is things works, in minecraft and plugins.</p>
+  </div>
+
+  <div className={styles.card}>
+    <img src="/img/minecraft2.jpg" alt="Feature two" />
+    <h3>Free Knowledge</h3>
+    <p>Not only free knowledge, you can also get to learn how dynamically or nerdy codes in minecraft plugins can be..</p>
+  </div>
+
+  <div className={styles.card}>
+    <img src="/img/minecraft3.jpg" alt="Feature three" />
+    <h3>Making it Unique</h3>
+    <p>Not just a Feature but it has a meaning behind that Feature that is mentioned.</p>
+  </div>
+</div>
+
+---
+
+## About Me
+
+<div className={styles.split}>
+  <div>
+    <AboutLeft />
+  </div>
+
+  <div>
+    <CodeBlock language="js">
+{`let grass = "G";
+let dirt = "D";
+let stone = "S";
+let sky = "B";
+
+let world = [
+  sky + sky + sky + sky,
+  sky + sky + sky + sky,
+  grass + grass + grass + grass,
+  dirt + dirt + dirt + dirt,
+  stone + stone + stone + stone
+];
+
+console.log(world.join("\\n"));`}
+    </CodeBlock>
+  </div>
+</div>
+
+---
+
+<div className={styles.center} style={{ margin: "7rem 0" }}>
+<h2 className={styles.highlightTitle}>
+  <span>For over <CountUpNumber from={1} to={1000} duration={2800} />+ Customer Across Voxel Shop & BuiltByBit</span>
+</h2>
+  <div>More than a thousand customers trust the product - an incredible number!</div>
+</div>
+
+---
+
+## Discord Community
+
+<iframe
+  src="https://discord.com/widget?id=1247520679595606147&theme=dark"
+  title="Discord Community"
+  width="100%"
+  height="420"
+  allowTransparency={true}
+  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+  style={{ border: "1px solid rgba(148, 163, 184, 0.35)", borderRadius: "12px" }}
+/>

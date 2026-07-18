@@ -1,0 +1,392 @@
+---
+title: NPCs
+sidebar_position: 7
+---
+
+# NPCs
+
+FioBlackMarket includes a dedicated NPC management path for market entry points and interaction actions.
+
+## What the NPC system covers
+
+The current command and language files show that NPC records can control:
+
+- name
+- entity type
+- location
+- scale
+- attributes
+- gravity
+- collideable state
+- turn-to-player behavior
+- turn-to-player distance
+- equipment
+- custom actions
+
+## Main permission
+
+```text
+fioblackmarket.npc
+```
+
+## How to make an NPC
+
+Use these commands in order.
+
+### 1. Create the NPC
+
+```text
+/blackmarket npc create <name>
+```
+
+This creates a new NPC at your current location.
+
+Rules from source:
+
+- sender must be a player
+- the name must not already exist
+- the name must pass the plugin name validator
+
+Example:
+
+```text
+/blackmarket npc create market_guard
+```
+
+### 2. Check what you made
+
+```text
+/blackmarket npc info <name>
+```
+
+This shows:
+
+- entity type
+- world
+- coordinates
+- spawned state
+- scale
+- gravity
+- collideable
+- turn-to-player state
+- turn-to-player distance
+- attribute count
+- action count
+
+Example:
+
+```text
+/blackmarket npc info market_guard
+```
+
+### 3. Move it to your current location
+
+```text
+/blackmarket npc move_here <name>
+```
+
+This teleports the NPC record to where you are standing.
+
+Example:
+
+```text
+/blackmarket npc move_here market_guard
+```
+
+### 4. Center it
+
+```text
+/blackmarket npc center <name>
+```
+
+This centers the NPC on the block grid and refreshes its visuals.
+
+Example:
+
+```text
+/blackmarket npc center market_guard
+```
+
+### 5. Set the entity type
+
+```text
+/blackmarket npc type <name> <entity-type>
+```
+
+This changes what entity the NPC uses.
+
+Example:
+
+```text
+/blackmarket npc type market_guard VILLAGER
+```
+
+The source validates the entity type and respawns the NPC after changing it.
+
+### 6. Set the scale
+
+```text
+/blackmarket npc scale <name> <size>
+```
+
+This changes the NPC size.
+
+Example:
+
+```text
+/blackmarket npc scale market_guard 1.25
+```
+
+Rules from source:
+
+- value must be greater than `0`
+- invalid numbers are rejected
+
+### 7. Toggle gravity
+
+```text
+/blackmarket npc gravity <name> <true|false>
+```
+
+This controls whether the NPC is affected by gravity.
+
+Example:
+
+```text
+/blackmarket npc gravity market_guard false
+```
+
+### 8. Toggle collision
+
+```text
+/blackmarket npc collideable <name> <true|false>
+```
+
+The source accepts both `collideable` and `collidable`.
+
+Example:
+
+```text
+/blackmarket npc collideable market_guard false
+```
+
+### 9. Make it look at players
+
+```text
+/blackmarket npc turn_to_player <name> <true|false>
+```
+
+This toggles whether the NPC turns toward nearby players.
+
+Example:
+
+```text
+/blackmarket npc turn_to_player market_guard true
+```
+
+### 10. Set the turning distance
+
+```text
+/blackmarket npc turn_to_player_distance <name> <distance>
+```
+
+This sets how close a player must be before the NPC turns toward them.
+
+Example:
+
+```text
+/blackmarket npc turn_to_player_distance market_guard 8
+```
+
+Rules from source:
+
+- distance must be greater than `0`
+- invalid values are rejected
+
+### 11. Give it equipment
+
+```text
+/blackmarket npc equipment <name> <slot> <material>
+```
+
+This equips the NPC with an item in the chosen slot.
+
+Example:
+
+```text
+/blackmarket npc equipment market_guard HAND GOLDEN_SWORD
+```
+
+### 12. Add attributes
+
+```text
+/blackmarket npc attributes <name> set <attribute> <value>
+```
+
+This stores a supported attribute on the NPC.
+
+Example:
+
+```text
+/blackmarket npc attributes market_guard set customnamevisible true
+```
+
+The available attribute names depend on the NPC type. The source validates them before saving.
+
+### 13. List attributes
+
+```text
+/blackmarket npc attributes <name> list
+```
+
+This prints all stored attributes for that NPC.
+
+Example:
+
+```text
+/blackmarket npc attributes market_guard list
+```
+
+### 14. Clear one attribute
+
+```text
+/blackmarket npc attributes <name> clear <attribute>
+```
+
+This removes one stored attribute from the NPC.
+
+Example:
+
+```text
+/blackmarket npc attributes market_guard clear customnamevisible
+```
+
+### 15. Add interaction actions
+
+```text
+/blackmarket npc actions <name> add <player|console|sound|message> <value>
+```
+
+This attaches a reaction when players interact with the NPC.
+
+Examples:
+
+```text
+/blackmarket npc actions market_guard add message Welcome to the Black Market!
+/blackmarket npc actions market_guard add player blackmarket
+/blackmarket npc actions market_guard add console say Black Market opened
+/blackmarket npc actions market_guard add sound UI_BUTTON_CLICK 1 1
+```
+
+Action kinds supported by source:
+
+- `player`
+- `console`
+- `sound`
+- `message`
+
+### 16. List NPC actions
+
+```text
+/blackmarket npc actions <name> list
+```
+
+This shows every stored action for that NPC.
+
+Example:
+
+```text
+/blackmarket npc actions market_guard list
+```
+
+### 17. Remove an action
+
+```text
+/blackmarket npc actions <name> remove <player|console|sound|message> <value>
+```
+
+This removes one matching stored action.
+
+Example:
+
+```text
+/blackmarket npc actions market_guard remove message Welcome to the Black Market!
+```
+
+### 18. Save the NPC data
+
+```text
+/blackmarket npc save
+```
+
+This flushes the current NPC data to disk.
+
+The manager already autosaves, but this command forces a manual save right now.
+
+### 19. List all NPCs
+
+```text
+/blackmarket npc list
+```
+
+This prints all saved NPC names.
+
+Example:
+
+```text
+/blackmarket npc list
+```
+
+### 20. Remove one NPC
+
+```text
+/blackmarket npc remove <name>
+```
+
+This deletes the NPC record and despawns it.
+
+Example:
+
+```text
+/blackmarket npc remove market_guard
+```
+
+## NPC actions
+
+The command and language files show that NPC actions can be stored by kind:
+
+- `player`
+- `console`
+- `sound`
+- `message`
+
+That makes the NPC system more than a static marker. It can open the market, run commands, play feedback, or send text when a player clicks it.
+
+## Validation behavior
+
+The current command path validates:
+
+- NPC name format
+- scale values
+- entity type values
+- boolean state values
+- distance values
+- equipment slot and material values
+- action kind values
+
+## Access behavior
+
+Market access rules also matter for NPC usage. If the market is blocked in a world or region, the NPC path is expected to respect the same access control unless bypass rules apply.
+
+## Practical flow
+
+The most common setup is:
+
+1. create the NPC
+2. set the entity type
+3. move or center it
+4. tweak scale, gravity, and collision
+5. add interaction actions
+6. save
+
+That is the simplest way to turn an NPC into a Black Market entry point.

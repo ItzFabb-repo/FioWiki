@@ -1,0 +1,83 @@
+---
+title: Json
+---
+
+# Biome Json
+
+Source file:
+
+```text
+modules/announce/Biome Discovery/biome.json
+```
+
+This file is the bundled biome registry used by the Biome Discovery module. It maps biome ids to display names so FioChat can show cleaner names in titles, subtitles, and chat output.
+
+## `display-names`
+
+```json
+{
+  "display-names": {
+    "plains": "<#85d66b>Plains",
+    "cherry_grove": "<#f8abc9>Cherry Grove"
+  }
+}
+```
+
+The registry root is `display-names`.
+
+Each key is a biome id, and each value is the display text used by the module.
+
+## Editing an existing biome
+
+```json
+{
+  "display-names": {
+    "plains": "<#85d66b>Plains"
+  }
+}
+```
+
+Change the value if you want a different color or label.
+
+## Adding a custom biome id
+
+```json
+{
+  "display-names": {
+    "terralith:moonlight_grove": "<#8aa7ff>Moonlight Grove"
+  }
+}
+```
+
+Use the exact biome id that your datapack or worldgen pack exposes.
+
+## Common shipped entries
+
+The bundled registry includes vanilla biome names and a large set of current Minecraft biome ids.
+
+This file is the best place to customize the default registry label, while `config.yml -> display-names` is better for local overrides.
+
+## Relationship to `config.yml`
+
+If `config.yml` has `ignore-unmapped-biomes: true`, any biome that is not present in this file or in `display-names` is skipped silently.
+
+## Legacy Path Note
+
+The active registry path for this build is:
+
+```text
+modules/announce/Biome Discovery/biome.json
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/biome-discovery/biome.json
+modules/biome-discovery/biome.json
+```
+
+This page follows the current announce-module registry path used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

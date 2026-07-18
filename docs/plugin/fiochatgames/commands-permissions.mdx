@@ -1,0 +1,131 @@
+﻿---
+title: Commands & Permissions
+sidebar_position: 1
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `config.yml`, and the current command handler source.
+
+:::info[Scope]
+Use this page when you need the real FioChatGames command surface instead of an old shortcut list.
+:::
+
+## Root Commands
+
+The plugin registers two root commands:
+
+- `/fiochatgames`
+- `/fiochatgamesadmin`
+
+Aliases:
+
+- `/cg` for `/fiochatgames`
+- `top` as an alias for `leaderboard`
+
+Command aliases for subcommands are configurable in `config.yml` under `command-aliases`.
+
+## User Commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiochatgames help` | `fiochatgames.command.help` | Show player help. |
+| `/fiochatgames toggle` | `fiochatgames.command.toggle` | Toggle your participation state. |
+| `/fiochatgames current` | `fiochatgames.command.current` | Show the active round and remaining time. |
+| `/fiochatgames leaderboard <events\|races> <type>` | `fiochatgames.command.leaderboard` | Show leaderboard data for an event type or race objective. |
+| `/fiochatgames info <events\|races> <player>` | `fiochatgames.command.info` | Show stored stats for a player. |
+| `/fiochatgames admin ...` | `fiochatgames.command.admin` | Route into admin subcommands through the main command. |
+
+## User Permissions
+
+| Permission | Description |
+| --- | --- |
+| `fiochatgames.use` | Base permission required to use the command system. |
+| `fiochatgames.play` | Required only when `use-permission-toplay: true` is enabled. |
+| `fiochatgames.command.help` | Allows `/cg help`. |
+| `fiochatgames.command.toggle` | Allows `/cg toggle`. |
+| `fiochatgames.command.current` | Allows `/cg current`. |
+| `fiochatgames.command.leaderboard` | Allows `/cg leaderboard ...`. |
+| `fiochatgames.command.info` | Allows `/cg info ...`. |
+| `fiochatgames.command.admin` | Allows routing into admin subcommands from `/cg admin`. |
+| `fiochatgames.command.*` | Wildcard for the main user command nodes. |
+
+## Admin Commands
+
+You can use admin commands from either:
+
+- `/fiochatgames admin ...`
+- `/fiochatgamesadmin ...`
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `admin help` | `fiochatgames.admin.help` | Show admin help. |
+| `admin reload` | `fiochatgames.admin.reload` | Reload config, language, and plugin-managed files. |
+| `admin version` | `fiochatgames.admin.version` | Show plugin version and server version. |
+| `admin author` | `fiochatgames.admin.author` | Show plugin author list. |
+| `admin placeholders` | `fiochatgames.admin.placeholders` | Print supported placeholder patterns. |
+| `admin current` | `fiochatgames.admin.current` | Show active round details. |
+| `admin list` | `fiochatgames.admin.list` | Show enabled event types, race objectives, and start mode. |
+| `admin menu` | `fiochatgames.admin.menu` | Open the admin GUI. |
+| `admin info <events\|races> <player>` | `fiochatgames.admin.info` | Show player event or race statistics. |
+| `admin toggle <player> <true\|false>` | `fiochatgames.admin.toggle` | Force another player's participation toggle. |
+| `admin points <give\|remove\|set> <player> <amount>` | `fiochatgames.admin.points` | Edit total points. |
+| `admin win <give\|remove\|set> <player> <events\|races> <game> <amount>` | `fiochatgames.admin.win` | Edit stored wins. |
+| `admin winstreak <give\|remove\|set> <player> <events\|races> <game> <amount>` | `fiochatgames.admin.winstreak` | Edit stored winstreaks. |
+| `admin blacklist list` | `fiochatgames.admin.blacklist` | Show blacklisted players. |
+| `admin blacklist <add\|remove> <player>` | `fiochatgames.admin.blacklist` | Add or remove a player from the blacklist. |
+| `admin start event <type> [-bypass]` | `fiochatgames.admin.start` and `fiochatgames.admin.start.event` | Force-start an event game. |
+| `admin start race <type> [-bypass]` | `fiochatgames.admin.start` and `fiochatgames.admin.start.race` | Force-start a race objective. |
+| `admin start <legacyGameOrRace> [-bypass]` | `fiochatgames.admin.start` | Legacy compatibility path still supported in source. |
+| `admin stop [all\|event\|race]` | `fiochatgames.admin.stop` | Stop the currently running round. |
+
+## Admin Permission Nodes
+
+| Permission | Description |
+| --- | --- |
+| `fiochatgames.admin` | Main wildcard-style admin access group. |
+| `fiochatgames.admin.help` | Admin help command. |
+| `fiochatgames.admin.reload` | Reload command. |
+| `fiochatgames.admin.version` | Version command. |
+| `fiochatgames.admin.author` | Author command. |
+| `fiochatgames.admin.placeholders` | Placeholder list command. |
+| `fiochatgames.admin.current` | Current command. |
+| `fiochatgames.admin.list` | List command. |
+| `fiochatgames.admin.start` | Root start command. |
+| `fiochatgames.admin.start.event` | Allows event starts. |
+| `fiochatgames.admin.start.race` | Allows race starts. |
+| `fiochatgames.admin.start.*` | Wildcard for all start nodes. |
+| `fiochatgames.admin.start.race.*` | Wildcard for all race objective start nodes. |
+| `fiochatgames.admin.stop` | Stop command. |
+| `fiochatgames.admin.menu` | Admin GUI command. |
+| `fiochatgames.admin.info` | Admin info command. |
+| `fiochatgames.admin.toggle` | Force toggle command. |
+| `fiochatgames.admin.points` | Points editor command. |
+| `fiochatgames.admin.win` | Wins editor command. |
+| `fiochatgames.admin.winstreak` | Winstreak editor command. |
+| `fiochatgames.admin.blacklist` | Blacklist editor command. |
+| `fiochatgames.admin.update` | Update-related permission declared in `plugin.yml`. |
+
+## Start Permissions By Game Type
+
+Event start permissions use the event `GameType.id()` value. Examples:
+
+- `fiochatgames.admin.start.trivia`
+- `fiochatgames.admin.start.fast_type`
+- `fiochatgames.admin.start.guess_the_word`
+- `fiochatgames.admin.start.guess_the_number`
+
+Race start permissions use normalized objective names. Examples:
+
+- `fiochatgames.admin.start.race.break`
+- `fiochatgames.admin.start.race.bartering`
+- `fiochatgames.admin.start.race.resurrecting`
+- `fiochatgames.admin.start.race.placeholderapi`
+- `fiochatgames.admin.start.race.shoot_at_entity`
+
+## Notes
+
+- `-bypass` can be appended to start commands to bypass online-player requirements.
+- `/fiochatgamesadmin` routes into the same admin handler as `/fiochatgames admin`.
+- `use-permission-toplay: true` makes `fiochatgames.play` required for participation.
+- `command-aliases` in `config.yml` controls the user/admin subcommand aliases, including `ver` for `version`.

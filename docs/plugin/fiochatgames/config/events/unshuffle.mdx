@@ -1,0 +1,367 @@
+---
+title: unshuffle.yml
+sidebar_position: 1
+---
+
+# unshuffle.yml
+
+---
+
+# Game Preview (UNSHUFFLE)
+
+![FioChatGames UNSHUFFLE](../../../../img/fiochatgames/FioChatGames%20UNSHUFFLE.png)
+
+---
+
+File Location: `plugin\\fiochatgames\\config\\events\unshuffle.yml`
+
+```yaml
+# ==================================================================================================
+#  Chat Event Configuration Guide
+# ==================================================================================================
+# Purpose
+# This file defines a single chat-event game type, including round behavior, player messaging,
+# reward execution, and optional ranking presentation used by full-duration chat events.
+#
+# Core Fields
+# - game: Logical event identifier used by  internals.
+# - folder: Relative config path used by admin tools and diagnostics.
+# - enable: Enables or disables this event from automatic/manual selection.
+# - case-sensitive: If true, player answers must match exact letter case.
+# - points: Points granted to the winner of this event.
+#
+# Message Blocks
+# - messages.started: Broadcast when the event begins.
+# - messages.start: Multi-line event panel shown at round start.
+# - messages.correct: Winner announcement template.
+# Placeholders commonly available: %player%, %type%, %gameType%, %points%, %seconds%, %prompt%.
+#
+# Streak and Rewards
+# - streak.reset_on_loss: Resets non-winner streak values after a resolved round.
+# - streak.announce: Enables global streak announcement messages.
+# - streak_rewards: Executes extra rewards when a player reaches configured streak milestones.
+# - rewards.commands: Default reward pipeline for normal winner resolution.
+# - rewards.fastest.commands: Optional override used when winner policy is FASTEST in full-duration mode.
+#   If omitted/empty, the plugin falls back to rewards.commands.
+#
+# Full-Duration Ranking Presentation
+# The global toggle and top-count limit are controlled in config.yml:
+#   chat_event.full_duration.enabled
+#   chat_event.full_duration.announce_rankings
+#   chat_event.full_duration.top_announce_count
+#
+# Per-event ranking display templates are configured below:
+# - simple: Minimal single-template ranking display.
+# - advance: Per-position templates (1..10) with optional header/footer.
+#
+# Ranking Placeholders
+# - Per-line: %index%, %player%, %timetoGuess%
+# - Positional: %player_1%..%player_10%, %timetoGuess_1%..%timetoGuess_10%
+# - Generic: %max%, %type%
+#
+# Notes
+# - Keep YAML indentation as spaces only.
+# - Avoid tabs.
+# - Changes take effect after plugin reload.
+# ==================================================================================================
+game: UNSHUFFLE
+folder: games/events/unshuffle.yml
+
+enable: true
+case-sensitive: true
+points: 1
+
+messages:
+  started: '<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '<green><bold>%player%</bold> solved the <gold>%type%</gold> game in <gold>%seconds%s</gold> and earned <gold>%points%</gold> points!</green>'
+  recorded: "[prefix=false]<green>Recorded:</green> <yellow>%rank%</yellow> <gray>(%seconds%s)</gray>"
+  streak: '<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffb88f><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:unshuffle></center>'
+    - ''
+    - '<center><gray><smallfont:be the first to win the event!></gray></center>'
+    - '<center><gray>Solve this challenge:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ffb88f><shadow:#000000:1.0>%word%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffb88f><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:unshuffle></center>'
+    - ''
+    - '<center><gray><smallfont:%player% solved this event first!></gray></center>'
+    - '<center><gray>The answer was:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ffb88f><shadow:#00FF00:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffb88f><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:unshuffle></center>'
+    - ''
+    - '<center><gray><smallfont:The event has ended without a winner></gray></center>'
+    - '<center><gray>The answer was:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ffb88f><shadow:#FF0000:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+title:
+  text: '<#ffb88f>Unshuffle'
+  enabled: true
+subtitle:
+  text: '<gray>%unshuffle%</gray>'
+  enabled: true
+
+words:
+  - 'Nether Quartz Ore'
+  - 'Block Of Iron'
+  - 'Block Of Gold'
+  - 'Block Of Diamond'
+  - 'Block Of Emerald'
+  - 'Block Of Coal'
+  - 'Block Of Redstone'
+  - 'Block Of Copper'
+  - 'Block Of Lapis'
+  - 'Block Of Amethyst'
+  - 'Block Of Raw Iron'
+  - 'Block Of Raw Gold'
+  - 'Block Of Raw Copper'
+  - 'Cut Copper Slab'
+  - 'Cut Copper Stairs'
+  - 'Exposed Cut Copper'
+  - 'Weathered Cut Copper'
+  - 'Oxidized Cut Copper'
+  - 'Exposed Cut Copper Slab'
+  - 'Weathered Cut Copper Slab'
+  - 'Oxidized Cut Copper Slab'
+  - 'Exposed Cut Copper Stairs'
+  - 'Weathered Cut Copper Stairs'
+  - 'Oxidized Cut Copper Stairs'
+  - 'Light Weighted Pressure Plate'
+  - 'Heavy Weighted Pressure Plate'
+  - 'Polished Blackstone Bricks'
+  - 'Polished Blackstone Brick Slab'
+  - 'Polished Blackstone Brick Stairs'
+  - 'Polished Blackstone Brick Wall'
+  - 'Polished Blackstone Pressure Plate'
+  - 'Polished Blackstone Button'
+  - 'Smooth Stone Slab'
+  - 'Smooth Sandstone Slab'
+  - 'Smooth Sandstone Stairs'
+  - 'Smooth Red Sandstone'
+  - 'Smooth Red Sandstone Slab'
+  - 'Smooth Red Sandstone Stairs'
+  - 'Red Sandstone Slab'
+  - 'Red Sandstone Stairs'
+  - 'Red Sandstone Wall'
+  - 'Chiseled Red Sandstone'
+  - 'Chiseled Sandstone'
+  - 'Cracked Stone Bricks'
+  - 'Cracked Deepslate Bricks'
+  - 'Cracked Deepslate Tiles'
+  - 'Infested Stone Bricks'
+  - 'Infested Cracked Stone Bricks'
+  - 'Infested Chiseled Stone Bricks'
+  - 'Infested Mossy Stone Bricks'
+  - 'Mossy Stone Brick Slab'
+  - 'Mossy Stone Brick Stairs'
+  - 'Mossy Stone Brick Wall'
+  - 'Stone Brick Slab'
+  - 'Stone Brick Stairs'
+  - 'Stone Brick Wall'
+  - 'Deepslate Brick Slab'
+  - 'Deepslate Brick Stairs'
+  - 'Deepslate Brick Wall'
+  - 'Deepslate Tile Slab'
+  - 'Deepslate Tile Stairs'
+  - 'Deepslate Tile Wall'
+  - 'Nether Brick Slab'
+  - 'Nether Brick Stairs'
+  - 'Nether Brick Wall'
+  - 'Red Nether Bricks'
+  - 'Red Nether Brick Slab'
+  - 'Red Nether Brick Stairs'
+  - 'Red Nether Brick Wall'
+  - 'End Stone Bricks'
+  - 'End Stone Brick Slab'
+  - 'End Stone Brick Stairs'
+  - 'End Stone Brick Wall'
+  - 'Prismarine Brick Slab'
+  - 'Prismarine Brick Stairs'
+  - 'Dark Prismarine Slab'
+  - 'Dark Prismarine Stairs'
+  - 'Warped Nylium Block'
+  - 'Crimson Nylium Block'
+  - 'Warped Wart Block'
+  - 'Nether Wart Block'
+  - 'Jack O Lantern'
+  - 'Wet Sponge Block'
+  - 'Daylight Detector Inverted'
+  - 'Light Blue Stained Glass'
+  - 'Light Blue Stained Glass Pane'
+  - 'Light Gray Stained Glass'
+  - 'Light Gray Stained Glass Pane'
+  - 'Red Stained Glass'
+  - 'Red Stained Glass Pane'
+  - 'Green Stained Glass'
+  - 'Green Stained Glass Pane'
+  - 'Blue Stained Glass'
+  - 'Blue Stained Glass Pane'
+  - 'Yellow Stained Glass'
+  - 'Yellow Stained Glass Pane'
+  - 'Orange Stained Glass'
+  - 'Orange Stained Glass Pane'
+  - 'Magenta Stained Glass'
+  - 'Magenta Stained Glass Pane'
+  - 'Purple Stained Glass'
+  - 'Purple Stained Glass Pane'
+  - 'Pink Stained Glass'
+  - 'Pink Stained Glass Pane'
+  - 'Black Stained Glass'
+  - 'Black Stained Glass Pane'
+  - 'White Stained Glass'
+  - 'White Stained Glass Pane'
+  - 'Gray Stained Glass'
+  - 'Gray Stained Glass Pane'
+  - 'Brown Stained Glass'
+  - 'Brown Stained Glass Pane'
+  - 'Cyan Stained Glass'
+  - 'Cyan Stained Glass Pane'
+  - 'Lime Stained Glass'
+  - 'Lime Stained Glass Pane'
+
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  2:
+    commands:
+      - 'MESSAGE:<green>You reached a 2-win streak in %game%!'
+
+rewards:
+  commands:
+    - 'CONSOLE:eco give %player_name% 1000'
+    - 'CONSOLE:exp give %player_name% 100'
+    - 'ITEM:iron_ingot 5'
+    - 'ITEM:iron_pickaxe 1 efficiency:3 unbreaking:2'
+    - 'ITEM:enchanted_book 1 depth_strider:1'
+    - 'TITLE:<yellow><bold>Congratulations!\n<gray>You''ve won the <#00ff00>%gameType%<gray>!'
+    - 'ACTIONBAR:<gray>Congrats a rewards has been given'
+    - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+    - 'MESSAGE:<yellow><bold>!</bold> <gray>You are the one with the right answer congrats!'
+    - 'MESSAGE:<#7a7a7a><italic>(Reward has been given)'
+
+  # This section will be used if you have
+  #chat_event:
+  #  full_duration:
+  #    enabled: true #<-- this option in the main config.yml set to true.
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+      - 'CONSOLE:exp give %player_name% 100'
+      - 'ITEM:iron_ingot 5'
+      - 'ITEM:iron_pickaxe 1 efficiency:3 unbreaking:2'
+      - 'ITEM:enchanted_book 1 depth_strider:1'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You''ve won the <#00ff00>%gameType%<gray>!'
+      - 'ACTIONBAR:<gray>Congrats a rewards has been given'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'MESSAGE:<yellow><bold>!</bold> <gray>You are the one with the right answer congrats!'
+      - 'MESSAGE:<#7a7a7a><italic>(Reward has been given)'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+      - 'CONSOLE:exp give %player_name% 50'
+      - 'ITEM:iron_ingot 2'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 2nd place: <#00ff00>%gameType%<gray>!'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'CONSOLE:exp give %player_name% 5'
+      - 'ITEM:coal 1'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 3rd place: <#00ff00>%gameType%<gray>!'
+  4th_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 4th place: <#00ff00>%gameType%<gray>!'
+  5th_reward:
+    enabled: false
+    commands: []
+  6th_reward:
+    enabled: false
+    commands: []
+  participated:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 5'
+      - 'TITLE:<red><bold>You Lost!\\n<gray>Better luck next time!'
+      - 'ACTIONBAR:<gray>You''ve been given a participation reward from the server'
+      - 'TOAST:<gray>Keep it a good work!</gray>'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'MESSAGE:<yellow><bold>!</bold> <gray>You''re at %raceTypePlace% but you were still given a reward as participating to the event!'
+
+simple:
+  # Make things more easier for server owner to set it up by using this simple opt.
+  enabled: false
+  message:
+    header:
+      enabled: false # If true, there is going to be a header before the rankings: "X" sent.
+      message:
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+        - ""
+        - "<gray><italic>(Top 1-%max% Page of the %type% Winner)"
+        - ""
+    rankings: '<yellow>%index%</yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>'
+    footer:
+      enabled: false # If true, there is going to be a footer before the rankings: "X" sent.
+      message:
+        - ""
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+
+advance:
+  # If you want to make it alot more advance you can use this.
+  enabled: true
+  header:
+    enabled: true # If true, there is going to be a header before the rankings: "X" sent.
+    message:
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+      - ""
+      - "<gray><italic><smallfont:(Top 1-%max% Page of the %type% Winner)></italic></gray>"
+      - ""
+  message:
+    1: "<dark_red><bold>1st</bold></dark_red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    2: "<red><bold>2nd</bold></red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    3: "<gold><bold>3rd</bold></gold> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    4: "<yellow><bold>4th</bold></yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    5: "<white>5.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    6: "<white>6.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    7: "<white>7.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    8: "<white>8.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    9: "<white>9.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    10: "<white>10.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    # You can use either %player_1% %player_2% to define the player's name on that position.
+  footer:
+    enabled: true # If true, there is going to be a footer before the rankings: "X" sent.
+    message:
+      - ""
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+```
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

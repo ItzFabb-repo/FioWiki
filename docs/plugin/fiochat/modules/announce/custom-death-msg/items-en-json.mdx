@@ -1,0 +1,85 @@
+---
+title: Json
+---
+
+# Items En Json
+
+Source file:
+
+```text
+modules/announce/Custom Death Msg/items_en.json
+```
+
+This file stores the bundled item and weapon name registry used by the custom death message module.
+
+It maps item ids to human-friendly labels for placeholders such as `%killer_weapon_name%` and `%killer_item_name%`.
+
+## `display-names`
+
+```json
+{
+  "display-names": {
+    "NETHERITE_SWORD": "Netherite Sword",
+    "MACE": "Mace"
+  }
+}
+```
+
+The registry root is `display-names`.
+
+Each key is an item id and each value is the label shown in death message output.
+
+## Editing an existing item
+
+```json
+{
+  "display-names": {
+    "NETHERITE_SWORD": "Warblade"
+  }
+}
+```
+
+Change only the value if you want a different label.
+
+## Common current entries
+
+The bundled file includes item ids such as:
+
+```text
+WOODEN_SWORD
+IRON_SWORD
+DIAMOND_SWORD
+NETHERITE_SWORD
+BOW
+CROSSBOW
+TRIDENT
+MACE
+SHIELD
+LAVA_BUCKET
+WITHER_ROSE
+```
+
+## When this file is used
+
+This registry is used when the template file resolves item or weapon names in death messages.
+
+## Legacy Path Note
+
+The active registry path for this build is:
+
+```text
+modules/announce/Custom Death Msg/items_en.json
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/death-messages/items_en.json
+modules/death-message/items_en.json
+```
+
+This page follows the current announce-module registry path used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

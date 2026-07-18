@@ -1,0 +1,218 @@
+﻿---
+title: Server Motd
+sidebar_position: 32
+---
+
+# Server Motd (Module)
+Configuration guide for `modules/moderation/Server Message of the Day/config.yml`.
+
+:::warning[Important]
+Finalize rotation mode first, then configure legacy fallback, player-count strategy, and maintenance rules.
+:::
+
+## Module Preview
+
+![Server MOTD 1](../../../img/fiochat/Server%20MOTD%201.png)
+![Server MOTD 2](../../../img/fiochat/Server%20MOTD%202.png)
+![Server MOTD Maintenance](../../../img/fiochat/Server%20MOTD%20Maintenance.png)
+
+## Configuration Files
+- `modules/moderation/Server Message of the Day/config.yml`
+
+## MOTD Rotation Engine
+
+### Primary MOTD Mode
+```yaml
+server-motd:
+  mode: "sequential"
+```
+- Purpose: Defines how modern MOTD entries rotate.
+- Options:
+  - `sequential`: cycles in order.
+  - `random`: picks a random entry on each ping.
+
+### MOTD Entries
+```yaml
+server-motd:
+  1:
+    - "<align:center><gradient:#7289da:#9966cc><bold>FioChat</bold></gradient> <gray>[1.16]</gray>"
+    - "<align:center><#ebdb2f>FioChat <dark_gray>-</dark_gray> <gray><smallfont:out now!></gray>"
+  2:
+    - "<align:center><gradient:#7289da:#9966cc><bold>FioChat</bold></gradient> <gray>[1.16]</gray>"
+    - "<align:center><#2feb9a>Get your tools now! <dark_gray>-</dark_gray> <gray><smallfont:join!></gray>"
+```
+- Purpose: Provides rotating line sets for server list preview.
+- Options:
+  - Keep lines short to avoid truncation on client list.
+  - Supported placeholders:
+    - `{online}`
+    - `{max_online}`
+    - `{online_real}`
+    - `{max_online_real}`
+
+## Legacy MOTD Compatibility
+
+### Legacy Toggle and Mode
+```yaml
+legacy-motds:
+  enabled: true
+  mode: "sequential"
+  max-protocol: 578
+  apply-when-protocol-unknown: true
+```
+- Purpose: Serves legacy-format MOTD for older client protocol ranges.
+- Options:
+  - `max-protocol` sets upper protocol for legacy branch.
+  - Unknown protocol fallback can be enabled for compatibility.
+
+### Legacy Entries
+```yaml
+legacy-motds:
+  1:
+    - "<align:center>&b&lFioChat &r&7[1.16]"
+    - "<align:center>&eFioChat &8- &7Out Now!"
+```
+- Purpose: Defines classic color-code MOTD text lines.
+- Options:
+  - Use `&` codes only in legacy section.
+
+## Favicon Control
+
+### Server Icon
+```yaml
+favicon:
+  enabled: true
+  file: "modules/server-motd/favicon.png"
+```
+- Purpose: Sets server-list icon file.
+- Options:
+  - Use a valid PNG icon with correct dimensions for best client rendering.
+
+## Player List Visibility
+
+### Hide Online Sample List
+```yaml
+hide-players-online-list:
+  enabled: false
+```
+- Purpose: Controls whether sample player list is shown in server list ping.
+- Options:
+  - `true`: hides sample list and shows unknown player count (`???`) in the ping response.
+  - `false`: sample list is shown with compact output when many players are online.
+
+## Fake Player Count
+
+### Static and Dynamic Fake Count
+```yaml
+fake-player-count:
+  enabled: false
+  online: 99
+  additional-count:
+    enabled: false
+    extra-per-player: 2
+```
+- Purpose: Overrides displayed online count.
+- Options:
+  - `online`: fixed fake value.
+  - `extra-per-player`: scales displayed count from real online base.
+  - Displayed max count follows:
+    - `max-server-joins.limit` when max join cap is enabled.
+    - Real server max players when max join cap is disabled.
+
+## Join Cap Guard
+
+### Max Join Gate
+```yaml
+max-server-joins:
+  enabled: true
+  limit: 2026
+  kick-message: "<gray>Server is full. Try again later.</gray>"
+```
+- Purpose: Limits total joins and returns custom rejection message.
+- Options:
+  - Use for launch gating or staged beta access.
+  - Bypass permission: `fiochat.bypass.maxjoins`
+
+## Maintenance Mode (New)
+
+### Maintenance Core
+```yaml
+maintenance:
+  enabled: false
+  maintenance_motd: false
+  status-label: "<#FF0000>Maintenance âœ˜"
+  kick-message: "<gray>Server is on maintenance mode.</gray>"
+```
+- Purpose: Enables server maintenance behavior for ping/join flows.
+- Options:
+  - `enabled`: turns maintenance gate on/off.
+  - `maintenance_motd`: when enabled, maintenance MOTD entries override normal/legacy MOTD entries.
+  - `status-label`: right-side version/status label shown while maintenance is enabled.
+  - `kick-message`: message shown to blocked join attempts.
+
+### Maintenance MOTD Entries
+```yaml
+maintenance:
+  1:
+    - "<align:center><red><bold>Maintenance âœ˜</bold></red>"
+    - "<align:center><gray>[!]</gray> <white>This server is currently under <red>maintenance</red><white>!"
+  2:
+    - "<align:center><red><bold>Maintenance âœ˜</bold></red>"
+    - "<align:center><gray>Please check back <white>soon</white><gray>."
+```
+- Purpose: Defines dedicated MOTD lines used during maintenance mode.
+
+### Maintenance Admin Commands
+| Command | Permission | Description |
+|---------|------------|-------------|
+| `/fiochat admin maintenance <true\|false\|status>` | `fiochat.admin.maintenance` | Enable, disable, or check maintenance state. |
+| `/fiochat admin maintenance add <player>` | `fiochat.admin.maintenance.add` | Add a player to maintenance allow-list. |
+| `/fiochat admin maintenance remove <player>` | `fiochat.admin.maintenance.remove` | Remove a player from maintenance allow-list. |
+| `/fiochat admin maintenance list` | `fiochat.admin.maintenance.list` | Show maintenance allow-list entries. |
+
+### Maintenance Join Behavior
+- OP players bypass maintenance join lock.
+- Non-OP players are gated by whitelist policy while maintenance is enabled.
+
+## Recommended Profiles
+
+### Normal Public Profile
+```yaml
+fake-player-count:
+  enabled: false
+hide-players-online-list:
+  enabled: false
+```
+- Result: transparent server list presentation.
+
+### Marketing Profile
+```yaml
+fake-player-count:
+  enabled: true
+  online: 150
+hide-players-online-list:
+  enabled: true
+```
+- Result: curated server list appearance.
+
+### Maintenance Profile
+```yaml
+maintenance:
+  enabled: true
+  maintenance_motd: true
+  status-label: "<#FF0000>Maintenance âœ˜"
+```
+- Result: server list clearly shows maintenance state with dedicated MOTD.
+
+:::note[Owner Validation]
+- Test MOTD render on modern and legacy client versions.
+- Verify line width does not clip on server list.
+- Verify favicon loads and updates correctly after restart.
+- Verify fake count and hide list behavior match policy.
+- Verify join cap message triggers correctly when limit is reached.
+- Verify maintenance status label and maintenance MOTD are shown as expected.
+- Verify maintenance join restrictions with OP and non-OP test accounts.
+:::
+
+
+

@@ -1,0 +1,43 @@
+---
+title: Clear Chat
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Clear Chat Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- Command documented by source comments:
+  - `/fiochat admin module clear-chat`
+- Behavior documented by source comments:
+  - sends configurable blank lines to online players
+  - players with bypass permission are skipped
+- Fixed bypass permission documented by source comments:
+  - `fiochat.chat.clear.bypass`
+
+## Main keys
+```yaml
+clear-chat:
+  lines: 200
+  sender-message: "..."
+  broadcast-message: "..."
+  disabled-message: "..."
+```
+
+Source comments also note:
+- recommended range for `lines`: 100 to 250
+- hard cap in code: 500
+- placeholders used in sender and broadcast messages:
+  - `%player%`
+  - `%affected%`
+  - `%lines%`
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

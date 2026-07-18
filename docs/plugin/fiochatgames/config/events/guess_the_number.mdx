@@ -1,0 +1,70 @@
+﻿---
+title: guess_the_number.yml
+sidebar_position: 13
+---
+
+# guess_the_number.yml
+
+File location:
+
+- `plugins/FioChatGames/games/events/guess_the_number.yml`
+
+This event asks players to guess a generated number inside a configured range before the timer expires.
+
+## Source-backed example
+
+```yaml
+game: GUESS_THE_NUMBER
+enable: true
+points: 1
+time_seconds: 120
+min_number: 1
+max_number: 100
+prompt_format: 'Guess a number between %minimum_number% and %maximum_number%.'
+```
+
+## Important options
+
+| Key | Description |
+| --- | --- |
+| `enable` | Enables or disables this event file. |
+| `points` | Points granted to the winner. |
+| `time_seconds` | Round length in seconds. |
+| `min_number` | Lowest possible generated number. |
+| `max_number` | Highest possible generated number. |
+| `prompt_format` | Chat prompt shown to players, with min/max placeholders. |
+
+## UI and messaging
+
+The bundled source file also includes:
+
+- `messages.started`
+- `messages.correct`
+- `messages.streak`
+- `messages.start`
+- `messages.finish`
+- `messages.ended`
+- `title`
+- `subtitle`
+
+## Rewards and streaks
+
+The source file supports:
+
+- `streak.reset_on_loss`
+- `streak.announce`
+- `streak_rewards`
+- `rewards.commands`
+- rank rewards such as `1st_reward`, `2nd_reward`, `3rd_reward`
+- `participated` rewards
+
+## Ranking output
+
+Like other modern event files in this project, `GUESS_THE_NUMBER` contains both:
+
+- `simple` ranking output
+- `advance` ranking output
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

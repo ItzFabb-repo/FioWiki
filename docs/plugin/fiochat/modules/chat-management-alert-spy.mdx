@@ -1,0 +1,68 @@
+﻿---
+title: Alert and Spy
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Alert and Spy Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## File
+- `modules/chat/Moderations/config.yml`
+
+## Spy sections present in source
+The current source contains spy blocks in these sub-modules:
+- `cooldown.spy`
+- `flood.spy`
+- `antiunicode.spy`
+- `antirepeat.spy`
+- `antiswear.spy`
+- `anti-adv.spy`
+
+## What these sections contain
+Depending on the sub-module, the source file includes keys such as:
+
+```yaml
+spy:
+  chat: "..."
+  command: "..."
+  sign: "..."
+  command-blacklist: []
+```
+
+## Sub-module coverage from source
+- `cooldown.spy` has `chat`, `command`, and `command-blacklist`
+- `flood.spy` has `chat`, `command`, and `command-blacklist`
+- `antiunicode.spy` has `chat`
+- `antirepeat.spy` has `chat`, `command`, and `command-blacklist`
+- `antiswear.spy` has `chat`, `command`, `sign`, and `command-blacklist`
+- `anti-adv.spy` has `chat`, `command`, `sign`, and `command-blacklist`
+
+## Common placeholders documented by source comments
+Depending on the sub-module, source comments document placeholders such as:
+- `%player%`
+- `%world%`
+- `%input%`
+- `%seconds%`
+- `%module%`
+- `%type%`
+- `%location%`
+
+## Permissions referenced by source comments
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.spy.cooldown` | Staff spy output for cooldown events. |
+| `fiochat.spy.flood` | Staff spy output for flood normalization events. |
+| `fiochat.spy.antiunicode` | Staff spy output for anti-unicode violations. |
+| `fiochat.spy.antirepeat` | Staff spy output for repeat detection events. |
+| `fiochat.spy.antiswear` | Staff spy output for antiswear violations. |
+| `fiochat.spy.antiadvertising` | Staff spy output for anti-advertising violations. |
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

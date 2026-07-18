@@ -1,0 +1,69 @@
+---
+title: Delete Confirm
+---
+
+# Delete Confirm
+
+`delete-confirm.yml` controls the confirmation screen shown before deleting inbox or sent mail. It is intentionally smaller than the other Mailbox screens.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/delete-confirm.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Delete Mail?</dark_gray>"
+  rows: 3
+```
+
+The current Delete Confirm screen uses three rows, giving slots `0-26`.
+
+## `menus.decorations`
+
+The source decorates slots `18-26` with black glass and slots `0-8` with gray glass. These decorations frame the confirmation controls.
+
+## `menus.items.confirm`
+
+```yaml
+menus:
+  items:
+    confirm:
+      material: LIME_DYE
+      name: "<green>Confirm Delete</green>"
+      slot: 11
+      actions:
+        any:
+          - "[MAILBOX] CONFIRM_DELETE"
+```
+
+The confirm item deletes the selected entry.
+
+If the confirmation context points to a sent entry, the service deletes from the sent log and returns to Sent.
+
+If the confirmation context points to an inbox entry, the service deletes from the inbox and returns to Inbox.
+
+## `menus.items.cancel`
+
+```yaml
+menus:
+  items:
+    cancel:
+      material: RED_DYE
+      name: "<red>Cancel</red>"
+      slot: 15
+      actions:
+        any:
+          - "[MAILBOX] CANCEL_DELETE"
+```
+
+The cancel item does not delete anything.
+
+If the confirmation came from Sent, it returns to Sent. Otherwise, it returns to Inbox using the saved page and filter context.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

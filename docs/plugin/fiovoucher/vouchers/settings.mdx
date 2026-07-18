@@ -1,0 +1,48 @@
+---
+title: Settings
+---
+
+# Settings
+
+Voucher-specific settings live under `settings`.
+
+## Trial
+
+```yaml
+trial:
+  enabled: false
+  duration: "10d"
+  allow-pause: false
+  allow-stack: false
+```
+
+## Redeem
+
+```yaml
+redeem:
+  max-claim: 1
+  world:
+    whitelist: []
+    blacklist: []
+  region:
+    whitelist: []
+    blacklist: []
+  permissions:
+    whitelist:
+      enable: false
+      value: "example.done"
+      actions: []
+    blacklist:
+      enable: false
+      value: "example.done"
+      actions: []
+```
+
+The settings block controls:
+
+- trial behavior
+- claim limits
+- world restriction
+- region restriction
+- permission whitelist / blacklist logic
+

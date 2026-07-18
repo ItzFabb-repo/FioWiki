@@ -1,0 +1,258 @@
+---
+title: Custom Death Messages
+---
+
+# Custom Death Messages
+
+Source file:
+
+```text
+modules/announce/Custom Death Msg/custom-death-messages.yml
+```
+
+This file contains the actual player and entity death line templates used by the module. It is the main place to edit how death messages look in chat.
+
+## Top-level sections
+
+The current source file is organized into these sections:
+
+```text
+Mythic-Mobs-Entities
+player-death
+third-party
+entity-death
+```
+
+## `Mythic-Mobs-Entities`
+
+This section lets you target a specific MythicMobs internal id before the generic templates are used.
+
+Example:
+
+```yaml
+Mythic-Mobs-Entities:
+  SkeletalMinion:
+    Melee:
+      1:
+        - "<red>â˜  </red> <gray><italic><smallfont:%entity_display% killed %player_name% with bare hands.></italic></gray>"
+```
+
+The source supports multiple causes such as `Melee`, `Weapon`, `TNT`, `Projectile`, `Trident`, `Fireball`, `Magic`, and `Default`.
+
+## `player-death`
+
+This section controls player death messages.
+
+### `player-death.enabled`
+
+```yaml
+player-death:
+  enabled: true
+```
+
+This enables the player death template block.
+
+### `player-death.audience`
+
+```yaml
+player-death:
+  audience:
+    world-only: false
+    console: false
+```
+
+`world-only` keeps the message inside the player's world. `console` mirrors the output to console.
+
+### `player-death.lines`
+
+```yaml
+player-death:
+  lines:
+    - "<red>â˜  </red> <gray><italic><smallfont:%player_name% died.></italic></gray>"
+```
+
+This is the base fallback player death line.
+
+### `player-death.fallback-lines`
+
+```yaml
+player-death:
+  fallback-lines:
+    - "<red>â˜  </red> <gray><italic><smallfont:%player_name% died. (%death_cause_pretty%)></italic></gray>"
+```
+
+These lines are used when the normal line needs a fallback variant.
+
+### `player-death.vanilla-templates`
+
+This section maps nested vanilla death translation keys to custom lines.
+
+Example:
+
+```yaml
+player-death:
+  vanilla-templates:
+    death:
+      attack:
+        player:
+          1:
+            - "<red>â˜  </red> <gray><italic><smallfont:%player_name% was slain by %killer_entity_name%.></italic></gray>"
+```
+
+The source supports:
+
+```text
+exact keys
+characteristics
+numeric random variants
+```
+
+### Common vanilla groups
+
+The current source includes groups such as:
+
+```text
+generic
+player
+mob
+arrow
+trident
+fireball
+explosion
+magic
+wither
+fall
+fallingBlock
+```
+
+These groups can be further specialized with `characteristics`.
+
+## `third-party`
+
+This section handles replacement of custom third-party death lines.
+
+### `third-party.enabled`
+
+```yaml
+third-party:
+  enabled: true
+```
+
+This enables the third-party replacement flow.
+
+### `third-party.rules`
+
+Example:
+
+```yaml
+third-party:
+  rules:
+    MythicMobs:
+      enabled: true
+      require-plugin: "MythicMobs"
+      match: "MythicMobs"
+      1:
+        - "<red>â˜  </red> <gray><italic><smallfont:[MythicMobs] %player_name% was slain by a mythic creature.></italic></gray>"
+```
+
+Use this when another plugin already writes a custom death line and you want FioChat to replace it.
+
+## `entity-death`
+
+This section controls non-player entity death messages.
+
+### `entity-death.enabled`
+
+```yaml
+entity-death:
+  enabled: true
+```
+
+This enables entity death messages.
+
+### `entity-death.filters`
+
+```yaml
+entity-death:
+  filters:
+    only-pets: true
+    include-named-entities: false
+```
+
+These filters control which entity deaths are announced.
+
+### `entity-death.audience`
+
+```yaml
+entity-death:
+  audience:
+    mode: "owner"
+    console: false
+```
+
+This controls who sees entity death messages.
+
+### `entity-death.lines`
+
+```yaml
+entity-death:
+  lines:
+    - "<red>â˜  </red> <gray><italic><smallfont:%entity_display% died. Owner: %owner_name%></italic></gray>"
+```
+
+This is the main entity death line template.
+
+### `entity-death.vanilla-templates`
+
+This section maps vanilla death keys for non-player entities.
+
+The structure is similar to `player-death.vanilla-templates`, with support for `characteristics`, `player`, `item`, and numeric random variants.
+
+## Useful placeholders
+
+Common placeholders used by this file include:
+
+```text
+%player_name%
+%entity_display%
+%entity_name%
+%owner_name%
+%killer_name%
+%killer_entity_name%
+%killer_mob_name%
+%killer_weapon_name%
+%killer_item_name%
+%death_message_key%
+%death_cause_pretty%
+%message%
+```
+
+## Related registries
+
+These registries are used by the template file:
+
+```text
+modules/announce/Custom Death Msg/mobs_en.json
+modules/announce/Custom Death Msg/items_en.json
+```
+
+## Legacy Path Note
+
+The active template path for this build is:
+
+```text
+modules/announce/Custom Death Msg/custom-death-messages.yml
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/death-messages/custom-death-messages.yml
+modules/death-message/custom-death-messages.yml
+```
+
+This page follows the current announce-module path and the current custom death-message template layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

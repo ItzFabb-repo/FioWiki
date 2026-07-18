@@ -1,0 +1,9 @@
+﻿.fadeBlock {
+  opacity: 0;
+  transition: opacity 180ms ease;
+  will-change: opacity;
+}
+
+.visible {
+  opacity: 1;
+}

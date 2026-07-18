@@ -1,0 +1,579 @@
+---
+title: Announcements
+sidebar_position: 3
+---
+
+# Announcements
+
+This page focuses on how to modify announcement settings.
+
+## Scheduled announcements
+
+Scheduled announcements use a shared structure with a global interval and per-entry overrides.
+
+Main structure example:
+
+```yaml
+settings:
+  interval-seconds: 180
+  mode: "BY_ORDER"
+
+announcements:
+  1:
+    interval-seconds: 240
+    worlds: []
+    requirement: []
+    message:
+      enabled: true
+      lines: []
+    actionbar:
+      enabled: false
+      text: ""
+    title:
+      enabled: false
+      title: ""
+      subtitle: ""
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+    bossbar:
+      enabled: false
+      title: ""
+      color: "YELLOW"
+      style: "SOLID"
+      progress: 1.0
+      seconds: 5
+    sound:
+      enabled: true
+      name: "BLOCK_AMETHYST_BLOCK_BREAK"
+      volume: 1.0
+      pitch: 1.0
+```
+
+## `settings.interval-seconds`
+
+Controls the default delay between scheduled announcements.
+
+Options:
+
+- any positive number of seconds
+
+Example:
+
+```yaml
+settings:
+  interval-seconds: 180
+```
+
+If an announcement entry has its own `interval-seconds`, that entry can use its own delay.
+
+## `settings.mode`
+
+Controls the schedule mode.
+
+Current source example:
+
+```yaml
+settings:
+  mode: "BY_ORDER"
+```
+
+If you want to keep the source behavior, leave it as `BY_ORDER`.
+
+## `announcements.<id>.interval-seconds`
+
+Lets a single announcement use its own interval.
+
+Example:
+
+```yaml
+announcements:
+  1:
+    interval-seconds: 240
+```
+
+## `announcements.<id>.worlds`
+
+Lets you limit a scheduled announcement to specific worlds.
+
+Options:
+
+- `[]`: no world filter
+- a list of world names: only those worlds receive the announcement
+
+Example:
+
+```yaml
+announcements:
+  1:
+    worlds:
+      - "world"
+      - "world_nether"
+```
+
+## `announcements.<id>.requirement`
+
+Lets you add requirement filters for an announcement entry.
+
+Options:
+
+- `[]`: no extra requirement filter
+- a list of requirement expressions
+
+Example:
+
+```yaml
+announcements:
+  1:
+    requirement:
+      - "%player_world%=world"
+```
+
+## `announcements.<id>.message.enabled`
+
+Turns the normal chat message for that announcement on or off.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+announcements:
+  1:
+    message:
+      enabled: true
+```
+
+## `announcements.<id>.message.lines`
+
+Changes the chat lines shown for that announcement.
+
+Options:
+
+- one line
+- multiple lines
+- centered text
+- smallfont text
+- clickable placeholder tokens such as `{vote}` or `{discord}`
+
+Current style example:
+
+```yaml
+announcements:
+  1:
+    message:
+      lines:
+        - "<align:center><#FFD166>Need a quick boost?</align>"
+        - "<align:center><#FFD166><smallfont:[{kit}] [{vote}] [{settings}]></align>"
+```
+
+Other example contents:
+
+```yaml
+announcements:
+  1:
+    message:
+      lines:
+        - ""
+        - "<align:center><gold><bold>Daily Reminder</bold></gold>"
+        - "<align:center><white>Use /vote and /kit to keep progressing.</white>"
+        - "<align:center><yellow>[{vote}] [{kit}]</yellow>"
+        - ""
+```
+
+## `announcements.<id>.actionbar`
+
+Controls the actionbar version of the announcement.
+
+Editable parts:
+
+- `enabled`
+- `text`
+
+Example:
+
+```yaml
+announcements:
+  1:
+    actionbar:
+      enabled: true
+      text: "<gold>Remember to vote for rewards.</gold>"
+```
+
+## `announcements.<id>.title`
+
+Controls the title and subtitle version of the announcement.
+
+Editable parts:
+
+- `enabled`
+- `title`
+- `subtitle`
+- `fade-in`
+- `stay`
+- `fade-out`
+
+Example:
+
+```yaml
+announcements:
+  1:
+    title:
+      enabled: true
+      title: "<gold>Reminder</gold>"
+      subtitle: "<white>Check your daily tools.</white>"
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+```
+
+## `announcements.<id>.bossbar`
+
+Controls the bossbar version of the announcement.
+
+Editable parts:
+
+- `enabled`
+- `title`
+- `color`
+- `style`
+- `progress`
+- `seconds`
+
+Example:
+
+```yaml
+announcements:
+  1:
+    bossbar:
+      enabled: true
+      title: "<gold>Server Reminder</gold>"
+      color: "YELLOW"
+      style: "SOLID"
+      progress: 1.0
+      seconds: 5
+```
+
+## `announcements.<id>.sound`
+
+Controls the sound played with the scheduled announcement.
+
+Editable parts:
+
+- `enabled`
+- `name`
+- `volume`
+- `pitch`
+
+Example:
+
+```yaml
+announcements:
+  1:
+    sound:
+      enabled: true
+      name: "BLOCK_NOTE_BLOCK_CHIME"
+      volume: 1.0
+      pitch: 1.1
+```
+
+## Adding more scheduled entries
+
+You can add more numbered entries under `announcements`.
+
+Example:
+
+```yaml
+announcements:
+  4:
+    interval-seconds: 300
+    worlds: []
+    requirement: []
+    message:
+      enabled: true
+      lines:
+        - "<align:center><aqua>Join the community Discord.</aqua>"
+        - "<align:center><yellow>[{discord}]</yellow>"
+```
+
+## Admin announcements
+
+The source also includes an `admin-announcements` section.
+
+Current source uses the `info` key.
+
+Main structure:
+
+```yaml
+admin-announcements:
+  info:
+    message:
+      enabled: true
+      lines: []
+    actionbar:
+      enabled: false
+      text: ""
+    title:
+      enabled: false
+      title: ""
+      subtitle: ""
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+    bossbar:
+      enabled: false
+      title: ""
+      color: "YELLOW"
+      style: "SOLID"
+      progress: 1.0
+      seconds: 5
+    sound:
+      enabled: false
+      name: "ENTITY_EXPERIENCE_ORB_PICKUP"
+      volume: 1.0
+      pitch: 1.0
+```
+
+## `admin-announcements.info.message.lines`
+
+Changes the staff notice message format.
+
+Current style example:
+
+```yaml
+admin-announcements:
+  info:
+    message:
+      lines:
+        - "<align:center><gold><smallfont:staff notice></gold>"
+        - "<align:center><white>%message%</white>"
+```
+
+You can change it into a simpler or larger broadcast style.
+
+Example:
+
+```yaml
+admin-announcements:
+  info:
+    message:
+      lines:
+        - "<red><bold>Staff Notice</bold></red>"
+        - "<white>%message%</white>"
+```
+
+## Interactive placeholders
+
+The announcement placeholder registry lets you turn tokens like `{vote}` into formatted clickable text.
+
+Current placeholder keys in the source include:
+
+- `vote`
+- `kit`
+- `disposal`
+- `playtime`
+- `crossplay`
+- `discord`
+- `trade`
+- `settings`
+- `webstore`
+
+## `placeholders.<key>.format`
+
+Controls the visible text shown in the announcement.
+
+Example:
+
+```yaml
+placeholders:
+  vote:
+    format: "<smallfont:vote>"
+```
+
+If `format` is omitted, the raw token text is shown instead.
+
+## `placeholders.<key>.hover.lines`
+
+Controls the hover text for the token.
+
+Example:
+
+```yaml
+placeholders:
+  discord:
+    hover:
+      lines:
+        - "<white>Open the community Discord invite.</white>"
+```
+
+## `placeholders.<key>.action`
+
+Controls what happens when the token is clicked.
+
+Current action styles in the source:
+
+- `run_command`
+- `copy_to_clipboard`
+- `open_url`
+
+### Command example
+
+```yaml
+placeholders:
+  vote:
+    action:
+      run_command:
+        - "/vote"
+```
+
+### Clipboard example
+
+```yaml
+placeholders:
+  crossplay:
+    action:
+      copy_to_clipboard:
+        - "play.sawit.com:19132"
+```
+
+### URL example
+
+```yaml
+placeholders:
+  webstore:
+    action:
+      open_url:
+        - "https://yourwebsite.com/store"
+```
+
+## Warning announcement
+
+Used for `/warning <message>` and `/fc admin warning <message>`.
+
+Available placeholders:
+
+- `%message%`
+- `%type%`
+
+## `warning.enabled`
+
+Turns the warning announcement on or off.
+
+Example:
+
+```yaml
+warning:
+  enabled: true
+```
+
+## `warning.message.lines`
+
+Changes the chat lines for warning announcements.
+
+Current style example:
+
+```yaml
+warning:
+  message:
+    lines:
+      - "<align:center><#FF8A65><bold>Attention Required</bold></align>"
+      - "<align:center><white>%message%</white></align>"
+```
+
+## `warning.actionbar`, `warning.title`, `warning.bossbar`, `warning.sound`
+
+These sections use the same editable parts as scheduled announcements:
+
+- `enabled`
+- text or title fields
+- timing fields for titles
+- bossbar color, style, progress, seconds
+- sound name, volume, pitch
+
+## Broadcast announcement
+
+Used for `/broadcast <message>` and `/fc admin broadcast <message>`.
+
+Available placeholders:
+
+- `%message%`
+- `%type%`
+
+## `broadcast.enabled`
+
+Turns the broadcast announcement on or off.
+
+Example:
+
+```yaml
+broadcast:
+  enabled: true
+```
+
+## `broadcast.message.lines`
+
+Changes the chat lines for broadcast announcements.
+
+Current style example:
+
+```yaml
+broadcast:
+  message:
+    lines:
+      - "<align:center><#F8D66D><bold>Server Broadcast</bold></align>"
+      - "<align:center><white>%message%</white></align>"
+```
+
+## Alerts announcement
+
+Used for `/alerts <message>` and `/fc admin alerts <message>`.
+
+Available placeholders:
+
+- `%message%`
+- `%type%`
+
+## `alerts.enabled`
+
+Turns the alerts announcement on or off.
+
+Example:
+
+```yaml
+alerts:
+  enabled: true
+```
+
+## `alerts.message.lines`
+
+Changes the chat lines for alerts announcements.
+
+Current style example:
+
+```yaml
+alerts:
+  message:
+    lines:
+      - "<align:center><#7DD3FC><bold>Live Alert</bold></align>"
+      - "<align:center><white>%message%</white></align>"
+```
+
+## `alerts.actionbar`
+
+Current source enables the actionbar for alerts.
+
+Example:
+
+```yaml
+alerts:
+  actionbar:
+    enabled: true
+    text: "<#7DD3FC>%message%</#7DD3FC>"
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

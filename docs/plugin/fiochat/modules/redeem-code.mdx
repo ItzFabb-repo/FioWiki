@@ -1,0 +1,215 @@
+﻿---
+title: Redeem Code
+sidebar_position: 29
+---
+
+# Redeem Code (Module)
+Configuration guide for `modules/rewards/Redeem Code/config.yml`.
+
+:::warning[Important]
+Set anti-abuse rules first (length, charset, duplicate/IP checks, cooldown), then define rewards and campaign lifecycle.
+:::
+
+## Module Preview
+
+![Redeem Code 1](../../../img/fiochat/Redeem%20Code%201.png)
+![Redeem Code 2](../../../img/fiochat/Redeem%20Code%202.png)
+
+## Configuration Files
+- `modules/rewards/Redeem Code/config.yml`
+
+## Code Validation Policy
+
+### Length and Charset
+```yaml
+settings:
+  code:
+    length:
+      min: 8
+      max: 32
+    charset: "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+    case_sensitive: false
+    trim_input: true
+    allow_space: false
+```
+- Purpose: Normalizes and validates redeem input format.
+- Options:
+  - Use non-ambiguous charset to avoid user typing mistakes.
+  - Keep `trim_input` enabled for cleaner input handling.
+
+### Data and Duplicate Protection
+```yaml
+settings:
+  code:
+    save_player_data: true
+    block_duplicate: true
+    protection:
+      ip_duplication: true
+      player_must_play: 30m
+```
+- Purpose: Prevents duplicate abuse and enforces minimum play-time trust.
+- Options:
+  - Disable IP check only if your network/proxy model requires it.
+
+## Eligibility Filters
+
+### Gamemode / World / Playtime Gates
+```yaml
+settings:
+  code:
+    gamemodes:
+      enabled: false
+    world:
+      enabled: false
+    playtime:
+      enabled: false
+```
+- Purpose: Restricts redeem execution by context.
+- Options:
+  - Enable selectively for event/campaign-specific rules.
+
+### World Rule Examples
+```yaml
+settings:
+  code:
+    world:
+      list:
+        allowed:
+          - "example_world_1;STARTER2026"
+        disallowed: []
+```
+- Purpose: Applies code-level constraints in specific worlds.
+
+## Cooldown Controls
+
+### Redeem Attempt Cooldowns
+```yaml
+settings:
+  code:
+    cooldowns:
+      command: 10
+      failed_attempt: 10
+      success_attempt: 10
+```
+- Purpose: Throttles repeated command usage and brute-force behavior.
+- Options:
+  - Increase `failed_attempt` on public servers to reduce spam attempts.
+
+## Notification System
+
+### Success Notification Channels
+```yaml
+notify:
+  success:
+    message:
+      enabled: false
+      text: ""
+    actionbar:
+      enabled: false
+      text: "<green>Redeemed <white>%code%</white></green>"
+    title:
+      enabled: false
+      title: "<green>Code Redeemed</green>"
+      subtitle: "<white>%code%</white>"
+    sound:
+      enabled: false
+      name: "ENTITY_PLAYER_LEVELUP"
+      volume: 1.0
+      pitch: 1.0
+```
+- Purpose: Configures user feedback for successful redemption.
+
+### Failed Notification Channels
+```yaml
+notify:
+  failed:
+    actionbar:
+      enabled: false
+      text: "<red>Redeem failed: <white>%reason_message%</white></red>"
+    title:
+      enabled: true
+      title: "<red>Redeem Failed</red>"
+      subtitle: "<gray><smallfont:%reason_message%></gray>"
+```
+- Purpose: Communicates clear failure reason and next action.
+
+## Code Campaign Structure
+
+Each entry under `codes.<CODE_ID>` should define:
+1. `type`
+2. usage limits (`one_time`, `global_max_uses`, `per_player_max_uses`)
+3. time window (`temporary`)
+4. platform gates (`java` / `bedrock`)
+5. `reward`
+
+### Example Campaign Block
+```yaml
+codes:
+  STARTER2026:
+    type: [item, cmd]
+    one_time: true
+    temporary:
+      enabled: false
+      time: "1d"
+      when-started: "28/04/2025 | 12:00 AM"
+    global_max_uses: -1
+    per_player_max_uses: 1
+    permission_required: ""
+```
+- Purpose: Defines campaign lifecycle and redemption policy.
+
+### Platform-Specific Behavior
+```yaml
+codes:
+  STARTER2026:
+    platform:
+      java:
+        enabled: true
+      bedrock:
+        enabled: true
+```
+- Purpose: Lets you differentiate behavior by client platform.
+
+### Reward Payload
+```yaml
+codes:
+  STARTER2026:
+    reward:
+      items:
+        - material: "DIAMOND"
+          amount: 1
+      commands:
+        - "CONSOLE:eco give %player_name% 100"
+```
+- Purpose: Delivers item and command rewards after successful redeem.
+
+## Operational Profiles
+
+### Starter Campaign Profile
+```yaml
+one_time: true
+per_player_max_uses: 1
+global_max_uses: -1
+```
+- Result: one-time personal welcome code.
+
+### Limited Event Campaign Profile
+```yaml
+one_time: false
+global_max_uses: 500
+temporary:
+  enabled: true
+  time: "7d"
+```
+- Result: event code with total cap and expiry window.
+
+:::note[Owner Validation]
+- Test valid code, invalid code, expired code, and over-limit code paths.
+- Test cooldown behavior for command, failed attempt, and success attempt.
+- Test Java and Bedrock platform branches.
+- Test reward delivery for both `items` and `commands` payloads.
+- Verify duplicate/IP protections behave correctly under real join patterns.
+:::
+
+
+

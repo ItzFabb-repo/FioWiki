@@ -1,0 +1,109 @@
+---
+title: メニューアクション
+sidebar_position: 3
+---
+
+# メニューアクション
+このページでは、FioChat モジュールで使用される実用的な GUI アクションパターンを説明します。
+
+---
+
+# 基本アクション
+### `SOUND:<sound>:<volume>:<pitch>`
+クリック時にカスタムサウンドを再生します。
+
+```yaml
+SOUND:UI_BUTTON_CLICK:1:1
+SOUND:BLOCK_CHEST_CLOSE:1:1
+SOUND:ENTITY_EXPERIENCE_ORB_PICKUP:1:1
+```
+
+### `CLOSE`
+現在のメニューを閉じます。
+
+```yaml
+CLOSE
+```
+
+### `REOPEN`
+現在のメニューを再オープンします（状態変更後に便利です）。
+
+```yaml
+REOPEN
+```
+
+### `OPEN_MENU:<id>`
+ID を指定して別の GUI メニューを開きます。
+
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:emoji_categories
+OPEN_MENU:giveaway_main
+```
+
+### `PLAYER_COMMAND:<command>`
+クリックしたプレイヤーとしてコマンドを実行します。
+
+```yaml
+PLAYER_COMMAND:fiochat toggle mentions
+PLAYER_COMMAND:fiochat channel list
+PLAYER_COMMAND:mailbox
+```
+
+---
+
+# モジュール例
+### Mailbox
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:mailbox_sent
+OPEN_MENU:mailbox_compose
+OPEN_MENU:mailbox_history
+```
+
+### Emoji
+```yaml
+OPEN_MENU:emoji_categories
+OPEN_MENU:emoji_list
+PLAYER_COMMAND:emoji
+```
+
+### QuickChat
+```yaml
+OPEN_MENU:quickchat_main
+OPEN_MENU:quickchat_editor
+PLAYER_COMMAND:quickchat
+```
+
+### Item Displays
+```yaml
+PLAYER_COMMAND:itemdisplay list
+PLAYER_COMMAND:itemdisplay open item %player_name%
+PLAYER_COMMAND:itemdisplay open inventory %player_name%
+```
+
+### Reports
+```yaml
+PLAYER_COMMAND:report %target_name%
+PLAYER_COMMAND:reports
+```
+
+### Giveaway
+```yaml
+PLAYER_COMMAND:giveaway
+PLAYER_COMMAND:giveaway list
+PLAYER_COMMAND:giveaway event
+```
+
+### Join/Quit
+```yaml
+PLAYER_COMMAND:join
+PLAYER_COMMAND:quit
+```
+
+---
+
+# 注記
+- サウンド値は Spigot/Paper のサウンド enum 名を使用します。
+- 正確なメニュー ID は、各モジュールのメニュー設定ファイル名に依存します。
+- トグルや設定状態が動的に変わるメニューでは `REOPEN` の使用を推奨します。

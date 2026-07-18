@@ -1,0 +1,157 @@
+---
+title: Particle
+---
+
+# Particle
+
+Source file:
+
+```text
+modules/display/Regions/particle/config.yml
+```
+
+This page covers the Region Particle config. It spawns looping visual particle effects while a player stays inside matching worlds or WorldGuard regions.
+
+The module is enabled through `modules.settings.yml`:
+
+```yaml
+modules:
+  region:
+    enabled: true
+    sub-settings:
+      particle: true
+```
+
+If `modules.region.enabled` is `false`, the whole region system is disabled. If `modules.region.sub-settings.particle` is `false`, only the particle side is disabled.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls verbose logging for profile loading, player matching, and particle spawning.
+
+## `settings.stop-previous-on-switch`
+
+```yaml
+settings:
+  stop-previous-on-switch: true
+```
+
+When `true`, the previous particle profile stops when the player switches to a new matching region.
+
+## `settings.stop-on-leave-configured-region`
+
+```yaml
+settings:
+  stop-on-leave-configured-region: true
+```
+
+When `true`, particle effects stop once the player leaves all configured particle regions.
+
+## `settings.join-delay-ticks`
+
+```yaml
+settings:
+  join-delay-ticks: 20
+```
+
+This delay gives the server time to finish join setup before the first particle check runs.
+
+## `settings.default-particle`
+
+```yaml
+settings:
+  default-particle: "CLOUD"
+```
+
+This is the fallback Bukkit particle when a profile does not override its own particle id.
+
+## `profiles`
+
+Each profile defines a particle rule for a world and region set.
+
+```yaml
+profiles:
+  spawn_glow:
+    enabled: true
+    priority: 100
+    particle: "DUST"
+    count: 12
+    offset-x: 0.25
+    offset-y: 0.35
+    offset-z: 0.25
+    extra: 0.01
+    interval-ticks: 10
+    size: 1.1
+    color: "#FFD966"
+    color-secondary: "#FFF2CC"
+    world:
+      whitelist:
+        - "world"
+    region:
+      whitelist:
+        - "spawn"
+```
+
+The service chooses the highest-priority matching profile. `interval-ticks` controls how often the particle effect refreshes.
+
+### `profiles.<id>.enabled`
+
+When `true`, the profile can be selected.
+
+### `profiles.<id>.priority`
+
+Higher priority wins when more than one profile matches.
+
+### `profiles.<id>.particle`
+
+This is the Bukkit particle id used for the effect.
+
+### `profiles.<id>.count`
+
+This controls how many particles are spawned per tick cycle.
+
+### `profiles.<id>.offset-x`, `offset-y`, `offset-z`
+
+These fields control the particle spread around the player.
+
+### `profiles.<id>.extra`
+
+This field is passed as the particle's extra data value.
+
+### `profiles.<id>.interval-ticks`
+
+This controls the refresh interval in ticks.
+
+### `profiles.<id>.size`
+
+This controls dust or particle size when the chosen particle supports it.
+
+### `profiles.<id>.color` and `profiles.<id>.color-secondary`
+
+These fields supply dust color data for supported particle types.
+
+### `profiles.<id>.world.whitelist` and `profiles.<id>.world.blacklist`
+
+These lists limit the profile to specific world names.
+
+### `profiles.<id>.region.whitelist` and `profiles.<id>.region.blacklist`
+
+These lists limit the profile to specific WorldGuard region ids.
+
+## Toggle storage
+
+Player enable/disable choices are stored in:
+
+```text
+modules/display/Regions/particle/toggles.yml
+```
+
+The service also supports legacy toggle migration from older region-particle paths.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

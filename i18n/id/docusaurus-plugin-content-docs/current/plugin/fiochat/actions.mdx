@@ -1,0 +1,109 @@
+﻿---
+title: Aksi Menu
+sidebar_position: 3
+---
+
+# Aksi Menu
+Halaman ini mendokumentasikan pola aksi GUI praktis yang digunakan di modul FioChat.
+
+---
+
+# Aksi Dasar
+### `SOUND:<sound>:<volume>:<pitch>`
+Memutar suara kustom saat diklik.
+
+```yaml
+SOUND:UI_BUTTON_CLICK:1:1
+SOUND:BLOCK_CHEST_CLOSE:1:1
+SOUND:ENTITY_EXPERIENCE_ORB_PICKUP:1:1
+```
+
+### `CLOSE`
+Menutup menu saat ini.
+
+```yaml
+CLOSE
+```
+
+### `REOPEN`
+Membuka ulang menu saat ini (berguna setelah perubahan state).
+
+```yaml
+REOPEN
+```
+
+### `OPEN_MENU:<id>`
+Membuka menu GUI lain berdasarkan id.
+
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:emoji_categories
+OPEN_MENU:giveaway_main
+```
+
+### `PLAYER_COMMAND:<command>`
+Menjalankan command sebagai pemain yang melakukan klik.
+
+```yaml
+PLAYER_COMMAND:fiochat toggle mentions
+PLAYER_COMMAND:fiochat channel list
+PLAYER_COMMAND:mailbox
+```
+
+---
+
+# Contoh Modul
+### Mailbox
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:mailbox_sent
+OPEN_MENU:mailbox_compose
+OPEN_MENU:mailbox_history
+```
+
+### Emoji
+```yaml
+OPEN_MENU:emoji_categories
+OPEN_MENU:emoji_list
+PLAYER_COMMAND:emoji
+```
+
+### QuickChat
+```yaml
+OPEN_MENU:quickchat_main
+OPEN_MENU:quickchat_editor
+PLAYER_COMMAND:quickchat
+```
+
+### Item Displays
+```yaml
+PLAYER_COMMAND:itemdisplay list
+PLAYER_COMMAND:itemdisplay open item %player_name%
+PLAYER_COMMAND:itemdisplay open inventory %player_name%
+```
+
+### Reports
+```yaml
+PLAYER_COMMAND:report %target_name%
+PLAYER_COMMAND:reports
+```
+
+### Giveaway
+```yaml
+PLAYER_COMMAND:giveaway
+PLAYER_COMMAND:giveaway list
+PLAYER_COMMAND:giveaway event
+```
+
+### Join/Quit
+```yaml
+PLAYER_COMMAND:join
+PLAYER_COMMAND:quit
+```
+
+---
+
+# Catatan
+- Nilai sound mengikuti nama enum sound Spigot/Paper.
+- Id menu yang tepat bergantung pada nama file konfigurasi menu di tiap modul.
+- Gunakan `REOPEN` untuk menu yang mengubah state toggle/konfigurasi secara dinamis.

@@ -1,0 +1,179 @@
+﻿---
+title: Menus
+sidebar_position: 5
+---
+
+# Menus
+
+FioBlackMarket does not keep all GUI behavior in one file. The current source splits the market into separate menus for entry, history, bulk trading, and performance graphs.
+
+## Main menu
+
+File:
+
+```text
+menu/menu.yml
+```
+
+The main menu controls:
+
+- title
+- row count
+- blackmarket content slots
+- unavailable fallback item
+- static utility items such as history and close
+
+The file comments explicitly document general menu actions such as:
+
+- `[HISTORY]`
+- `[CLOSE]`
+- `[SOUND]`
+- `[MESSAGE]`
+- `[PLAYER]`
+- `[CONSOLE]`
+- `[NONE]`
+
+### Main menu purpose
+
+This is the player entry screen for:
+
+- browsing currently listed items
+- opening history
+- buying and selling directly from item entries
+- reaching bulk or graph flows through item click patterns
+
+## History menu
+
+File:
+
+```text
+menu/history.yml
+```
+
+This menu is opened by the `[HISTORY]` action from the main menu.
+
+It controls:
+
+- the menu title
+- date formatting
+- transaction content slots
+- empty state item
+- background filler
+- entry rendering for buy and sell history
+- filter navigation controls
+
+The source comments document these history navigation actions:
+
+- `[NEXT_HISTORY_VIEW]`
+- `[PREVIOUS_HISTORY_VIEW]`
+- `[BACK]`
+- `[NONE]`
+
+The current view labels include:
+
+- highest price
+- lowest price
+- bought
+- sold
+- newest
+- oldest
+
+## Bulk menu
+
+File:
+
+```text
+menu/bulk.yml
+```
+
+This menu is opened by:
+
+- `[BUY_BULK]`
+- `[SELL_BULK]`
+
+It contains:
+
+- separate titles for buy and sell mode
+- background filler
+- summary item
+- disabled option item
+- quantity and stack options
+- back control
+
+The source comments document these menu-specific actions:
+
+- `[CONFIRM_BULK]`
+- `[BACK]`
+- `[NONE]`
+
+This file is where the plugin turns one market item into several quantity presets such as item counts, stack counts, and max mode.
+
+## Performance graph menu
+
+File:
+
+```text
+menu/view_graphic.yml
+```
+
+This menu is opened by:
+
+- `[VIEW_GRAPHIC]`
+
+It contains:
+
+- default metric
+- default range
+- graph materials
+- chart area layout
+- summary item
+- metric filter
+- range filter
+- back button
+
+The source comments document these graph navigation actions:
+
+- `[NEXT_METRIC]`
+- `[PREVIOUS_METRIC]`
+- `[NEXT_DAY]`
+- `[PREVIOUS_DAY]`
+- `[NEXT_WEEK]`
+- `[PREVIOUS_WEEK]`
+- `[NEXT_MONTH]`
+- `[PREVIOUS_MONTH]`
+- `[NEXT_RANGE_UNIT]`
+- `[PREVIOUS_RANGE_UNIT]`
+- `[NEXT_RANGE_VALUE]`
+- `[PREVIOUS_RANGE_VALUE]`
+- `[REFRESH_GRAPHIC]`
+- `[BACK]`
+
+### Graph purpose
+
+This menu is not only cosmetic. It is the plugin's per-item performance view for:
+
+- buyers
+- sales
+- stock
+- configurable day, week, and month ranges
+
+## Shared GUI customization
+
+The comments across the menu files repeatedly document support for optional item-meta settings such as:
+
+- player heads
+- custom textures
+- item flags
+- enchants
+- glint behavior
+
+That means the menu files are not only structural layouts. They also support full item presentation customization.
+
+## Broad structure summary
+
+At a high level:
+
+- `menu.yml` is the market entry menu
+- `history.yml` is the player transaction record view
+- `bulk.yml` is the quantity confirmation flow
+- `view_graphic.yml` is the analytics view

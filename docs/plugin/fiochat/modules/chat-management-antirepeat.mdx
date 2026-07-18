@@ -1,0 +1,79 @@
+---
+title: AntiRepeat
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# AntiRepeat Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This blocks repeated or similar chat messages and commands.
+- Chat and command tracking are separate.
+- Source comments say `antirepeat.whitelist` is separate from cooldown whitelist.
+- Source comments say fuzzy anti-evasion is enabled internally by default.
+
+## `spy`
+```yaml
+spy:
+  chat: "..."
+  command: "..."
+  command-blacklist:
+    - '/login'
+```
+
+## `chat`
+```yaml
+chat:
+  enabled: true
+  cooldown: 5
+  message: "..."
+  title:
+    enabled: true
+  actionbar:
+    enabled: false
+  sound:
+    enabled: true
+  whitelist:
+    - "[i]"
+  smart:
+    enabled: true
+    similarity-threshold: 0.86
+  global-duplicate:
+    enabled: true
+    threshold: 5
+    window-seconds: 10
+    block-seconds: 10
+    require-distinct-players: true
+```
+
+Source comments note that when `global-duplicate.enabled` is `true`, this becomes the main anti-spam gate for chat and classic chat cooldown checks are skipped.
+
+## `commands`
+```yaml
+commands:
+  enabled: true
+  cooldown: 5
+  message: "..."
+  title:
+    enabled: true
+  actionbar:
+    enabled: false
+  sound:
+    enabled: true
+  whitelist:
+    - "/login"
+  smart:
+    enabled: true
+    similarity-threshold: 0.86
+    normalize-command-aliases: true
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

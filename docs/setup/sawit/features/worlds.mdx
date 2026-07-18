@@ -1,0 +1,66 @@
+---
+title: Worlds
+sidebar_position: 3
+---
+
+# Worlds
+
+This page explains how to bring the `SPAWN` world into the Sawit setup and keep it ready for use with `Multiverse-Core`.
+
+## Pages
+
+- [Features](/setup/sawit/features)
+- [Ranks](/setup/sawit/features/ranks)
+- [Leaderboards](/setup/sawit/features/leaderboards)
+- [Worlds](/setup/sawit/features/worlds)
+
+## What To Know First
+
+The current Sawit setup uses `RESOURCE` as the main world in `server.properties`, so `SPAWN` should usually be treated as an additional world unless you intentionally want to replace the default world.
+
+:::warning[Before You Import]
+Do not generate a fresh world with the same name if `SPAWN` already contains builds, a spawn layout, or protected regions. That would overwrite the existing setup.
+:::
+
+## Load Or Import SPAWN
+
+1. Stop the server first.
+2. Make sure the `SPAWN` world folder is available in the server root, next to folders like `plugins`, `logs`, and `RESOURCE`.
+3. Start the server once so Paper can read the world files.
+4. If you use `Multiverse-Core`, import the existing world with:
+
+```text
+/mv import SPAWN normal
+```
+
+5. Check that the world loaded correctly with:
+
+```text
+/mv list
+```
+
+6. Test teleporting into the world with:
+
+```text
+/mv tp SPAWN
+```
+
+## If SPAWN Should Become The Main World
+
+If you want `SPAWN` to be the default world instead of `RESOURCE`, update this line in `server.properties`:
+
+```properties
+level-name=SPAWN
+```
+
+Then restart the server.
+
+:::info[Recommended Setup]
+For most setups, keep `RESOURCE` as the main world and import `SPAWN` as a separate world for spawn, lobby, or protected starter areas.
+:::
+
+## After Importing
+
+- Recheck WorldGuard regions if the spawn uses protection.
+- Recheck any spawn commands or NPCs that point to the old world name.
+- Confirm players can teleport into `SPAWN` without errors.

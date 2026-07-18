@@ -1,0 +1,198 @@
+---
+title: Scoreboard
+---
+
+# Scoreboard
+
+Source file:
+
+```text
+modules/display/Server Display Tag/display_tag.yml
+```
+
+Use this page as a practical guide when you want to modify the scoreboard display.
+
+The most common edits are:
+
+- changing how often the scoreboard refreshes
+- turning the scoreboard on or off by default
+- editing the profile list for different worlds, players, or states
+- adjusting the text that appears in each profile
+
+Related file:
+
+```text
+modules/display/Server Display Tag/animations.yml
+```
+
+## How to modify it
+
+If you want to change how the scoreboard looks, edit the profile blocks under `scoreboard.list`.
+
+If you want to change the refresh behavior, edit the values under `settings.scoreboard`.
+
+Scoreboard titles and lines support MiniMessage `shadow` formatting.
+If a line or title already contains `<shadow:...>`, that explicit shadow value is kept.
+`animations.yml` can be used for animated text referenced by the scoreboard, such as `{anim:java_title}`.
+
+## `settings.scoreboard`
+
+### `update-interval-ticks`
+
+Controls how often the scoreboard is refreshed.
+
+### `use-placeholderapi`
+
+Enables PlaceholderAPI for non-FioChat placeholders.
+
+### `default-enabled`
+
+Sets the default player toggle state when the scoreboard is allowed to render.
+
+### `restore-main-scoreboard-on-disable`
+
+Restores the main scoreboard when the FioChat scoreboard is disabled.
+
+### `hide-score-numbers`
+
+Attempts to hide the numeric score values on the right side of the sidebar.
+
+The source comments note that this depends on server runtime support.
+
+### `shadow_settings`
+
+Global shadow settings for scoreboard titles and lines.
+
+- `enabled`
+- `color`
+- `opacity`
+
+### `calendar`
+
+Calendar formatting settings.
+
+- `date-format`
+- `time-format`
+- `time-offset`
+- `locale`
+
+## `scoreboard.list`
+
+The current source includes these scoreboard profiles:
+
+- `sb_verify`
+- `sb_vanished`
+- `sb_default`
+- `player:ItzFabb__`
+- `world:world_nether`
+
+## `sb_verify`
+
+This profile is enabled and is used when the player has not completed anti-bot verification.
+
+### `enabled`
+
+Enables the verification scoreboard profile.
+
+### `title`
+
+Title shown for the verification scoreboard.
+
+### `display_conditions`
+
+The current source checks:
+
+```text
+%fiochat_antibot_verified%=false
+```
+
+### `lines`
+
+This profile explains that the player must complete authentication, then shows server date and time.
+
+## `sb_vanished`
+
+This profile is active when the player's vanish state is `true`.
+
+### `display_conditions`
+
+The current source checks:
+
+```text
+%fiochat_vanish_state%=true
+```
+
+### `lines`
+
+This scoreboard shows vanish status details, including interaction flags such as:
+
+- item drop
+- item pickup
+- xp pickup
+- breaking blocks
+- chest open
+- interact
+
+## `sb_default`
+
+This is the default profile enabled in the source.
+
+### `title`
+
+The title uses `{anim:java_title}` with a shadow wrapper.
+
+### `lines`
+
+The default lines in the source show information such as:
+
+- date
+- player head and player name
+- rank
+- purse
+- ping
+- biome
+- level
+- kills
+- deaths
+- server time
+
+## `player:ItzFabb__`
+
+This is an example player-specific scoreboard profile.
+
+The current source marks it as `enabled: false`.
+
+This profile shows:
+
+- a welcome message
+- player platform
+- player ping
+
+## `world:world_nether`
+
+This is an example world-specific scoreboard profile.
+
+The current source marks it as `enabled: false`.
+
+This profile shows:
+
+- world name
+- biome
+- ping
+
+## `animations.yml`
+
+The scoreboard can use text animations from the shared registry.
+
+In the current source, `animations.texts` includes:
+
+- `java_title`
+- `bedrock_title`
+- `java_text`
+- `bedrock_text`
+
+Each animation contains `interval_ticks` and a list of `frames`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

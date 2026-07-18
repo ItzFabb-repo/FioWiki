@@ -1,0 +1,380 @@
+---
+title: lang_en.yml
+sidebar_position: 1
+---
+
+# lang_en.yml
+
+---
+File Location: `plugins\FioChatGames\messages\lang_<key>.yml`
+
+```yaml
+############################################################
+#                     FioChatGames Language                 
+#              English Tree-Style Localization              
+############################################################
+# Messages are organized as nested branches.
+# Legacy dashed keys are still readable through code fallback.
+
+# ----------------------------------------------------------
+# Section: prefix
+# ----------------------------------------------------------
+prefix: "<dark_gray>[<gold>FioChatGames</gold>]</dark_gray> <gray>"
+
+# ----------------------------------------------------------
+# Section: no
+# ----------------------------------------------------------
+no:
+  permission: "<red>You do not have permission to perform this action.</red>"
+  active: "<red>There are currently no active games at the moment.</red>"
+
+# ----------------------------------------------------------
+# Section: player
+# ----------------------------------------------------------
+player:
+  only: "<red>This command can only be used by players.</red>"
+
+# ----------------------------------------------------------
+# Section: reload
+# ----------------------------------------------------------
+reload: "<green>FioChatGames configuration successfully reloaded.</green>"
+
+# ----------------------------------------------------------
+# Section: menu
+# ----------------------------------------------------------
+menu:
+  unavailable: "<red>Menu system is not available.</red>"
+  not:
+    found: "<red>Menu <white>%menu%</white> was not found in menu/admin/<menu>.yml.</red>"
+  config:
+    updated: "<green>Configuration updated successfully.</green>"
+  input:
+    start: "<yellow>A chat prompt has been opened for <white>%type%</white> at <white>%path%</white>.</yellow>"
+    cancel:
+      hint: "<gray>Type <white>cancel</white> in chat to abort.</gray>"
+    cancelled: "<red>Menu input cancelled.</red>"
+    too:
+      low: "<red>Value is too low. Minimum: <white>%min%</white>.</red>"
+      high: "<red>Value is too high. Maximum: <white>%max%</white>.</red>"
+    failed: "<red>Could not apply that value. Check the format and try again.</red>"
+  start:
+    failed: "<red>Could not start <white>%type%</white> right now.</red>"
+  list:
+    selected:
+      format: "<yellow><bold>></bold></yellow> <white>"
+    unselected:
+      format: "<gray>"
+
+# ----------------------------------------------------------
+# Section: unknown
+# ----------------------------------------------------------
+unknown:
+  mode: "<red>Unknown mode. Use <white>give</white>, <white>remove</white>, or <white>set</white>.</red>"
+  game: "<red>Unknown game type specified.</red>"
+
+# ----------------------------------------------------------
+# Section: toggled
+# ----------------------------------------------------------
+toggled:
+  on: "<green>You have <bold>enabled</bold> FioChatGames participation.</green>"
+  off: "<red>You have <bold>disabled</bold> FioChatGames participation.</red>"
+
+# ----------------------------------------------------------
+# Section: not
+# ----------------------------------------------------------
+not:
+  enough:
+    players: "<red>Not enough eligible players online to start a game.</red>"
+
+# ----------------------------------------------------------
+# Section: stopped
+# ----------------------------------------------------------
+stopped: "<red>The active <gold>%type%</gold> game has been stopped.</red>"
+
+# ----------------------------------------------------------
+# Section: active
+# ----------------------------------------------------------
+active: "<yellow>Current Game:</yellow> <gold>%type%</gold> <dark_gray>|</dark_gray> <yellow>Prompt:</yellow> <white>%prompt%</white> <dark_gray>|</dark_gray> <yellow>Time Left:</yellow> <white>%time%s</white>"
+
+# ----------------------------------------------------------
+# Section: bossbar
+# ----------------------------------------------------------
+bossbar:
+  timer: "<gold>%type%</gold> <gray>-</gray> <yellow>%time%s</yellow>"
+
+# ----------------------------------------------------------
+# Section: race
+# ----------------------------------------------------------
+race:
+  countdown:
+    alert: "<yellow>Race event is ending in <gold>%seconds%</gold>s!</yellow>"
+  no:
+    participants: "<red>No one has participating on the Race Event,</red> <gray>the event has ended without a winner</gray>"
+  correct: "<yellow><bold>%player%</bold></yellow><green> was the first to completed the <gold>Race %typeRace%</gold> event and earned <gold>%points%</gold> points!</green>"
+  command:
+    blocked: "<red>This command is blocked during the Player Death race event.</red>"
+
+# ----------------------------------------------------------
+# Section: expired
+# ----------------------------------------------------------
+expired: "<red>No one answered in time.</red> <gray>Correct answer:</gray> <white>%answer%</white>"
+
+# ----------------------------------------------------------
+# Section: streak
+# ----------------------------------------------------------
+streak:
+  announced: "<gold><bold>%player%</bold></gold> reached a <yellow>%streak%</yellow> win streak in <gold>%type%</gold>!"
+
+# ----------------------------------------------------------
+# Section: started
+# ----------------------------------------------------------
+started: "<green>A <gold>%type%</gold> game has started!</green>"
+
+# ----------------------------------------------------------
+# Section: correct
+# ----------------------------------------------------------
+correct: "<green><bold>%player%</bold> solved the <gold>%type%</gold> game in <gold>%seconds%s</gold> and earned <gold>%points%</gold> points!</green>"
+no-active: "<red>There is no active FioChatGames event right now.</red>"
+
+# ----------------------------------------------------------
+# Section: wrong
+# ----------------------------------------------------------
+wrong:
+  world: "<red>FioChatGames is disabled in this world.</red>"
+
+# ----------------------------------------------------------
+# Section: invalid
+# ----------------------------------------------------------
+invalid:
+  number: "<red>The amount must be a valid number.</red>"
+
+# ----------------------------------------------------------
+# Section: usage
+# ----------------------------------------------------------
+usage:
+  leaderboard: "<yellow>Usage:</yellow> <white>/fiochatgames leaderboard <events|races> <game></white>"
+  start: "<yellow>Usage:</yellow> <white>/fiochatgames admin start event <type></white> <gray>or</gray> <white>/fiochatgames admin start race <type></white>"
+  admin:
+    start: "<yellow>Usage:</yellow> <white>/fiochatgames admin start event <type></white> <gray>or</gray> <white>/fiochatgames admin start race <type></white>"
+    info: "<yellow>Usage:</yellow> <white>/fiochatgames admin info <events|races> <player></white>"
+    points: "<yellow>Usage:</yellow> <white>/fiochatgames admin points <give|remove|set> <player> <amount></white>"
+    win: "<yellow>Usage:</yellow> <white>/fiochatgames admin win <give|remove|set> <player> <events|races> <events_game|races_game> <amount></white>"
+    winstreak: "<yellow>Usage:</yellow> <white>/fiochatgames admin winstreak <give|remove|set> <player> <events|races> <events_game|races_game> <amount></white>"
+    blacklist:
+      text: "<yellow>Usage:</yellow> <white>/fiochatgames admin blacklist <add|remove|list> [player]</white>"
+      player: "<yellow>Usage:</yellow> <white>/fiochatgames admin blacklist %mode% <player></white>"
+  info: "<yellow>Usage:</yellow> <white>/fiochatgames info <events|races> <player></white>"
+
+# ----------------------------------------------------------
+# Section: case
+# ----------------------------------------------------------
+case:
+  sensitive:
+    mismatch: "<red>Correct answer, but incorrect capitalization.</red> <gray>Please type it exactly as:</gray> <yellow>%answer%</yellow>"
+
+# ----------------------------------------------------------
+# Section: blacklist
+# ----------------------------------------------------------
+blacklist:
+  added: "<green><white>%player%</white> has been added to the FioChatGames blacklist.</green>"
+  removed: "<green><white>%player%</white> has been removed from the FioChatGames blacklist.</green>"
+  already: "<yellow><white>%player%</white> is already blacklisted.</yellow>"
+  missing: "<yellow><white>%player%</white> is not in the blacklist.</yellow>"
+  list:
+    header: "<gold><bold>Blacklisted Players</bold></gold>"
+    entry: "<gray>- <white>%player%</white>"
+    empty: "<red>No players are currently blacklisted.</red>"
+
+# ----------------------------------------------------------
+# Section: start
+# ----------------------------------------------------------
+start:
+  mode:
+    disabled: "<red>FioChatGames is disabled in config. Change <gray>start_mode</gray> from <yellow>DISABLED</yellow> to enable events.</red>"
+
+# ----------------------------------------------------------
+# Section: command
+# ----------------------------------------------------------
+command:
+  tips:
+    - '<#7a7a7a>CONSOLE: <dark_gray>-</dark_gray> <gray>Executes a command as the console.</gray>'
+    - '<#7a7a7a>MESSAGE: <dark_gray>-</dark_gray> <gray>Sends a message to a player.</gray>'
+    - '<#7a7a7a>ITEM: <dark_gray>-</dark_gray> <gray>Gives an item to a player.</gray>'
+    - '<#7a7a7a>SOUND: <dark_gray>-</dark_gray> <gray>Plays a sound for a player.</gray>'
+    - '<#7a7a7a>TITLE: <dark_gray>-</dark_gray> <gray>Sends a title to a player.</gray>'
+    - '<#7a7a7a>ACTIONBAR: <dark_gray>-</dark_gray> <gray>Sends an actionbar message.</gray>'
+    - '<#7a7a7a>TOAST: <dark_gray>-</dark_gray> <gray>Sends a Goal Reached toast advancement to a player.</gray>'
+    - ''
+    - '<yellow>The aliases above can be used inside reward commands.</yellow>'
+
+# ----------------------------------------------------------
+# Section: help
+# ----------------------------------------------------------
+help:
+  - '[prefix="false"]'
+  - '[prefix="false"]<yellow><bold>FioChatGames Help</bold>'
+  - '[prefix="false"]<#7a7a7a>[Help Command]'
+  - '[prefix="false"]'
+  - '[prefix="false"]<yellow>/fiochatgames help <dark_gray>- <gray>View this help page.'
+  - '[prefix="false"]<yellow>/fiochatgames toggle <dark_gray>- <gray>Enable or disable participation.'
+  - '[prefix="false"]<yellow>/fiochatgames current <dark_gray>- <gray>View the active game.'
+  - '[prefix="false"]<yellow>/fiochatgames leaderboard <gold><events|races> <game> <dark_gray>- <gray>View events or races leaderboard.'
+  - '[prefix="false"]<yellow>/fiochatgames info <gold><events|races> <player> <dark_gray>- <gray>View player event or race statistics.'
+  - '[prefix="false"]<dark_gray>(/fiochatgames, /cg)'
+  - '[prefix="false"]'
+
+# ----------------------------------------------------------
+# Section: leaderboard
+# ----------------------------------------------------------
+leaderboard:
+  unscramble:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Unscramble</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  unshuffle:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Unshuffle</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  unreverse:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Unreverse</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  trivia:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Trivia</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  math:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Math</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  fast_type:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Fast Type</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  rewrite:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Rewrite</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  random:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Random</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  fillout:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Fillout</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  guess_the_word:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Guess The Word</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  reaction:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Reaction</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  variable:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Variable</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  race:
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow><bold>Leaderboard Race Event</bold>'
+    - '[prefix="false"]<#7a7a7a>(The top 10 most points, wins & winstreaks)'
+    - '[prefix="false"]<yellow>%rank% <white>%player% <dark_gray>- <yellow>%point%<dark_gray>, <yellow>%win%<dark_gray>, <yellow>%winstreak%'
+  invalid:
+    player: "N/A"
+    point: "0"
+    win: "0"
+    winstreak: "0"
+
+# ----------------------------------------------------------
+# Section: admin
+# ----------------------------------------------------------
+admin:
+  help:
+    - '[prefix="false"]'
+    - '[prefix="false"]<gold><bold>FioChatGames Help</bold> <red>(Admin)</red>'
+    - '[prefix="false"]<#7a7a7a>[Help Command]'
+    - '[prefix="false"]'
+    - '[prefix="false"]<yellow>/fiochatgames admin reload <dark_gray>- <gray>Reload the plugin configuration.'
+    - '[prefix="false"]<yellow>/fiochatgames admin version <dark_gray>- <gray>Show plugin version.'
+    - '[prefix="false"]<yellow>/fiochatgames admin author <dark_gray>- <gray>Show plugin author(s).'
+    - '[prefix="false"]<yellow>/fiochatgames admin placeholders <dark_gray>- <gray>List all plugin placeholders.'
+    - '[prefix="false"]<yellow>/fiochatgames admin menu <dark_gray>- <gray>Open the in-game admin menu.'
+    - '[prefix="false"]<yellow>/fiochatgames admin start <gold>event/race <type> <dark_gray>- <gray>Start a specific event or race type.'
+    - '[prefix="false"]<yellow>/fiochatgames admin stop <dark_gray>- <gray>Stop the active game.'
+    - '[prefix="false"]<yellow>/fiochatgames admin current <dark_gray>- <gray>View the current running game.'
+    - '[prefix="false"]<yellow>/fiochatgames admin list <dark_gray>- <gray>List all available game types.'
+    - '[prefix="false"]<yellow>/fiochatgames admin toggle <gold><player> <true/false> <dark_gray>- <gray>Force toggle participation.'
+    - '[prefix="false"]<yellow>/fiochatgames admin points <gold><give/remove/set> <player> <amount> <dark_gray>- <gray>Manage player points.'
+    - '[prefix="false"]<yellow>/fiochatgames admin win <gold><give/remove/set> <player> <events|races> <game> <amount> <dark_gray>- <gray>Manage player win statistics.'
+    - '[prefix="false"]<yellow>/fiochatgames admin winstreak <gold><give/remove/set> <player> <events|races> <game> <amount> <dark_gray>- <gray>Manage player game winstreaks.'
+    - '[prefix="false"]<yellow>/fiochatgames admin blacklist <gold><add/remove/list> [player] <dark_gray>- <gray>Manage event blacklist entries.'
+    - '[prefix="false"]<yellow>/fiochatgames admin info <gold><events|races> <player> <dark_gray>- <gray>View detailed event or race stats for a player.'
+    - '[prefix="false"]<dark_gray>(/fiochatgamesadmin, /fiochatgames admin, /cg admin)'
+    - '[prefix="false"]'
+  enabled:
+    games: "<gray>Enabled games:</gray> <gold>%games%</gold>"
+  start:
+    mode: "<gray>Start mode:</gray> <gold>%mode%</gold>"
+  toggle:
+    set: "<gray>Participation for <white>%player%</white> set to <gold>%value%</gold>.</gray>"
+  points:
+    updated: "<gray>Updated points for <white>%player%</white> to <gold>%points%</gold>.</gray>"
+  wins:
+    updated: "<gray>Updated wins for <white>%player%</white> in <gold>%game%</gold> to <gold>%wins%</gold>.</gray>"
+  winstreak:
+    updated: "<gray>Updated winstreak for <white>%player%</white> in <gold>%game%</gold> to <gold>%winstreak%</gold>.</gray>"
+
+# ----------------------------------------------------------
+# Section: lose
+# ----------------------------------------------------------
+lose:
+  message:
+    text: "<gray>You did not answer correctly this time. Better luck next round!"
+
+# ----------------------------------------------------------
+# Section: info
+# ----------------------------------------------------------
+info:
+  message:
+    - '[prefix="false"]'
+    - '[prefix="false"]<gold><bold>Player Info</bold></gold> <gray>%player%</gray>'
+    - '[prefix="false"]<gray>Points:</gray> <white>%points%</white>'
+    - '[prefix="false"]<gray>Global Streak:</gray> <white>%global_streak%</white>'
+    - '[prefix="false"]<gray>Participation:</gray> <white>%enabled%</white>'
+    - '[prefix="false"]'
+  game:
+    line: "<dark_gray>- <yellow>%game%</yellow> <gray>wins:</gray> <white>%wins%</white> <gray>winstreak:</gray> <white>%winstreak%</white>"
+    lines:
+      - "<dark_gray>- <yellow>%game%</yellow> <gray>wins:</gray> <white>%wins%</white> <gray>winstreak:</gray> <white>%winstreak%</white>"
+
+# ----------------------------------------------------------
+# Section: update
+# ----------------------------------------------------------
+update:
+  available:
+    player: "<yellow>A new FioChatGames update is available!</yellow> <gray>(Current: <white>%current_version%</white>, Latest: <white>%latest_version%</white>)</gray> <aqua>%spigot_url%</aqua>"
+
+# ----------------------------------------------------------
+# Section: force
+# ----------------------------------------------------------
+force:
+  start:
+    replaced: "<yellow>The current game has ended because an admin started another game: <gold>%type%</gold> by <gold>%staff%</gold>.</yellow>"
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::
+```

@@ -1,0 +1,58 @@
+﻿---
+title: Sounds
+sidebar_position: 9
+---
+
+# Sounds
+
+## Sound file structure
+
+`sounds.yml` is a reusable sound sequence file. The bundled example uses:
+
+```yaml
+note_block:
+  actions:
+    open:
+    close:
+```
+
+Within those lists, the source uses bracketed action lines such as:
+
+- `[SOUND] BLOCK_AMETHYST_BLOCK_BREAK 100 2.0 master`
+- `[DELAY=2]`
+- `[LOOP=true]`
+
+## Sound syntax
+
+The source-backed action shape is:
+
+```text
+[SOUND] <sound> <volume> <pitch> <category>
+```
+
+Example:
+
+```text
+[SOUND] UI_BUTTON_CLICK 100 1 master
+```
+
+## What the built-in sound example demonstrates
+
+The bundled `note_block` sequence shows:
+
+- an open sequence with several different pitches
+- timed delays between steps
+- looping behavior
+- a close sound
+
+That means `sounds.yml` is meant for named audio patterns you can reuse across menus instead of manually rewriting the same sound sequence on every button.
+
+## Practical use in menus
+
+At a high level, sounds in FioMenu are used for:
+
+- open feedback
+- close feedback
+- button click feedback
+- short alert or deny responses
+- repeating tone sequences for decorative effects

@@ -1,0 +1,163 @@
+---
+title: Config
+sidebar_position: 10
+---
+
+# Command Hider Config
+
+Source file:
+
+```text
+modules/commands/Commands Hider/config.yml
+```
+
+Command Hider hides command suggestions in tab completion based on the rules defined in its config.
+
+## Notes from source comments
+
+- This module only filters command visibility in tab completion.
+- It does not grant permission to execute any command.
+- Command execution still follows each command's original permission rules.
+- There is a fixed bypass permission that is not configurable:
+
+```text
+fiochat.commandhider.bypass
+```
+
+## `settings.debug-log`
+
+Controls whether the module writes debug logs while it runs.
+
+## `backend.mode`
+
+Supported backend modes from the source are:
+
+- `AUTO`
+- `PAPER_BRIGADIER`
+- `BUKKIT_ONLY`
+
+Source comments describe them like this:
+
+- `AUTO` uses the safe Bukkit path and works on Spigot or Paper.
+- `PAPER_BRIGADIER` is accepted for config parity, but this build treats it as `AUTO`.
+- `BUKKIT_ONLY` forces filtering through the Bukkit event path only.
+
+## `filters.remove-namespaced-aliases`
+
+When `true`, namespaced aliases such as `/minecraft:help`, `/bukkit:ver`, or `/plugin:command` are hidden too.
+
+## `filters.remove-plugin-aliases`
+
+When `true`, plugin aliases are hidden and only the main command label remains visible.
+
+The source comment gives the example of hiding `/uignore` while still showing `/unignore`.
+
+## `visibility.default-mode`
+
+This is the main mode used to decide whether a command should be visible.
+
+The source comments list these values:
+
+- `ALLOW`
+- `DENY`
+- `GROUP`
+
+Meaning:
+
+- `ALLOW`: only commands in the `allow` list are visible, while `deny` can still block entries.
+- `DENY`: all commands are visible except those in `deny`, while `allow` can act as an exception list.
+- `GROUP`: uses the first matching permission group.
+
+## `visibility.fallback-mode`
+
+Used when `default-mode: GROUP` is active but the player does not match any group.
+
+The source comments mention:
+
+- `ALLOW`
+- `DENY`
+
+## `visibility.allow`
+
+This is the global allow list for visible fallback commands.
+
+Default source entries:
+
+- `msg`
+- `message`
+- `reply`
+- `r`
+- `spawn`
+- `home`
+- `warp`
+- `tpa`
+- `channel`
+- `ignore`
+- `unignore`
+
+## `visibility.deny`
+
+This is the global deny list for hidden fallback commands.
+
+Default source entries:
+
+- `help`
+- `plugins`
+- `pl`
+- `version`
+- `ver`
+- `about`
+- `?`
+- `icanhasbukkit`
+- `bukkit:*`
+- `minecraft:*`
+
+The source comment notes that wildcard `*` is supported.
+
+## `visibility.groups`
+
+The source comment says group-based permission visibility uses the first matching group.
+
+### `default`
+
+The default group uses:
+
+- `permission: fiochat.commandhider.visibility.default`
+- `mode: ALLOW`
+
+Its `allow` list follows common commands such as `msg`, `spawn`, `home`, `warp`, `tpa`, `channel`, `ignore`, and `unignore`.
+
+Its `deny` list contains:
+
+- `op`
+- `deop`
+
+Its `block` section contains:
+
+- `enabled`: enables blocking when a command should not be usable.
+- `message`: the message shown when a command is blocked.
+
+### `staff`
+
+The staff group uses:
+
+- `permission: fiochat.commandhider.visibility.staff`
+- `mode: ALLOW`
+
+In addition to common commands, this group also allows commands such as:
+
+- `kick`
+- `mute`
+- `ban`
+- `gamemode`
+- `tp`
+- `fiochat`
+
+Its `deny` list still blocks these namespaces:
+
+- `bukkit:*`
+- `minecraft:*`
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

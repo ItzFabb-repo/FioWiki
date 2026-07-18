@@ -1,0 +1,182 @@
+---
+title: guess_the_word.yml
+sidebar_position: 1
+---
+
+# guess_the_word.yml
+
+---
+
+# Game Preview (GUESS_THE_WORD)
+
+![FioChatGames GUESS_THE_WORD](../../../../img/fiochatgames/FioChatGames%20GUESS_THE_WORD.png)
+
+---
+
+File Location: `plugin\\fiochatgames\\config\\events\guess_the_word.yml`
+
+```yaml
+# ==================================================================================================
+#  Guess The Word Event Configuration
+# ==================================================================================================
+game: GUESS_THE_WORD
+folder: games/events/guess_the_word.yml
+
+enable: true
+points: 1
+time_seconds: 60
+phase_seconds: 15
+
+brackets_detection:
+  open_brackets: "["
+  close_brackets: "]"
+
+messages:
+  started: '<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '<green><bold>%player%</bold> solved the <gold>%type%</gold> game and earned <gold>%points%</gold>!</green>'
+  streak: '<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+  submitted: '[prefix="false"]<gray>Guess recorded:</gray> <yellow>[%guess%]</yellow> <gray>Review in</gray> <white>%seconds%</white><gray>s.</gray>'
+  already_submitted: '[prefix="false"]<red>Guess already recorded in this 15s phase.</red> <gray>Wait</gray> <white>%seconds%</white><gray>s to submit again.</gray>'
+  correct_guess: '[prefix="false"]<green>Correct guess:</green> <white>[%guess%]</white>'
+  almost: '[prefix="false"]<yellow>Almost right:</yellow> %colored_guess% <gray>| Pattern:</gray> %indicator% <gray>You have</gray> <white>%remaining%</white> <gray>chance(s) left.</gray>'
+  incorrect: '[prefix="false"]<red>Incorrect guess:</red> %colored_guess% <gray>| Pattern:</gray> %indicator% <gray>You have</gray> <white>%remaining%</white> <gray>chance(s) left.</gray>'
+  phase_hint: '[prefix="false"]<gray>Hint:</gray> <yellow>%hint%</yellow> <gray>| Chances left:</gray> <white>%remaining%</white>'
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffe98c><bold>Guess The Word</bold></center>'
+    - '<center><gray><smallfont:you must use [] to join this event></gray></center>'
+    - ''
+    - '<center><gray>Answer format:</gray> <yellow>[YourGuess]</yellow></center>'
+    - '<center><gray>You have 4 chances, checked every 15 seconds.</gray></center>'
+    - '<center><#ffe98c><shadow:#000000:1.0>%guess_the_word%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffe98c><bold>Guess The Word</bold></center>'
+    - '<center><gray><smallfont:%player% solved this event first!></gray></center>'
+    - '<center><gray>The answer was:</gray></center>'
+    - '<center><#ffe98c><shadow:#00FF00:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ffe98c><bold>Guess The Word</bold></center>'
+    - '<center><gray><smallfont:The event has ended without a winner></gray></center>'
+    - '<center><gray>The answer was:</gray></center>'
+    - '<center><#ffe98c><shadow:#FF0000:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+
+title:
+  text: '<#ffe98c>Guess The Word'
+  enabled: true
+subtitle:
+  text: '<gray>%guess_the_word%</gray>'
+  enabled: true
+
+phrases:
+  - 'Twitter'
+  - 'Elby'
+  - 'Minecraft'
+  - 'Diamond'
+  - 'Fortress'
+  - 'Guardian'
+  - 'Villager'
+  - 'Netherite'
+  - 'Redstone'
+  - 'Spawner'
+
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  2:
+    commands:
+      - 'MESSAGE:<green>2 streak in %game%!'
+
+rewards:
+  commands:
+    - 'CONSOLE:eco give %player_name% 1000'
+    - 'CONSOLE:exp give %player_name% 100'
+    - 'MESSAGE:<green>You guessed the word correctly!</green>'
+
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+      - 'CONSOLE:exp give %player_name% 100'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 250'
+  4th_reward:
+    enabled: false
+    commands: []
+  participated:
+    enabled: true
+    commands:
+      - 'MESSAGE:<gray>Thanks for participating in Guess The Word.</gray>'
+
+simple:
+  # Make things more easier for server owner to set it up by using this simple opt.
+  enabled: false
+  message:
+    header:
+      enabled: false
+      message:
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+        - ""
+        - "<gray><italic>(Top 1-%max% Page of the %type% Winner)"
+        - ""
+    rankings: '<yellow>%index%</yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>'
+    footer:
+      enabled: false
+      message:
+        - ""
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+
+advance:
+  # If you want to make it alot more advance you can use this.
+  enabled: true
+  header:
+    enabled: true
+    message:
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+      - ""
+      - "<gray><italic><smallfont:(Top 1-%max% Page of the %type% Winner)></italic></gray>"
+      - ""
+  message:
+    1: "<dark_red><bold>1st</bold></dark_red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    2: "<red><bold>2nd</bold></red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    3: "<gold><bold>3rd</bold></gold> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    4: "<yellow><bold>4th</bold></yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    5: "<white>5.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    6: "<white>6.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    7: "<white>7.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    8: "<white>8.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    9: "<white>9.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    10: "<white>10.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+  footer:
+    enabled: true
+    message:
+      - ""
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+```
+
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

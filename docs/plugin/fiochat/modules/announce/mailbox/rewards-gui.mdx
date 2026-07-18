@@ -1,0 +1,163 @@
+---
+title: Rewards
+---
+
+# Rewards
+
+`rewards.yml` controls the reward preview and reward editor screen. It is used when players view claimable rewards from received mail and when players edit rewards while composing mail.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/rewards.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Mailbox Rewards</dark_gray> <black>(%page%/%max_page%)</black>"
+  rows: 6
+```
+
+The title supports `%page%` and `%max_page%`. The current layout uses six rows.
+
+## `menus.reward-slots`
+
+```yaml
+menus:
+  reward-slots:
+    - "9-44"
+```
+
+These slots display reward items or editable reward contents.
+
+## `menus.rewards.follow_rewards_material`
+
+```yaml
+menus:
+  rewards:
+    follow_rewards_material: true
+```
+
+When `true`, the displayed reward item follows the real reward material.
+
+When `false`, the display uses the configured `material` and optional `texture` instead.
+
+## `menus.rewards.hide_tooltip`
+
+```yaml
+menus:
+  rewards:
+    hide_tooltip: true
+```
+
+When enabled, the reward display item hides its default tooltip where supported.
+
+## `menus.rewards.material`
+
+```yaml
+menus:
+  rewards:
+    material: BUNDLE
+```
+
+This is the fallback display material when the reward does not follow its own material.
+
+## `menus.rewards.texture`
+
+```yaml
+menus:
+  rewards:
+    texture: ""
+```
+
+This optional texture is used for custom skull-style display items. Leave it empty when no custom texture is needed.
+
+## `menus.rewards.name`
+
+```yaml
+menus:
+  rewards:
+    name: "<yellow>{material}</yellow> <dark_gray>(</dark_gray><white>{amount}x</white><dark_gray>)</dark_gray>"
+```
+
+This is the display name for one reward item.
+
+`{material}` is the reward material display name. `{amount}` is the reward amount.
+
+## `menus.rewards.lore`
+
+```yaml
+menus:
+  rewards:
+    lore:
+      - "<gray>This is a rewards from {playersentmailbox}"
+      - "<gray>click this item to claim it."
+```
+
+This lore is shown on reward display items.
+
+`{playersentmailbox}` is replaced with the mailbox sender context.
+
+## `menus.rewards.alert-prefix`
+
+```yaml
+menus:
+  rewards:
+    alert-prefix: "<alerts:"
+```
+
+This prefix marks lore lines that behave as alert lines in the reward display logic. The current source uses it for inventory-space warnings in fallback button lore.
+
+## `menus.rewards.blacklist-message`
+
+```yaml
+menus:
+  rewards:
+    blacklist-message: "<red>This item is blacklisted for mailbox rewards.</red>"
+```
+
+This message is sent when a player tries to use a blacklisted item as a mailbox reward.
+
+## `menus.rewards.blacklist-materials`
+
+```yaml
+menus:
+  rewards:
+    blacklist-materials: []
+```
+
+This list blocks specific Bukkit materials from being used as rewards.
+
+## `menus.items.buttons.back`
+
+The back button is currently in slot `46`. `[MAILBOX] GO_BACK` returns to the previous Mailbox context. From the reward editor, it saves the current editor contents and returns to Compose.
+
+## `menus.items.buttons.claim-all`
+
+The claim-all button is currently in slot `47`. `[MAILBOX] CLAIM_REWARDS` claims all remaining rewards for the viewed mailbox and reopens the View screen.
+
+## `menus.items.buttons.previous` and `next`
+
+The previous button is in slot `45`; the next button is in slot `53`.
+
+`[MAILBOX] PAGE_PREVIOUS` and `[MAILBOX] PAGE_NEXT` page through rewards. The disabled states use `behavior.ifnoPrevious` and `behavior.ifnoNext`.
+
+## `menus.items.buttons.done`
+
+The done button is currently in slot `48`. `[MAILBOX] DONE` saves the reward editor contents and returns to Compose.
+
+## `menus.items.buttons.close`
+
+The close button is currently in slot `49`. `[CLOSE]` closes the inventory. When the player is in the reward editor, closing also captures the current reward editor contents.
+
+## `menus.items.buttons.compact`
+
+The compact button is currently in slot `50`.
+
+It has separate `on` and `off` item templates. `[MAILBOX] TOGGLE_COMPACT` switches the player's reward editor between compact and normal view, then reopens the editor on the current page.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

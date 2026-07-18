@@ -1,0 +1,84 @@
+﻿---
+title: API Pengembang
+sidebar_position: 5
+---
+
+# API Pengembang
+FioChat menyediakan API publik untuk integrasi.
+
+---
+
+# Mendapatkan Instance API
+```java
+import com.itzfabb.fiochat.api.FioChatApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+FioChatApi api = FioChatApiProvider.get();
+if (api != null) {
+    // safe to use
+}
+```
+
+Untuk integrasi khusus Join/Quit:
+```java
+import com.itzfabb.fiochat.api.JoinQuitApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+JoinQuitApi joinQuitApi = FioChatApiProvider.getJoinQuitApi();
+```
+
+---
+
+# Kemampuan Inti API
+:::info[Level tinggi]
+API yang diekspos berfokus pada sistem chat yang berhadapan langsung dengan pemain, feature toggle, dan titik integrasi modul tertentu.
+:::
+
+Area integrasi umum:
+- Perilaku mention dan private messaging
+- Integrasi modul Join/Quit
+- Perilaku channel dan audiens
+- UX yang sadar preferensi/toggle pemain
+
+---
+
+# Pola Integrasi yang Direkomendasikan
+```java
+public void runIntegration(Player player) {
+    FioChatApi api = FioChatApiProvider.get();
+    if (api == null) {
+        return;
+    }
+
+    // Example: call available API methods in your plugin flow
+    // (exact methods depend on the FioChat version you compile against)
+}
+```
+
+---
+
+# Saran Soft-Depend
+Di `plugin.yml` plugin Anda:
+```yaml
+softdepend:
+  - FioChat
+```
+
+Lalu resolve API di `onEnable()` setelah server startup.
+
+---
+
+# Keamanan Versi
+:::warning[Kompatibilitas]
+Selalu compile terhadap versi API major/minor yang sama dengan yang Anda deploy.
+Jika Anda menargetkan beberapa build FioChat, lakukan null-check pada provider dan gagal secara graceful.
+:::
+
+---
+
+# Referensi Sumber
+Package API yang dianalisis dari source allocation:
+- `com.itzfabb.fiochat.api.FioChatApi`
+- `com.itzfabb.fiochat.api.FioChatApiProvider`
+- `com.itzfabb.fiochat.api.JoinQuitApi`
+- internal impl: `com.itzfabb.fiochat.api.internal.*`

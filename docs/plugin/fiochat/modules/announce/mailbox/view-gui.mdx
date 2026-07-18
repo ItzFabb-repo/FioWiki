@@ -1,0 +1,124 @@
+---
+title: View
+---
+
+# View
+
+`view.yml` controls the detailed mailbox reader. It contains the received-mail view, reward claim buttons, reply button, adjacent-mail navigation, and a separate sent-mail view template.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/view.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Mailbox View</dark_gray>"
+  rows: 6
+```
+
+The current View screen uses a six-row inventory with a static title.
+
+## `menus.thread-slots`
+
+```yaml
+menus:
+  thread-slots:
+    - "10-44"
+```
+
+`thread-slots` is the slot area available for thread-style message rendering. The current source also has a dedicated message item in slot `9`, so this range leaves room for the main message card.
+
+The service can also read `content-slots` as a compatible path, but the current source uses `thread-slots`.
+
+## Navigation buttons
+
+`items.buttons.previous` is in slot `45` and runs `[MAILBOX] PAGE_PREVIOUS`. In the View screen, that action opens the previous mailbox entry in the current filtered inbox list.
+
+`items.buttons.next` is in slot `53` and runs `[MAILBOX] PAGE_NEXT`. In the View screen, that action opens the next mailbox entry in the current filtered inbox list.
+
+`items.buttons.back` is in slot `46` and runs `[MAILBOX] GO_BACK`. From a received message, it returns to the inbox with the current filter context.
+
+`items.buttons.close` is in slot `49` and runs `[CLOSE]`.
+
+## `menus.items.claim-item`
+
+```yaml
+claim-item:
+  material: CHEST
+  slot: 50
+  actions:
+    any:
+      - "[MAILBOX] VIEW_CLAIM_ITEMS"
+```
+
+This button opens the Rewards preview screen for item rewards attached to the mailbox.
+
+## `menus.items.claim-command`
+
+```yaml
+claim-command:
+  material: BARREL
+  slot: 47
+  actions:
+    any:
+      - "[MAILBOX] CLAIM_REWARDS"
+```
+
+This button immediately claims available command rewards for the mailbox and then reopens the View screen.
+
+The same claim path respects `settings.reward-claim-click-cooldown-millis` from `config.yml`.
+
+## `menus.items.reply`
+
+```yaml
+reply:
+  material: FEATHER
+  slot: 48
+  actions:
+    any:
+      - "[MAILBOX] VIEW_REPLY"
+```
+
+This button starts a reply draft from the selected inbox entry. Replies are allowed only while the reply window is valid in the service.
+
+## `menus.items.message`
+
+```yaml
+message:
+  material: PAPER
+  name: "<yellow>Mailbox From %from%</yellow>"
+  slot: 9
+```
+
+This item displays the selected received mailbox.
+
+Supported placeholders include:
+
+```text
+%from%
+%to%
+%id%
+%date%
+%isRewards%
+%message_lines%
+```
+
+The configured `[NONE]` action marks the item as intentionally non-navigational.
+
+## `menus.items.sent-buttons`
+
+`sent-buttons` is the separate template used when viewing a sent mail entry.
+
+`sent-buttons.back` returns to the Sent screen.
+
+`sent-buttons.close` closes the inventory.
+
+`sent-buttons.message` uses `FILLED_MAP` instead of `PAPER` and renders the sent entry with the same main placeholders: `%from%`, `%to%`, `%id%`, `%date%`, `%isRewards%`, and `%message_lines%`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,96 @@
+---
+title: Json
+---
+
+# Advancements Json
+
+Source file:
+
+```text
+modules/announce/Advancements/advancements.json
+```
+
+This file stores the bundled advancement title registry used by FioChat. It lets the module turn advancement ids into cleaner display names when the runtime title is missing or when you want a custom label.
+
+## `display-names`
+
+```json
+{
+  "display-names": {
+    "minecraft:story/root": "Minecraft"
+  }
+}
+```
+
+The root object is `display-names`.
+
+Each key is an advancement id, and each value is the text shown in chat and titles.
+
+## Supported key styles
+
+You can use either style:
+
+```text
+minecraft:story/mine_stone
+story/mine_stone
+```
+
+The current registry accepts both namespaced and short keys.
+
+## Common shipped entries
+
+The shipped file includes entries such as:
+
+```text
+minecraft:story/root
+minecraft:nether/root
+minecraft:end/root
+minecraft:adventure/root
+minecraft:husbandry/root
+```
+
+These map to the default tab names used by Minecraft advancements.
+
+## Editing an existing entry
+
+```json
+{
+  "display-names": {
+    "minecraft:nether/root": "Nether"
+  }
+}
+```
+
+Change only the value if you want a different visible title.
+
+## Adding a custom entry
+
+```json
+{
+  "display-names": {
+    "terralith:moonlight_grove": "Moonlight Grove"
+  }
+}
+```
+
+Use the exact biome or advancement id that your pack or datapack exposes.
+
+## When to use this file
+
+Use `advancements.json` when you want the registry itself to carry the default label.
+
+Use `config.yml -> display-names` only for a local override in the config file.
+
+## Legacy Path Note
+
+The active registry path for this build is:
+
+```text
+modules/announce/Advancements/advancements.json
+```
+
+The plugin does not need a separate legacy registry path for this file in the current build, but older documentation may still refer to the advancement-message module name.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,47 @@
+﻿---
+title: Login Streak Rewards
+sidebar_position: 40
+---
+
+# Login Streak Rewards (Module)
+Configuration guide for `modules/rewards/Login Streak Rewards/config.yml`.
+
+:::info[Source-backed scope]
+This module is present in the current `FioChat-master` source tree and also ships with GUI assets in `modules/rewards/Login Streak Rewards/gui/menu.yml`.
+:::
+
+:::warning[Visual asset note]
+No standalone screenshot was found in `docs/img/fiochat` for this module, so this page keeps the GUI path documented instead of inventing a preview image.
+:::
+
+## Configuration Files
+- `modules/rewards/Login Streak Rewards/config.yml`
+- `modules/rewards/Login Streak Rewards/gui/menu.yml`
+
+## Module Overview
+
+The login streak reward flow is centered on the command and GUI pair:
+
+- `/loginstreak` opens the player-facing streak interface.
+- `/fiochat admin loginstreak ...` covers admin management.
+- `gui/menu.yml` controls the visible reward screen.
+
+## What this module covers
+- player login streak tracking,
+- reward progression tied to streak state,
+- GUI presentation for streak rewards,
+- command integration through `/loginstreak`.
+
+## Permissions
+
+| Permission | Default | Purpose |
+| --- | --- | --- |
+| `fiochat.loginstreak.use` | `true` | Opens the login streak GUI. |
+| `fiochat.loginstreak.toggle` | `true` | Lets a player toggle their streak-related state if supported by the source build. |
+| `fiochat.admin.loginstreak` | `op` | Grants login streak management commands. |
+
+## Audit notes
+- This module is real in source and should be treated as a reward system, not just a command toggle.
+- The current plugin also exposes `fiochat.loginstreak.use`, `fiochat.loginstreak.toggle`, and `fiochat.admin.loginstreak` permissions in `plugin.yml`.
+- If you customize rewards, verify both the data logic in `config.yml` and the visual flow in `gui/menu.yml`.
+

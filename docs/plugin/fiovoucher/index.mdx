@@ -1,0 +1,71 @@
+---
+title: About
+sidebar_position: 1
+---
+
+# FioVoucher
+
+FioVoucher is a YAML-driven voucher plugin for redeem flows, admin voucher management, trial vouchers, Bedrock support, confirmation menus, and developer integrations.
+
+## What the plugin actually includes
+
+### Player flow
+
+The current source ships with these player-facing flows:
+
+- `/voucher redeem <code>`
+- voucher trial handling
+- voucher history views
+- confirmation menu before redeem
+
+### Voucher systems
+
+The current build supports:
+
+- one-off or multi-use vouchers
+- command reward execution
+- item reward execution
+- trial vouchers
+- frozen vouchers
+- disabled vouchers
+- per-voucher world, region, and permission gates
+- duplicate protection
+
+### Runtime systems
+
+The plugin also includes:
+
+- YAML or MySQL storage
+- language files in `lang/*.yml`
+- Bedrock support through config
+- hibernation / idle wake handling
+- confirmation GUI
+- player history menus
+
+## Major systems
+
+### Redeem flow
+
+Players redeem a voucher code through the main command or voucher item. The plugin validates access, blacklists, frozen state, remaining uses, trial rules, and permission gates before the voucher is consumed.
+
+### Voucher files
+
+File-based vouchers live in `vouchers/*.yml`. Each file defines the voucher item, rewards, and redeem settings.
+
+### Developer integration
+
+The public `FioVoucherAPI` exposes voucher lookup, item creation, give/redeem helpers, and player history access.
+
+## Documentation map
+
+Use these pages next:
+
+- [Commands & Permissions](/plugin/fiovoucher/commands-permissions)
+- [Configuration](/plugin/fiovoucher/config)
+- [Voucher Files](/plugin/fiovoucher/vouchers/how-to-create)
+- [Menus](/plugin/fiovoucher/menu)
+- [Developer API](/plugin/fiovoucher/api)
+
+:::info[Page note]
+This page is rebuilt from the current FioVoucher source and keeps the overview tied to the real plugin structure.
+:::

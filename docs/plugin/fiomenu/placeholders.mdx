@@ -1,0 +1,162 @@
+﻿---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+:::info[Placeholder layers]
+FioMenu uses multiple text-resolution layers in the same menu render path, so it is important to know which syntax belongs to which system.
+:::
+
+## Core token styles
+
+| Token style | Source | Purpose |
+| --- | --- | --- |
+| `%...%` | runtime placeholder parsing | Resolves PlaceholderAPI or built-in runtime values |
+| `[path.key]` | `translation.yml` | Resolves translated text entries |
+| `%fiomenu_parse_<id>%` | `placeholders.yml` | Resolves a `custom_papi` parsed result |
+| `%fiomenu_masking_<id>%` | `placeholders.yml` | Resolves a `masking_papi` combined value |
+| `%fiomenu_at:<id>%` | `animations.yml` | Resolves the current animated text frame |
+| `$player` | menu argument usage | Resolves menu argument values from files like `profile.yml` |
+
+## Processing order
+
+FioMenu's bundled examples show this practical flow:
+
+1. Menu YAML is loaded.
+2. Translation key tokens such as `[gui.title]` are resolved.
+3. Runtime placeholders such as `%player_name%` are resolved.
+4. Placeholder utility mappings from `placeholders.yml` are applied.
+5. Animated text placeholders such as `%fiomenu_at:rainbow_text%` are rendered on refresh.
+
+:::warning[Do not mix token styles]
+`[gui.title]` is not a normal PlaceholderAPI placeholder, and `%player_name%` is not a translation key. Use the syntax that matches the actual system.
+:::
+
+## `custom_papi`
+
+`custom_papi` lets you define FioMenu-owned placeholders that map parsed text into a stable output value.
+
+Source example:
+
+```yaml
+custom_papi:
+  trade:
+    parsed_results:
+      'true': "You are now accepting trades"
+      'false': "You are no longer accepting trades"
+```
+
+This becomes:
+
+```text
+%fiomenu_parse_trade%
+```
+
+Use it when you want one stable menu placeholder instead of repeating the same parsed text rules across many menus.
+
+## `alias_papi`
+
+`alias_papi` remaps third-party placeholder values into simpler values.
+
+Source example:
+
+```yaml
+alias_papi:
+  '%essentials_vanished%':
+    'no': 'false'
+    'yes': 'true'
+```
+
+This is useful when a plugin returns values such as `yes/no` but your rules and menus are easier to manage as `true/false`.
+
+## `masking_papi`
+
+`masking_papi` combines several placeholders into one reusable placeholder.
+
+Source example:
+
+```yaml
+masking_papi:
+  custom:
+    value: "%player_exp_to_level% %player_gamemode% %player_name% %vault_prefix%"
+```
+
+This becomes:
+
+```text
+%fiomenu_masking_custom%
+```
+
+Use it when one repeated profile line appears in several menus and you want that line maintained from one place.
+
+## Translation keys
+
+The translation file registers language profiles such as:
+
+- `EN_English`
+- `ID_Indonesia`
+- `CN_Chinese`
+- `JP_Japanese`
+
+and then exposes translatable key groups under:
+
+```yaml
+language:
+  translate:
+    key:
+```
+
+Source-backed examples include:
+
+- `[gui.title]`
+- `[gui.subtitle]`
+- `[menu_with_4_lang.profile_name]`
+- `[switch_language.title]`
+
+## Built-in language placeholders
+
+The translation system is designed to work with these runtime placeholders:
+
+| Placeholder | Meaning |
+| --- | --- |
+| `%fiomenu_lang_formatted%` | selected language alias |
+| `%fiomenu_lang_id%` | selected locale id |
+| `%fiomenu_lang_id_actuall%` | selected short language code |
+
+## Dynamic placeholders outside text
+
+`dynamic_menu.yml` and `profile.yml` show that placeholders are not limited to `name` and `lore`. They can also drive item rendering fields such as:
+
+- `material: "%placeholder%"`
+- `amount: "%placeholder%"`
+- `behavior.durability: "%placeholder%"`
+- `player_owner: "$player"`
+
+Example from the source style:
+
+```yaml
+'H':
+  material: "%player_item_in_hand%"
+  amount: "1"
+  behavior:
+    refresh: true
+    durability: "%player_item_in_hand_durability%"
+```
+
+## Fallback rendering for dynamic items
+
+When a dynamic material may resolve to nothing, the source examples use:
+
+```yaml
+behavior:
+  fallback:
+    enabled: true
+```
+
+That pattern is important for menus such as profile viewers or held-item previews, because it prevents blank or invalid item rendering when the player has no item in the checked slot.
+
+## Practical usage pattern
+
+Use translation keys for shared text, runtime placeholders for live values, `custom_papi` and `masking_papi` for repeated formatting logic, and animated placeholders only where refresh-driven movement is actually needed.

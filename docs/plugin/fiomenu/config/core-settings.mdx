@@ -1,0 +1,125 @@
+﻿---
+title: Core Settings
+sidebar_position: 2
+---
+
+# Core Settings
+
+## Storage
+
+The current `config.yml` exposes:
+
+- `yaml`
+- `sqlite`
+- `mysql`
+
+but the source comments clearly state that this build currently persists runtime and player state into `plugins/FioMenu/data.yml`, and `sqlite` or `mysql` fall back to YAML with a warning.
+
+That means the storage section is already forward-looking, but YAML is the real active storage path in this build.
+
+## Daily algorithm timezone
+
+`settings.algorithm.timezone` controls the timezone used for daily algorithm calculations such as `%perdayClick%`.
+
+Source example:
+
+```yaml
+settings:
+  algorithm:
+    timezone: "Asia/Bangkok"
+```
+
+## Banned chat fragments for Bedrock custom input
+
+`settings.bannedChars` is used by Bedrock custom label or input forms when the form respects banned characters.
+
+This is not a global chat moderation engine. It is a Bedrock form input guard for form flows that opt into that behavior.
+
+## GUI stack limit
+
+`settings.item_stack.limit` sets the global GUI container stack display limit.
+
+Source example:
+
+```yaml
+settings:
+  item_stack:
+    limit: 99
+```
+
+## Join and world-change events
+
+The source provides event hooks for automatic menu or dialogue opening:
+
+- `first-join`
+- `join`
+- `death`
+- `changeWorld`
+
+Each field expects an id or an empty string. That lets you trigger a menu or dialogue without writing command logic elsewhere.
+
+## Debug switches
+
+Current debug toggles:
+
+- `all`
+- `bundle`
+- `placeholder`
+- `interaction`
+
+Use them when you need to inspect placeholder parsing, bundle behavior, or interaction flow while testing a menu.
+
+## Integration toggles
+
+The current `config.yml` includes integration flags for:
+
+- PlaceholderAPI
+- ProtocolLib
+- EssentialsX
+- ShopGUIPlus
+- CMI
+- CMILib
+- EconomyShopGUI
+- LuckPerms
+- DynamicShop
+- VotingPlugin
+- NuVotifier
+- VotifierPlus
+- JobsReborn
+- PlayerPoints
+- ExcellentEconomy
+- PlayerShop
+- QuickShop
+- ChestShop
+- zessentials
+- Sunlight
+- PlayerMarket
+
+These are feature toggles, not proof that every menu requires those plugins. Enable the ones that match the placeholders, economy logic, or permission flows your menus actually depend on.
+
+## MiniMessage color aliases
+
+The plugin exposes a small color alias block:
+
+- `primary`
+- `secondary`
+- `amethyst`
+- `dc`
+- `pink`
+
+These are meant to be reused inside menu text so your YAML stays visually consistent without repeating raw hex codes everywhere.
+
+## Bedrock detection
+
+The Bedrock section controls how FioMenu decides whether a player should open a Java menu or a Bedrock form.
+
+Fields:
+
+- `settings.geyser.enabled`
+- `settings.geyser.prefix`
+
+If prefix mode is enabled and the prefix is `.`, then a player such as `.Steve` is treated as Bedrock by this logic.
+
+:::warning[Operational note]
+If your server already has a different Bedrock naming convention, make sure `settings.geyser.prefix` matches your actual environment before relying on Bedrock menu routing.
+:::

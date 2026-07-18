@@ -1,0 +1,131 @@
+---
+title: Configuration
+sidebar_position: 3
+---
+
+# Configuration
+
+FioVoucher splits its behavior between a main config, language files, voucher files, and menu files.
+
+## Main sections in `config.yml`
+
+The current file is organized around:
+
+- `settings.command-aliases`
+- `settings.prefix`
+- `settings.bedrock`
+- `settings.dupe-protection`
+- `settings.voucher-protection`
+- `settings.debug`
+- `settings.blacklist`
+- `settings.default-lang`
+- `storage`
+
+## Command aliases
+
+`settings.command-aliases` controls the root alias list.
+
+```yaml
+settings:
+  command-aliases:
+    - "fio"
+```
+
+## Bedrock support
+
+Bedrock support is configured from:
+
+```yaml
+settings:
+  bedrock:
+    alow-redeem: true
+    bypass-confirmation: false
+    prefix: "."
+```
+
+Important behavior:
+
+- `alow-redeem` controls whether Bedrock players may redeem vouchers
+- `bypass-confirmation` skips the confirmation menu for Bedrock users
+- `prefix` is used to detect Bedrock usernames
+
+## Runtime hibernation
+
+Hibernation exists in the current source and is managed by the plugin runtime. The shipped `config.yml` in this bundle does not expose a dedicated `hibernation` section, so this behavior is not tuned from the visible config file.
+
+## Duplicate protection
+
+The plugin can mark duplicate voucher items as invalid and execute reminder actions.
+
+```yaml
+settings:
+  dupe-protection:
+    enabled: true
+    actions:
+      - "[MESSAGE] <gray>This message is a reminder that if this voucher were a duplicated"
+```
+
+## Voucher protection
+
+The `voucher-protection` block blocks voucher items from being destroyed or inserted into certain blocks and inventories.
+
+This covers:
+
+- lava, cactus, TNT, creepers, and similar environment hazards
+- chests, hoppers, anvils, furnaces, grindstones, and more
+- custom head wearing
+
+## Blacklist rules
+
+The `blacklist` block controls where vouchers cannot be redeemed.
+
+Supported gates:
+
+- gamemode blacklist
+- world blacklist
+- region blacklist
+
+## Storage
+
+The plugin supports:
+
+- `YAML`
+- `MYSQL`
+
+MySQL settings include:
+
+- host
+- port
+- database
+- username
+- password
+- JDBC options
+- table names
+- schema engine and charset
+
+## Hibernation
+
+FioVoucher can go idle and wake back up on demand.
+
+```yaml
+hibernation:
+  enabled: true
+  idle-minutes: 15
+```
+
+## Language files
+
+Default locales in the bundle:
+
+- `lang/lang_id.yml`
+- `lang/lang_en.yml`
+- `lang/lang_jp.yml`
+- `lang/lang_ch.yml`
+
+## Practical files to edit
+
+- `config.yml`
+- `lang/lang_<key>.yml`
+- `menu/confirmation.yml`
+- `menu/playerhistory.yml`
+- `menu/voucherhistory.yml`

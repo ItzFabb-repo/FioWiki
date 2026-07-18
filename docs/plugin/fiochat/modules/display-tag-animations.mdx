@@ -1,0 +1,69 @@
+---
+title: Animations
+---
+
+# Animations
+
+Source file:
+
+```text
+modules/display/Server Display Tag/animations.yml
+```
+
+`animations.yml` is the shared animation registry for the Server Display Tag group. You use it to create animated text once, then reuse that animation in the scoreboard, bossbar, and TAB profiles.
+
+## How it works
+
+Each animation lives under `animations.texts.<id>`.
+
+Typical fields are:
+
+| Field | Purpose |
+| --- | --- |
+| `interval_ticks` | How often the frame changes in server ticks. |
+| `frames` | The list of text frames shown in order. |
+
+The source also supports millisecond-based intervals through `interval-ms`, `interval_millis`, or `interval-millis`.
+
+## Example
+
+The current source includes animations like `java_title` and `java_text`:
+
+```yaml
+animations:
+  texts:
+    java_title:
+      interval_ticks: 4
+      frames:
+        - "<gradient:#9966cc:#7289da><bold>FIOCHAT</bold></gradient>"
+        - "<gradient:#a67af0:#7f96e3><bold>FIOCHAT</bold></gradient>"
+        - "<gradient:#9966cc:#7289da><bold>FIOCHAT</bold></gradient>"
+```
+
+## How to use an animation
+
+Reference the animation id from another Server Display Tag section with `{anim:<id>}`.
+
+For example:
+
+```yaml
+title: "{anim:java_title}"
+```
+
+You can use the same animation id in:
+
+- scoreboard titles and lines
+- bossbar text
+- TAB header, footer, or list-name text
+
+## Practical tips
+
+- Keep animation ids short and descriptive.
+- Reuse one animation id in multiple displays if you want the same motion everywhere.
+- Use a higher `interval_ticks` value for slower motion.
+- Keep frame text short enough to fit the target display.
+- If a display already contains `<shadow:...>`, keep the shadow value in that display profile rather than inside every frame unless you want the animation itself to carry the effect.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

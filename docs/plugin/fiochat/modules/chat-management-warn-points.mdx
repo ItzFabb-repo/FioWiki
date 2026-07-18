@@ -1,0 +1,60 @@
+---
+title: Warn Points
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Warn Points Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+Warn points work with these detections:
+- spam
+- antiswear
+- antiadvertising
+- antiunicode
+- flood normalization
+- anti-caps rewrite
+
+Source comments also list these placeholders for commands:
+- `%player_name%`
+- `%player%`
+- `%name%`
+- `%reason%`
+- `%points%`
+- `%total_points%`
+- `%added_points%`
+- `%trigger_points%`
+- `%threshold%`
+- `%input%`
+- `%within_seconds%`
+
+## Main keys
+```yaml
+warn-points:
+  bypass-permission: "fiochat.warnpoints.bypass"
+  settings:
+    within-seconds: 300
+    reset-on-punish: false
+  points:
+    spam: 1
+    antiswear: 2
+    antiadvertising: 2
+    antiunicode: 1
+    flood: 0
+    anticaps: 0
+  commands:
+    '5':
+      - "tempmute %player_name% 10m Chat warning points reached (%points%)."
+    '10':
+      - "mute %player_name% Chat warning points reached (%points%)."
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

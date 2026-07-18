@@ -1,0 +1,532 @@
+---
+title: Config
+---
+
+# Day Counter Config
+
+`config.yml` controls the animated Minecraft day counter notification. The module watches a player's current world day and can show the day through action bar, title, subtitle, and sound feedback.
+
+Source file:
+
+```text
+modules/announce/Days Counter/config.yml
+```
+
+Player toggle overrides are stored separately:
+
+```text
+modules/announce/Days Counter/toggles.yml
+```
+
+If database storage is active, the same toggle data is stored in the `day-counter.toggles` database namespace instead.
+
+## Module toggle
+
+The Day Counter module is enabled or disabled from the global module settings file:
+
+```yaml
+modules:
+  day-counter: false
+```
+
+When `modules.day-counter` is `false`, the service shuts down its monitor task, clears runtime tracking data, cancels active animations, and the day counter feature is not delivered.
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.daycounter.use` | Base permission for Day Counter toggle controls. |
+| `fiochat.daycounter.toggle.title` | Allows toggling the title channel. |
+| `fiochat.daycounter.toggle.subtitle` | Allows toggling the subtitle channel. |
+| `fiochat.daycounter.toggle.sound` | Allows toggling the sound channel. |
+| `fiochat.daycounter.toggle.actionbar` | Allows toggling the actionbar channel. |
+
+Players need `fiochat.daycounter.use` before they can use Day Counter toggle controls.
+
+The command accepts:
+
+```text
+/fiochat toggle daycounter <title|subtitle|sound|actionbar>
+```
+
+The aliases `daycounter` and `day-counter` are both recognized by the command handler.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls debug output for this module. When enabled, the module can write extra diagnostic details about reload state, anti-bot suppression, toggle file loading, and toggle saving. Keep it disabled unless you are actively checking Day Counter behavior.
+
+## `settings.detect-current-day-on-join`
+
+```yaml
+settings:
+  detect-current-day-on-join: true
+```
+
+When `true`, the service schedules a day check after a player joins. If the player is allowed by the world and region filters, the module can show the current world day shortly after join.
+
+When `false`, joining does not trigger the initial day counter display. Online day watching can still announce later day changes if `watch-online-day-change` is enabled.
+
+## `settings.join-check-delay-ticks`
+
+```yaml
+settings:
+  join-check-delay-ticks: 20
+```
+
+`join-check-delay-ticks` is the delay before the join check runs. `20` ticks is about one second on a normal 20 TPS server.
+
+The service clamps this value to `0` or higher. `0` means the scheduled check runs as soon as the scheduler can process it.
+
+## `settings.detect-on-world-change`
+
+```yaml
+settings:
+  detect-on-world-change: true
+```
+
+When `true`, changing worlds schedules a current-day check for the destination world. This lets the module show a different day number when a player moves between worlds that have different time values.
+
+When `false`, changing worlds does not trigger a day counter display by itself.
+
+## `settings.skip-after-antibot-verification`
+
+```yaml
+settings:
+  skip-after-antibot-verification: false
+```
+
+When `true`, the module records the player's current day after anti-bot verification without announcing it. This prevents the first allowed movement or verification completion from immediately producing a Day Counter animation.
+
+When `false`, anti-bot verification does not suppress the day counter.
+
+This setting is only meaningful when the server is using the FioChat anti-bot flow that calls the Day Counter verification hook.
+
+## `settings.world-change-delay-ticks`
+
+```yaml
+settings:
+  world-change-delay-ticks: 1
+```
+
+`world-change-delay-ticks` is the delay before the world-change check runs.
+
+The service clamps this value to `0` or higher. A small delay gives the server time to finish moving the player into the destination world before the day snapshot is read.
+
+## `settings.world-whitelist`
+
+```yaml
+settings:
+  world-whitelist: []
+```
+
+`world-whitelist` limits Day Counter to specific world names.
+
+When this list is empty, the whitelist does not restrict worlds.
+
+When this list contains world names, Day Counter only works in those worlds.
+
+World names are normalized to lowercase internally. The service also supports the older underscored key `world_whitelist` for legacy configs.
+
+## `settings.world-blacklist`
+
+```yaml
+settings:
+  world-blacklist:
+    - "world_nether"
+    - "world_the_end"
+```
+
+`world-blacklist` blocks Day Counter in specific worlds.
+
+The current source blocks `world_nether` and `world_the_end` by default, so the animation is intended for the main overworld unless you change the list.
+
+World names are normalized to lowercase internally. The service also supports the older underscored key `world_blacklist` for legacy configs.
+
+## `settings.region-whitelist`
+
+```yaml
+settings:
+  region-whitelist: []
+```
+
+`region-whitelist` limits Day Counter to specific WorldGuard region ids.
+
+When this list is empty, the whitelist does not restrict regions.
+
+When this list contains region ids, the player must be inside one of those regions for Day Counter to run.
+
+Region ids are normalized to lowercase internally. The service also supports the older underscored key `region_whitelist` for legacy configs.
+
+## `settings.region-blacklist`
+
+```yaml
+settings:
+  region-blacklist: []
+```
+
+`region-blacklist` blocks Day Counter inside specific WorldGuard region ids.
+
+This is useful for spawn areas, hubs, minigame lobbies, or any region where action bar/title effects should stay quiet.
+
+Region ids are normalized to lowercase internally. The service also supports the older underscored key `region_blacklist` for legacy configs.
+
+## `settings.watch-online-day-change`
+
+```yaml
+settings:
+  watch-online-day-change: true
+```
+
+When `true`, the service starts a repeating monitor task for online players. This task compares each player's latest known world/day snapshot against the current snapshot.
+
+If the day number increases in the same world, Day Counter announces the new day.
+
+When `false`, the repeating monitor task is not started. Join checks and world-change checks can still run if their own settings are enabled.
+
+## `settings.poll-interval-ticks`
+
+```yaml
+settings:
+  poll-interval-ticks: 20
+```
+
+`poll-interval-ticks` controls how often the online monitor checks players for day changes.
+
+The service clamps this value to at least `1`. Lower values react faster but run checks more often. `20` ticks is about one second on a normal 20 TPS server.
+
+## `settings.clear-title-after-animation`
+
+```yaml
+settings:
+  clear-title-after-animation: true
+```
+
+When `true`, the service clears title and subtitle output after the animation finishes.
+
+When `false`, the service does not explicitly clear title/subtitle output after the animation.
+
+If `display.title.fade-out` is `0`, the service still uses a smooth internal fade-out fallback for title/subtitle animations instead of ending them abruptly.
+
+## `display.actionbar.enabled`
+
+```yaml
+display:
+  actionbar:
+    enabled: true
+```
+
+When `true`, the day animation can be sent through the action bar.
+
+A player's personal actionbar toggle can override this default. If the default is enabled, a player can disable it with the toggle command. If the default is disabled, a player can enable it only when they have the required toggle permission.
+
+## `display.actionbar.format`
+
+```yaml
+display:
+  actionbar:
+    format: "<white>%frame%</white>"
+```
+
+`format` wraps the current animation frame before it is sent to the action bar.
+
+`%frame%` is replaced by the current resolved animation frame.
+
+The field supports FioChat text formatting, including the Text Shadow format documented in the source header:
+
+```text
+<shadow:#RRGGBB:opacity>text</shadow>
+```
+
+The opacity range is `0.0` to `1.0`.
+
+## `display.actionbar.hold-refresh-ticks`
+
+```yaml
+display:
+  actionbar:
+    hold-refresh-ticks: 10
+```
+
+`hold-refresh-ticks` controls how often the final action bar frame is re-sent during the hold period.
+
+Action bars naturally fade quickly on the client, so the service refreshes the final frame while waiting for `animation.fade-away-ticks` to finish. The value is clamped to at least `1`.
+
+## `display.title.enabled`
+
+```yaml
+display:
+  title:
+    enabled: false
+```
+
+When `true`, the day animation can be sent through the title channel.
+
+The title channel has its own player toggle state. This means a player can disable titles without disabling actionbar, subtitle, or sound delivery.
+
+## `display.title.format`
+
+```yaml
+display:
+  title:
+    format: "<white>%frame%</white>"
+```
+
+`format` wraps the current frame before it is sent as the title text.
+
+If title is disabled but subtitle is enabled, the service sends a blank title placeholder so the subtitle can still display properly.
+
+## `display.title.fade-in`
+
+```yaml
+display:
+  title:
+    fade-in: 0
+```
+
+`fade-in` is the title fade-in duration in ticks. The value is clamped to `0` or higher.
+
+## `display.title.fade-out`
+
+```yaml
+display:
+  title:
+    fade-out: 0
+```
+
+`fade-out` is the configured title fade-out duration in ticks. The value is clamped to `0` or higher.
+
+When this is greater than `0`, that value is used for the final frame fade-out.
+
+When this is `0`, the service uses an internal smooth fallback of `6` ticks for the effective fade-out.
+
+## `display.subtitle.enabled`
+
+```yaml
+display:
+  subtitle:
+    enabled: false
+```
+
+When `true`, the day animation can be sent through the subtitle channel.
+
+Subtitle delivery is controlled independently from title delivery. A player may have title disabled and subtitle enabled.
+
+## `display.subtitle.format`
+
+```yaml
+display:
+  subtitle:
+    format: "<gray>%frame%</gray>"
+```
+
+`format` wraps the current frame before it is sent as subtitle text.
+
+It supports `%frame%`, `%day%`, `%world%`, and the same text formatting style used by the rest of the module.
+
+## `animation.step-delay-ticks`
+
+```yaml
+animation:
+  step-delay-ticks: 4
+```
+
+`step-delay-ticks` controls the delay between animation frames.
+
+The source comment describes `4` ticks as about `0.2` seconds on a normal 20 TPS server. The service clamps this value to at least `1`.
+
+## `animation.fade-away-ticks`
+
+```yaml
+animation:
+  fade-away-ticks: 40
+```
+
+`fade-away-ticks` controls how long the final frame stays active before the module clears visuals and finishes the animation task.
+
+The value is clamped to at least `1`.
+
+For title/subtitle output, the final clear delay also includes the effective title fade-out time and a small internal buffer.
+
+For actionbar output, this value works together with `display.actionbar.hold-refresh-ticks` because the final frame is refreshed during the hold period.
+
+## `animation.frames`
+
+```yaml
+animation:
+  frames:
+    - "--"
+    - "--"
+    - "- D -"
+    - "- Da -"
+    - "- Day -"
+    - "- Day -"
+    - "- Day %day% -"
+    - "-- Day %day% --"
+```
+
+`frames` is the exact animation sequence. The service sends each frame in order using `animation.step-delay-ticks`.
+
+Supported placeholders:
+
+```text
+%day%
+%world%
+```
+
+`%day%` is replaced with the current Minecraft day number from the player's world.
+
+`%world%` is replaced with the current world name.
+
+If the configured frame list is empty, the service restores its built-in default frame sequence.
+
+## `sounds.typing.enabled`
+
+```yaml
+sounds:
+  typing:
+    enabled: true
+```
+
+When `true`, the typing sound can play on every non-final animation frame.
+
+The player's personal sound toggle can disable this for that player.
+
+## `sounds.typing.name`
+
+```yaml
+sounds:
+  typing:
+    name: "UI_BUTTON_CLICK"
+```
+
+`name` is the Bukkit sound id used for non-final animation frames. The service resolves this through FioChat's sound compatibility resolver.
+
+If the sound cannot be resolved on the running server version, it is skipped.
+
+## `sounds.typing.volume`
+
+```yaml
+sounds:
+  typing:
+    volume: 100.0
+```
+
+`volume` is passed to Bukkit when the typing sound is played at the player's location.
+
+## `sounds.typing.pitch`
+
+```yaml
+sounds:
+  typing:
+    pitch: 2.0
+```
+
+`pitch` is passed to Bukkit when the typing sound is played.
+
+## `sounds.completed.enabled`
+
+```yaml
+sounds:
+  completed:
+    enabled: true
+```
+
+When `true`, the completed sound can play on the final animation frame.
+
+The player's personal sound toggle can disable this for that player.
+
+## `sounds.completed.name`
+
+```yaml
+sounds:
+  completed:
+    name: "BLOCK_STONE_BUTTON_CLICK_OFF"
+```
+
+`name` is the Bukkit sound id used on the final frame.
+
+If the sound cannot be resolved on the running server version, it is skipped.
+
+## `sounds.completed.volume`
+
+```yaml
+sounds:
+  completed:
+    volume: 100.0
+```
+
+`volume` is passed to Bukkit when the completed sound is played at the player's location.
+
+## `sounds.completed.pitch`
+
+```yaml
+sounds:
+  completed:
+    pitch: 2.0
+```
+
+`pitch` is passed to Bukkit when the completed sound is played.
+
+## Message overrides
+
+The current source config notes that messages are provided from language files:
+
+```text
+lang/lang_en.yml -> overrides.modules.day-counter.messages
+lang/lang_id.yml -> overrides.modules.day-counter.messages
+lang/lang_ch.yml -> overrides.modules.day-counter.messages
+lang/lang_jp.yml -> overrides.modules.day-counter.messages
+```
+
+The service reads the message keys from the loaded Day Counter config after language overrides are applied:
+
+```text
+messages.feature-disabled
+messages.players-only
+messages.no-permission
+messages.toggle-usage
+messages.toggle-title-enabled
+messages.toggle-title-disabled
+messages.toggle-subtitle-enabled
+messages.toggle-subtitle-disabled
+messages.toggle-sound-enabled
+messages.toggle-sound-disabled
+messages.toggle-actionbar-enabled
+messages.toggle-actionbar-disabled
+```
+
+These messages are command feedback. They do not change the animation frames, display channels, or sound profiles.
+
+## Toggle storage details
+
+The module stores only player overrides from the default channel state.
+
+If actionbar is enabled by default, players who keep actionbar enabled do not need to be written to `actionbar.enabled`. Only players who changed away from the default are stored.
+
+The same storage pattern is used for:
+
+```text
+title.enabled
+title.disabled
+subtitle.enabled
+subtitle.disabled
+sound.enabled
+sound.disabled
+actionbar.enabled
+actionbar.disabled
+```
+
+The service also attempts a best-effort migration from the old toggle path:
+
+```text
+modules/day-counter/toggles.yml
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,47 @@
+---
+title: How to Create
+---
+
+# How to Create
+
+Create one file per voucher inside `plugins/FioVoucher/vouchers/`.
+
+Basic flow:
+
+1. copy one of the sample files
+2. rename it to your voucher id
+3. set `voucher.id`
+4. set the item
+5. define the reward commands
+6. set redeem rules
+7. reload the plugin
+
+Minimal shape:
+
+```yaml
+voucher:
+  id: example
+  display-name: "Example Voucher"
+  enabled: true
+  item:
+    material: PAPER
+    amount: 1
+    name: "Example Voucher"
+    lore:
+      - "Voucher"
+  commands:
+    claimed:
+      enabled: true
+      actions:
+        - "[MESSAGE] Reward claimed"
+  settings:
+    trial:
+      enabled: false
+      duration: "0s"
+      allow-pause: false
+      allow-stack: false
+    redeem:
+      max-claim: 1
+```
+
+For source-backed examples, see [Example](/plugin/fiovoucher/vouchers/example).

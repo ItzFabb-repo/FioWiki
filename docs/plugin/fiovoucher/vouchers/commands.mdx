@@ -1,0 +1,55 @@
+---
+title: Commands
+---
+
+# Commands
+
+Voucher commands are grouped by claim result.
+
+## Claimed
+
+Runs when the voucher is redeemed successfully.
+
+```yaml
+claimed:
+  enabled: true
+  actions:
+    - "[MESSAGE] Reward claimed"
+```
+
+## Failed
+
+Runs when the voucher is invalid, duplicated, or blocked by source rules.
+
+```yaml
+failed:
+  enabled: true
+  actions:
+    - "[MESSAGE] Voucher failed"
+```
+
+## Max
+
+Runs when the player already hit the claim limit.
+
+```yaml
+max:
+  enabled: true
+  actions:
+    - "[MESSAGE] Already claimed"
+```
+
+## Random-Claimed
+
+Runs a random reward branch after a successful claim.
+
+```yaml
+random-claimed:
+  enabled: true
+  random:
+    "1":
+      chance: "30%"
+      actions:
+        - "[ITEM] COOKED_BEEF 16"
+```
+

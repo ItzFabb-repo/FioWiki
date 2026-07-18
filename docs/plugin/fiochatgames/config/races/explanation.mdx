@@ -1,0 +1,86 @@
+---
+title: Explanation
+sidebar_position: 1
+---
+
+# Race Explanation
+
+Race rounds are exposed through `GameType.ACTIVITY`, while each actual objective is stored as a race type such as `BREAK` or `TRADING`.
+
+## Supported race objectives in source
+
+- `BARTERING`
+- `BREAK`
+- `BRUSH`
+- `BREEDING`
+- `BREWING`
+- `CARVE_PUMPKIN`
+- `COMPOSTING`
+- `CONSUME`
+- `CRAFT`
+- `CURING`
+- `DEAL_DAMAGE`
+- `ENCHANT`
+- `EXP_LEVELS`
+- `EXP_POINTS`
+- `FISHING`
+- `HARVEST`
+- `HATCHING`
+- `HUNT`
+- `ITEM_BREAKING`
+- `ITEM_DAMAGE`
+- `ITEM_MENDING`
+- `MILKING`
+- `OBTAIN_ITEMS`
+- `PLACE`
+- `PLACEHOLDERAPI`
+- `PLAYER_DEATH`
+- `PLAYER_KILLS`
+- `PROJECTILE_LAUNCHING`
+- `RESURRECTING`
+- `SHEAR`
+- `SHOOT_AT_ENTITY`
+- `SMELT`
+- `SMITHING`
+- `SPY_ENTITY`
+- `STAND_ON`
+- `STRIPPING`
+- `TAMING`
+- `TRADING`
+- `WALKING`
+
+## Shared race structure
+
+Most race files follow this shape:
+
+```yaml
+game: RACE
+enable: true
+points: 1
+time_seconds: 300
+race:
+  type: BREAK
+  material: STONE
+  amount: 10
+  top-reward-count: 3
+  top-announce-count: 3
+  bossbar:
+    enabled: true
+```
+
+Many race files then add objective-specific sections such as:
+
+- `entity`
+- `enchant`
+- `placeholder`
+- `shoot-at-entity`
+- `smelt`
+- `trading`
+- `obtain-items`
+
+
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

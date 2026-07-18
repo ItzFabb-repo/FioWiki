@@ -1,0 +1,127 @@
+---
+title: shoot_at_entity.yml
+sidebar_position: 1
+---
+
+# shoot_at_entity.yml
+
+---
+
+# Game Preview (SHOOT_AT_ENTITY)
+
+![FioChatGames SHOOT_AT_ENTITY](../../../../img/fiochatgames/FioChatGames%20SHOOT_AT_ENTITY_RACE.png)
+
+---
+
+File Location: `plugin\\fiochatgames\\config\\races\shoot_at_entity.yml`
+
+```yaml
+game: RACE
+folder: games/races/shoot_at_entity_race.yml
+
+enable: true
+points: 1
+time_seconds: 180
+race:
+  type: SHOOT_AT_ENTITY
+  shoot-at-entity:
+    material: BOW
+    to_entity: PIG
+    amount: 4
+    ammo: TIPPED_ARROW
+    effect: POISON
+  top-reward-count: 3
+  top-announce-count: 3
+  bossbar:
+    enabled: true
+    color: RED
+    style: SOLID
+    text: '<yellow>Race</yellow> <dark_gray>|</dark_gray> <gold>%objective%</gold> <gray>(%material%)</gray> <dark_gray>|</dark_gray> <green>%progress%</green><gray>/</gray><white>%target%</white>'
+
+messages:
+  started: '%prefix%<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '%prefix%<green><bold>%player%</bold> solved the <gold>%type%</gold> game and earned <gold>%points%</gold> points!</green>'
+  streak: '%prefix%<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ef476f><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:shoot at entity race></center>'
+    - ''
+    - '<center><gray><smallfont:be the first to win the race!></gray></center>'
+    - '<center><gray>Complete this objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ef476f><shadow:#000000:1.0>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ef476f><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:shoot at entity race></center>'
+    - ''
+    - '<center><gray><smallfont:%player% completed the %objective_display% race!></gray></center>'
+    - '<center><gray>Target objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ef476f><shadow:#00FF00:0.3>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#ef476f><bold>Race Event</bold></center>'
+    - '<center><#808080><smallfont:shoot at entity race></center>'
+    - ''
+    - '<center><gray><smallfont:The race event has ended without a winner></gray></center>'
+    - '<center><gray>Target objective:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#ef476f><shadow:#FF0000:0.3>%amount%x %material%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+title:
+  text: '<#ef476f>Shoot At Entity Race'
+  enabled: true
+subtitle:
+  text: '<gray>%amount%x %material%</gray>'
+  enabled: true
+
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  3:
+    commands:
+      - 'MESSAGE:<green>3 streak in %game%!'
+
+rewards:
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+  4th_reward:
+    enabled: false
+    commands: []
+  5th_reward:
+    enabled: false
+    commands: []
+  6th_reward:
+    enabled: false
+    commands: []
+  participated:
+    enabled: false
+    commands: []
+```
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

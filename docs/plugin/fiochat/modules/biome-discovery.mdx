@@ -1,0 +1,92 @@
+﻿---
+title: Biome Discovery
+sidebar_position: 5
+---
+
+# Biome Discovery
+Configuration guide for `modules/announce/Biome Discovery/config.yml`.
+
+## Module Preview
+
+![Plains Biome Discovery](../../../img/fiochat/Plains%20Biome%20Discovery.png)
+![Birch Biome Discovery](../../../img/fiochat/Birch%20Biome%20Discovery.png)
+
+## Configuration Files
+- `modules/announce/Biome Discovery/config.yml`
+- `modules/announce/Biome Discovery/biome.json`
+
+## Notes from source comments
+- Storage in YAML mode: `modules/announce/biome-discovery/player-state.yml`
+- Toggle storage in YAML mode: `modules/announce/biome-discovery/toggles.yml`
+- DB namespaces documented by source:
+  - `biome-discovery`
+  - `biome-discovery.toggles`
+- Text shadow format is supported in discovered text, title, subtitle, and actionbar.
+
+## `settings`
+```yaml
+settings:
+  debug-log: false
+  detect-current-biome-on-join: true
+  join-check-delay-ticks: 20
+  detect-on-world-change: true
+  skip-after-antibot-verification: false
+  ignore-unmapped-biomes: true
+  world-whitelist: []
+  world-blacklist:
+    - "world_nether"
+    - "world_the_end"
+  region-whitelist: []
+  region-blacklist: []
+  reveal-delay-ticks: 8
+  completed-stay-ticks: 80
+  clear-title-after-animation: true
+```
+
+## `display`
+```yaml
+display:
+  title:
+    enabled: true
+    initial-format: "<bold>%biome%</bold>"
+    fade-in: 20
+    fade-out: 20
+  subtitle:
+    enabled: true
+    format: "<gray>%biome_plain% has been discovered.</gray>"
+  actionbar:
+    enabled: false
+    text: "<gray>%biome_plain% has been discovered.</gray>"
+```
+
+## `sounds`
+```yaml
+sounds:
+  enabled: true
+  reveal:
+    enabled: true
+    name: "UI_TOAST_IN"
+  fade-out:
+    enabled: true
+    name: "UI_TOAST_OUT"
+```
+
+## `display-names`
+The config file supports custom biome display names such as:
+
+```yaml
+display-names:
+  "terralith:moonlight_grove": "<#8aa7ff>Moonlight Grove"
+```
+
+Source comments state:
+- use quotes when biome ids contain `:` or `/`
+- if `ignore-unmapped-biomes` is `true`, unmapped biome ids are ignored silently
+- shipped biome names and colors live in `modules/announce/biome-discovery/biome.json`
+
+## `biome.json`
+This file contains bundled biome display names and colors under `display-names`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

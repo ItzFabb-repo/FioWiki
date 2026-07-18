@@ -1,0 +1,104 @@
+---
+title: Plugins
+sidebar_position: 2
+---
+
+# Sawit Plugins
+
+![FioMenu Plugin](/img/setup/sawit/fiomenu-plugin.png)
+
+This page lists the plugins that are currently loaded in the Sawit server stack.
+
+:::note[Method]
+Plugin names and versions are taken from the latest startup log and the plugin directory. Only plugins that actually load at startup are counted here. Support folders and helper components such as `AxAPI`, `bStats`, `faststats`, and `Updater` are not counted as standalone plugins.
+:::
+
+## Totals
+
+| Type | Count |
+|---|---|
+| All loaded plugins | `48` |
+| Paper plugins | `5` |
+| Bukkit plugins | `43` |
+
+## Paper Plugins
+
+| Plugin | Version | Category | Notes |
+|---|---|---|---|
+| CommandPanels | `4.1.7` | GUI / command UI | Menu and button-based command panels. |
+| ExcellentEconomy | `2.8.0` | Economy | Main economy provider used by other plugins. |
+| FancyNpcs | `2.11.0` | NPC / interaction | NPC-based interaction system. |
+| NOrder | `1.4.0` | Custom / utility | Custom plugin, worth reviewing directly if you need exact behavior. |
+| nightcore | `2.16.4` | Dependency / framework | Shared framework used by several plugins. |
+
+## Bukkit Plugins
+
+| Plugin | Version | Category | Notes |
+|---|---|---|---|
+| AdvancedRegionMarket | `3.5.5` | Region market | Region renting and selling. |
+| ajLeaderboards | `2.11.0` | Leaderboards | Ranking displays and stat boards. |
+| ajParkour | `2.12.11` | Parkour | Parkour tracks and records. |
+| AuraSkills | `2.3.12` | Skills / RPG | Skills and stat progression. |
+| AxAFKZone | `1.12.0` | AFK / utility | AFK zone or AFK reward support. |
+| AxPlayerWarps | `1.15.1` | Warps | Player-owned warp system. |
+| AxTrade | `1.25.4` | Trading | Player trade system. |
+| BetterRTP | `3.6.15` | Teleport | Random teleport system. |
+| CommunityQuests | `2.11.5` | Quests | Community progression quests. |
+| DecentHolograms | `2.10.1` | Display / holograms | Hologram text displays. |
+| Essentials | `2.22.1-dev+12-776f709` | Core utility | Core commands and player utilities. |
+| EssentialsSpawn | `2.22.1-dev+12-776f709` | Spawn | Spawn management for Essentials. |
+| EvenMoreFish | `2.4.2` | Fishing | Fishing event and custom fish system. |
+| ExcellentCrates | `6.6.1` | Crates | Crate and key rewards. |
+| FioBlackMarket | `2.6` | Economy / shop | Black market style trading and sales. |
+| FioChat | `4.2` | Chat system | Custom chat features. |
+| FioChatGames | `1.23` | Chat games | Chat-based mini games. |
+| FioSawit | `2.0` | Custom / progression | Server-specific custom systems. |
+| FioSpawner | `2.1` | Spawner / utility | Spawner-related server features. |
+| FioTags | `1.53.10` | Tags / cosmetics | Tag and display tag system. |
+| FioVoucher | `1.7` | Vouchers / rewards | Voucher and reward tooling. |
+| HeadBlocks | `3.1.0` | Decorative blocks | Player heads and custom head content. |
+| InventoryRollbackPlus | `1.8.4` | Rollback / recovery | Inventory restore and rollback support. |
+| LagFixer | `1.6.6 [build 149]` | Performance | Performance helper plugin. |
+| LibertyBans | `1.1.4` | Moderation | Ban, mute, and moderation tools. |
+| LuckPerms | `5.5.0` | Permissions | Main permissions system. |
+| Multiverse-Core | `5.7.1` | Multiworld | Additional world management. |
+| MyCommand | `5.7.5` | Commands | Custom command creation. |
+| NotBounties | `1.22.37` | Economy / PvP | Bounty system. |
+| ODailyQuests | `3.0.2` | Quests | Daily quest system. |
+| OpenInv | `5.3.3` | Admin utility | Open offline or remote inventories. |
+| packetevents | `2.13.0` | Dependency / packets | Packet library used by other plugins. |
+| PlaceholderAPI | `2.12.3` | Dependency | Placeholder expansion system. |
+| PlayerAuctions | `1.33.0` | Economy / auction | Player auction house. |
+| qscompat-advancedregionmarket | `6.2.0.11` | Compatibility | QuickShop compatibility hook for AdvancedRegionMarket. |
+| qscompat-worldguard | `6.2.0.11` | Compatibility | QuickShop compatibility hook for WorldGuard. |
+| QuickShop-Hikari | `6.3.0.0-SNAPSHOT-10` | Shops | Chest shop system. |
+| UltraCosmetics | `3.15.0.1-RELEASE` | Cosmetics | Cosmetic effects and gadgets. |
+| VanguardRanks | `1.9.7` | Ranks / progression | Rankup or rank system. |
+| Vault | `1.7.3-b131` | Dependency | Economy and permissions bridge. |
+| VotingPlugin | `7.1` | Voting | Vote rewards and vote tracking. |
+| WorldEdit | `7.4.4+7546-f9e033f` | Building tool | World editing toolset. |
+| WorldGuard | `7.0.17+2370-e42d8bc` | Protection | Region protection rules. |
+
+## Quick Assessment
+
+This plugin stack is broad and feature-rich. It is built more like a content-heavy survival network than a minimal SMP.
+
+:::info[Layout]
+The server also bundles `spark` for profiling, but it is treated as a helper component rather than a separate plugin entry.
+:::
+
+## Watch List
+
+These are the plugins I would keep under closer observation:
+
+- `Essentials`
+  Running a dev build instead of a stable release tag.
+
+- `QuickShop-Hikari`
+  Snapshot build, so compatibility should be checked after updates.
+
+- `LagFixer`
+  Performance helper plugins should be tested carefully because aggressive cleanup behavior can affect stability or gameplay.
+
+- `packetevents`
+  Shared packet library used by multiple plugins, so it is worth watching after version bumps.

@@ -1,0 +1,274 @@
+---
+title: Holograms
+sidebar_position: 6
+---
+
+# Holograms
+
+FioBlackMarket uses a dedicated hologram manager for market displays built on `TEXT_DISPLAY`.
+
+## Server support
+
+The source comments and messages clearly expect:
+
+- Minecraft `1.19.4+` for `TEXT_DISPLAY`
+
+The manager also warns that older servers cannot spawn these displays.
+
+## What holograms are for
+
+The hologram system is built to render:
+
+- market header text
+- next refresh information
+- next day information
+- current day information
+- a table of active market items
+- item-specific stock and buy or sell price values
+- optional native material sprite rendering
+
+## Main config file
+
+File:
+
+```text
+hologram.yml
+```
+
+Important sections:
+
+- `hologram.create-y-offset`
+- `hologram.number-format`
+- `hologram.table`
+- `hologram.display`
+- `hologram.native-sprites`
+- `hologram.text`
+- `hologram.item-format`
+
+## How to make a hologram
+
+Use these commands in order.
+
+### 1. Create the hologram
+
+```text
+/blackmarket hologram create <name>
+```
+
+This creates a new hologram at your current location.
+
+Rules from source:
+
+- sender must be a player
+- server must support `TEXT_DISPLAY`
+- the name must not already exist
+
+Example:
+
+```text
+/blackmarket hologram create market
+```
+
+### 2. Check what you made
+
+```text
+/blackmarket hologram info <name>
+```
+
+This shows:
+
+- world
+- coordinates
+- spawned state
+- centered state
+- billboard type
+- scale
+
+Example:
+
+```text
+/blackmarket hologram info market
+```
+
+### 3. Move it to your current position
+
+```text
+/blackmarket hologram move_here <name>
+```
+
+This teleports the hologram to where you are standing.
+
+Example:
+
+```text
+/blackmarket hologram move_here market
+```
+
+### 4. Center it
+
+```text
+/blackmarket hologram center <name>
+```
+
+This snaps the hologram to the center of the block grid and also marks it as centered.
+
+Example:
+
+```text
+/blackmarket hologram center market
+```
+
+### 5. Set the display style
+
+```text
+/blackmarket hologram setType <name> <FIXED|VERTICAL|HORIZONTAL|CENTER>
+```
+
+This changes the billboard mode.
+
+The source accepts:
+
+- `FIXED`
+- `VERTICAL`
+- `HORIZONTAL`
+- `CENTER`
+
+Example:
+
+```text
+/blackmarket hologram setType market VERTICAL
+```
+
+### 6. Freeze or unfreeze it
+
+```text
+/blackmarket hologram freeze <name> <true|false>
+```
+
+This toggles whether the hologram is fixed in place visually.
+
+Example:
+
+```text
+/blackmarket hologram freeze market true
+```
+
+Use `false` to return it to the default billboard behavior.
+
+### 7. Rotate it manually
+
+```text
+/blackmarket hologram rotate <name> <yaw>
+```
+
+This sets the yaw rotation in degrees.
+
+Example:
+
+```text
+/blackmarket hologram rotate market 90
+```
+
+### 8. Face a direction
+
+```text
+/blackmarket hologram face <name> <NORTH|SOUTH|WEST|EAST>
+```
+
+This is the simpler direction-based version of `rotate`.
+
+Example:
+
+```text
+/blackmarket hologram face market NORTH
+```
+
+### 9. Change the scale
+
+```text
+/blackmarket hologram scale <name> <size>
+```
+
+This adjusts the hologram size.
+
+Example:
+
+```text
+/blackmarket hologram scale market 1.25
+```
+
+Rules from source:
+
+- value must be greater than `0`
+- invalid numbers are rejected
+
+### 10. List all holograms
+
+```text
+/blackmarket hologram list
+```
+
+This prints every saved hologram name.
+
+Example:
+
+```text
+/blackmarket hologram list
+```
+
+### 11. Remove one
+
+```text
+/blackmarket hologram remove <name>
+```
+
+This deletes the hologram record and removes the display.
+
+Example:
+
+```text
+/blackmarket hologram remove market
+```
+
+## Table layout system
+
+The current hologram config is built around a table-style output with columns for:
+
+- material
+- stock
+- buy price
+- sell price
+
+Column widths are configurable in Minecraft font pixels, and the manager calculates padding so the vertical separators line up.
+
+## Native sprites
+
+The source supports sprite tokens such as:
+
+```text
+[s:MATERIAL]
+```
+
+and the comments explain that these can render from a native Minecraft atlas on supported Paper builds, while older environments fall back to plain configured text.
+
+The config includes:
+
+- atlas selection
+- path prefix
+- per-material allocation overrides
+- fallback text
+- debug settings
+
+## What the manager stores
+
+The manager persists hologram records with data such as:
+
+- name
+- world
+- x, y, z
+- yaw and pitch
+- centered state
+- billboard type
+- scale
+
+The manager also refreshes hologram output after market state changes and transactions, so the display stays synced with real stock and schedule data.

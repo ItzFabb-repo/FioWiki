@@ -1,0 +1,65 @@
+---
+title: Anti-Advertising
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Anti-Advertising Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- Blocks server advertising in chat, commands, and signs.
+- Matching uses rules from `words`.
+- Source comments say plain words should be used first, with explicit regex only for advanced cases.
+
+## Main keys
+```yaml
+anti-adv:
+  words: []
+  spy:
+    chat: "..."
+    command: "..."
+    sign: "..."
+```
+
+## Detection notes from source comments
+The source file includes default regex examples for:
+- IPv4 with optional port
+- URLs with protocol
+- common domains with optional port and path
+- Discord invite links
+- Telegram links
+
+## Target sections
+The source file contains three targets:
+- `chat`
+- `commands`
+- `signs`
+
+Each target includes:
+- `enabled`
+- `message`
+- `title`
+- `actionbar`
+- `sound`
+- `whitelist`
+
+The `signs` target also includes:
+- `break-sign`
+- `drop-item-on-break`
+
+## Permissions documented by source comments in target blocks
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.chat.antiadvertising.bypass` | Bypasses anti-advertising checks in chat. |
+| `fiochat.command.antiadvertising.bypass` | Bypasses anti-advertising checks in commands. |
+| `fiochat.sign.antiadvertising.bypass` | Bypasses anti-advertising checks on signs. |
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

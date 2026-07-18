@@ -1,0 +1,144 @@
+﻿---
+title: JoinQuit
+sidebar_position: 21
+---
+
+# JoinQuit (Module)
+Configuration guide for `modules/announce/Custom Join Quit Msg/config.yml`.
+
+:::warning[Important]
+Set message ownership first (override vanilla or not), then tune first-join effects and style presets.
+:::
+
+## Module Preview
+
+![JoinQuit 1](../../../img/fiochat/JoinQuit%201.png)
+![JoinQuit 2](../../../img/fiochat/JoinQuit%202.png)
+![JoinQuit 3](../../../img/fiochat/JoinQuit%203.png)
+![JoinQuit 4](../../../img/fiochat/JoinQuit%204.png)
+
+## Configuration Files
+- `modules/announce/Custom Join Quit Msg/config.yml`
+
+## Core Behavior
+
+### Vanilla Override Toggles
+```yaml
+settings:
+  override-vanilla-join-message: true
+  override-vanilla-quit-message: true
+```
+- Purpose: Decides whether FioChat replaces vanilla join/quit broadcasts.
+- Options:
+  - `true`: full custom message pipeline.
+  - `false`: keep vanilla behavior.
+
+## First Join Experience
+
+### First Join Chat Message
+```yaml
+first-join:
+  message:
+    enabled: true
+    lines:
+      - "<gold>*</gold> <white>%player_name%</white> <gray>joined for the first time</gray>"
+```
+- Purpose: Broadcasts special first-time join announcement.
+- Options:
+  - Use `%server_unique_joins%` for milestone context.
+
+### First Join Actionbar / Title
+```yaml
+first-join:
+  actionbar:
+    enabled: false
+    text: "<gold><smallfont:first join></gold> <white>%player_name%</white>"
+  title:
+    enabled: false
+    title: "<gradient:#9D0092:#F36BC3><bold>WELCOME</bold></gradient>"
+    subtitle: "<gray><smallfont:Enjoy your stay!></gray>"
+    fade-in: 5
+    stay: 60
+    fade-out: 10
+```
+- Purpose: Adds cinematic first-join presentation.
+- Options:
+  - Keep disabled on minimal UI servers.
+
+### First Join Bossbar / Sound / Particle
+```yaml
+first-join:
+  bossbar:
+    enabled: false
+    title: "<gold>First join: <white>%player_name%</white>"
+    color: "YELLOW"
+    style: "SOLID"
+    progress: 1.0
+    seconds: 5
+  sound:
+    enabled: true
+    name: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0
+  particle:
+    enabled: true
+    type: "TOTEM"
+    count: 50
+```
+- Purpose: Emphasizes first-join event with audiovisual signals.
+- Options:
+  - Reduce particle count on performance-sensitive servers.
+
+## Preset System
+
+### Join Presets
+```yaml
+presets:
+  join:
+    classic:
+      display: "<white>Classic Join</white>"
+      material: "PAPER"
+      message: "<green>+</green> <white>%player_name%</white> <gray>joined the server.</gray>"
+    cyber:
+      display: "<aqua>Cyber Join</aqua>"
+      material: "REDSTONE"
+      message: "<aqua>[LOGIN]</aqua> <white>%player_name%</white> <gray>connected.</gray>"
+```
+- Purpose: Provides selectable join-message style packs.
+- Options:
+  - Use one active style policy for consistent branding.
+
+### Quit Presets
+```yaml
+presets:
+  quit:
+    classic:
+      display: "<white>Classic Quit</white>"
+      material: "PAPER"
+      message: "<red>-</red> <white>%player_name%</white> <gray>left the server.</gray>"
+    ocean:
+      display: "<blue>Ocean Quit</blue>"
+      material: "HEART_OF_THE_SEA"
+      message: "<blue>~</blue> <white>%player_name%</white> <gray>drifted away.</gray>"
+```
+- Purpose: Provides selectable quit-message style packs.
+- Options:
+  - Keep join/quit themes matched for consistent formatting.
+
+## Deployment Recommendations
+
+:::info[Style Strategy]
+1. Pick one join preset family and one quit preset family.
+2. Keep icon density moderate for readability.
+3. Test with chat channels and formats module combined.
+:::
+
+:::note[Owner Validation]
+- Verify join and quit messages do not duplicate with vanilla output.
+- Verify first-join triggers only once per new player.
+- Verify title/actionbar/bossbar do not overlap critical alerts.
+- Verify preset text remains readable in dark/light/sunset themes.
+:::
+
+
+

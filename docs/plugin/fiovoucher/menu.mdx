@@ -1,0 +1,80 @@
+---
+title: Menus
+sidebar_position: 5
+---
+
+# Menus
+
+FioVoucher keeps menu behavior split across confirmation and history views rather than one giant inventory file.
+
+## Confirmation menu
+
+File:
+
+```text
+menu/confirmation.yml
+```
+
+This is opened when a player redeems a voucher normally and Bedrock bypass is disabled.
+
+The menu shows:
+
+- voucher info
+- trial state
+- valid state
+- confirm button
+- cancel button
+- close button
+
+Supported action tokens:
+
+- `[NONE]`
+- `[CLOSE]`
+- `[FIOVOUCHER] CONFIRM`
+- `[FIOVOUCHER] ABORT`
+- `[MESSAGE]`
+- `[SOUND]`
+- `[STOP_SOUND]`
+
+### Open and close actions
+
+The menu can play sound on open and stop sound on close.
+
+### Confirm flow
+
+The confirm button consumes the pending redeem session and executes the voucher.
+
+### Cancel flow
+
+The cancel button aborts the redeem flow and returns the item.
+
+## Player history menu
+
+File:
+
+```text
+menu/playerhistory.yml
+```
+
+This menu is used for active trial views and player voucher history views.
+
+It shows:
+
+- current trial voucher entries
+- history entries
+- countdown and end time
+- paused state
+
+## Voucher history menu
+
+File:
+
+```text
+menu/voucherhistory.yml
+```
+
+This menu shows voucher redemption history for a selected player.
+
+## Practical interpretation
+
+The menu system exists so redemption is not just a command prompt. Players can confirm, review trials, and inspect history with a consistent inventory UI.

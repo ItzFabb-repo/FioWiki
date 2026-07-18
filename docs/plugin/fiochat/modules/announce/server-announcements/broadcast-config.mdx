@@ -1,0 +1,141 @@
+---
+title: Config
+---
+
+# Broadcast Config
+
+Source file:
+
+```text
+modules/announce/Server Announcements/broadcast.yml
+```
+
+This page explains the dedicated `broadcast` typed announcement. It is used by `/broadcast <message>` and `/fiochat admin broadcast <message>`. The admin command requires `fiochat.admin.broadcast` or the parent admin permission. Receivers still need `fiochat.announcement.use`.
+
+Dedicated typed files override same-named entries from `admin-announcements` in `announce.yml`. If `broadcast.yml` provides a valid `broadcast` section, that section is loaded as the `broadcast` type.
+
+## `broadcast.enabled`
+
+`broadcast.enabled` controls whether this typed style can be delivered. The current value is `true`.
+
+Turning it off disables the broadcast typed style only. It does not disable scheduled announcements, warning announcements, or alerts announcements.
+
+## `broadcast.message.enabled`
+
+`broadcast.message.enabled` controls whether the broadcast sends normal chat lines. The current value is `true`.
+
+If false, enabled actionbar, title, bossbar, toast, and sound channels can still run.
+
+## `broadcast.message.lines`
+
+`broadcast.message.lines` defines the chat layout. The current default sends a spacer line, a centered gold `Server Broadcast` heading, a centered `%message%` line, and another spacer line.
+
+`%message%` is replaced by the command text. Typed announcements also provide `%type%`, `%announcement_type%`, `%announcement_message%`, `%announce_message%`, and `%admin_announcement_message%`.
+
+## `broadcast.actionbar.enabled`
+
+`broadcast.actionbar.enabled` decides whether a broadcast actionbar is sent. The current value is `false`.
+
+This is a visual channel and is hidden for players who disabled announcement messages.
+
+## `broadcast.actionbar.text`
+
+`broadcast.actionbar.text` is the text shown above the hotbar when actionbar delivery is enabled. The current value is `<gold>%message%</gold>`.
+
+Use this for compact one-line broadcast text.
+
+## `broadcast.title.enabled`
+
+`broadcast.title.enabled` decides whether a center-screen title is sent. The current value is `false`.
+
+The file still defines title text and timing so you can enable it without adding new keys.
+
+## `broadcast.title.title`
+
+`broadcast.title.title` is the main title text. The current value is `<gold>Broadcast</gold>`.
+
+This is usually the category label, while the actual command message belongs in the subtitle.
+
+## `broadcast.title.subtitle`
+
+`broadcast.title.subtitle` is the secondary title line. The current value is `<white>%message%</white>`.
+
+Because it contains `%message%`, it changes per command invocation.
+
+## `broadcast.title.fade-in`
+
+`broadcast.title.fade-in` is the fade-in duration in ticks. The current value is `5`.
+
+## `broadcast.title.stay`
+
+`broadcast.title.stay` is the fully visible duration in ticks. The current value is `50`, or 2.5 seconds.
+
+## `broadcast.title.fade-out`
+
+`broadcast.title.fade-out` is the fade-out duration in ticks. The current value is `10`.
+
+## `broadcast.bossbar.enabled`
+
+`broadcast.bossbar.enabled` decides whether a temporary bossbar appears. The current value is `false`.
+
+When enabled, the bar is removed after `broadcast.bossbar.seconds`.
+
+## `broadcast.bossbar.title`
+
+`broadcast.bossbar.title` is the bossbar text. The current value is `<gold>%message%</gold>`.
+
+## `broadcast.bossbar.color`
+
+`broadcast.bossbar.color` controls the Bukkit bossbar color. The current value is `YELLOW`.
+
+Invalid values fall back to `BLUE`.
+
+## `broadcast.bossbar.style`
+
+`broadcast.bossbar.style` controls the Bukkit bossbar style. The current value is `SOLID`.
+
+Invalid values fall back to `SOLID`.
+
+## `broadcast.bossbar.progress`
+
+`broadcast.bossbar.progress` controls the filled amount of the bossbar. The current value is `1.0`.
+
+The service clamps values between `0.0` and `1.0`.
+
+## `broadcast.bossbar.seconds`
+
+`broadcast.bossbar.seconds` controls how long the bossbar stays visible. The current value is `5`.
+
+## `broadcast.sound.enabled`
+
+`broadcast.sound.enabled` controls whether a sound plays when the broadcast is delivered. The current value is `true`.
+
+Player announcement sound toggles can suppress this without hiding the visual broadcast.
+
+## `broadcast.sound.name`
+
+`broadcast.sound.name` is the Bukkit sound id. The current value is `BLOCK_NOTE_BLOCK_CHIME`.
+
+If the sound cannot be resolved for the server version, FioChat skips sound playback.
+
+## `broadcast.sound.volume`
+
+`broadcast.sound.volume` controls playback volume. The current value is `1.0`.
+
+## `broadcast.sound.pitch`
+
+`broadcast.sound.pitch` controls playback pitch. The current value is `1.1`, slightly higher than normal pitch.
+
+## Rich quick broadcast arguments
+
+The admin quick command also supports rich tagged arguments:
+
+```text
+/fiochat admin broadcast m:<message> t:<title> s:<subtitle> a:<actionbar> b:<bossbar;COLOR;STYLE;VALUE>
+```
+
+When `m:` is present, this file's typed broadcast is sent. The additional tagged parts are sent directly as live title, actionbar, or bossbar broadcasts outside the YAML profile.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

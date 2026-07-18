@@ -1,0 +1,70 @@
+---
+title: Explanation
+sidebar_position: 1
+---
+
+# Event Explanation
+
+This page summarizes the event game types currently exposed by the plugin source.
+
+## Supported event ids
+
+- `UNSCRAMBLE`
+- `UNSHUFFLE`
+- `UNREVERSE`
+- `TRIVIA`
+- `MATH`
+- `ROMAN`
+- `FAST_TYPE`
+- `REWRITE`
+- `RANDOM`
+- `FILLOUT`
+- `GUESS_THE_WORD`
+- `GUESS_THE_NUMBER`
+- `REACTION`
+- `VARIABLE`
+
+## Quick behavior guide
+
+| Event | What players do | Typical content source |
+| --- | --- | --- |
+| `UNSCRAMBLE` | Unscramble a word or phrase. | `words` list |
+| `UNSHUFFLE` | Reorder shuffled text into the original order. | `words` list |
+| `UNREVERSE` | Reverse a reversed string correctly. | `words` list |
+| `TRIVIA` | Answer a question with one or more accepted answers. | `trivia` section |
+| `MATH` | Solve generated math expressions. | operator and range settings |
+| `ROMAN` | Convert a generated Roman numeral into its numeric value. | `min_roman`, `max_roman`, and `%roman%` |
+| `FAST_TYPE` | Type a full phrase exactly as shown. | `phrases` list |
+| `REWRITE` | Rewrite a displayed phrase. | `phrases` list |
+| `RANDOM` | Type a generated random string. | length and character-type settings |
+| `FILLOUT` | Fill missing letters or segments. | `phrases` list |
+| `GUESS_THE_WORD` | Guess a masked word. | `phrases` list |
+| `GUESS_THE_NUMBER` | Guess a generated number in a configured range. | min/max range |
+| `REACTION` | React to a generated token or prompt. | length and character-type settings |
+| `VARIABLE` | Solve symbol-to-number mapping puzzles. | `data` and `toGet` |
+
+## Newer event worth noting
+
+### GUESS_THE_NUMBER
+
+The current source includes `games/events/guess_the_number.yml`, which means this is now a first-class supported event mode.
+
+Core keys from source:
+
+```yaml
+enable: true
+points: 1
+time_seconds: 120
+min_number: 1
+max_number: 100
+prompt_format: 'Guess a number between %minimum_number% and %maximum_number%.'
+```
+
+## Related pages
+
+- [Guess The Word config](/plugin/fiochatgames/config/events/guesstheword)
+- [Guess The Number config](/plugin/fiochatgames/config/events/guess_the_number)
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

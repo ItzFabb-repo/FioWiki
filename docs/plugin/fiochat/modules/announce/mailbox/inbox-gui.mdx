@@ -1,0 +1,199 @@
+---
+title: Inbox
+---
+
+# Inbox
+
+`inbox.yml` controls the main Mailbox screen opened by `/mailbox`. It defines the inbox title, page size, decorative items, mail entry slots, empty-state item, inbox entry rendering, sent-entry rendering fallback, and the bottom navigation/action buttons.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/inbox.yml
+```
+
+## `menus.title`
+
+```yaml
+menus:
+  title: "<dark_gray>Mailbox</dark_gray> <black>(%page%/%max_page%)</black>"
+```
+
+The title is shown at the top of the inventory. `%page%` is the current page number and `%max_page%` is the total page count for the current filter.
+
+## `menus.rows`
+
+```yaml
+menus:
+  rows: 6
+```
+
+`rows` controls the inventory height. One row is nine slots, so `6` rows gives slots `0-53`.
+
+## `menus.decorations`
+
+```yaml
+menus:
+  decorations:
+    BLACK_GLASS:
+      slots:
+        - "45-53"
+      material: BLACK_STAINED_GLASS_PANE
+      hide_tooltip: true
+```
+
+Each decoration key is an arbitrary id. `slots` accepts exact slots or ranges such as `45-53`. `material` is the Bukkit material placed into those slots. `hide_tooltip` hides the default item tooltip when supported by the server.
+
+The current source uses black glass for the bottom bar and gray glass for the top bar.
+
+## `menus.mail-slots`
+
+```yaml
+menus:
+  mail-slots:
+    - "9-44"
+```
+
+`mail-slots` is the slot range used for mailbox entries. The current layout leaves the top row and bottom row for decorations and buttons, then uses slots `9-44` for mail content.
+
+## `menus.empty-state`
+
+```yaml
+menus:
+  empty-state:
+    slot: 22
+    material: RED_DYE
+    name: "<red>No Mailbox</red>"
+    lore:
+      - "<gray>You have no</gray>"
+      - "<gray>new mailbox.</gray>"
+```
+
+This item is displayed when the current inbox page has no entries. `slot` controls where it appears. `material`, `name`, and `lore` control the rendered item.
+
+## `menus.entry.indicators`
+
+```yaml
+menus:
+  entry:
+    indicators:
+      unread: "<#919191>âœ”"
+      read: "<#55ff55>âœ”"
+      marked-unread: "<gold>â˜…</gold>"
+      true: "<#55FF55>âœ”"
+      false: "<#919191>âœ”"
+```
+
+These strings feed status placeholders in entry names and lore.
+
+`unread` is used for unread mail status.
+
+`read` is used for read mail status.
+
+`marked-unread` is used when a player manually marks a player mailbox as unread.
+
+`true` and `false` are used for boolean-style placeholders such as reward presence.
+
+## `menus.entry.materials`
+
+```yaml
+menus:
+  entry:
+    materials:
+      inbox-player: PAPER
+      sent: FILLED_MAP
+```
+
+`inbox-player` is the material used for player-sent inbox entries.
+
+`sent` is the material used when sent entries are rendered from the inbox config fallback.
+
+## `menus.entry.inbox-item`
+
+```yaml
+menus:
+  entry:
+    inbox-item:
+      name: "%status% <yellow>%from%</yellow>"
+```
+
+This template renders received player mail in the inbox.
+
+Useful placeholders include `%status%`, `%from%`, `%to%`, `%date%`, `%read%`, `%markedread%`, `%isRewards%`, and `%message_lines%`.
+
+The configured actions are click-specific:
+
+```yaml
+actions:
+  left:
+    - "[MAILBOX] REPLY_ENTRY"
+  right:
+    - "[MAILBOX] OPEN_HISTORY_ENTRY"
+  shift_left:
+    - "[MAILBOX] OPEN_ENTRY"
+  shift_right:
+    - "[MAILBOX] TOGGLE_MARKED_UNREAD"
+```
+
+Left click starts a reply draft. Right click opens the conversation/history view. Shift-left opens the selected mailbox detail view. Shift-right toggles the marked-unread state.
+
+Server mailboxes have a special fallback behavior in the service: left-style clicks open the view, right click opens delete confirmation, and shift-right opens history.
+
+## `menus.entry.sent-item`
+
+```yaml
+menus:
+  entry:
+    sent-item:
+      name: "%status% <yellow>%to%</yellow>"
+```
+
+This template is used as a fallback sent-entry template when the sent screen does not provide its own entry format. It shows outgoing mail with `%to%`, `%date%`, `%status%`, and `%isRewards%`.
+
+## `menus.items.buttons.stats`
+
+The stats button is currently in slot `4`. Its action is `[MAILBOX] VIEW_INFO`, which the service accepts as an information action and does not navigate away.
+
+Its lore uses log placeholders:
+
+```text
+%log_read%
+%log_deleted%
+%log_received%
+```
+
+## `menus.items.buttons.filter`
+
+The filter button is currently in slot `50`.
+
+`%filters%` is replaced with the rendered filter list. `selected-format` controls the active filter line and `unselected-format` controls inactive filter lines.
+
+Left click runs `[MAILBOX] TOGGLE_FILTER_NEXT`. Right click runs `[MAILBOX] TOGGLE_FILTER_PREVIOUS`. Both reset the inbox to page `0` after changing the filter.
+
+## `menus.items.buttons.close`
+
+The close button is currently in slot `49`. Its `[CLOSE]` action closes the inventory.
+
+## `menus.items.buttons.previous`
+
+The previous button is currently in slot `45`. Its `[MAILBOX] PAGE_PREVIOUS` action opens the previous inbox page.
+
+`behavior.ifnoPrevious` replaces the button material with `GRAY_DYE` and hides the tooltip when no previous page exists.
+
+## `menus.items.buttons.next`
+
+The next button is currently in slot `53`. Its `[MAILBOX] PAGE_NEXT` action opens the next inbox page.
+
+`behavior.ifnoNext` replaces the button material with `GRAY_DYE` and hides the tooltip when no next page exists.
+
+## `menus.items.buttons.send`
+
+The compose button is currently in slot `48`. Its `[MAILBOX] OPEN_COMPOSE` action opens the Compose screen.
+
+## `menus.items.buttons.sent-log`
+
+The sent-log button is currently in slot `51`. Its `[MAILBOX] OPEN_SENT_LOG` action opens the Sent screen using the newest-to-oldest filter.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

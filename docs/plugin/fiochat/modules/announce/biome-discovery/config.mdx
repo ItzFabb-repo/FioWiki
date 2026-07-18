@@ -1,0 +1,260 @@
+---
+title: Config
+---
+
+# Biome Discovery Config
+
+Source file:
+
+```text
+modules/announce/Biome Discovery/config.yml
+```
+
+The Biome Discovery module controls first-time biome discovery title animations. In the current build, it can detect the player's biome on join, on world change, and after anti-bot verification. It also manages world and region filters, title/subtitle display, and sound feedback.
+
+The module is controlled by `modules.biome-discovery` in `modules/settings.yml`. The current default is `false`.
+
+Related files:
+
+```text
+modules/announce/Biome Discovery/player-state.yml
+modules/announce/Biome Discovery/toggles.yml
+modules/announce/Biome Discovery/biome.json
+```
+
+## `modules.biome-discovery`
+
+```yaml
+modules:
+  biome-discovery: false
+```
+
+This is the master toggle for the module. The current default is `false`.
+
+When disabled, FioChat does not run the biome discovery detection flow or show biome reveal animations.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`settings.debug-log` controls module debug logging. The current value is `false`.
+
+When enabled, FioChat can log reload and biome-detection details for this module.
+
+## `settings.detect-current-biome-on-join`
+
+```yaml
+settings:
+  detect-current-biome-on-join: true
+```
+
+This controls whether the player's current biome is checked shortly after join.
+
+## `settings.join-check-delay-ticks`
+
+```yaml
+settings:
+  join-check-delay-ticks: 20
+```
+
+This controls the delay before the join biome check runs. The current default is `20` ticks.
+
+## `settings.detect-on-world-change`
+
+```yaml
+settings:
+  detect-on-world-change: true
+```
+
+This controls whether changing worlds triggers a fresh biome check.
+
+## `settings.skip-after-antibot-verification`
+
+```yaml
+settings:
+  skip-after-antibot-verification: false
+```
+
+This controls whether the current biome is silently recorded after anti-bot verification instead of being announced.
+
+## `settings.ignore-unmapped-biomes`
+
+```yaml
+settings:
+  ignore-unmapped-biomes: true
+```
+
+This controls what happens when a biome is not found in `biome.json` or in `display-names`.
+
+When this is `true`, unmapped biomes are skipped silently.
+
+## `settings.world-whitelist` and `settings.world-blacklist`
+
+```yaml
+settings:
+  world-whitelist: []
+  world-blacklist:
+    - "world_nether"
+    - "world_the_end"
+```
+
+These filters control which worlds can run biome discovery.
+
+Use the whitelist to allow only selected worlds. Use the blacklist to block specific worlds.
+
+## `settings.region-whitelist` and `settings.region-blacklist`
+
+```yaml
+settings:
+  region-whitelist: []
+  region-blacklist: []
+```
+
+These filters control which WorldGuard regions can run biome discovery.
+
+## `settings.reveal-delay-ticks`
+
+```yaml
+settings:
+  reveal-delay-ticks: 8
+```
+
+This controls the gap before fade-out cleanup begins.
+
+## `settings.completed-stay-ticks`
+
+```yaml
+settings:
+  completed-stay-ticks: 80
+```
+
+This controls how long the biome reveal stays visible before fading out.
+
+## `settings.clear-title-after-animation`
+
+```yaml
+settings:
+  clear-title-after-animation: true
+```
+
+This clears the title after the fade-out completes.
+
+## `display.title`
+
+```yaml
+display:
+  title:
+    enabled: true
+    initial-format: "<bold>%biome%</bold>"
+    fade-in: 20
+    fade-out: 20
+```
+
+This controls the main biome title.
+
+The visible biome name comes from `%biome%`.
+
+## `display.subtitle`
+
+```yaml
+display:
+  subtitle:
+    enabled: true
+    format: "<gray>%biome_plain% has been discovered.</gray>"
+```
+
+This controls the subtitle line under the biome title.
+
+The visible plain biome name comes from `%biome_plain%`.
+
+## `display.actionbar`
+
+```yaml
+display:
+  actionbar:
+    enabled: false
+    text: "<gray>%biome_plain% has been discovered.</gray>"
+```
+
+This controls the optional action bar text used by the module.
+
+## `sounds.enabled`
+
+```yaml
+sounds:
+  enabled: true
+```
+
+This is the master default for biome discovery sound delivery before per-player toggle overrides.
+
+## `sounds.reveal`
+
+```yaml
+sounds:
+  reveal:
+    enabled: true
+    name: "UI_TOAST_IN"
+    volume: 1.0
+    pitch: 1.0
+```
+
+This controls the reveal sound that plays when a new biome is discovered.
+
+## `sounds.fade-out`
+
+```yaml
+sounds:
+  fade-out:
+    enabled: true
+    name: "UI_TOAST_OUT"
+    volume: 1.0
+    pitch: 1.0
+```
+
+This controls the fade-out sound used by the module.
+
+## `display-names`
+
+```yaml
+display-names:
+  "terralith:moonlight_grove": "<#8aa7ff>Moonlight Grove"
+  "terralith:sakura_grove": "<#e678ff>Sakura Grove"
+```
+
+This section adds custom biome display names for datapack or worldgen biomes.
+
+If a biome is not in `biome.json` and not in `display-names`, it is skipped when `ignore-unmapped-biomes` is `true`.
+
+## Useful placeholders
+
+Common placeholders used by this module include:
+
+```text
+%biome%
+%biome_plain%
+%world%
+```
+
+## Legacy Path Note
+
+The active config path for this build is:
+
+```text
+modules/announce/Biome Discovery/config.yml
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/biome-discovery/config.yml
+modules/biome-discovery/config.yml
+```
+
+This page follows the current announce-module path and the current biome discovery layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

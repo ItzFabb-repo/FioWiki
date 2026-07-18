@@ -1,0 +1,184 @@
+---
+title: Config
+sidebar_position: 15
+---
+
+# Emojis Config
+
+Source file:
+
+```text
+modules/chat/Emojis/config.yml
+```
+
+:::warning[Important]
+Build emoji policy with moderation in mind: decide replacement scope and permissions first, then expand emoji catalog.
+:::
+
+## Module Preview
+
+![Emoji GUI](../../../img/fiochat/Emoji%20GUI.png)
+![Emoji Replace](../../../img/fiochat/Emoji%20Replaced.png)
+
+## Replacement Scope
+
+### Channel and Content Targets
+```yaml
+settings:
+  replace:
+    chat: true
+    signs: true
+    books: true
+    item-name: true
+    item-lore: true
+```
+- Purpose: Controls where emoji trigger replacement is active.
+- Options:
+  - `chat`: player chat messages.
+  - `signs`: sign text input.
+  - `books`: writable/written book content.
+  - `item-name` and `item-lore`: anvil and item metadata.
+
+## Permission Model
+
+### Core Permission Nodes
+```yaml
+settings:
+  permissions:
+    use: "fiochat.emoji.use"
+    list: "fiochat.emoji.list"
+    per-emoji-base: "fiochat.emoji.use"
+```
+- Purpose: Governs who can use and discover emojis.
+- Options:
+  - `use`: global access to emoji replacement.
+  - `list`: access to emoji list/help command.
+  - `per-emoji-base`: base for per-emoji nodes.
+
+### Per-Emoji Permission Pattern
+```text
+fiochat.emoji.use.<emoji_id>
+```
+- Example:
+```text
+fiochat.emoji.use.smile
+fiochat.emoji.use.warning
+fiochat.emoji.use.coin1
+```
+
+## Global Legacy Switch
+
+### Chat-Only Legacy Toggle
+```yaml
+replace-in-chat: true
+```
+- Purpose: Legacy compatibility field used by some older configs.
+- Options:
+  - Keep aligned with `settings.replace.chat` to avoid conflicting behavior.
+
+## Emoji Entry Structure
+
+Each entry under `emojis.<id>` should include:
+1. `category`
+2. `trigger`
+3. `value`
+4. optional `aliases`
+
+### Basic Entry Example
+```yaml
+emojis:
+  smile:
+    category: "basic"
+    trigger: ":smile:"
+    value: "[SMILE]"
+```
+- Purpose: Maps typed trigger to replacement symbol.
+- Options:
+  - `trigger` should be unique and easy to remember.
+  - `value` can be unicode glyph or text-style token.
+
+### Entry with Aliases
+```yaml
+emojis:
+  warning:
+    category: "symbols"
+    trigger: ":warning:"
+    value: "[WARN]"
+    aliases:
+      - ":alert:"
+      - ":caution:"
+```
+- Purpose: Supports multiple trigger forms for one output.
+- Options:
+  - Keep aliases short and avoid overlap with commands/placeholders.
+
+## Category Strategy
+
+### Recommended Categories
+- `basic`: common chat expression icons.
+- `symbols`: utility/status symbols.
+- `currency`: economy-related markers.
+- `staff`: moderation/team-only markers.
+
+### Category Sample
+```yaml
+emojis:
+  coin1:
+    category: "currency"
+    trigger: ":coin1:"
+    value: "[COIN]"
+```
+
+## Trigger Design Rules
+
+### Safe Trigger Style
+```text
+:smile:
+:warning:
+:coin1:
+```
+- Keep delimiter style consistent (`:token:`).
+- Avoid triggers that collide with markdown, commands, or placeholders.
+- Avoid one-letter triggers (too many false positives).
+
+## Operational Profiles
+
+### Public-Friendly Profile
+```yaml
+settings:
+  replace:
+    chat: true
+    signs: false
+    books: false
+    item-name: false
+    item-lore: false
+```
+- Result: Emojis in chat only, low moderation risk.
+
+### Full-RP Profile
+```yaml
+settings:
+  replace:
+    chat: true
+    signs: true
+    books: true
+    item-name: true
+    item-lore: true
+```
+- Result: Emojis available across communication and item text channels.
+
+:::info[Performance and Moderation Notes]
+- Keep emoji catalog curated instead of excessively large.
+- Use per-emoji permissions for premium/staff-only sets.
+- Review aliases regularly to prevent accidental replacements.
+:::
+
+:::note[Owner Validation]
+- Test replacement in chat, signs, books, and item text separately.
+- Test permission behavior with player, VIP, and moderator roles.
+- Validate alias collisions with commands/placeholders.
+- Validate exported logs remain readable after emoji replacement.
+:::
+
+
+

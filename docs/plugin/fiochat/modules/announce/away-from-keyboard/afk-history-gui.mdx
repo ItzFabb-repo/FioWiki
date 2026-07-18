@@ -1,0 +1,236 @@
+---
+title: Gui
+---
+
+# AFK History Gui
+
+Source file:
+
+```text
+modules/announce/Away from Keyboard/gui/afk-history.yml
+```
+
+This GUI is used by `/previousmsg` and `/prevmsg` to show unread AFK chat history. The current build stores this menu separately from the AFK config file.
+
+## `menus.title`
+
+```yaml
+menus:
+  title: "<dark_gray>Unread Messages</dark_gray> <black>(%page%/%max_page%)</black>"
+```
+
+This is the inventory title shown to the player.
+
+## `menus.rows`
+
+```yaml
+menus:
+  rows: 6
+```
+
+This controls the inventory size.
+
+## `menus.decorations`
+
+```yaml
+menus:
+  decorations:
+    BLACK_GLASS:
+      slots:
+        - '45-53'
+      material: BLACK_STAINED_GLASS_PANE
+      hide_tooltip: true
+```
+
+This controls decorative filler items.
+
+The current source uses `BLACK_GLASS` and `GRAY_GLASS` fillers.
+
+## `menus.history-slots`
+
+```yaml
+menus:
+  history-slots:
+    - "9-44"
+```
+
+This defines the slots used for unread message entries.
+
+## `menus.items.history`
+
+```yaml
+menus:
+  items:
+    history:
+      material: "PLAYER_HEAD"
+      player: true
+      name: "<gold>%sender_display%</gold> <gray>(@%sender%)</gray>"
+```
+
+This is the main unread-message entry item.
+
+The current lore shows the sender, channel, date, message text, and event type.
+
+The current actions are:
+
+```text
+[AFK] OPEN_ITEM_DISPLAY
+[AFK] TOGGLE_SPOILER
+[SOUND] UI_CARTOGRAPHY_TABLE_TAKE_RESULT
+```
+
+## `menus.items.ifEmpty`
+
+```yaml
+menus:
+  items:
+    ifEmpty:
+      material: GRAY_DYE
+      name: "<red>No History</red>"
+      slot: 22
+```
+
+This is the fallback item shown when there is no unread history.
+
+## `menus.items.sort`
+
+```yaml
+menus:
+  items:
+    sort:
+      material: CLOCK
+      name: "<green>Sort History</green>"
+      slot: 48
+```
+
+This controls the sort button.
+
+Current source actions:
+
+```text
+[AFK] TOGGLE_SORT_NEXT
+[AFK] TOGGLE_SORT_PREVIOUS
+```
+
+## `menus.items.clear`
+
+```yaml
+menus:
+  items:
+    clear:
+      material: PLAYER_HEAD
+      slot: 47
+```
+
+This controls the clear-history button.
+
+Current source action:
+
+```text
+[AFK] CLEAR_HISTORY
+```
+
+## `menus.items.filter`
+
+```yaml
+menus:
+  items:
+    filter:
+      material: HOPPER
+      name: "<green>Filter</green>"
+      slot: 50
+```
+
+This controls the filter button.
+
+Current source actions:
+
+```text
+[AFK] TOGGLE_FILTER_NEXT
+[AFK] TOGGLE_FILTER_PREVIOUS
+```
+
+## `menus.items.channels`
+
+```yaml
+menus:
+  items:
+    channels:
+      slot: 51
+```
+
+This controls the channel filter button.
+
+Current source material keys:
+
+```text
+all
+global
+trade
+staff
+```
+
+Current source actions:
+
+```text
+[AFK] TOGGLE_CHANNEL_NEXT
+[AFK] TOGGLE_CHANNEL_PREVIOUS
+```
+
+## `menus.items.buttons.previous`
+
+```yaml
+menus:
+  items:
+    buttons:
+      previous:
+        slot: 45
+```
+
+This is the previous-page button.
+
+Current source action:
+
+```text
+[AFK] PAGE_PREVIOUS
+```
+
+## `menus.items.buttons.next`
+
+```yaml
+menus:
+  items:
+    buttons:
+      next:
+        slot: 53
+```
+
+This is the next-page button.
+
+Current source action:
+
+```text
+[AFK] PAGE_NEXT
+```
+
+## Legacy Path Note
+
+The active GUI path for this build is:
+
+```text
+modules/announce/Away from Keyboard/gui/afk-history.yml
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/afk/gui/afk-history.yml
+modules/afk/gui/afk-history.yml
+gui/afk-history.yml
+```
+
+This page follows the current announce-module GUI path and the current AFK unread-history layout used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

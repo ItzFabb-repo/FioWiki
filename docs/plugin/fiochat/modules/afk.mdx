@@ -1,0 +1,655 @@
+---
+title: AFK
+sidebar_position: 2
+---
+
+# AFK
+
+This page focuses on how to modify AFK settings.
+
+## Commands
+
+Available command patterns:
+
+```text
+/afk
+/afk <message>
+/afk <player>
+/afk <player> <message>
+/previousmsg
+/prevmsg
+```
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.afk.use` | Base AFK command access. |
+| `fiochat.afk.reason` | Allows using an AFK reason or message. |
+| `fiochat.afk.check` | Allows checking another player's AFK state. |
+| `fiochat.afk.others` | Allows setting AFK for other players. |
+| `fiochat.afk.blacklist.bypass` | Bypasses AFK region blacklist checks. |
+| `fiochat.afk.message.bypass` | Bypasses AFK message-related restrictions. |
+| `fiochat.afk.previousmsg` | Allows accessing AFK unread-message history. |
+
+## `settings.debug-log`
+
+Turns AFK debug logging on or off.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  debug-log: true
+```
+
+## `settings.previous-message.enabled`
+
+Controls whether the AFK unread-message feature is enabled.
+
+Options:
+
+- `true`: `/previousmsg` and `/prevmsg` can be used when the rest of the requirements are met
+- `false`: AFK unread-message history is disabled
+
+Code behavior:
+
+- The AFK previous-message feature also depends on chat-management being enabled.
+- If chat-management disables previous messages, `/previousmsg` is blocked even if this setting is `true`.
+
+Example:
+
+```yaml
+settings:
+  previous-message:
+    enabled: true
+```
+
+## `settings.auto-afk-time`
+
+Controls automatic AFK after idle time.
+
+Options:
+
+- `0`: disables automatic AFK
+- any positive number: seconds before the player is automatically marked AFK
+
+Example:
+
+```yaml
+settings:
+  auto-afk-time: 300
+```
+
+This means the player is marked AFK after 5 minutes of inactivity.
+
+## Auto-clear activity settings
+
+These settings control what kinds of activity remove AFK state.
+
+```yaml
+settings:
+  move: true
+  head-rotate: false
+  interact: false
+  chat: true
+  command: true
+```
+
+## `settings.move`
+
+Controls whether actual movement clears AFK.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  move: true
+```
+
+## `settings.head-rotate`
+
+Controls whether changing head rotation clears AFK.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  head-rotate: true
+```
+
+## `settings.interact`
+
+Controls whether interaction clears AFK.
+
+Options:
+
+- `true`
+- `false`
+
+Code behavior:
+
+- player interaction can clear AFK
+- entity interaction can also clear AFK
+
+Example:
+
+```yaml
+settings:
+  interact: true
+```
+
+## `settings.chat`
+
+Controls whether chatting clears AFK.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  chat: true
+```
+
+## `settings.command`
+
+Controls whether commands clear AFK.
+
+Options:
+
+- `true`
+- `false`
+
+Code behavior:
+
+- normal commands can clear AFK
+- AFK commands themselves are excluded
+- several teleport utility commands are excluded from this auto-clear path, such as `/spawn`, `/warp`, `/home`, `/tpa`, `/tp`, `/rtp`, and `/wild`
+
+Example:
+
+```yaml
+settings:
+  command: true
+```
+
+## `settings.world-blacklist`
+
+Blocks players from entering AFK mode in specific worlds unless they have `fiochat.afk.blacklist.bypass`.
+
+Options:
+
+- `[]`: no blocked worlds
+- a list of world names: those worlds block AFK entry
+
+Example:
+
+```yaml
+settings:
+  world-blacklist:
+    - "world_nether"
+    - "world_the_end"
+```
+
+## `settings.region-blacklist`
+
+Blocks players from entering AFK mode inside specific WorldGuard regions unless they have `fiochat.afk.blacklist.bypass`.
+
+Options:
+
+- `[]`: no blocked regions
+- a list of region ids: those regions block AFK entry
+
+Example:
+
+```yaml
+settings:
+  region-blacklist:
+    - "spawn"
+    - "admin_area"
+```
+
+## `broadcast.afk`
+
+Changes the global broadcast when a player enters AFK without a reason.
+
+Current style example:
+
+```yaml
+broadcast:
+  afk: "<gray><white>%target%</white> <gray>is now in AFK mode.</gray>"
+```
+
+Other example contents:
+
+```yaml
+broadcast:
+  afk: "<yellow>[AFK]</yellow> <white>%target%</white> <gray>is now away.</gray>"
+```
+
+## `broadcast.reason`
+
+Changes the global broadcast when a player enters AFK with a reason.
+
+Current style example:
+
+```yaml
+broadcast:
+  reason: "<gray><white>%target%</white> <gray>is now in AFK mode: <white>%reason%</white><gray>.</gray>"
+```
+
+Other example contents:
+
+```yaml
+broadcast:
+  reason: "<yellow>[AFK]</yellow> <white>%target%</white> <gray>is away:</gray> <white>%reason%</white>"
+```
+
+## `broadcast.cleared`
+
+This broadcast is loaded in code and can be changed even though it is not shown in the current resource sample.
+
+It is used when a player is no longer AFK.
+
+Example:
+
+```yaml
+broadcast:
+  cleared: "<gray><white>%target%</white> <gray>is no longer AFK.</gray>"
+```
+
+## `silent.enabled`
+
+Controls silent chat mode while a player is AFK.
+
+Options:
+
+- `true`: AFK players do not receive live public chat normally and unread messages are stored for `/prevmsg`
+- `false`: AFK players still receive live public chat normally
+
+Example:
+
+```yaml
+silent:
+  enabled: true
+```
+
+Code behavior:
+
+- if silent mode is active, AFK players can have unread chat captured instead of receiving it live
+- the channel system also checks this behavior
+- AFK players themselves cannot chat while AFK silent mode is active
+
+## `silent.message`
+
+Changes the message shown when AFK silent mode is enabled.
+
+Options:
+
+- a single line
+- multiple lines
+- centered layout
+- plain layout
+
+Current style example:
+
+```yaml
+silent:
+  message:
+    - '[prefix="false"]<align:center><gold><bold>AFK Silent Mode Enabled</bold></gold></align>'
+```
+
+Example with a simple compact layout:
+
+```yaml
+silent:
+  message:
+    - "[prefix=\"false\"]<gray>You are AFK.</gray>"
+    - "[prefix=\"false\"]<gray>Unread chat will be stored for /prevmsg.</gray>"
+```
+
+## AFK status messages
+
+The AFK service loads many editable messages from the `messages` section.
+
+Supported editable message keys include:
+
+- `usage`
+- `feature-disabled`
+- `players-only`
+- `no-permission`
+- `reason-no-permission`
+- `check-no-permission`
+- `others-no-permission`
+- `target-offline`
+- `blocked-world`
+- `blocked-region`
+- `enabled`
+- `enabled-with-reason`
+- `updated-reason`
+- `disabled`
+- `target-enabled`
+- `target-enabled-with-reason`
+- `target-updated-reason`
+- `not-afk`
+- `status`
+- `status-with-reason`
+- `target-afk`
+- `target-afk-with-reason`
+
+Example:
+
+```yaml
+messages:
+  enabled: "<gray>You are now AFK.</gray>"
+  enabled-with-reason: "<gray>You are now AFK: <white>%reason%</white><gray>.</gray>"
+  disabled: "<gray>You are no longer AFK. You were away for <white>%duration%</white><gray>.</gray>"
+```
+
+## Useful placeholders for AFK messages
+
+Common placeholders you can use in AFK messages and broadcasts:
+
+- `%target%`
+- `%reason%`
+- `%duration%`
+- `%world%`
+- `%region%`
+
+Example:
+
+```yaml
+messages:
+  status-with-reason: "<gray><white>%target%</white> <gray>has been AFK for <white>%duration%</white><gray>: <white>%reason%</white><gray>.</gray>"
+```
+
+## AFK History GUI
+
+The AFK history GUI is used by `/previousmsg` and `/prevmsg`.
+
+## `menus.title`
+
+Changes the inventory title.
+
+Current style example:
+
+```yaml
+menus:
+  title: "<dark_gray>Unread Messages</dark_gray> <black>(%page%/%max_page%)</black>"
+```
+
+You can modify it to show different text or keep the page placeholders.
+
+Example:
+
+```yaml
+menus:
+  title: "<gold><bold>AFK History</bold></gold> <gray>(%page%/%max_page%)</gray>"
+```
+
+## `menus.rows`
+
+Controls the inventory size.
+
+Options:
+
+- any normal chest GUI row count used by the module layout
+- current source uses `6`
+
+Example:
+
+```yaml
+menus:
+  rows: 6
+```
+
+## `menus.decorations`
+
+Controls decorative filler items around the GUI.
+
+Each decoration entry can include:
+
+- `slots`
+- `material`
+- `hide_tooltip`
+
+Current source uses:
+
+- `BLACK_GLASS`
+- `GRAY_GLASS`
+
+Example:
+
+```yaml
+menus:
+  decorations:
+    BLACK_GLASS:
+      slots:
+        - "45-53"
+      material: BLACK_STAINED_GLASS_PANE
+      hide_tooltip: true
+```
+
+## `menus.history-slots`
+
+Defines which slots are used for unread history entries.
+
+Example:
+
+```yaml
+menus:
+  history-slots:
+    - "9-44"
+```
+
+If you change this, make sure the content area still matches the rest of the layout.
+
+## `menus.items.history`
+
+Controls how each unread message entry is displayed.
+
+Editable parts include:
+
+- `material`
+- `player`
+- `name`
+- `lore`
+- `actions`
+
+Current style example:
+
+```yaml
+menus:
+  items:
+    history:
+      material: "PLAYER_HEAD"
+      player: true
+      name: "<gold>%sender_display%</gold> <gray>(@%sender%)</gray>"
+```
+
+Example lore contents:
+
+```yaml
+menus:
+  items:
+    history:
+      lore:
+        - "<gray>Channel:</gray> <white>%channel%</white>"
+        - "<gray>Date:</gray> <white>%time%</white>"
+        - "<gray>Message:</gray>"
+        - "<#919191>%message%"
+```
+
+Current source actions for each entry:
+
+- `[AFK] OPEN_ITEM_DISPLAY`
+- `[AFK] TOGGLE_SPOILER`
+- `[SOUND] UI_CARTOGRAPHY_TABLE_TAKE_RESULT`
+
+## `menus.items.ifEmpty`
+
+Controls the item shown when there is no unread history.
+
+Editable parts include:
+
+- `material`
+- `name`
+- `lore`
+- `slot`
+
+Example:
+
+```yaml
+menus:
+  items:
+    ifEmpty:
+      material: GRAY_DYE
+      name: "<red>No History</red>"
+      slot: 22
+```
+
+## `menus.items.sort`
+
+Controls the sort button.
+
+Editable parts include:
+
+- `material`
+- `name`
+- `lore`
+- `slot`
+- `behavior.sort.selected`
+- `behavior.sort.unselected`
+- `actions.left`
+- `actions.right`
+
+Current source actions:
+
+- left click -> `TOGGLE_SORT_NEXT`
+- right click -> `TOGGLE_SORT_PREVIOUS`
+
+## `menus.items.clear`
+
+Controls the clear-history button.
+
+Editable parts include:
+
+- `material`
+- `texture`
+- `name`
+- `lore`
+- `slot`
+- `actions.left`
+
+Current source action:
+
+- `[AFK] CLEAR_HISTORY`
+
+## `menus.items.filter`
+
+Controls the filter button.
+
+Editable parts include:
+
+- `material`
+- `name`
+- `lore`
+- `slot`
+- `behavior.sort.selected`
+- `behavior.sort.unselected`
+- `actions.left`
+- `actions.right`
+
+Current source actions:
+
+- left click -> `TOGGLE_FILTER_NEXT`
+- right click -> `TOGGLE_FILTER_PREVIOUS`
+
+## `menus.items.channels`
+
+Controls the channel filter button.
+
+Editable parts include:
+
+- `material.all`
+- `material.global`
+- `material.trade`
+- `material.staff`
+- `name`
+- `lore`
+- `slot`
+- `behavior.sort.selected`
+- `behavior.sort.unselected`
+- `actions.left`
+- `actions.right`
+
+Current source channel material options:
+
+- `all`
+- `global`
+- `trade`
+- `staff`
+
+Current source actions:
+
+- left click -> `TOGGLE_CHANNEL_NEXT`
+- right click -> `TOGGLE_CHANNEL_PREVIOUS`
+
+## `menus.items.buttons.previous`
+
+Controls the previous-page button.
+
+Editable parts include:
+
+- `material`
+- `name`
+- `lore`
+- `slot`
+- `actions.any`
+- `behavior.ifnoPrevious.material`
+- `behavior.ifnoPrevious.hide_tooltip`
+
+Current source action:
+
+- `[AFK] PAGE_PREVIOUS`
+
+## `menus.items.buttons.next`
+
+Controls the next-page button.
+
+Editable parts include:
+
+- `material`
+- `name`
+- `lore`
+- `slot`
+- `actions.any`
+- `behavior.ifnoNext.material`
+- `behavior.ifnoNext.hide_tooltip`
+
+Current source action:
+
+- `[AFK] PAGE_NEXT`
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

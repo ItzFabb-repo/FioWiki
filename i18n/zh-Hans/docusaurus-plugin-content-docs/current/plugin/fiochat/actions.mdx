@@ -1,0 +1,109 @@
+﻿---
+title: 菜单动作
+sidebar_position: 3
+---
+
+# 菜单动作
+此页面记录了 FioChat 模块中常用的实用 GUI 动作模式。
+
+---
+
+# 基础动作
+### `SOUND:<sound>:<volume>:<pitch>`
+点击时播放自定义音效。
+
+```yaml
+SOUND:UI_BUTTON_CLICK:1:1
+SOUND:BLOCK_CHEST_CLOSE:1:1
+SOUND:ENTITY_EXPERIENCE_ORB_PICKUP:1:1
+```
+
+### `CLOSE`
+关闭当前菜单。
+
+```yaml
+CLOSE
+```
+
+### `REOPEN`
+重新打开当前菜单（适用于状态变化后）。
+
+```yaml
+REOPEN
+```
+
+### `OPEN_MENU:<id>`
+通过 id 打开另一个 GUI 菜单。
+
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:emoji_categories
+OPEN_MENU:giveaway_main
+```
+
+### `PLAYER_COMMAND:<command>`
+以点击玩家身份执行命令。
+
+```yaml
+PLAYER_COMMAND:fiochat toggle mentions
+PLAYER_COMMAND:fiochat channel list
+PLAYER_COMMAND:mailbox
+```
+
+---
+
+# 模块示例
+### Mailbox
+```yaml
+OPEN_MENU:mailbox_inbox
+OPEN_MENU:mailbox_sent
+OPEN_MENU:mailbox_compose
+OPEN_MENU:mailbox_history
+```
+
+### Emoji
+```yaml
+OPEN_MENU:emoji_categories
+OPEN_MENU:emoji_list
+PLAYER_COMMAND:emoji
+```
+
+### QuickChat
+```yaml
+OPEN_MENU:quickchat_main
+OPEN_MENU:quickchat_editor
+PLAYER_COMMAND:quickchat
+```
+
+### Item Displays
+```yaml
+PLAYER_COMMAND:itemdisplay list
+PLAYER_COMMAND:itemdisplay open item %player_name%
+PLAYER_COMMAND:itemdisplay open inventory %player_name%
+```
+
+### Reports
+```yaml
+PLAYER_COMMAND:report %target_name%
+PLAYER_COMMAND:reports
+```
+
+### Giveaway
+```yaml
+PLAYER_COMMAND:giveaway
+PLAYER_COMMAND:giveaway list
+PLAYER_COMMAND:giveaway event
+```
+
+### Join/Quit
+```yaml
+PLAYER_COMMAND:join
+PLAYER_COMMAND:quit
+```
+
+---
+
+# 说明
+- 声音值使用 Spigot/Paper 声音枚举名称。
+- 具体菜单 id 取决于各模块菜单配置文件名。
+- 对于会动态改变开关/配置状态的菜单，建议使用 `REOPEN`。

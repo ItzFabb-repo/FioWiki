@@ -1,0 +1,157 @@
+---
+title: Styles
+---
+
+# Custom Join Quit Msg Styles
+
+`styles.yml` controls which particle movement styles are available in the join and quit selectors. A style is not the particle itself. The particle is selected from `particles.yml`; the style decides the shape, movement, or visual pattern used when that particle is spawned.
+
+Source file:
+
+```text
+modules/announce/Custom Join Quit Msg/styles.yml
+```
+
+## Join style selector
+
+```yaml
+selectors:
+  styles:
+    join:
+      enabled:
+        - halo
+        - wings
+        - tornado
+      disabled: []
+```
+
+`selectors.styles.join.enabled` is the allow-list for join styles. Every id in this list can appear in the join style selector when the join style feature is enabled and the player has permission for that option.
+
+The service normalizes style ids to lowercase, so `HALO`, `Halo`, and `halo` resolve to the same style id. Keep the source list lowercase anyway because it matches the default file and avoids confusing permission names.
+
+The current source enables a large style set for join, including shape styles such as `ring`, `halo`, `sphere`, `triangle`, `square`, `hexagon`, and `star-shape`; motion styles such as `spiral`, `tornado`, `twin-helix`, `orbit-ring`, and `galaxy-swirl`; aura styles such as `flame-aura`, `frost-aura`, `shadow-aura`, `soul-aura`, and `rainbow-aura`; and burst or wave styles such as `nova-burst`, `shockwave`, `ripple`, `echo-wave`, and `firework-bloom`.
+
+## `selectors.styles.join.disabled`
+
+```yaml
+selectors:
+  styles:
+    join:
+      disabled:
+        - pentagram
+        - demon-wings
+```
+
+`selectors.styles.join.disabled` removes join style ids after the enabled list has been loaded. Use it when you want to keep the full source enabled list but temporarily hide a style from the join selector.
+
+Disabled entries are also normalized to lowercase. If an id appears in both `enabled` and `disabled`, the disabled rule wins.
+
+## Quit style selector
+
+```yaml
+selectors:
+  styles:
+    quit:
+      enabled:
+        - broken-ring
+        - shadow-aura
+        - shrinking-ring
+      disabled: []
+```
+
+`selectors.styles.quit.enabled` is the allow-list for quit styles. It works independently from the join list. You can give join and quit the same style pool, or make quit more limited by only enabling styles that visually fit a leave event.
+
+The current source uses the same enabled style list for join and quit, and both disabled lists are empty.
+
+## `selectors.styles.quit.disabled`
+
+```yaml
+selectors:
+  styles:
+    quit:
+      disabled:
+        - holy-aura
+        - angel-wings
+```
+
+`selectors.styles.quit.disabled` removes styles from the quit selector only. It does not affect join styles.
+
+## Feature switch interaction
+
+The style selector also depends on the main config:
+
+```yaml
+what-feature-enabled:
+  join:
+    styles: true
+  quit:
+    styles: true
+```
+
+When `what-feature-enabled.join.styles` is `false`, the join style selector is unavailable and the normal join profile falls back to default style behavior.
+
+When `what-feature-enabled.quit.styles` is `false`, the quit style selector is unavailable and the normal quit profile falls back to default style behavior.
+
+These feature switches are separate from the `enabled` and `disabled` lists. The feature switch disables the whole category. The style lists decide which options exist inside that category.
+
+## Style permissions
+
+Each style id generates a permission check:
+
+```text
+fiochat.joinquit.join.style.<style-id>
+fiochat.joinquit.quit.style.<style-id>
+```
+
+For example:
+
+```text
+fiochat.joinquit.join.style.halo
+fiochat.joinquit.quit.style.shadow-aura
+```
+
+If a player has a saved style preference but no longer has permission for it, the service will not use that selected style.
+
+## Player preference keys
+
+Selected styles are stored per player:
+
+```text
+join-style
+quit-style
+```
+
+Do not rename a style id casually after players have selected it. A renamed id is a different option from the service's point of view.
+
+## Custom style definitions
+
+The service can also read custom style definitions from:
+
+```yaml
+selectors:
+  styles:
+    custom:
+      my-style:
+        display: "<aqua>My Style</aqua>"
+        description:
+          - "<gray>Custom selector description.</gray>"
+        material: "AMETHYST_SHARD"
+        family: "ring"
+        variant: "soft"
+```
+
+`selectors.styles.custom.<id>.display` is the custom style's visible name.
+
+`selectors.styles.custom.<id>.description` is the selector lore text.
+
+`selectors.styles.custom.<id>.material` is the selector icon material.
+
+`selectors.styles.custom.<id>.family` groups the style with a known renderer family.
+
+`selectors.styles.custom.<id>.variant` lets the renderer distinguish a variation inside that family.
+
+Custom style ids still need to be included in the relevant `enabled` list before they are offered to players.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

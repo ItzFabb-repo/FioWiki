@@ -1,0 +1,199 @@
+---
+title: Item Example
+---
+
+# Item Example
+
+This page explains the `[ITEM]` action used inside voucher reward actions.
+
+`[ITEM]` is handled by `VoucherFileActionExecutor`. It gives an item directly to the player after the voucher action runs.
+
+## Basic Format
+
+```yaml
+- "[ITEM] <material> [amount] [tokens] [name:<text>] [lore:<text>]"
+```
+
+Examples:
+
+```yaml
+- "[ITEM] DIAMOND 3"
+- "[ITEM] BREAD 32"
+- "[ITEM] COOKED_BEEF <random:8-16>"
+```
+
+Rules:
+
+- first value is the Bukkit material
+- second value is optional amount
+- if amount is missing, it defaults to `1`
+- amount can use `<random:min-max>`
+
+## Name
+
+Use `name:` to set the display name.
+
+```yaml
+- "[ITEM] BREAD 32 name:<gold>Bread From FioVoucher"
+```
+
+The name supports FioVoucher text formatting through the same formatter used by messages.
+
+## Lore
+
+Use `lore:` to set item lore.
+
+```yaml
+- "[ITEM] BREAD 32 lore:<gray>Line one\n<white>Line two"
+```
+
+Important:
+
+- `\n` creates a new lore line
+- empty lines are supported
+- lore starts at `lore:` and continues until the end of the action string
+
+## Name And Lore Together
+
+```yaml
+- "[ITEM] BREAD 32 name:<gold>Bread From FioVoucher lore:<gray>This bread has\n<white>multiple lines"
+```
+
+When both are used, `name:` must come before `lore:`.
+
+## Custom Head Texture
+
+For `PLAYER_HEAD`, use `<texture:...>`.
+
+```yaml
+- "[ITEM] PLAYER_HEAD 1 <texture:base64_texture_here> name:<gold>Foxy Head lore:<gray>Custom head reward"
+```
+
+The value can be the base64 Minecraft texture value used by the sample voucher file.
+
+## Item Flags
+
+Use `<flags:...>` to hide tooltip parts.
+
+```yaml
+- "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTMENTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword"
+```
+
+Multiple flags are separated with commas.
+
+Common flags from the example:
+
+- `HIDE_ATTRIBUTES`
+- `HIDE_ENCHANTMENTS`
+- `HIDE_DYED_COLOR`
+- `HIDE_DESTROYS`
+- `HIDE_UNBREAKABLE`
+
+## Enchantments
+
+Use `<enchantments:...>` for one or more enchantments.
+
+```yaml
+- "[ITEM] IRON_SWORD 1 <enchantments:unbreaking;1>"
+- "[ITEM] IRON_CHESTPLATE 1 <enchantments:unbreaking;1,protection;1,mending;1>"
+```
+
+Format:
+
+```text
+<enchantments:enchant_name;level,enchant_name;level>
+```
+
+The executor also supports loose enchantment tokens:
+
+```yaml
+- "[ITEM] ENCHANTED_BOOK 1 sharpness:3"
+```
+
+Built-in aliases in the source:
+
+- `sharpness` maps to `damage_all`
+- `protection` maps to `protection_environmental`
+- `unbreaking` maps to `durability`
+
+## Durability
+
+Use `<durability:...>` for damageable items.
+
+```yaml
+- "[ITEM] WOODEN_PICKAXE <durability:1>"
+```
+
+This value means remaining durability, not damage amount. The executor converts it to Bukkit item damage internally.
+
+## Unbreakable
+
+```yaml
+- "[ITEM] DIAMOND_PICKAXE <unbreakable:true>"
+- "[ITEM] DIAMOND_PICKAXE <unbreakable:true> <flags:HIDE_UNBREAKABLE>"
+```
+
+Use `HIDE_UNBREAKABLE` if you want the unbreakable tooltip hidden.
+
+## Bundle Items
+
+Use `<inBundle:...>` to put simple items inside a bundle.
+
+```yaml
+- "[ITEM] BUNDLE 1 <inBundle:DIAMOND;32,ARROW;32> name:<gold>Starter Bundle lore:<gray>x32 Diamond\n<gray>x32 Arrow"
+```
+
+Format:
+
+```text
+<inBundle:MATERIAL;amount,MATERIAL;amount>
+```
+
+If amount is missing, the bundle item amount defaults to `1`.
+
+## Random Amount
+
+The executor replaces `<random:min-max>` before running the action.
+
+```yaml
+- "[ITEM] COOKED_BEEF <random:1-3>"
+- "[ITEM] BREAD <random:16-32>"
+```
+
+This works anywhere in the action string, but it is mostly useful for item amount or command numbers.
+
+## Placeholders
+
+Before the action runs, the executor replaces:
+
+- `{voucherDisplayName}`
+- `%player_name%`
+- `{player}`
+
+PlaceholderAPI is also applied after those built-in placeholders.
+
+## Full Examples From `example.yml`
+
+```yaml
+actions:
+  - "[ITEM] BREAD 32 name:<gold>Bread From FioVoucher lore:<gray>This bread has\n<white>Support multilines too!\n\n\n<green>And sum empty lines!"
+  - "[ITEM] PLAYER_HEAD 1 <texture:base64_texture_here> name:<gold>Foxy Head lore:<gray>This is a custom head\n<gray>and it was given from FioVoucher"
+  - "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTMENTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword lore:<gray>But with no attributes information."
+  - "[ITEM] BUNDLE 1 <inBundle:DIAMOND;32,ARROW;32> name:<gold>Starter Bundle lore:<gray>Inside of this bundle contained with\n<gray>x32 Diamond\n<gray>x32 Arrow."
+  - "[ITEM] ENCHANTED_BOOK 1 sharpness:3"
+  - "[ITEM] WOODEN_PICKAXE <durability:1>"
+  - "[ITEM] DIAMOND_PICKAXE <unbreakable:true> <flags:HIDE_UNBREAKABLE>"
+```
+
+## Important Source Note
+
+The sample `example.yml` includes `<trim:dune[redstone]>` and `<trim:sentry[amethyst]>`, but the current `VoucherFileActionExecutor` source does not contain a trim handler. Based on the current source, the documented working item tokens are:
+
+- `<texture:...>`
+- `<flags:...>`
+- `<enchantments:...>`
+- `<durability:...>`
+- `<unbreakable:true>`
+- `<inBundle:...>`
+
+Use trim examples only after confirming the plugin build you are running has trim support.

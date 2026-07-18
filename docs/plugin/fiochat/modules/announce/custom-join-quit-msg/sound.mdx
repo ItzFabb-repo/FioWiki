@@ -1,0 +1,189 @@
+---
+title: Sound
+---
+
+# Custom Join Quit Msg Sound
+
+`sound.yml` controls the sound options that players can select for join and quit events. This file has two jobs: the `selectors.sounds` section decides which ids are available to the selector, and the `sound-tree` section provides the full sound registry used for branch expansion and menu grouping.
+
+Source file:
+
+```text
+modules/announce/Custom Join Quit Msg/sound.yml
+```
+
+## Important selector behavior
+
+The current source supports two kinds of selector entries:
+
+```text
+Branch or group id: BAMBOO, DRAGON, UI, PLAYER
+Concrete sound id: ENTITY_PLAYER_LEVELUP, UI_BUTTON_CLICK
+```
+
+When a selector entry matches a branch in `sound-tree`, the service expands it into the actual sound ids inside that branch.
+
+When a selector entry is already a concrete Bukkit sound id, the service uses it directly.
+
+Disabled entries are expanded the same way and then removed from the final available list.
+
+## Join sound selector
+
+```yaml
+selectors:
+  sounds:
+    join:
+      enabled:
+        - BAMBOO
+        - BARREL
+        - DRAGON
+        - UI
+      disabled: []
+```
+
+`selectors.sounds.join.enabled` is the allow-list for join sounds. Entries are normalized to uppercase by the service.
+
+The current source enables many branch ids for join, including `BAMBOO`, `BARREL`, `BASALT`, `CHICKEN`, `DRAGON`, `ENDER`, `EXPERIENCE`, `GLASS`, `HORSE`, `PIGLIN`, `WITCH`, `WITHER`, `WOLF`, `WOOD`, `WOOL`, and other branch groups from the source file.
+
+Because those are branch ids, enabling `DRAGON` does not mean one sound named `DRAGON`. It means the selector can use the concrete sounds under the `DRAGON` branch in `sound-tree`.
+
+## `selectors.sounds.join.disabled`
+
+```yaml
+selectors:
+  sounds:
+    join:
+      disabled:
+        - MUSIC
+        - WEATHER
+        - FIREWORK
+```
+
+`selectors.sounds.join.disabled` removes sounds or whole branches from the join sound list after the enabled list is expanded.
+
+If `FIREWORK` is disabled and `FIREWORK` exists as a tree branch, all concrete firework sounds from that branch are removed. If `UI_BUTTON_CLICK` is disabled, only that exact concrete sound is removed.
+
+## Quit sound selector
+
+```yaml
+selectors:
+  sounds:
+    quit:
+      enabled:
+        - BAMBOO
+        - BARREL
+        - DRAGON
+        - UI
+      disabled: []
+```
+
+`selectors.sounds.quit.enabled` is the allow-list for quit sounds. It is loaded separately from the join list. The current source uses the same general branch selection for join and quit, but you can make quit quieter, darker, or narrower by changing only this list.
+
+## `selectors.sounds.quit.disabled`
+
+```yaml
+selectors:
+  sounds:
+    quit:
+      disabled:
+        - MUSIC
+        - WEATHER
+        - FIREWORK
+```
+
+`selectors.sounds.quit.disabled` removes sounds or branches from the quit selector only. It does not affect join sounds.
+
+## Empty enabled list fallback
+
+If `selectors.sounds.join.enabled` is empty and `sound.yml` exists, the service uses every concrete sound id it can collect from `sound-tree` as the join sound source.
+
+The same rule applies to `selectors.sounds.quit.enabled`.
+
+That fallback is useful when you want the tree to be the full source of truth. It is not the same as disabling sounds. To disable the whole sound feature, use the main `config.yml` feature switches:
+
+```yaml
+what-feature-enabled:
+  join:
+    sounds: false
+  quit:
+    sounds: false
+```
+
+## `sound-tree`
+
+```yaml
+sound-tree:
+  other:
+    UI:
+      enabled:
+        - UI_BUTTON_CLICK
+        - UI_TOAST_IN
+        - UI_TOAST_OUT
+      disabled: []
+```
+
+`sound-tree` is the detailed sound registry. It is grouped into categories and branches so the selector can expand branch names into real Bukkit sound ids.
+
+`sound-tree.<category>.<branch>.enabled` contains concrete sound ids under that branch.
+
+`sound-tree.<category>.<branch>.disabled` removes concrete sound ids from that branch.
+
+The selector branch name is the branch key, not the category key. In the example above, `UI` is the branch id that can be placed in `selectors.sounds.join.enabled`.
+
+## Feature switch interaction
+
+The sound selector depends on the main config:
+
+```yaml
+what-feature-enabled:
+  join:
+    sounds: true
+  quit:
+    sounds: true
+```
+
+When `what-feature-enabled.join.sounds` is `false`, selected join sounds are not delivered in normal join profiles.
+
+When `what-feature-enabled.quit.sounds` is `false`, selected quit sounds are not delivered in normal quit profiles.
+
+These switches do not delete the saved player preference. They prevent delivery while the feature is disabled.
+
+## Sound permissions
+
+Each final sound id can be permission-gated:
+
+```text
+fiochat.joinquit.join.sound.<sound-id>
+fiochat.joinquit.quit.sound.<sound-id>
+```
+
+The service builds the permission segment from the option id. For example:
+
+```text
+fiochat.joinquit.join.sound.entity_player_levelup
+fiochat.joinquit.quit.sound.ui_button_click
+```
+
+Use permission groups when you want only some ranks to select certain join or quit sounds.
+
+## Player preference keys
+
+Selected sounds are stored per player:
+
+```text
+join-sound
+quit-sound
+```
+
+Players can also toggle whether they personally hear join and quit sounds:
+
+```text
+join-sound-enabled
+quit-sound-enabled
+```
+
+Those toggle keys affect the receiver's experience. They do not change the sound selected by the joining or quitting player.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

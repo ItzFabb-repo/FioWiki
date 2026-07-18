@@ -1,0 +1,84 @@
+---
+title: Json
+---
+
+# Mobs En Json
+
+Source file:
+
+```text
+modules/announce/Custom Death Msg/mobs_en.json
+```
+
+This file stores the bundled mob and entity name registry used by the custom death message module.
+
+It maps entity ids to human-friendly labels for placeholders such as `%killer_mob_name%` and `%entity_display%`.
+
+## `display-names`
+
+```json
+{
+  "display-names": {
+    "WITHER_SKELETON": "Wither Skeleton",
+    "PIGLIN_BRUTE": "Piglin Brute"
+  }
+}
+```
+
+The registry root is `display-names`.
+
+Each key is an entity id and each value is the label shown in death message output.
+
+## Editing an existing mob
+
+```json
+{
+  "display-names": {
+    "WARDEN": "The Warden"
+  }
+}
+```
+
+Change only the value if you want a different label.
+
+## Common current entries
+
+The bundled file includes mob ids such as:
+
+```text
+PLAYER
+WITHER_SKELETON
+PIGLIN_BRUTE
+WARDEN
+CREEPER
+ENDERMAN
+WITCH
+ZOMBIE
+VILLAGER
+BEE
+```
+
+## When this file is used
+
+This registry is used when the template file resolves mob and entity names in death messages.
+
+## Legacy Path Note
+
+The active registry path for this build is:
+
+```text
+modules/announce/Custom Death Msg/mobs_en.json
+```
+
+The plugin still knows the older legacy paths:
+
+```text
+modules/announce/death-messages/mobs_en.json
+modules/death-message/mobs_en.json
+```
+
+This page follows the current announce-module registry path used by the build.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,369 @@
+﻿---
+title: プレースホルダー
+sidebar_position: 6
+---
+
+# プレースホルダー
+:::info[Scope]
+This page is a full operational reference for configuring placeholders in FioChat.
+It focuses on **how server owners use placeholders in YAML configs**.
+:::
+
+---
+
+# Placeholder Systems in FioChat
+FioChat uses three layers:
+
+1. Native FioChat placeholders:
+```yaml
+%fiochat_*%
+```
+
+2. PlaceholderAPI passthrough and alias resolution.
+
+3. Module token placeholders in YAML:
+```yaml
+{discord}
+{vote}
+{store}
+{link}
+```
+
+---
+
+# Where Placeholders Are Commonly Used
+## Primary files
+```yaml
+modules/display-tag/display_tag.yml
+modules/formats/config.yml
+modules/announcements/announce.yml
+modules/announcements/placeholder.yml
+modules/player-motd/motd.yml
+modules/player-motd/placeholder.yml
+modules/server-motd/config.yml
+```
+
+:::tip[Rule]
+- `%...%` usually means expansion placeholder.
+- `{...}` usually means module token placeholder defined in a module `placeholder.yml`.
+:::
+
+---
+
+# Native `%fiochat_*%` Placeholder Catalog
+(From your provided source allocation: `FioChatPlaceholderExpansion`)
+
+## 1) Mentions, Message State, Platform
+```yaml
+%fiochat_mentions_state%
+%fiochat_message_state%
+%fiochat_player_msg_state%
+%fiochat_user_platform%
+```
+
+Expected output examples:
+```yaml
+enabled
+disabled
+true
+false
+java
+bedrock
+```
+
+## 2) AntiBot and Vanish Core
+```yaml
+%fiochat_antibot_verified%
+%fiochat_antibot_pending%
+%fiochat_vanish_state%
+%fiochat_vanish_level%
+```
+
+## 3) Vanish Interaction Flags
+```yaml
+%fiochat_vanish_interaction_itempickup%
+%fiochat_vanish_interaction_itemdrop%
+%fiochat_vanish_interaction_xppickup%
+%fiochat_vanish_interaction_containeropen%
+%fiochat_vanish_interaction_doorleverbuttonuse%
+%fiochat_vanish_interaction_pressureplates%
+%fiochat_vanish_interaction_tripwiretrigger%
+%fiochat_vanish_interaction_entityinteract%
+%fiochat_vanish_interaction_itemframerotate%
+%fiochat_vanish_interaction_armorstandedit%
+%fiochat_vanish_interaction_bucketuse%
+%fiochat_vanish_interaction_placingblocks%
+%fiochat_vanish_interaction_breakingblocks%
+```
+
+## 4) JoinQuit State and Presets
+```yaml
+%fiochat_join_message_state%
+%fiochat_join_sound_state%
+%fiochat_quit_message_state%
+%fiochat_quit_sound_state%
+%fiochat_join_preset%
+%fiochat_quit_preset%
+%fiochat_join_sound%
+%fiochat_quit_sound%
+%fiochat_join_particle%
+%fiochat_quit_particle%
+%fiochat_join_style%
+%fiochat_quit_style%
+```
+
+## 5) AFK
+```yaml
+%fiochat_afk_state%
+%fiochat_afk_reason%
+%fiochat_afk_duration%
+%fiochat_afk_duration_seconds%
+```
+
+## 6) Notification and Display Toggle States
+```yaml
+%fiochat_motd_message_state%
+%fiochat_scoreboard_state%
+%fiochat_announcement_message_state%
+%fiochat_announcement_sound_state%
+%fiochat_biomediscovery_state%
+%fiochat_daycounter_state%
+%fiochat_deathmessage_state%
+%fiochat_deathmessage_disabled%
+%fiochat_bossbar_state%
+%fiochat_tab_state%
+```
+
+## 7) ItemTag and Inventory Alert
+```yaml
+%fiochat_itemtag_state_text%
+%fiochat_itemtag_state_particle%
+%fiochat_itemtag_state_stack%
+%fiochat_inventory_alert_enabled%
+%fiochat_inventory_alert_status%
+%fiochat_inventoryalert_state%
+%fiochat_inventory_alert_full_enabled%
+%fiochat_inventory_alert_full_status%
+%fiochat_inventory_alert_prewarn_enabled%
+%fiochat_inventory_alert_prewarn_status%
+%fiochat_inventory_alert_threshold%
+%fiochat_inventoryalert_threshold%
+```
+
+## 8) Channels, Font, Mailbox
+```yaml
+%fiochat_channels_available%
+%fiochat_channel_current%
+%fiochat_font%
+%fiochat_font_display%
+%fiochat_mailbox_unread_count%
+%fiochat_mailbox_message_state%
+%fiochat_mailbox_sound_state%
+%fiochat_mailbox_log_read%
+%fiochat_mailbox_log_deleted%
+%fiochat_mailbox_log_received%
+```
+
+## 9) Redeem/CodeRedeem Dynamic Placeholders
+```yaml
+%fiochat_coderedeem_<code_id>_time_left%
+%fiochat_coderedeem_<code_id>_max_use%
+%fiochat_coderedeem_<code_id>_left_to_claim%
+%fiochat_coderedeem_<code_id>_perms_req%
+%fiochat_coderedeem_<player>_<code_id>_status%
+%fiochat_coderedeem_<player>_<code_id>_timestamp%
+%fiochat_coderedeem_<code_id>_status%
+%fiochat_coderedeem_<code_id>_timestamp%
+
+%fiochat_redeemcode_<code_id>_max_use%
+%fiochat_redeemcode_<code_id>_left_to_claim%
+%fiochat_redeemcode_<code_id>_perms_req%
+%fiochat_redeemcode_<player>_<code_id>_status%
+%fiochat_redeemcode_<player>_<code_id>_timestamp%
+%fiochat_redeemcode_<code_id>_status%
+```
+
+---
+
+# Dynamic Channel Statistics Placeholders
+```yaml
+%fiochat_channel_<id>_online%
+%fiochat_channel_<id>_offline%
+%fiochat_channel_<id>_messages_<window>%
+%fiochat_channel_<id>_chatters_<window>%
+```
+
+Supported `<window>` examples:
+```yaml
+10s
+30s
+5m
+15m
+1h
+2h
+1d
+1w
+1mo
+1y
+all
+```
+
+:::info[Practical Usage]
+Use these for live moderation dashboards (for example in scoreboard/tab) to monitor channel traffic and activity.
+:::
+
+---
+
+# Placeholder Alias Integration (Display Tag)
+In `modules/display-tag/display_tag.yml`:
+
+```yaml
+settings:
+  placeholder:
+    aliases:
+      - 'fio_thing': "%fiochat_antibot_verified%%fiochat_afk_state% %fiochat_vanish_state%"
+```
+
+Usage in text templates:
+```yaml
+%fiochat_custom_fio_thing%
+```
+
+:::tip[Why use aliases]
+Aliases reduce repeated long chains and make layouts easier to maintain.
+:::
+
+---
+
+# Replace Map Integration (Display Tag)
+Also in `display_tag.yml`:
+
+```yaml
+settings:
+  placeholder:
+    replace:
+      '%fiochat_afk_state%':
+        'true': ' &7(?)'
+        'false': ''
+```
+
+This allows output decoration without changing source placeholder logic.
+
+---
+
+# PlaceholderAPI Passthrough and Alias Expansion
+The source includes alias expansions for display modules (`tab`, `scoreboard`, `bossbar`) and `papi_...` passthrough patterns.
+
+General behavior pattern:
+```yaml
+%fiochat_papi_<some_placeholderapi_node>%
+```
+
+Use only when the target expansion exists and is installed.
+
+:::warning[Dependency Risk]
+If a third-party PlaceholderAPI expansion is missing, output may be empty or unresolved.
+:::
+
+---
+
+# Module Token Placeholders (`{...}`)
+These are not `%...%` expansions. They are YAML token definitions.
+
+## Announcements tokens
+File: `modules/announcements/placeholder.yml`
+
+Example:
+```yaml
+placeholders:
+  vote:
+    format: "<smallfont:vote>"
+    hover:
+      lines:
+        - "<white>Click to open the vote link.</white>"
+    action:
+      open_url:
+        - "https://example.com/vote"
+```
+
+Used in `modules/announcements/announce.yml`:
+```yaml
+message:
+  - "Use {vote} and join {discord}!"
+```
+
+## Player MOTD tokens
+File: `modules/player-motd/placeholder.yml`
+
+Example:
+```yaml
+placeholders:
+  discord:
+    format: "<smallfont:discord>"
+    hover:
+      lines:
+        - "<white>Click to visit our Discord.</white>"
+    action:
+      open_url:
+        - "https://discord.gg/example"
+```
+
+Used in `modules/player-motd/motd.yml`:
+```yaml
+messages:
+  - "Welcome to the server {discord} {store}"
+```
+
+Supported action types:
+```yaml
+run_command
+suggest_command
+copy_to_clipboard
+open_url
+```
+
+:::note[Channel Behavior]
+Hover/click behavior is primarily meaningful in chat-line rendering. Non-chat channels can still render text tokens but may not keep full click semantics.
+:::
+
+---
+
+# Full YAML Usage Scenarios
+
+## Scenario A: Staff Status HUD
+```yaml
+lines:
+  - "Platform: %fiochat_user_platform%"
+  - "Vanish: %fiochat_vanish_state%"
+  - "AFK: %fiochat_afk_state%"
+  - "Mentions: %fiochat_mentions_state%"
+  - "PM: %fiochat_message_state%"
+```
+
+## Scenario B: Moderation Channel Health
+```yaml
+lines:
+  - "Global online: %fiochat_channel_global_online%"
+  - "Global msgs (5m): %fiochat_channel_global_messages_5m%"
+  - "Staff chatters (15m): %fiochat_channel_staff_chatters_15m%"
+```
+
+## Scenario C: Mailbox Operational Panel
+```yaml
+lines:
+  - "Unread: %fiochat_mailbox_unread_count%"
+  - "Mail Msg Toggle: %fiochat_mailbox_message_state%"
+  - "Mail Sound Toggle: %fiochat_mailbox_sound_state%"
+```
+
+## Scenario D: Redeem Campaign Board
+```yaml
+lines:
+  - "Code status: %fiochat_coderedeem_summer2026_status%"
+  - "Claims left: %fiochat_coderedeem_summer2026_left_to_claim%"
+  - "Max use: %fiochat_coderedeem_summer2026_max_use%"
+  - "Time left: %fiochat_coderedeem_summer2026_time_left%"
+```
+
+
+

@@ -1,0 +1,96 @@
+---
+title: Sent
+---
+
+# Sent
+
+`sent.yml` controls the Sent Mail screen. It lists mail the player has sent, provides a sent-specific filter, and allows opening or deleting sent entries.
+
+Source file:
+
+```text
+modules/announce/Mailbox/gui/sent.yml
+```
+
+## `menus.title` and `menus.rows`
+
+```yaml
+menus:
+  title: "<dark_gray>Sent Mail</dark_gray> <black>(%page%/%max_page%)</black>"
+  rows: 6
+```
+
+The title supports `%page%` and `%max_page%`. The current layout uses six rows.
+
+## `menus.content-slots`
+
+```yaml
+menus:
+  content-slots:
+    - "9-44"
+```
+
+These slots are used for sent mail entries.
+
+## `menus.entry.sent-item`
+
+```yaml
+menus:
+  entry:
+    sent-item:
+      name: "%status% <yellow>%to%</yellow>"
+```
+
+This template renders each sent mail entry.
+
+Supported placeholders include:
+
+```text
+%status%
+%to%
+%date%
+%isRewards%
+```
+
+The configured actions are:
+
+```yaml
+left:
+  - "[MAILBOX] OPEN_ENTRY"
+right:
+  - "[MAILBOX] DELETE_SENT_ENTRY"
+```
+
+Left click opens the sent entry in the sent View template. Right click opens Delete Confirm for that sent entry.
+
+## `menus.items.buttons.filter`
+
+The filter button is currently in slot `50`.
+
+`%filters%` is replaced by the rendered sent-filter list. `selected-format` controls the active filter line and `unselected-format` controls inactive filter lines.
+
+Left click runs `[MAILBOX] TOGGLE_FILTER_NEXT`. Right click runs `[MAILBOX] TOGGLE_FILTER_PREVIOUS`. In the Sent screen, those actions rotate through sent filter modes and reopen page `0`.
+
+## `menus.items.buttons.previous`
+
+The previous button is currently in slot `45`. `[MAILBOX] PAGE_PREVIOUS` opens the previous sent page.
+
+`behavior.ifnoPrevious` changes the button to a disabled gray item when there is no previous page.
+
+## `menus.items.buttons.next`
+
+The next button is currently in slot `53`. `[MAILBOX] PAGE_NEXT` opens the next sent page.
+
+`behavior.ifnoNext` changes the button to a disabled gray item when there is no next page.
+
+## `menus.items.buttons.back`
+
+The back button is currently in slot `46`. `[MAILBOX] GO_BACK` returns to the previous menu when the back service has history, otherwise it falls back to the inbox.
+
+## `menus.items.buttons.close`
+
+The close button is currently in slot `49`. `[CLOSE]` closes the inventory.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

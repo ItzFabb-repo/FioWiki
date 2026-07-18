@@ -1,0 +1,244 @@
+---
+title: Developer API
+sidebar_position: 1
+---
+
+# Developer API
+
+This page documents the API exposed by the current FioChatGames source.
+
+## Package names
+
+Use the real source package names:
+
+```java
+import com.itzfabb.fiochatgames.api.FioChatGamesAPI;
+import com.itzfabb.fiochatgames.api.FioChatGamesProvider;
+```
+
+## Accessing the API
+
+Optional access:
+
+```java
+FioChatGamesProvider.get().ifPresent(api -> {
+    // safe access
+});
+```
+
+Required access:
+
+```java
+FioChatGamesAPI api = FioChatGamesProvider.require();
+```
+
+Use `require()` only if your plugin guarantees FioChatGames is already loaded.
+
+## API interface map
+
+`FioChatGamesAPI` extends:
+
+- `FioChatGamesControlAPI`
+- `FioChatGamesPlayerAPI`
+- `FioChatGamesHistoryAPI`
+- `FioChatGamesServicesAPI`
+
+`FioChatGamesControlAPI` itself extends `FioChatGamesStartAPI`.
+
+## Start API
+
+```java
+Optional<GameRound> getCurrentRound();
+boolean startGame(GameType type);
+boolean stopCurrentGame(boolean announce);
+```
+
+## Control API
+
+```java
+int getEligiblePlayerCount();
+List<GameType> getEnabledGames();
+```
+
+## Player API
+
+```java
+PlayerData getData(UUID uuid, String name);
+int getPoints(UUID uuid, String name);
+boolean isEnabled(UUID uuid, String name);
+List<PlayerData> topPoints(int limit);
+```
+
+## History API
+
+```java
+List<GameManager.EventHistoryEntry> getRecentEventHistory(int limit);
+List<GameManager.EventHistoryEntry> getRecentWinnerHistory(int limit);
+Optional<GameManager.EventHistoryEntry> getLatestEventHistory();
+Optional<GameManager.EventHistoryEntry> getLatestWinnerHistory();
+```
+
+## Services API
+
+```java
+GameManager getGameManager();
+RewardService getRewardService();
+FioChatGamesPlaceholderService getPlaceholderService();
+MenuManager getMenuManager();
+UpdateChecker getUpdateChecker();
+ServerScheduler getSchedulerAdapter();
+```
+
+## Core types
+
+### GameType
+
+Current enum values in source:
+
+- `UNSCRAMBLE`
+- `UNSHUFFLE`
+- `UNREVERSE`
+- `TRIVIA`
+- `MATH`
+- `FAST_TYPE`
+- `REWRITE`
+- `RANDOM`
+- `FILLOUT`
+- `GUESS_THE_WORD`
+- `GUESS_THE_NUMBER`
+- `REACTION`
+- `VARIABLE`
+- `ACTIVITY`
+
+Useful methods:
+
+```java
+String displayName();
+String id();
+static GameType fromString(String input);
+```
+
+### GameRound
+
+Useful accessors exposed through the round object include:
+
+- `getType()`
+- `getPrompt()`
+- `getAnswers()`
+- `getPoints()`
+- `isCaseSensitive()`
+- `getSecondsLeft()`
+- `getMetadata()`
+- `getMetadataValue(String key)`
+- `getStartedAtMillis()`
+- `matches(String input)`
+- `primaryAnswer()`
+
+Race rounds store extra context in metadata keys such as:
+
+- `race.type`
+- `race.material`
+- `race.amount`
+
+### PlayerData
+
+Player data holds:
+
+- identity: `getUuid()`, `getLastName()`
+- participation: `isEnabled()`
+- totals: `getPoints()`, `getStreak()`
+- event stats: `getWins(GameType)`, `getGameStreak(GameType)`
+- race stats: objective-based win and streak storage used by the command layer
+
+## Example integrations
+
+Read the current round:
+
+```java
+FioChatGamesProvider.get().ifPresent(api -> {
+    api.getCurrentRound().ifPresent(round -> {
+        String type = round.getType().displayName();
+        String prompt = round.getPrompt();
+        int secondsLeft = round.getSecondsLeft();
+    });
+});
+```
+
+Start a round:
+
+```java
+boolean started = api.startGame(GameType.TRIVIA);
+```
+
+Stop a round:
+
+```java
+boolean stopped = api.stopCurrentGame(true);
+```
+
+Read player stats:
+
+```java
+UUID uuid = player.getUniqueId();
+var data = api.getData(uuid, player.getName());
+int points = data.getPoints();
+int triviaWins = data.getWins(GameType.TRIVIA);
+```
+
+Read event history:
+
+```java
+api.getLatestEventHistory().ifPresent(entry -> {
+    String type = entry.getTypeDisplayName();
+    String winner = entry.hasWinner() ? entry.getWinnerName() : "No winner";
+});
+```
+
+Use the placeholder service:
+
+```java
+var service = api.getPlaceholderService();
+String rendered = service.apply(player, "Now: %fiochatgames_current_game% (%fiochatgames_status%)");
+```
+
+Use the scheduler adapter:
+
+```java
+var scheduler = api.getSchedulerAdapter();
+
+scheduler.runLater(20L, () -> {
+    // one second later
+});
+
+var handle = scheduler.runTimer(20L, 20L, () -> {
+    // repeating task
+});
+
+handle.cancel();
+```
+
+## plugin.yml advice for integrations
+
+In your own plugin:
+
+```yaml
+softdepend:
+  - FioChatGames
+```
+
+Then resolve the provider in `onEnable()` or lazily when needed.
+
+## Current limitations
+
+The public API does not currently expose dedicated Bukkit lifecycle events for every FioChatGames state transition.
+
+Practical integration patterns are:
+
+- poll `getCurrentRound()`
+- use history queries for result tracking
+- use the placeholder service for UI rendering
+- use the scheduler adapter for thread-safe delayed work
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

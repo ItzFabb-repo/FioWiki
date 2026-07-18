@@ -1,0 +1,297 @@
+﻿---
+title: コマンドと権限
+sidebar_position: 1
+---
+
+FioChat のコマンドと権限の完全一覧
+
+---
+
+Aliases:
+`/fiochat`
+`/fc`
+`/chat`
+`/fchat`
+
+Standalone command aliases:
+- `/fonts` -> `/font`
+- `/itemdisplay` -> `/item-displays`
+- `/giveaway` -> `/giveaways`
+- `/previousmsg` -> `/prevmsg`
+- `/channel` -> `/channels`
+- `/quickchat` -> `/qc`
+- `/msg` -> `/message`
+- `/reply` -> `/r`
+
+# User Commands:
+| Commands | Permissions | Description |
+|----------|------------|-------------|
+| `/emoji` | `fiochat.emoji.list` | Open emoji browser GUI. |
+| `/fonts [font]` | `fiochat.fonts.use` | Open font GUI or select one directly. |
+| `/channel` | `fiochat.channel.use` | Open channels GUI. |
+| `/channel list` | `fiochat.channel.list` | List available channels. |
+| `/channel current` | `fiochat.channel.use` | Show current active channel. |
+| `/channel join <id>` | `fiochat.channel.join` | Join a channel by id. |
+| `/channel leave` | `fiochat.channel.use` | Leave current channel to default channel. |
+| `/report <player>` | `fiochat.report.use` | Open report reason flow. |
+| `/afk` | `fiochat.afk.use` | Toggle your AFK status. |
+| `/afk <reason>` | `fiochat.afk.reason` | Set your AFK reason. |
+| `/afk <player>` | `fiochat.afk.check` | Check another player's AFK state. |
+| `/afk <player> <reason>` | `fiochat.afk.others` | Set another player's AFK state (staff-level behavior). |
+| `/previousmsg [page]` | `fiochat.afk.previousmsg` | Open unread AFK-captured messages. |
+| `/ignore <player>` | `fiochat.ignore.use` | Ignore a player. |
+| `/ignore list` | `fiochat.ignore.list` | View ignore list. |
+| `/unignore <player>` | `fiochat.ignore.use` | Remove ignored player. |
+| `/join` | `fiochat.joinquit.command.join` | Open join preset selector. |
+| `/quit` | `fiochat.joinquit.command.quit` | Open quit preset selector. |
+| `/giveaway` | `fiochat.giveaway.create` | Create giveaway. |
+| `/giveaway list` | `fiochat.giveaway.create` | List active giveaways. |
+| `/giveaway event` | `fiochat.giveaway.create` | Show running giveaway event. |
+| `/giveaway help` | `fiochat.giveaway.create` | Show giveaway command help. |
+| `/redeem <code>` | `fiochat.redeem.use` | Redeem reward code. |
+| `/itemdisplay list` | `fiochat.itemdisplays.use` | List available display placeholders. |
+| `/itemdisplay open <display> <player>` | `fiochat.itemdisplays.use` | Open display preview. |
+| `/itemtag toggle <text\|particle\|stack>` | `fiochat.itemtag.toggle` | Toggle itemtag mode. |
+| `/msg <name> <message>` | `fiochat.message.use` | Send private message. |
+| `/reply <message>` | `fiochat.message.use` | Reply to last DM target. |
+| `/mailbox` | `fiochat.mailbox.format.color` and mailbox format nodes | Open mailbox GUI. |
+| `/vanish` | `fiochat.vanish.use` | Toggle vanish mode. |
+| `/vanish status` | `fiochat.vanish.use` | Show vanish status. |
+| `/vanish interaction <key> [on\|off\|toggle]` | `fiochat.vanish.interaction` | Control vanish interaction flags. |
+| `/toggle mentions` | `fiochat.mentions.use` | Toggle mention notifications. |
+| `/toggle message` | `fiochat.message.use` | Toggle private message receiving. |
+| `/toggle announcement <message\|sound>` | `fiochat.announcement.toggle.message` / `fiochat.announcement.toggle.sound` | Toggle announcement channels. |
+| `/toggle join <message\|sound>` | `fiochat.joinquit.toggle.join.message` / `fiochat.joinquit.toggle.join.sound` | Toggle join channels. |
+| `/toggle quit <message\|sound>` | `fiochat.joinquit.toggle.quit.message` / `fiochat.joinquit.toggle.quit.sound` | Toggle quit channels. |
+| `/toggle motd message` | `fiochat.motd.toggle.message` | Toggle player MOTD messages. |
+| `/toggle biomediscovery <title\|subtitle\|sound\|actionbar>` | `fiochat.biomediscovery.toggle.title` / `.subtitle` / `.sound` / `.actionbar` | Toggle biome discovery channels. |
+| `/toggle daycounter <title\|subtitle\|sound\|actionbar>` | `fiochat.daycounter.toggle.title` / `.subtitle` / `.sound` / `.actionbar` | Toggle daycounter channels. |
+| `/toggle deathmessage` | `fiochat.deathmessage.toggle` | Toggle custom death message notifications. |
+| `/toggle scoreboard [on\|off\|toggle\|status]` | `fiochat.scoreboard.toggle` | Toggle scoreboard display. |
+| `/toggle bossbar [on\|off\|toggle\|status]` | `fiochat.bossbar.toggle` | Toggle bossbar display. |
+| `/toggle tab [on\|off\|toggle\|status]` | `fiochat.tab.toggle` | Toggle tab display. |
+| `/toggle inventoryalert <full\|prewarn> [on\|off\|toggle\|status]` | `fiochat.inventoryfullalert.toggle` | Toggle inventory alert channel. |
+| `/toggle inventoryalert threshold [<1-99>\|reset\|status]` | `fiochat.inventoryfullalert.toggle` | Configure personal prewarn threshold. |
+| `/id open <preview_uuid>` | `fiochat.itemdisplays.use` (feature-gated by id preview support) | Open saved preview id. |
+| `/id book <preview_uuid>` | `fiochat.itemdisplays.use` (feature-gated by id preview support) | Open saved book preview id. |
+| `/quickchat` | module-driven / feature-gated | Open QuickChat editor GUI. |
+:::tip[Argument Behavior]
+
+`[]` = Optional Argument<br />
+`<>` = Required Argument
+:::
+
+<br />
+<br />
+
+# Admin Commands:
+| Commands | Permissions | Description |
+|----------|------------|-------------|
+| `/fiochat admin help` | `fiochat.admin` (or any admin access node) | Show admin help page. |
+| `/fiochat admin reload` | `fiochat.admin.module.reload` | Reload all config/module state. |
+| `/fiochat admin module reload <module\|all>` | `fiochat.admin.module.reload` | Reload target module/all modules. |
+| `/fiochat admin clearchat` | `fiochat.admin.module.reload` | Clear global chat display. |
+| `/fiochat admin module antiswear <list\|add\|remove\|regex> [word]` | `fiochat.admin.module.reload` | Manage antiswear entries. |
+| `/fiochat mutechat <global\|trade\|staff\|all\|*>` | `fiochat.admin.mutechat` or `fiochat.admin.module.reload` or `fiochat.admin` | Mute/unmute chats quickly. |
+| `/fiochat admin mutechat [global\|trade\|staff\|all\|*]` | `fiochat.admin.mutechat` or `fiochat.admin.module.reload` or `fiochat.admin` | Admin mutechat alias. |
+| `/fiochat admin channel mutechat <channel>` | `fiochat.admin.channel.mutechat` or `fiochat.admin.module.reload` or `fiochat.admin` | Mute specific channel. |
+| `/fiochat admin afk <player> [message]` | `fiochat.admin.afk` or `fiochat.admin` | Force AFK state for player. |
+| `/fiochat admin giveaway` | `fiochat.giveaway.admin.create` or `fiochat.admin` | Create giveaway as staff. |
+| `/fiochat admin code create <item\|cmd> <perma\|temporary\|3d> ...` | `fiochat.admin.code` or `fiochat.admin` | Create redeem code. |
+| `/fiochat admin code list` | `fiochat.admin.code` or `fiochat.admin` | List redeem codes. |
+| `/fiochat admin code delete <id>` | `fiochat.admin.code` or `fiochat.admin` | Delete redeem code. |
+| `/fiochat admin code set <player> <id> <true\|false\|clear>` | `fiochat.admin.code` or `fiochat.admin` | Set per-player redeem state. |
+| `/fiochat admin code clear` | `fiochat.admin.code` or `fiochat.admin` | Clear invalid/expired codes. |
+| `/fiochat admin history [player]` | `fiochat.chathistory` | Open history browser/player history. |
+| `/fiochat admin history <all\|chat\|cmd\|join\|leave\|death\|kill\|tp\|world> <player>` | `fiochat.chathistory` | Open filtered player history. |
+| `/fiochat admin report <player>` | `fiochat.report.review` | Open target player report history. |
+| `/reports` or `/fiochat reports` | `fiochat.report.review` | Open active reports menu. |
+| `/fiochat admin announcement send <id> <player\|*>` | `fiochat.admin` | Send configured announcement manually. |
+| `/fiochat admin announce <type> <player\|*> <message>` | `fiochat.admin` | Send ad-hoc announcement. |
+| `/fiochat admin setlang <language>` | `fiochat.admin.setlang` | Change global language. |
+| `/fiochat admin set <scoreboard\|bossbar\|tab> <player> <id\|auto>` | `fiochat.admin` | Force module preset per player. |
+| `/fiochat admin placeholders` | `fiochat.admin` | List FioChat placeholders. |
+| `/fiochat admin permissions` | `fiochat.admin` | Show key permission nodes. |
+| `/fiochat admin author` | `fiochat.admin` | Show plugin author info. |
+| `/fiochat admin version` | `fiochat.admin` | Show plugin version. |
+| `/vanish toggle <player>` | `fiochat.vanish.others` or `fiochat.admin` | Toggle vanish for another player. |
+
+<br />
+<br />
+
+# User Permissions (Core)
+| Permission | Default | Description |
+|-----------|---------|-------------|
+| `fiochat.emoji.use` | `true` | Allow emoji replacement in chat. |
+| `fiochat.emoji.list` | `true` | Allow opening emoji menu/list. |
+| `fiochat.fonts.use` | `false` | Allow using font system. |
+| `fiochat.channel.use` | `true` | Allow channel system use. |
+| `fiochat.channel.list` | `true` | Allow channel listing. |
+| `fiochat.channel.join` | `true` | Allow joining channels. |
+| `fiochat.message.use` | `true` | Allow private message commands. |
+| `fiochat.mentions.use` | `true` | Allow mention notifications. |
+| `fiochat.report.use` | `true` | Allow reporting players. |
+| `fiochat.afk.use` | `true` | Allow AFK self toggle. |
+| `fiochat.afk.reason` | `true` | Allow AFK reason. |
+| `fiochat.afk.check` | `true` | Allow checking AFK of others. |
+| `fiochat.afk.previousmsg` | `true` | Allow previous AFK message GUI. |
+| `fiochat.ignore.use` | `true` | Allow ignore/unignore. |
+| `fiochat.ignore.list` | `true` | Allow ignore list. |
+| `fiochat.joinquit.use` | `true` | Allow JoinQuit feature use. |
+| `fiochat.joinquit.command.join` | `true` | Allow `/join`. |
+| `fiochat.joinquit.command.quit` | `true` | Allow `/quit`. |
+| `fiochat.giveaway.create` | `true` | Allow creating giveaway. |
+| `fiochat.redeem.use` | `true` | Allow redeem command usage. |
+| `fiochat.itemdisplays.use` | `true` | Allow item display feature usage. |
+| `fiochat.itemtag.toggle` | `true` | Allow itemtag toggle. |
+| `fiochat.inventoryfullalert.use` | `true` | Allow receiving inventory alerts. |
+| `fiochat.inventoryfullalert.toggle` | `true` | Allow inventory alert toggles. |
+| `fiochat.motd.use` | `true` | Allow receiving player MOTD. |
+| `fiochat.deathmessage.use` | `true` | Allow receiving custom death messages. |
+| `fiochat.announcement.use` | `true` | Allow receiving announcements. |
+| `fiochat.scoreboard.use` | `true` | Allow receiving scoreboard module. |
+| `fiochat.bossbar.use` | `true` | Allow receiving bossbar module. |
+| `fiochat.tab.use` | `true` | Allow receiving tab module. |
+| `fiochat.vanish.use` | `op` | Allow vanish command usage. |
+
+<br />
+<br />
+
+# Admin / Staff Permissions (Core)
+| Permission | Default | Description |
+|-----------|---------|-------------|
+| `fiochat.admin` | `op` | Parent admin permission. |
+| `fiochat.admin.module.reload` | `op` | Reload/module admin actions. |
+| `fiochat.admin.afk` | `op` | Admin AFK control. |
+| `fiochat.admin.mutechat` | `op` | Admin mutechat controls. |
+| `fiochat.admin.channel.mutechat` | `op` | Channel mutechat controls. |
+| `fiochat.admin.code` | `op` | Redeem code management. |
+| `fiochat.admin.setlang` | `op` | Global language change. |
+| `fiochat.giveaway.admin.create` | `op` | Staff giveaway create. |
+| `fiochat.chathistory` | `op` | Chat history browser. |
+| `fiochat.report.review` | `op` | Review reports/open reports GUI. |
+| `fiochat.report.receive` | `op` | Receive report notices. |
+| `fiochat.vanish.others` | `op` | Toggle vanish on other players. |
+| `fiochat.vanish.see` | `op` | See vanished players. |
+| `fiochat.vanish.interaction` | `op` | Manage vanish interaction toggles. |
+| `fiochat.vanish.autojoin` | `op` | Auto-vanish on join (if enabled). |
+
+<br />
+<br />
+
+# Bypass and Moderation Permissions
+| Permission | Default | Description |
+|-----------|---------|-------------|
+| `fiochat.bypass.all` | `false` | Global bypass for many checks. |
+| `fiochat.bypass.maxjoins` | `op` | Bypass max server joins limit. |
+| `fiochat.warnpoints.bypass` | `false` | Bypass warn-points accumulation. |
+| `fiochat.commandhider.bypass` | `false` | Bypass command hider filtering. |
+| `fiochat.perworldchat.bypass` | `false` | Bypass per-world chat visibility. |
+| `fiochat.chatradius.bypass.sender` | `false` | Bypass chat radius as sender. |
+| `fiochat.chatradius.bypass.receive` | `false` | Bypass chat radius as receiver. |
+| `fiochat.chat.cooldown.bypass` | `false` | Bypass chat cooldown rule. |
+| `fiochat.command.cooldown.bypass` | `false` | Bypass command cooldown rule. |
+| `fiochat.chat.repeat.bypass` | `false` | Bypass anti-repeat for chat. |
+| `fiochat.command.repeat.bypass` | `false` | Bypass anti-repeat for commands. |
+| `fiochat.chat.flood.bypass` | `false` | Bypass anti-flood for chat. |
+| `fiochat.command.flood.bypass` | `false` | Bypass anti-flood for commands. |
+| `fiochat.chat.antiunicode.bypass` | `false` | Bypass anti-unicode for chat. |
+| `fiochat.chat.antiswear.bypass` | `false` | Bypass antiswear for chat. |
+| `fiochat.command.antiswear.bypass` | `false` | Bypass antiswear for commands. |
+| `fiochat.sign.antiswear.bypass` | `false` | Bypass antiswear for signs. |
+| `fiochat.chat.antiadvertising.bypass` | `false` | Bypass anti-ads for chat. |
+| `fiochat.command.antiadvertising.bypass` | `false` | Bypass anti-ads for commands. |
+| `fiochat.sign.antiadvertising.bypass` | `false` | Bypass anti-ads for signs. |
+
+<br />
+<br />
+
+# Spy Permissions (Chat Management)
+| Permission | Default | Description |
+|-----------|---------|-------------|
+| `fiochat.spy.cooldown` | `op` | Receive cooldown spy logs. |
+| `fiochat.spy.flood` | `op` | Receive flood spy logs. |
+| `fiochat.spy.antiunicode` | `op` | Receive anti-unicode spy logs. |
+| `fiochat.spy.antirepeat` | `op` | Receive anti-repeat spy logs. |
+| `fiochat.spy.antiswear` | `op` | Receive antiswear spy logs. |
+| `fiochat.spy.antiadvertising` | `op` | Receive anti-advertising spy logs. |
+| `fiochat.spy.exclude` | `false` | Exclude player from several spy outputs. |
+
+<br />
+<br />
+
+# JoinQuit Selector Permissions
+`permissions.txt` contains many dynamic selector nodes, for example:
+- `fiochat.joinquit.join.message.*`
+- `fiochat.joinquit.join.sound.*`
+- `fiochat.joinquit.join.particle.*`
+- `fiochat.joinquit.join.style.*`
+- `fiochat.joinquit.quit.message.*`
+- `fiochat.joinquit.quit.sound.*`
+- `fiochat.joinquit.quit.particle.*`
+- `fiochat.joinquit.quit.style.*`
+
+These are generated and can be very long; use wildcard nodes for practical permission setup.
+
+<br />
+<br />
+
+# YAML Presets
+Common user preset:
+```yaml
+fiochat.emoji.use
+fiochat.emoji.list
+fiochat.fonts.use
+fiochat.channel.use
+fiochat.channel.list
+fiochat.channel.join
+fiochat.mentions.use
+fiochat.message.use
+fiochat.report.use
+fiochat.afk.use
+fiochat.afk.reason
+fiochat.afk.check
+fiochat.afk.previousmsg
+fiochat.ignore.use
+fiochat.ignore.list
+fiochat.joinquit.use
+fiochat.joinquit.command.join
+fiochat.joinquit.command.quit
+fiochat.giveaway.create
+fiochat.redeem.use
+fiochat.itemdisplays.use
+fiochat.itemtag.toggle
+fiochat.inventoryfullalert.use
+fiochat.inventoryfullalert.toggle
+fiochat.motd.use
+fiochat.announcement.use
+fiochat.deathmessage.use
+fiochat.scoreboard.use
+fiochat.bossbar.use
+fiochat.tab.use
+```
+
+Common admin preset:
+```yaml
+fiochat.admin
+fiochat.admin.module.reload
+fiochat.admin.afk
+fiochat.admin.mutechat
+fiochat.admin.channel.mutechat
+fiochat.admin.code
+fiochat.admin.setlang
+fiochat.giveaway.admin.create
+fiochat.chathistory
+fiochat.report.review
+fiochat.report.receive
+fiochat.vanish.others
+fiochat.vanish.see
+fiochat.vanish.interaction
+fiochat.vanish.autojoin
+fiochat.bypass.all
+fiochat.bypass.maxjoins
+```
+:::warning[Please Note!]
+Some information might be missing on this table please report it immediately to ItzFabb for a 
+Documents update & improvements!
+:::

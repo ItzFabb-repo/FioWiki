@@ -1,0 +1,54 @@
+---
+title: AntiUnicode
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# AntiUnicode Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This blocks chat messages when they contain unicode characters.
+- Source comments say it checks only the player's chat message input.
+- Rank format, channel prefix, and plugin formatting are ignored.
+- It does not scan formatted output.
+- Fixed bypass permission documented by source comments:
+  - `fiochat.chat.antiunicode.bypass`
+
+## `spy`
+```yaml
+spy:
+  chat: "..."
+```
+This section defines the staff spy message for anti-unicode violations.
+
+## `chat`
+```yaml
+chat:
+  enabled: true
+  message: "..."
+  ascii-only: true
+  title:
+    enabled: true
+  actionbar:
+    enabled: false
+  sound:
+    enabled: true
+  whitelist:
+    - "?"
+    - "!"
+```
+
+### `ascii-only`
+Source comments say:
+- `true` blocks any codepoint above ASCII 127
+- `false` is kept as a relaxed mode for future extension
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

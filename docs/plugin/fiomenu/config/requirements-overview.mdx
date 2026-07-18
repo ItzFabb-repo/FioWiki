@@ -1,0 +1,208 @@
+﻿---
+title: Requirements Overview
+sidebar_position: 4
+---
+
+# Requirements Overview
+
+Requirements in FioMenu are the internal rule system used to decide whether a menu can open, whether a button should render one state or another, and whether an action branch should go to success or failure.
+
+## How the system works
+
+The source examples use numbered rule blocks:
+
+```yaml
+rules0:
+rules1:
+rules2:
+```
+
+They are evaluated in order. In practice, the bundled comments and examples use them in three main places:
+
+- `menu.open.rules*`
+- item-level `rules*`
+- action branch `rules*`
+
+## Requirement types in the current source
+
+The bundled FioMenu comments document these internal requirement families:
+
+- `permission`
+- `placeholder`
+- `exp_points`
+- `exp_level`
+- `money`
+- `world`
+- `item`
+- `meta`
+- `coordinates`
+- `string`
+
+## What each one checks
+
+### `permission`
+
+Checks whether the player has a permission node.
+
+```yaml
+rules0:
+  type: "permission"
+  permission: "fiomenu.open.example"
+```
+
+### `placeholder`
+
+Compares a placeholder expression, often numeric.
+
+```yaml
+rules0:
+  type: "placeholder"
+  value: "%vault_eco_balance% >= 1000"
+```
+
+### `exp_points`
+
+Checks total experience points.
+
+```yaml
+rules0:
+  type: "exp_points"
+  value: ">= 1000"
+```
+
+### `exp_level`
+
+Checks current experience level.
+
+```yaml
+rules0:
+  type: "exp_level"
+  value: ">= 10"
+```
+
+### `money`
+
+Checks a Vault-backed balance.
+
+```yaml
+rules0:
+  type: "money"
+  value: ">= 5000"
+```
+
+### `world`
+
+Checks the player's current world name.
+
+```yaml
+rules0:
+  type: "world"
+  world: "spawn OR spawn_the_end"
+```
+
+### `item`
+
+Checks whether the player has a matching item amount.
+
+```yaml
+rules0:
+  type: "item"
+  value: "DIAMOND >= 1 OR 10"
+```
+
+### `meta`
+
+Checks a value from the player's PDC-style FioMenu meta store.
+
+```yaml
+rules0:
+  type: "meta"
+  meta:
+    key: "vip_access"
+    type: "BOOLEAN"
+    value: "true"
+```
+
+### `coordinates`
+
+Checks distance from a world position.
+
+```yaml
+rules0:
+  type: "coordinates"
+  world: "spawn,0,64,0 <= 100 OR 150"
+```
+
+### `string`
+
+Checks a case-insensitive text comparison.
+
+```yaml
+rules0:
+  type: "string"
+  value: "%player_name% == ItzFabb__ OR Mojang"
+```
+
+## Compact rules
+
+The source comments also show that compact inline rules are supported:
+
+```yaml
+rules0: "%vault_eco_balance% >= 5000"
+```
+
+The bundle also demonstrates combined expressions such as:
+
+```yaml
+rules0: "%playerpoints_points% >= 25 AND %player_name% != ExampleBot"
+```
+
+So the practical top-level summary is:
+
+- use full typed blocks when you want explicit structure or branch actions
+- use compact expressions when the check is short and readable
+
+## Success and failure branches
+
+Rules can drive action branching:
+
+```yaml
+actions:
+  any:
+    rules0: "%playerpoints_points% >= 25"
+    failed:
+      - '[MESSAGE] <red>You do not have enough points.</red>'
+    success:
+      - '[CONSOLE] points take %player_name% 25'
+```
+
+That same branch concept is also used by Bedrock form examples.
+
+## Where requirements matter most
+
+At a high level, requirements in FioMenu are used for:
+
+- blocking menu access
+- showing one visual state instead of another
+- choosing success or failure actions
+- changing a Bedrock image or button variant
+- protecting reward, purchase, or utility actions
+
+## Internal behavior summary
+
+The broad internal rule engine behavior from the source is:
+
+- numbered rules are evaluated in order
+- numeric comparison operators are supported
+- `OR` is supported in the documented value syntax
+- bundled examples also show `AND` in compact expressions
+- `meta` supports typed comparisons such as `INT`, `LONG`, `DOUBLE`, `STRING`, and `BOOLEAN`
+- `coordinates` uses world plus xyz plus comparator plus distance
+
+## Practical guideline
+
+If your menu should only open for the right player, world, balance, or state, place the rule in `menu.open`.
+
+If one button should change visual state, place the rule on that item.
+
+If one click should branch into success or failure logic, place the rule under that action block.

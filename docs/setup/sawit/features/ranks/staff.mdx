@@ -1,0 +1,79 @@
+---
+title: Staff
+sidebar_position: 2
+---
+
+# Staff
+
+Sawit staff ranks are handled through `LuckPerms`.
+
+## Verified Staff Groups
+
+| Group | System | Notes |
+| --- | --- | --- |
+| `trialhelper` | `LuckPerms` | Entry-level helper/moderation access. |
+| `trialmod` | `LuckPerms` | Trial moderator layer above `trialhelper`. |
+| `helper` | `LuckPerms` | Helper rank with higher vanish visibility and exemptions. |
+| `mod` | `LuckPerms` | Moderator rank with rollback and vanish interaction access. |
+| `admin` | `LuckPerms` | Admin rank with high-level moderation and admin permissions. |
+| `coowner` | `LuckPerms` | Senior management rank above `admin`. |
+| `owner` | `LuckPerms` | Highest verified staff rank in the package. |
+
+These groups are visible in the LuckPerms storage as created groups, so they are not guesses.
+
+## Verified Permission Examples
+
+The storage also exposes several permissions that are clearly attached to the staff ladder:
+
+| Group | Verified permission examples |
+| --- | --- |
+| `trialhelper` | `essentials.helpop.receive`, `essentials.kick.notify`, `essentials.mute.notify`, `essentials.socialspy`, `fiochat.afk.use`, `fiochat.afk.reason`, `fiochat.afk.check`, `fiochat.channel.staff`, `fiochat.channel.trade`, `fiochat.chathistory`, `fiochat.commandhider.visibility.trialhelper`, `fiochat.spy.antiadvertising`, `fiochat.spy.antirepeat`, `fiochat.spy.antiswear`, `fiochat.spy.antiunicode`, `fiochat.spy.cooldown`, `fiochat.spy.flood`, `fiochat.vanish.use`, `fiochat.vanish.level.1`, `fiochat.vanish.see.level.1` |
+| `trialmod` | `openinv.access.level.1`, `fiochat.commandhider.visibility.trialmod`, `fiochat.report.receive`, `fiochat.report.review`, `fiochat.vanish.level.2`, `fiochat.vanish.see.level.2` |
+| `helper` | `libertybans.commands`, `libertybans.kick`, `libertybans.list.banlist`, `libertybans.list.history`, `libertybans.list.mutelist`, `libertybans.list.warns`, `libertybans.mute`, `libertybans.warn`, `only.staff`, `openinv.access.level.2`, `fiochat.commandhider.visibility.helper`, `fiochat.ignore.exempt`, `fiochat.vanish.level.3`, `fiochat.vanish.see.level.3` |
+| `mod` | `coreprotect.lookup.*`, `coreprotect.consumer`, `coreprotect.help`, `coreprotect.inspect`, `coreprotect.lookup`, `coreprotect.restore`, `coreprotect.rollback`, `coreprotect.status`, `coreprotect.teleport`, `spawnercollectors.spawner.*`, `VotingPlugin.Mod`, `backpack.clean`, `backpack.clean.other`, `backpack.others`, `backpack.others.edit`, `essentials.clearinventory`, `essentials.clearinventoryconfirmtoggle`, `essentials.kick`, `essentials.mute`, `essentials.sudo`, `essentials.sudo.multiple`, `fiochat.afk.others`, `fiochat.commandhider.visibility.mod`, `fiochat.vanish.level.4`, `fiochat.vanish.see`, `fiochat.vanish.see.level.4`, `fiochat.vanish.interaction`, `fiochat.vanish.interaction.armorstandedit`, `fiochat.vanish.interaction.breakingblocks`, `fiochat.vanish.interaction.bucketuse`, `fiochat.vanish.interaction.containeropen`, `fiochat.vanish.interaction.doorleverbuttonuse`, `fiochat.vanish.interaction.entityinteract`, `fiochat.vanish.interaction.itemdrop`, `fiochat.vanish.interaction.itemframerotate`, `fiochat.vanish.interaction.itempickup`, `fiochat.vanish.interaction.placingblocks`, `fiochat.vanish.interaction.pressureplates`, `fiochat.vanish.interaction.tripwiretrigger`, `fiochat.vanish.interaction.xppickup`, `inventoryrollback.cmd`, `inventoryrollback.deathsave`, `inventoryrollback.joinsave`, `inventoryrollback.leavesave`, `inventoryrollback.reload`, `inventoryrollback.restore`, `inventoryrollback.worldchangesave`, `libertybans.alts.accounthistory.delete`, `libertybans.alts.accounthistory.list` |
+| `admin` | `fancynpcs.command.npc.action.add.*`, `worldguard.region.flag.flags.chest-access.*`, `worldguard.region.flag.flags.use.*`, `worldguard.region.flag.regions.own.*`, `worldguard.region.addmember.*`, `worldguard.region.addowner.*`, `worldguard.region.bypass.*`, `worldguard.region.flag.*`, `worldguard.region.info.*`, `worldguard.region.locationoverride.*`, `worldguard.region.redefine.*`, `worldguard.region.remove.*`, `worldguard.region.removemember.*`, `worldguard.region.removeowner.*`, `worldguard.region.select.*`, `worldguard.region.setparent.*`, `worldguard.region.setpriority.*`, `worldguard.region.teleport.*`, `worldguard.region.teleportcenter.*`, `auraskills.command.armor.*`, `auraskills.command.item.*`, `libertybans.ban.dur.*`, `CyberLevels.admin.*`, `GMusic.Music.*`, `betterrtp.world.*`, `chatcolor.change.*`, `chatcolor.color.*`, `chatcolor.modifier.*`, `chatcolor.*`, `chatgames.start.*`, `essentials.gamemode.*`, `essentials.*`, `excellentcrates.bypass.*`, `excellentcrates.command.*`, `excellentcrates.*`, `placeholderapi.ecloud.*`, `placeholderapi.*`, `quickshop.bypass.*`, `inventoryrollbackplus.*`, `fiochat.admin`, `fiochat.admin.afk`, `fiochat.admin.code`, `fiochat.admin.setlang`, `fiochat.admin.mutechat`, `fiochat.admin.channel.mutechat`, `fiochat.admin.module.reload`, `fiochat.vanish.level.5`, `fiochat.vanish.see.level.5` |
+| `coowner` | `coinsengine.command.*`, `coinsengine.currency.*`, `coreprotect.*`, `fiochat.commandhider.visibility.coowner`, `fiochat.vanish.level.6`, `fiochat.vanish.see.level.6`, `luckperms.applyedits`, `luckperms.creategroup`, `luckperms.createtrack`, `luckperms.deletegroup`, `luckperms.deletetrack`, `luckperms.editor`, `luckperms.export`, `luckperms.group.clear`, `luckperms.group.clone`, `luckperms.group.editor`, `luckperms.group.info`, `luckperms.group.listmembers`, `luckperms.group.meta.addprefix`, `luckperms.group.meta.addsuffix`, `luckperms.group.meta.addtempprefix`, `luckperms.group.meta.addtempsuffix`, `luckperms.group.meta.clear`, `luckperms.group.meta.removeprefix`, `luckperms.group.meta.removesuffix`, `luckperms.group.meta.removetempprefix`, `luckperms.group.meta.removetempsuffix`, `luckperms.group.meta.set`, `luckperms.group.meta.setprefix`, `luckperms.group.meta.setsuffix`, `luckperms.group.meta.settemp`, `luckperms.group.meta.settempprefix`, `luckperms.group.meta.settempsuffix`, `luckperms.group.meta.unset`, `luckperms.group.meta.unsettemp`, `luckperms.group.parent.add`, `luckperms.group.parent.addtemp`, `luckperms.group.parent.clear`, `luckperms.group.parent.cleartrack`, `luckperms.group.parent.info`, `luckperms.group.parent.remove`, `luckperms.group.parent.removetemp`, `luckperms.group.parent.set`, `luckperms.group.parent.settrack`, `luckperms.group.permission.check`, `luckperms.group.permission.clear`, `luckperms.group.permission.info`, `luckperms.group.permission.set`, `luckperms.group.permission.settemp` |
+| `owner` | `nightcore.command.*`, `nightcore.*`, `coinsengine.*`, `fiochat.commandhider.visibility`, `fiochat.commandhider.visibility.owner`, `fiochat.vanish.level.7`, `fiochat.vanish.see.level.7` |
+
+## Rank Images
+
+### Owner
+
+![Rank Owner](/img/setup/sawit/rank-owner.png)
+
+### Coowner
+
+![Rank Coowner](/img/setup/sawit/rank-coowner.png)
+
+### Admin
+
+![Rank Admin](/img/setup/sawit/rank-admin.png)
+
+### Mod
+
+![Rank Moderator](/img/setup/sawit/rank-moderator.png)
+
+### Helper
+
+![Rank Helper](/img/setup/sawit/rank-helper.png)
+
+### Trial Mod
+
+![Rank Trial Moderator](/img/setup/sawit/rank-trial-moderator.png)
+
+### Trial Helper
+
+![Rank Trial Helper](/img/setup/sawit/rank-trial-helper.png)
+
+## Notes
+
+| Item | Detail |
+| --- | --- |
+| High weights | `owner` uses weight `1000`, `coowner` uses `999`, `admin` uses `998`, `mod` uses `997`, `helper` uses `996`, `trialmod` uses `995`, and `trialhelper` uses `994`. |
+| Command hider | The storage also contains role-specific command-hider visibility nodes for `admin`, `mod`, `helper`, `trialmod`, and `trialhelper`. |
+| Separate creator groups | `youtube`, `tiktok`, and `twitch` also exist in LuckPerms, but they are not part of the core staff ladder. |
+| Coverage | The permission table has been refreshed against the provided LuckPerms web editor, so it is more complete than the earlier storage-only pass. |
+
+:::info[Accuracy Note]
+This page is based on the Sawit LuckPerms storage itself, not on assumptions from a generic rank layout.
+:::

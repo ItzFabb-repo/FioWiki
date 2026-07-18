@@ -1,0 +1,231 @@
+---
+title: Config
+---
+
+# Announce Config
+
+Source file:
+
+```text
+modules/announce/Server Announcements/announce.yml
+```
+
+This page explains the scheduled Server Announcements file. These entries are loaded by the announcement service when `modules.announcements` is enabled in `modules/settings.yml`. Players must also have `fiochat.announcement.use` to receive them, and player personal toggles can hide the visual parts or the sound parts separately.
+
+## `settings.interval-seconds`
+
+`settings.interval-seconds` is the global scheduler delay for the automatic rotation. The current value is `180`, so FioChat waits 180 seconds before each rotation tick. This value controls when the scheduler wakes up, not the message text, not the title duration, and not the bossbar duration.
+
+The code clamps the effective value to at least one second. If this key is removed, the service falls back to `300` seconds. Individual announcement entries also have their own `interval-seconds` key in the YAML, but the current scheduler uses the global `settings.interval-seconds` for the rotation task.
+
+## `settings.mode`
+
+`settings.mode` chooses how the next scheduled announcement is selected. The current value is `BY_ORDER`.
+
+Accepted modes are `BY_ORDER`, `BY-ORDER`, `ORDER`, and `RANDOM`. `BY_ORDER` walks through enabled entries in the order loaded from `announcements`. `RANDOM` chooses one enabled entry randomly on each rotation tick. Any unrecognized value falls back to `BY_ORDER`.
+
+## `settings.silent-for-afk`
+
+`settings.silent-for-afk` is supported by the service even though it is not present in the current default YAML. When omitted, it behaves as `true`.
+
+When this setting is true, the service checks the AFK module before sending scheduled or typed announcement delivery. If the AFK service is enabled and a player is currently AFK, that player is skipped. When false, AFK players can still receive announcements as long as the other recipient checks pass.
+
+## `announcements`
+
+`announcements` is the map of scheduled entries. The current defaults define `1`, `2`, and `3`.
+
+Each key becomes the announcement id. The service normalizes ids to lowercase internally, stores them in `announcementsById`, and exposes them for manual sends through `/fiochat admin announcement send <id> <player|*>`. Numeric ids are valid because the loader treats the YAML key as a string.
+
+## `announcements.<id>.enabled`
+
+`enabled` is supported per entry. It is not shown in the current default entries, so each entry defaults to `true`.
+
+If an entry is disabled, it is still part of the YAML but it is not added to the automatic rotation and the delivery method refuses to broadcast it. Use this when you want to keep a prepared announcement in the file without letting it appear automatically or through a send path that checks entry state.
+
+## `announcements.<id>.name`
+
+`name` is supported per entry. If it is omitted, the id is used as the name.
+
+The name is exposed to placeholders as `%announcement_name%`. The id is exposed separately as `%announcement_id%`. This matters when you want the internal id to stay short, such as `1`, while a visible text line can refer to a readable name.
+
+## `announcements.<id>.interval-seconds`
+
+The current default entries set this to `240`. This key documents the intended delay for an individual announcement entry, but the current Java scheduler rotates using the global `settings.interval-seconds` value.
+
+Keep it in the file if you want the YAML to remain forward-compatible with per-entry timing or if another build reads this value. Do not expect it to override the 180-second rotation interval in the current service behavior.
+
+## `announcements.<id>.worlds`
+
+`worlds` limits which worlds can receive the announcement. The current defaults use `[]`, which means there is no world restriction.
+
+When you add values, the service lowercases them and compares them against the receiver's current Bukkit world name. A player outside the listed worlds is skipped before messages, actionbars, titles, bossbars, toasts, or sounds are sent.
+
+Example:
+
+```yaml
+announcements:
+  1:
+    worlds:
+      - survival
+      - spawn
+```
+
+## `announcements.<id>.requirement`
+
+`requirement` is an additional recipient filter. The current defaults use `[]`, meaning no extra requirement is applied.
+
+Each requirement must use `TYPE: expression`. All listed requirements must pass for the player to receive the entry. Supported types include `PERMS` or `PERMISSION`, `WORLD`, `GAMEMODE` or `MODE`, `LEVEL`, `OP`, `JAVA`, `BEDROCK`, and `PAPI`.
+
+`LEVEL` accepts comparisons such as `>=10`, `<30`, `!=5`, or a direct number. `OP`, `JAVA`, and `BEDROCK` use boolean-style values such as `true`, `yes`, `on`, or `1`. `PAPI` evaluates PlaceholderAPI output and supports comparisons such as `%vault_eco_balance% >= 1000`; without an operator, a non-empty value that is not `false` and not `0` passes.
+
+## `announcements.<id>.message.enabled`
+
+`message.enabled` controls whether the normal chat lines are sent. The current defaults set it to `true` for all scheduled entries.
+
+This switch only controls the chat channel of the entry. It does not disable actionbar, title, bossbar, toast, or sound. If a player has toggled announcement messages off, the service skips all visual channels for that player even when this key is true.
+
+## `announcements.<id>.message.lines`
+
+`message.lines` is the chat body. Empty strings create visible blank lines. The current defaults use centered MiniMessage-style announcement text and clickable tokens such as `{kit}`, `{vote}`, `{settings}`, `{disposal}`, `{playtime}`, and `{crossplay}`.
+
+Before sending, FioChat applies built-in placeholders such as `%announcement_id%`, `%announcement_name%`, `%player_name%`, `%player_displayname%`, `%player_level%`, `%player_world%`, `%player_gamemode%`, `%announcement_message_toggle%`, and `%announcement_sound_toggle%`. If PlaceholderAPI is installed, PlaceholderAPI placeholders are also resolved per player.
+
+Interactive `{token}` placeholders come from `placeholder.yml`. They are interactive only in chat components. If a token is unknown, it stays as text instead of becoming a clickable component.
+
+## `announcements.<id>.actionbar.enabled`
+
+`actionbar.enabled` decides whether an actionbar is sent with the entry. The current defaults set it to `false`.
+
+When true, the service renders `actionbar.text` with the same standard placeholders. This visual channel is controlled by the player's announcement message toggle, so a player who disabled announcement messages will not see the actionbar.
+
+## `announcements.<id>.actionbar.text`
+
+`actionbar.text` is the single-line text shown above the hotbar when the actionbar channel is enabled. The current defaults leave it empty.
+
+Use this for short notices only. The service sends one actionbar payload; it does not split long text into multiple lines.
+
+## `announcements.<id>.title.enabled`
+
+`title.enabled` decides whether the entry sends a Minecraft title. The current defaults set it to `false`.
+
+When true, both `title.title` and `title.subtitle` are rendered and sent together with the configured timing values. Like chat and actionbar, this is a visual channel controlled by the player's announcement message toggle.
+
+## `announcements.<id>.title.title`
+
+`title.title` is the main title text. The current defaults leave it empty because titles are disabled.
+
+This field supports FioChat formatting and the same standard placeholders. It should be kept short because Minecraft title text is large and appears in the center of the screen.
+
+## `announcements.<id>.title.subtitle`
+
+`title.subtitle` is the smaller line under the main title. The current defaults leave it empty.
+
+Use it for supporting context. If the title channel is enabled and this is empty, FioChat still sends a title packet with an empty subtitle.
+
+## `announcements.<id>.title.fade-in`
+
+`title.fade-in` is the number of ticks used for the title to fade in. The current defaults use `5`.
+
+Minecraft runs at 20 ticks per second, so `5` ticks is a quarter of a second.
+
+## `announcements.<id>.title.stay`
+
+`title.stay` is the number of ticks the title remains fully visible. The current defaults use `40`, which is two seconds.
+
+This duration affects only the title channel. It does not change the scheduler interval or bossbar display time.
+
+## `announcements.<id>.title.fade-out`
+
+`title.fade-out` is the number of ticks used for the title to fade out. The current defaults use `10`, which is half a second.
+
+## `announcements.<id>.bossbar.enabled`
+
+`bossbar.enabled` decides whether a bossbar is shown with the entry. The current defaults set it to `false`.
+
+When enabled, the service can use a shared bossbar for recipients if the bossbar text is safe to prepare globally. If the text contains player-specific placeholders, the service renders a separate bossbar per player.
+
+## `announcements.<id>.bossbar.title`
+
+`bossbar.title` is the text shown inside the bossbar. The current defaults leave it empty.
+
+The title supports FioChat formatting and placeholders. If the entry is also relayed to Discord, the service may summarize visible announcement text separately; the bossbar title is only used as the Discord fallback when no chat/actionbar/title summary is available.
+
+## `announcements.<id>.bossbar.color`
+
+`bossbar.color` selects the Bukkit bossbar color. The current defaults use `YELLOW`, `GREEN`, and `BLUE` across the three entries.
+
+Invalid values fall back to `BLUE`. Valid Bukkit colors include values such as `BLUE`, `GREEN`, `PINK`, `PURPLE`, `RED`, `WHITE`, and `YELLOW`.
+
+## `announcements.<id>.bossbar.style`
+
+`bossbar.style` selects the Bukkit bossbar style. The current defaults use `SOLID`.
+
+Invalid values fall back to `SOLID`. Bukkit styles include `SOLID`, `SEGMENTED_6`, `SEGMENTED_10`, `SEGMENTED_12`, and `SEGMENTED_20`.
+
+## `announcements.<id>.bossbar.progress`
+
+`bossbar.progress` controls the filled amount of the bossbar. The current defaults use `1.0`.
+
+The service clamps the value between `0.0` and `1.0`. Use `1.0` for a full bar, `0.5` for half, and `0.0` for empty.
+
+## `announcements.<id>.bossbar.seconds`
+
+`bossbar.seconds` controls how long the bossbar remains visible. The current defaults use `5`.
+
+The service enforces at least one second while loading the profile and at least 20 ticks when scheduling removal.
+
+## `announcements.<id>.sound.enabled`
+
+`sound.enabled` decides whether a sound plays for the entry. The current defaults set it to `true`.
+
+This channel is controlled by the player's announcement sound toggle. A player who disabled announcement sounds can still receive visual announcement channels.
+
+## `announcements.<id>.sound.name`
+
+`sound.name` is the Bukkit sound id. The current defaults use `BLOCK_AMETHYST_BLOCK_BREAK`.
+
+FioChat resolves sound names through its compatibility lookup. If the name cannot be resolved, no sound is played for that delivery.
+
+## `announcements.<id>.sound.volume`
+
+`sound.volume` controls playback volume. The current defaults use `1.0`.
+
+The value is passed directly to Bukkit's `playSound` call as a float. Higher values can make the sound audible from farther away depending on Minecraft behavior.
+
+## `announcements.<id>.sound.pitch`
+
+`sound.pitch` controls playback pitch. The current defaults use `1.0`.
+
+Lower values make the sound deeper; higher values make it sharper. The value is passed directly to Bukkit.
+
+## `announcements.<id>.toast`
+
+`toast` is supported by the service, although the current default `announce.yml` does not define it for the scheduled entries.
+
+When present, `toast.enabled` controls whether a toast notification is shown, `toast.title` controls the toast text, `toast.icon.material` controls the material icon, `toast.icon.player` can use the player's head, `toast.icon.texture` can provide a custom texture, and `toast.cleanup-delay-ticks` controls cleanup timing. The toast channel is treated as a visual channel and is skipped when the player's announcement message toggle is off.
+
+## `announcements.<id>.discord-action`
+
+`discord-action` is supported per entry, but it is not present in the current default scheduled entries.
+
+When set, it controls the FioDiscord relay action used for that announcement. If the value does not start with `fiochat.`, the service prefixes it. Without this setting, scheduled announcements relay as `fiochat.announcement.alerts`, while typed announcements relay as `fiochat.announcement.<type>`.
+
+## `admin-announcements.info`
+
+`admin-announcements.info` defines the built-in typed style named `info`. It is loaded from this file into `typedAnnouncementsByType`.
+
+The current entry enables chat message delivery and sends a centered staff notice line followed by `%message%`. It disables actionbar, title, bossbar, and sound by default. Because this is a typed announcement style, `%message%`, `%announcement_message%`, `%announce_message%`, `%admin_announcement_message%`, `%type%`, and `%announcement_type%` are available when the entry is sent through admin announcement commands.
+
+## Manual scheduled sends
+
+Scheduled entries can be sent manually with:
+
+```text
+/fiochat admin announcement send <id> <player|*>
+```
+
+`*` and `all` target all eligible online players. A player name targets one online player after exact or case-insensitive lookup. The same recipient filters still apply when sending to all: module enabled state, `fiochat.announcement.use`, AFK suppression, world filters, and requirements.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

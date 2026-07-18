@@ -1,0 +1,310 @@
+---
+title: Config
+---
+
+# Mailbox Config
+
+`config.yml` controls Mailbox notifications, reward claim click throttling, and built-in server mailboxes. GUI layout is not stored in this file; it is split into the files under `modules/announce/Mailbox/gui`.
+
+Source file:
+
+```text
+modules/announce/Mailbox/config.yml
+```
+
+The global module toggle is in `modules/settings.yml`:
+
+```yaml
+modules:
+  mailbox: true
+```
+
+When `modules.mailbox` is disabled, `/mailbox` is disabled, unread notifications do not run, mailbox delivery/log behavior is stopped, and the standalone `mailbox` command is synced as unavailable.
+
+## Permissions
+
+| Permission | Purpose |
+| --- | --- |
+| `fiochat.mailbox.use` | Opens Mailbox with `/mailbox`. |
+| `fiochat.mailbox.admin` | Allows admin mailbox-management commands. |
+| `fiochat.mailbox.format.hex` | Allows hex formatting in player-entered mailbox messages. |
+| `fiochat.mailbox.format.color` | Allows named color formatting in player-entered mailbox messages. |
+| `fiochat.mailbox.format.modifier` | Allows style modifiers in player-entered mailbox messages. |
+
+`fiochat.mailbox.use` allows opening Mailbox with `/mailbox`.
+
+`fiochat.mailbox.admin` allows admin mailbox-management commands such as inspect, state changes, clearing player data, listing ids, and checking a player's history.
+
+`fiochat.mailbox.format.hex` allows hex formatting in player-entered mailbox messages, including MiniMessage hex tags such as `<#9966cc>` and legacy inline hex such as `&#9966cc`.
+
+`fiochat.mailbox.format.color` allows named color formatting in player-entered mailbox messages, such as `<yellow>` or `&e`.
+
+`fiochat.mailbox.format.modifier` allows style modifiers in player-entered mailbox messages, such as `<bold>`, `<italic>`, `<underlined>`, and `<strikethrough>`.
+
+If a player does not have the matching formatting permission, the service strips that formatting category from the message input before saving the mail.
+
+## `settings.reward-claim-click-cooldown-millis`
+
+```yaml
+settings:
+  reward-claim-click-cooldown-millis: 600
+```
+
+This value throttles reward-claim clicks. It prevents repeated claim attempts from firing too quickly inside reward-related Mailbox views.
+
+The service clamps the value to `0` or higher. `600` means a player must wait roughly six tenths of a second between accepted claim clicks.
+
+## `notifications.unread.message-state`
+
+```yaml
+notifications:
+  unread:
+    message-state: true
+```
+
+When `true`, a player receives the unread mailbox text notification after joining if unread mail exists and the player is not blocked by the anti-bot pending check.
+
+When `false`, the unread text notification is not sent on join. The sound notification can still run if `sound-state` is enabled.
+
+## `notifications.unread.sound-state`
+
+```yaml
+notifications:
+  unread:
+    sound-state: true
+```
+
+When `true`, the unread notification sound can play for join reminders and incoming mailbox notifications.
+
+When `false`, the configured unread sound is not played, even if the message notification is still enabled.
+
+## `notifications.unread.message`
+
+```yaml
+notifications:
+  unread:
+    message: "<yellow>You have <white>%unread%</white> unread mail.</yellow>"
+```
+
+This is the join reminder text for players who have unread mail.
+
+`%unread%` is replaced with the player's unread mailbox count.
+
+The message supports the same FioChat text formatting used elsewhere in the plugin.
+
+## `notifications.unread.hover.enabled`
+
+```yaml
+notifications:
+  unread:
+    hover:
+      enabled: true
+```
+
+When `true`, the unread notification gets hover text.
+
+When `false`, the notification is still sent, but no hover event is attached.
+
+## `notifications.unread.hover.lines`
+
+```yaml
+notifications:
+  unread:
+    hover:
+      lines:
+        - "<gray>Click to open your mailbox.</gray>"
+```
+
+Each entry becomes a hover line on the unread notification. The service joins multiple lines with line breaks.
+
+## `notifications.unread.click.enabled`
+
+```yaml
+notifications:
+  unread:
+    click:
+      enabled: true
+```
+
+When `true`, the unread notification receives a click event.
+
+When `false`, the message is not clickable.
+
+## `notifications.unread.click.action`
+
+```yaml
+notifications:
+  unread:
+    click:
+      action: "RUN_COMMAND"
+```
+
+Supported click actions are:
+
+```text
+RUN_COMMAND
+SUGGEST_COMMAND
+OPEN_URL
+COPY_TO_CLIPBOARD
+OPEN_MAILBOX
+```
+
+`OPEN_MAILBOX` is treated as `RUN_COMMAND`. If the click value is empty for `OPEN_MAILBOX`, the service uses `/mailbox`.
+
+## `notifications.unread.click.value`
+
+```yaml
+notifications:
+  unread:
+    click:
+      value: "/mailbox"
+```
+
+This is the value passed to the click action. With `RUN_COMMAND`, it is the command executed when the player clicks the notification.
+
+If the value is empty, the click event is not attached.
+
+## `notifications.unread.sound.name`
+
+```yaml
+notifications:
+  unread:
+    sound:
+      name: "ITEM_BOOK_PAGE_TURN"
+```
+
+This is the Bukkit sound id used for unread and incoming notifications. The service resolves it through the FioChat sound compatibility resolver. If the current server version cannot resolve the sound, the sound is skipped.
+
+## `notifications.unread.sound.volume`
+
+```yaml
+notifications:
+  unread:
+    sound:
+      volume: 1.0
+```
+
+This volume is passed to Bukkit when the notification sound is played at the player's location.
+
+## `notifications.unread.sound.pitch`
+
+```yaml
+notifications:
+  unread:
+    sound:
+      pitch: 1.0
+```
+
+This pitch is passed to Bukkit when the notification sound is played.
+
+## `notifications.incoming.player-message`
+
+```yaml
+notifications:
+  incoming:
+    player-message: "<gray>New mailbox from <gold>%sender%</gold>.</gray>"
+```
+
+This message is sent when a player receives a mailbox from another player.
+
+Supported placeholders:
+
+```text
+%sender%
+%player%
+%unread%
+```
+
+`%sender%` and `%player%` both resolve to the sender name in this notification path. `%unread%` resolves to the receiver's current unread count.
+
+## `notifications.incoming.server-message`
+
+```yaml
+notifications:
+  incoming:
+    server-message: "<gray>New server mailbox received <dark_gray>(<green>%count%</green>)</dark_gray>.</gray>"
+```
+
+This message is sent when the server creates one or more server mailboxes for the player.
+
+Supported placeholders:
+
+```text
+%count%
+%unread%
+```
+
+`%count%` is the number of server mailboxes created in that update. `%unread%` is the player's current unread count.
+
+## `server-mailboxes`
+
+```yaml
+server-mailboxes:
+  starter-kit:
+    title: "Starter Kit"
+    material: CHEST
+    texture: ""
+    message:
+      - "<gray>Here is your starter kit from the server."
+    commands:
+      - "[CONSOLE] eco give %player_name% 1000"
+    items:
+      - "[ITEM] BREAD 32"
+```
+
+Each key under `server-mailboxes` is a server mailbox id. The id must stay stable because the module uses it to decide whether a player already received that server mailbox.
+
+### `title`
+
+`title` is the display title of the server mailbox.
+
+### `material`
+
+`material` is the Bukkit material used as the mailbox icon.
+
+### `texture`
+
+`texture` is an optional custom skull texture. Leave it empty when the icon should use only `material`.
+
+### `message`
+
+`message` is the list of lines shown inside the mailbox view. The current source examples use normal formatted text and can include placeholders such as `%player_name%` when the server mailbox is created.
+
+### `commands`
+
+`commands` is the command reward list attached to the server mailbox.
+
+The current source uses `[CONSOLE]` command entries, for example:
+
+```text
+[CONSOLE] eco give %player_name% 1000
+```
+
+These commands are executed when the player claims the server mailbox rewards.
+
+### `items`
+
+`items` is the item reward list attached to the server mailbox.
+
+The current source uses `[ITEM]` entries, for example:
+
+```text
+[ITEM] BREAD 32
+[ITEM] WOODEN_SWORD 1 unbreaking:1 sharpness:1 name:<gold>The Sword lore:<dark_gray>Starter\n\n<gray>With custom lores.
+```
+
+The item parser supports material, amount, enchantments, custom name, lore, and special data such as bundle contents in the current examples.
+
+## Message language overrides
+
+Mailbox command feedback is provided from language overrides:
+
+```text
+overrides.modules.mailbox.messages
+```
+
+The service reads keys such as prompt text, prompt cancellation, prompt expiration, sent confirmation, invalid target, self target, reward claimed, reward none, reward cooldown, reply expired, and reply server messages after language overrides are applied.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

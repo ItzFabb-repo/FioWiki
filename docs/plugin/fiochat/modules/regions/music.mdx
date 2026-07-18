@@ -1,0 +1,144 @@
+---
+title: Music
+---
+
+# Music
+
+Source file:
+
+```text
+modules/display/Regions/music/config.yml
+```
+
+This page covers the Region Music config. It plays looping or region-scoped music profiles while a player stays inside matching worlds or WorldGuard regions.
+
+The module is enabled through `modules.settings.yml`:
+
+```yaml
+modules:
+  region:
+    enabled: true
+    sub-settings:
+      music: true
+```
+
+If `modules.region.enabled` is `false`, the whole region system is disabled. If `modules.region.sub-settings.music` is `false`, only the music side is disabled.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls verbose logging for profile loading, player matching, and music switching.
+
+## `settings.stop-previous-on-switch`
+
+```yaml
+settings:
+  stop-previous-on-switch: true
+```
+
+When `true`, the previous music profile stops when the player switches to a new matching region.
+
+## `settings.stop-on-leave-configured-region`
+
+```yaml
+settings:
+  stop-on-leave-configured-region: true
+```
+
+When `true`, music stops once the player leaves all configured music regions.
+
+## `settings.join-delay-ticks`
+
+```yaml
+settings:
+  join-delay-ticks: 20
+```
+
+This delay gives the server time to finish join setup before the first music check runs.
+
+## `settings.default-sound-category`
+
+```yaml
+settings:
+  default-sound-category: "MASTER"
+```
+
+This is the fallback Bukkit sound category when a profile does not override its own category.
+
+## `profiles`
+
+Each profile defines a music rule for a world and region set.
+
+```yaml
+profiles:
+  spawn_day:
+    enabled: true
+    priority: 100
+    sound: "minecraft:music_disc.cat"
+    sound-category: "MASTER"
+    volume: 0.75
+    pitch: 1.0
+    interval-ticks: 3700
+    world:
+      whitelist:
+        - "world"
+    region:
+      whitelist:
+        - "spawn"
+```
+
+The service chooses the highest-priority matching profile. `interval-ticks` controls how long the selected track stays active before the profile loops.
+
+### `profiles.<id>.enabled`
+
+When `true`, the profile can be selected.
+
+### `profiles.<id>.priority`
+
+Higher priority wins when more than one profile matches.
+
+### `profiles.<id>.sound`
+
+This is the Bukkit or namespaced sound id used for playback.
+
+### `profiles.<id>.sound-category`
+
+This is the playback category for the sound.
+
+### `profiles.<id>.volume`
+
+This controls playback volume.
+
+### `profiles.<id>.pitch`
+
+This controls playback pitch.
+
+### `profiles.<id>.interval-ticks`
+
+This controls the loop interval in ticks.
+
+### `profiles.<id>.world.whitelist` and `profiles.<id>.world.blacklist`
+
+These lists limit the profile to specific world names.
+
+### `profiles.<id>.region.whitelist` and `profiles.<id>.region.blacklist`
+
+These lists limit the profile to specific WorldGuard region ids.
+
+## Toggle storage
+
+Player enable/disable choices are stored in:
+
+```text
+modules/display/Regions/music/toggles.yml
+```
+
+The service also supports legacy toggle migration from older region-music paths.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

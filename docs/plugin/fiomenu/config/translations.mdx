@@ -1,0 +1,46 @@
+﻿---
+title: Translations
+sidebar_position: 8
+---
+
+# Translations
+
+## Translation structure
+
+The current translation file has two layers:
+
+1. language profile entries such as `EN_English` and `JP_Japanese`
+2. translatable key groups under `language.translate.key`
+
+Each language profile uses:
+
+- `alias`
+- `id`
+- `actuall_lang`
+
+That data is what powers placeholders such as `%fiomenu_lang_formatted%` and `%fiomenu_lang_id%`.
+
+## Translation key usage
+
+The source comments and examples are built around key references such as:
+
+```yaml
+[gui.title]
+[menu_with_4_lang.profile_name]
+[switch_language.title]
+```
+
+Use this system when the same menu structure should stay the same while the displayed text changes per language.
+
+## What translations are for in FioMenu
+
+At a high level, `translation.yml` is used to:
+
+- register selectable languages
+- map short language ids to display aliases
+- define menu text once and reuse it in several menus
+- let one menu structure serve multiple languages
+
+## Important note about the current source file
+
+The provided `translation.yml` contains visible mojibake in some non-English text when read from the current source snapshot. The key structure is still valid and documentable, but if you plan to ship those language strings directly, review the file encoding in your project before publishing it to production.

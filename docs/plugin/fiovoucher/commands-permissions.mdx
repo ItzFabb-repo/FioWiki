@@ -1,0 +1,75 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+FioVoucher keeps the public command tree compact, then fans out into redeem, list, info, trial, admin, and menu control.
+
+## Root command
+
+Main command:
+
+```text
+/voucher
+```
+
+Aliases from `plugin.yml`:
+
+```text
+/vouchers
+/fiovoucher
+/fvoucher
+```
+
+## Player commands
+
+| Command | Permission | Behavior |
+| --- | --- | --- |
+| `/voucher redeem <code>` | `fiovoucher.command.redeem` | Redeems a voucher, usually through the confirmation menu first. |
+| `/voucher trials` | `fiovoucher.command.trials` | Opens the active trial voucher list or prints it to console. |
+| `/voucher pause <code>` | `fiovoucher.command.pause` | Pauses or resumes a personal voucher trial. |
+| `/voucher list` | `fiovoucher.command.list` | Lists saved vouchers. |
+| `/voucher info <code>` | `fiovoucher.command.info` | Shows voucher detail information. |
+| `/voucher reload` | `fiovoucher.command.reload` | Reloads config, language, menus, and voucher data. |
+| `/voucher delete <code>` | `fiovoucher.command.delete` | Deletes a voucher. |
+
+## Admin commands
+
+The admin branch supports:
+
+| Command | Permission | Behavior |
+| --- | --- | --- |
+| `/voucher admin` | `fiovoucher.command.admin` | Shows admin help. |
+| `/voucher admin give <player> <voucherid> [amount]` | `fiovoucher.command.give` | Gives voucher items to one online player. |
+| `/voucher admin giveall <voucherid> [amount]` | `fiovoucher.command.giveall` | Gives voucher items to all online players. |
+| `/voucher admin history <player>` | `fiovoucher.command.history` | Shows voucher history for one player. |
+| `/voucher admin freeze <voucherid>` | `fiovoucher.command.freeze` | Freezes a voucher. |
+| `/voucher admin unfreeze <voucherid>` | `fiovoucher.command.freeze` | Unfreezes a voucher. |
+| `/voucher admin menu open confirmation <player>` | `fiovoucher.command.menu.open` | Opens the confirmation menu for a player. |
+| `/voucher admin menu open history <player>` | `fiovoucher.command.menu.open` | Opens the voucher history menu. |
+| `/voucher admin menu open playerhistory <player>` | `fiovoucher.command.menu.open` | Opens the player history/trials menu. |
+
+## Permission table
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fiovoucher.admin` | `op` | Grants the full voucher command tree. |
+| `fiovoucher.command.admin` | `op` | Allows `/voucher admin`. |
+| `fiovoucher.command.redeem` | `true` | Allows redeeming vouchers. |
+| `fiovoucher.command.delete` | `op` | Allows deleting vouchers. |
+| `fiovoucher.command.list` | `op` | Allows listing vouchers. |
+| `fiovoucher.command.info` | `op` | Allows viewing voucher details. |
+| `fiovoucher.command.reload` | `op` | Allows reloading the plugin. |
+| `fiovoucher.command.trials` | `true` | Allows viewing active trial vouchers. |
+| `fiovoucher.command.pause` | `true` | Allows pausing a personal trial. |
+| `fiovoucher.command.give` | `op` | Allows giving vouchers to one player. |
+| `fiovoucher.command.giveall` | `op` | Allows giving vouchers to all online players. |
+| `fiovoucher.command.history` | `op` | Allows viewing voucher history for a player. |
+| `fiovoucher.command.freeze` | `op` | Allows freezing or unfreezing vouchers. |
+| `fiovoucher.command.menu.open` | `op` | Allows forcing voucher menus open. |
+
+## Smart usage
+
+The command handler also includes smart usage hints and nearest-match suggestions for mistyped subcommands.

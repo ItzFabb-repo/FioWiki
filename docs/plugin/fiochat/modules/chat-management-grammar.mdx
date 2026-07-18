@@ -1,0 +1,58 @@
+---
+title: Grammar
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Grammar Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This auto-formats player chat messages.
+- Example documented by source comments:
+  - input: `hi this is a text`
+  - output: `Hi, this is a text.`
+- Source comments say it only affects normal chat messages, not commands.
+- Fixed bypass permission documented by source comments:
+  - `fiochat.chat.grammar.bypass`
+
+## Main keys
+```yaml
+grammar:
+  trim-message: false
+  capitalize-first-letter: true
+  capitalize-after-punctuation: true
+  capitalize-pronoun-i: true
+  ensure-space-after-comma: true
+  ensure-space-after-sentence-end: true
+  append-final-punctuation: true
+  final-punctuation: "."
+  contractions:
+    enabled: true
+    custom: {}
+  greeting-comma:
+    enabled: true
+    words:
+      - "hi"
+      - "hello"
+      - "hey"
+  title-case:
+    enabled: false
+```
+
+## `contractions`
+Source comments note:
+- built-in presets are loaded from code
+- `custom` entries can override built-ins by key
+
+## `title-case`
+When enabled, source comments say each word is title-cased except configured small words.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

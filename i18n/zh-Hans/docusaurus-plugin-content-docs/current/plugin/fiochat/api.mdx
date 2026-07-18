@@ -1,0 +1,84 @@
+﻿---
+title: 开发者 API
+sidebar_position: 5
+---
+
+# 开发者 API
+FioChat 提供用于集成的公开 API。
+
+---
+
+# 获取 API 实例
+```java
+import com.itzfabb.fiochat.api.FioChatApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+FioChatApi api = FioChatApiProvider.get();
+if (api != null) {
+    // safe to use
+}
+```
+
+用于 Join/Quit 专用集成：
+```java
+import com.itzfabb.fiochat.api.JoinQuitApi;
+import com.itzfabb.fiochat.api.FioChatApiProvider;
+
+JoinQuitApi joinQuitApi = FioChatApiProvider.getJoinQuitApi();
+```
+
+---
+
+# API 核心能力
+:::info[高层说明]
+已开放 API 主要聚焦于面向玩家的聊天系统、功能开关，以及部分模块集成点。
+:::
+
+常见集成方向：
+- Mention 与私聊行为
+- Join/Quit 模块集成
+- 频道与受众相关行为
+- 感知玩家偏好/开关状态的交互体验
+
+---
+
+# 推荐集成模式
+```java
+public void runIntegration(Player player) {
+    FioChatApi api = FioChatApiProvider.get();
+    if (api == null) {
+        return;
+    }
+
+    // Example: call available API methods in your plugin flow
+    // (exact methods depend on the FioChat version you compile against)
+}
+```
+
+---
+
+# Soft-Depend 建议
+在你的插件 `plugin.yml` 中：
+```yaml
+softdepend:
+  - FioChat
+```
+
+然后在服务器启动后于 `onEnable()` 中解析 API。
+
+---
+
+# 版本安全
+:::warning[兼容性]
+请始终使用与你部署环境一致的 API 主/次版本进行编译。
+如果要兼容多个 FioChat 构建版本，请对 provider 访问进行 null-check，并确保优雅降级。
+:::
+
+---
+
+# 源码参考
+以下 API 包来自你提供的源码分配：
+- `com.itzfabb.fiochat.api.FioChatApi`
+- `com.itzfabb.fiochat.api.FioChatApiProvider`
+- `com.itzfabb.fiochat.api.JoinQuitApi`
+- internal impl: `com.itzfabb.fiochat.api.internal.*`

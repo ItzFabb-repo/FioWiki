@@ -1,0 +1,62 @@
+﻿---
+title: bartering_race.yml
+sidebar_position: 2
+---
+
+# bartering_race.yml
+
+File location:
+
+- `plugins/FioChatGames/games/races/bartering_race.yml`
+
+This race tracks bartering progress and rewards the top placements.
+
+## Source-backed example
+
+```yaml
+game: RACE
+enable: true
+points: 1
+time_seconds: 300
+race:
+  type: BARTERING
+  material: ENDER_PEARL
+  amount: 10
+  top-reward-count: 3
+  top-announce-count: 3
+  bossbar:
+    enabled: true
+    color: YELLOW
+    style: SOLID
+```
+
+## Important options
+
+| Key | Description |
+| --- | --- |
+| `race.type` | Must be `BARTERING`. |
+| `race.material` | Display material used in prompts and bossbar messaging. |
+| `race.amount` | Required progress target. |
+| `race.top-reward-count` | How many placements can receive top rewards. |
+| `race.top-announce-count` | How many placements are announced in summary output. |
+| `race.bossbar` | Per-race bossbar styling. |
+
+## Messaging and presentation
+
+The source file includes:
+
+- `messages.race-winner` summary lines
+- start, finish, and ended message blocks
+- per-race title and subtitle
+
+The bundled bossbar text uses placeholders like:
+
+- `%objective%`
+- `%traded_material%`
+- `%progress%`
+- `%target%`
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

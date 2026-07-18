@@ -1,0 +1,160 @@
+﻿---
+title: Reports
+sidebar_position: 31
+---
+
+# Reports (Module)
+Configuration guide for `modules/moderation/Player Reports/config.yml`.
+
+:::warning[Important]
+Tune intake safety first (`timeout`, `cooldown`, `self-report policy`) before expanding reason catalog.
+:::
+
+## Module Preview
+
+![Reports 1](../../../img/fiochat/Reports%201.png)
+![Reports 2](../../../img/fiochat/Reports%202.png)
+![Reports 3](../../../img/fiochat/Reports%203.png)
+![Reports 4](../../../img/fiochat/Reports%204.png)
+![Reports 5](../../../img/fiochat/Reports%205.png)
+![Reports 6](../../../img/fiochat/Reports%206.png)
+
+## Configuration Files
+- `modules/moderation/Player Reports/config.yml`
+
+## Intake and Anti-Abuse Controls
+
+### Prompt Timeout and Cooldown
+```yaml
+settings:
+  input-timeout-seconds: 60
+  cooldown-seconds: 180
+```
+- Purpose: Controls report input session lifetime and report spam throttle.
+- Options:
+  - Lower timeout for faster moderation flow.
+  - Higher cooldown for public servers with spam risk.
+
+### Reporter History Limit
+```yaml
+settings:
+  history-limit-per-reporter: 50
+```
+- Purpose: Limits stored report history entries per reporter.
+- Options:
+  - Increase for investigation-heavy servers.
+
+### Self-Report and Cancel Behavior
+```yaml
+settings:
+  allow-self-report: true
+  cancel-keyword: "cancel"
+```
+- Purpose: Defines whether self-report is accepted and how prompt cancellation works.
+- Options:
+  - Disable self-report if you want stricter abuse prevention.
+  - Keep cancel keyword simple and memorable.
+
+## Notification Pipeline
+
+### Console Notification
+```yaml
+notify:
+  console: true
+```
+- Purpose: Sends report events to server console/log stream.
+- Options:
+  - Keep enabled for moderation auditing and external log integrations.
+
+## Reason Catalog
+
+Each reason block under `reason.<id>` defines:
+1. `display_name`
+2. `material` (and optional `texture`/`flags`)
+3. `lore`
+
+### Chat Reason
+```yaml
+reason:
+  chat:
+    display_name: "<red>Chat</red>"
+    material: "PAPER"
+```
+- Purpose: Report verbal abuse, bypass text, or spam-like chat behavior.
+
+### Cheat Reason
+```yaml
+reason:
+  cheat:
+    display_name: "<gold>Cheat</gold>"
+    material: "IRON_SWORD"
+    flags:
+      - "HIDE_ATTRIBUTES"
+```
+- Purpose: Report hack clients, unfair mechanics, exploit behavior.
+
+### Xray Reason
+```yaml
+reason:
+  xray:
+    display_name: "<red>X-Ray</red>"
+    material: "DIAMOND_ORE"
+```
+- Purpose: Report suspicious ore-tracking/xray mining behavior.
+
+### Bot Reason
+```yaml
+reason:
+  bot:
+    display_name: "<red>Bot</red>"
+    material: "PLAYER_HEAD"
+    texture: "<base64_texture>"
+```
+- Purpose: Report suspected bot/automation accounts.
+- Options:
+  - Use custom head texture for visual distinction.
+
+### Others Reason
+```yaml
+reason:
+  others:
+    display_name: "<gold>Others</gold>"
+    material: "BOOK"
+```
+- Purpose: Catch-all for violations not covered by core reason types.
+
+## Lore Design Guidelines
+
+### Lore Clarity Pattern
+```yaml
+lore:
+  - "<dark_gray><smallfont:report - chat></dark_gray>"
+  - "<gray>Report chat abuse or bypass behavior.</gray>"
+  - "<yellow>Click to report</yellow>"
+```
+- Purpose: Gives players quick understanding before selecting a reason.
+- Options:
+  - Keep lore short, direct, and action-oriented.
+
+## Recommended Moderation Workflow
+
+1. Reporter opens reason menu.
+2. Reporter picks reason category.
+3. Input prompt starts and expires by timeout.
+4. Cooldown prevents rapid report spam.
+5. Console/staff channels receive report event.
+
+:::info[Operational Recommendation]
+Keep reason categories broad enough to avoid confusion, but specific enough for moderator triage.
+:::
+
+:::note[Owner Validation]
+- Test prompt timeout and cancel keyword behavior.
+- Test cooldown by submitting repeated reports.
+- Test each reason icon/material renders correctly in GUI.
+- Test console notifications include enough context for staff review.
+- Test self-report policy according to your moderation rules.
+:::
+
+
+

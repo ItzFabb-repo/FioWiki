@@ -1,0 +1,30 @@
+---
+title: Trials Rank Example
+---
+
+# Trials Rank Example
+
+This pattern matches the trial voucher style from `trial_vip.yml`.
+
+```yaml
+voucher:
+  id: trial_vip
+  display-name: "<gradient:#C77DFF:#7B2CBF><shadow:#240046:1>VIP Trial Voucher</shadow></gradient>"
+  enabled: true
+
+  commands:
+    claimed:
+      enabled: true
+      actions:
+        - "[CONSOLE] lp user %player_name% parent addtemp vip 3d"
+
+  settings:
+    trial:
+      enabled: true
+      duration: "3d"
+      allow-pause: true
+      allow-stack: false
+```
+
+Use this when a voucher should grant temporary rank access.
+

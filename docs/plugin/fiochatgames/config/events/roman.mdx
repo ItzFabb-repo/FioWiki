@@ -1,0 +1,181 @@
+---
+title: roman.yml
+sidebar_position: 14
+---
+
+# roman.yml
+
+File location:
+
+- `plugins/FioChatGames/games/events/roman.yml`
+
+This event shows a generated Roman numeral and asks players to answer its numeric value.
+
+## Example
+
+```yaml
+game: ROMAN
+folder: games/events/roman.yml
+
+enable: true
+case-sensitive: false
+points: 1
+time_seconds: 90
+min_roman: 100
+max_roman: 9999
+prompt_format: '%roman%'
+
+roman:
+  value:
+    I: '1'
+    V: '5'
+    X: '10'
+    L: '50'
+    C: '100'
+    D: '500'
+    M: '1000'
+```
+
+## Important options
+
+| Key | Description |
+| --- | --- |
+| `enable` | Enables or disables the Roman event. |
+| `case-sensitive` | Controls whether answers must match exact letter case. |
+| `points` | Points granted to the winner. |
+| `time_seconds` | Round length in seconds. |
+| `min_roman` | Lowest generated value. |
+| `max_roman` | Highest generated value. |
+| `prompt_format` | Prompt text shown to players. Use `%roman%` to show the generated Roman numeral. |
+| `roman.value` | Roman numeral symbol mapping used by the config/menu display. |
+
+## Placeholders
+
+Roman event messages can use:
+
+- `%roman%`
+- `%answer%`
+- `%min_roman%`
+- `%max_roman%`
+- `%player%`
+- `%type%`
+- `%gameType%`
+- `%points%`
+- `%seconds%`
+
+## Messages
+
+```yaml
+messages:
+  started: '%prefix%<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '%prefix%<green><bold>%player%</bold> answered the <gold>%type%</gold> game in <gold>%seconds%s</gold> and earned <gold>%points%</gold> points!</green>'
+  recorded: "[prefix=false]<green>Recorded:</green> <yellow>%rank%</yellow> <gray>(%seconds%s)</gray>"
+  streak: '%prefix%<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+```
+
+## Start panel
+
+```yaml
+messages:
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#f0d36d><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:roman></center>'
+    - ''
+    - '<center><gray><smallfont:be the first to answer the value!></gray></center>'
+    - '<center><gray>What number is this Roman numeral?</gray></center>'
+    - '<center><#f0d36d><shadow:#000000:1.0>%roman%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+```
+
+## Finish and ended panels
+
+```yaml
+messages:
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#f0d36d><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:roman></center>'
+    - ''
+    - '<center><gray><smallfont:%player% solved this event first!></gray></center>'
+    - '<center><gray>Roman numeral:</gray></center>'
+    - '<center><#f0d36d><shadow:#000000:1.0>%roman%</shadow></center>'
+    - '<center><gray>Correct value:</gray></center>'
+    - '<center><#f0d36d><shadow:#00FF00:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#f0d36d><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:roman></center>'
+    - ''
+    - '<center><gray><smallfont>The event has ended without a winner></gray></center>'
+    - '<center><gray>Roman numeral:</gray></center>'
+    - '<center><#f0d36d><shadow:#000000:1.0>%roman%</shadow></center>'
+    - '<center><gray>Correct value:</gray></center>'
+    - '<center><#f0d36d><shadow:#FF0000:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+```
+
+## Title and subtitle
+
+```yaml
+title:
+  text: '<#f0d36d>Roman'
+  enabled: true
+subtitle:
+  text: '<gray>Value: %roman%</gray>'
+  enabled: true
+```
+
+## Rewards and streaks
+
+```yaml
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  3:
+    commands:
+      - 'MESSAGE:<green>3 streak in %game%!</green>'
+
+rewards:
+  commands:
+    - 'CONSOLE:eco give %player_name% 1000'
+    - 'MESSAGE:<green>You answered the Roman numeral correctly!</green>'
+
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 250'
+  participated:
+    enabled: true
+    commands:
+      - 'MESSAGE:<gray>Thanks for participating in Roman.</gray>'
+```
+
+## Ranking output
+
+Like the other timed chat events, `ROMAN` supports both ranking formats:
+
+- `simple`
+- `advance`
+
+Use `simple` for one shared ranking template, or `advance` for per-rank message lines.

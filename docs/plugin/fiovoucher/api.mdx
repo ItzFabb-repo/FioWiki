@@ -1,0 +1,93 @@
+---
+title: Developer API
+sidebar_position: 6
+---
+
+# Developer API
+
+FioVoucher exposes a small public API for plugin integrations.
+
+## Package names
+
+```java
+import com.itzfabb.fiovoucher.api.FioVoucherAPI;
+import com.itzfabb.fiovoucher.api.VoucherRedeemResult;
+import com.itzfabb.fiovoucher.model.Voucher;
+```
+
+## Accessing the API
+
+Static access:
+
+```java
+FioVoucherAPI api = FioVoucherAPI.get();
+if (api != null && api.isPluginReady()) {
+    // use it
+}
+```
+
+## Main methods
+
+```java
+Voucher getVoucher(String voucherCode);
+boolean hasVoucher(String voucherCode);
+Collection<Voucher> getVouchers();
+Set<String> getVoucherCodes();
+ItemStack createVoucherItem(String voucherCode);
+List<ItemStack> createVoucherItems(String voucherCode, int amount);
+boolean giveVoucher(Player player, String voucherCode, int amount);
+int giveVoucherToAll(String voucherCode, int amount);
+VoucherRedeemResult canRedeem(Player player, String voucherCode);
+VoucherRedeemResult redeem(Player player, String voucherCode);
+List<String> getPlayerHistory(Player player);
+```
+
+## Redeem result
+
+`VoucherRedeemResult` tells you whether a redeem action succeeded.
+
+Status values:
+
+- `SUCCESS`
+- `PLUGIN_NOT_READY`
+- `PLAYER_REQUIRED`
+- `BEDROCK_BLOCKED`
+- `VOUCHER_NOT_FOUND`
+- `VOUCHER_DISABLED`
+- `VOUCHER_FROZEN`
+- `VOUCHER_BLACKLISTED`
+- `WORLD_BLOCKED`
+- `REGION_BLOCKED`
+- `NO_USES_LEFT`
+- `MAX_CLAIM_REACHED`
+- `PERMISSION_BLOCKED`
+
+## Example integration
+
+```java
+FioVoucherAPI api = FioVoucherAPI.get();
+if (api != null && api.isPluginReady()) {
+    VoucherRedeemResult result = api.redeem(player, "vip");
+    if (!result.isSuccess()) {
+        player.sendMessage(result.getMessage());
+    }
+}
+```
+
+## plugin.yml advice
+
+Add FioVoucher as a soft or hard dependency:
+
+```yaml
+softdepend:
+  - FioVoucher
+```
+
+Use `depend` if your plugin cannot function without it.
+
+## Notes for developers
+
+- `redeem(...)` executes the voucher if validation passes.
+- `canRedeem(...)` validates without consuming the voucher.
+- `giveVoucher(...)` creates and gives voucher items directly.
+- `getPlayerHistory(...)` returns formatted history lines.

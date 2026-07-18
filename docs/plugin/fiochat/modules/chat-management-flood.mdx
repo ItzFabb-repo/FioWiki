@@ -1,0 +1,59 @@
+---
+title: Flood
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+# Flood Config
+
+Source file:
+
+```text
+modules/chat/Moderations/config.yml
+```
+
+## Notes from source comments
+- This is the chat-flood sub-module inside chat-management.
+- It collapses repeated-character flooding.
+- Example documented by source comments: with limit `2`, `baaaad` becomes `baad`.
+- Source comments say this edits player input before anti-swear, cooldown, and anti-repeat checks.
+
+## `spy`
+```yaml
+spy:
+  chat: "..."
+  command: "..."
+  command-blacklist:
+    - '/login'
+```
+This section defines staff spy messages for flood normalization events.
+
+## `chat`
+```yaml
+chat:
+  enabled: true
+  collapse-repeated-characters: true
+  repeated-character-limit: 2
+  letters-only: true
+  whitelist: []
+```
+This section controls repeated-character collapse for chat.
+
+## `commands`
+```yaml
+commands:
+  enabled: false
+  collapse-repeated-characters: true
+  repeated-character-limit: 2
+  letters-only: true
+  whitelist:
+    - "/login"
+    - "/l"
+    - "/register"
+    - "/reg"
+```
+This section controls repeated-character collapse for commands.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

@@ -1,0 +1,321 @@
+﻿---
+title: Placeholders
+sidebar_position: 6
+---
+
+# Placeholders
+
+FioChat currently uses more than one placeholder style. The most important one is its own PlaceholderAPI expansion under the `fiochat` identifier, but several module configs also define token-based placeholders in YAML.
+
+## Placeholder systems in FioChat
+
+The current source uses these practical placeholder styles:
+
+1. Native PlaceholderAPI expansion values
+
+```text
+%fiochat_*%
+```
+
+2. PlaceholderAPI passthrough through the FioChat namespace
+
+```text
+%fiochat_papi_<placeholderapi_node>%
+```
+
+3. Module token placeholders defined in YAML
+
+```text
+{discord}
+{vote}
+{store}
+```
+
+## Core `%fiochat_*%` placeholders
+
+### Messaging and platform state
+
+```text
+%fiochat_mentions_state%
+%fiochat_message_state%
+%fiochat_player_msg_state%
+%fiochat_user_platform%
+```
+
+### Anti-bot and vanish state
+
+```text
+%fiochat_antibot_verified%
+%fiochat_antibot_pending%
+%fiochat_vanish_state%
+%fiochat_vanish_level%
+```
+
+### Vanish interaction state
+
+```text
+%fiochat_vanish_interaction_itempickup%
+%fiochat_vanish_interaction_itemdrop%
+%fiochat_vanish_interaction_xppickup%
+%fiochat_vanish_interaction_containeropen%
+%fiochat_vanish_interaction_doorleverbuttonuse%
+%fiochat_vanish_interaction_pressureplates%
+%fiochat_vanish_interaction_tripwiretrigger%
+%fiochat_vanish_interaction_entityinteract%
+%fiochat_vanish_interaction_itemframerotate%
+%fiochat_vanish_interaction_armorstandedit%
+%fiochat_vanish_interaction_bucketuse%
+%fiochat_vanish_interaction_placingblocks%
+%fiochat_vanish_interaction_breakingblocks%
+```
+
+### JoinQuit state and selected presets
+
+```text
+%fiochat_join_message_state%
+%fiochat_join_sound_state%
+%fiochat_quit_message_state%
+%fiochat_quit_sound_state%
+%fiochat_join_preset%
+%fiochat_quit_preset%
+%fiochat_join_sound%
+%fiochat_quit_sound%
+%fiochat_join_particle%
+%fiochat_quit_particle%
+%fiochat_join_style%
+%fiochat_quit_style%
+```
+
+### AFK placeholders
+
+```text
+%fiochat_afk_state%
+%fiochat_afk_reason%
+%fiochat_afk_duration%
+%fiochat_afk_duration_seconds%
+```
+
+### Announcement and display toggles
+
+```text
+%fiochat_motd_message_state%
+%fiochat_scoreboard_state%
+%fiochat_announcement_message_state%
+%fiochat_announcement_sound_state%
+%fiochat_biomediscovery_state%
+%fiochat_daycounter_state%
+%fiochat_deathmessage_state%
+%fiochat_deathmessage_disabled%
+%fiochat_bossbar_state%
+%fiochat_tab_state%
+```
+
+### Region placeholders
+
+The current source also includes region placeholders:
+
+```text
+%fiochat_region_music_state%
+%fiochat_region_particle_state%
+%fiochat_region_music_name%
+%fiochat_region_particle_name%
+%fiochat_region_music_volume%
+%fiochat_region_music_pitch%
+%fiochat_region_music_region%
+```
+
+### Login streak and auto-restart placeholders
+
+```text
+%fiochat_loginstreak_state%
+%fiochat_loginstreak_streak%
+%fiochat_loginstreak_current%
+%fiochat_loginstreak_best%
+%fiochat_loginstreak_last_day%
+%fiochat_autorestart_seconds%
+%fiochat_autorestart_formatted%
+%fiochat_autorestart_hhmmss%
+%fiochat_autorestart_hh:mm_ss%
+%fiochat_autorestart_hh:mm ss%
+%fiochat_autorestart_lastrestart_seconds%
+%fiochat_autorestart_lastrestart_formatted%
+%fiochat_autorestart_lastrestart_hhmmss%
+%fiochat_autorestart_lastrestart_hh:mm_ss%
+%fiochat_autorestart_lastrestart_hh:mm ss%
+```
+
+### Itemtag and inventory alert placeholders
+
+```text
+%fiochat_itemtag_state_text%
+%fiochat_itemtag_state_particle%
+%fiochat_itemtag_state_stack%
+%fiochat_inventory_alert_enabled%
+%fiochat_inventory_alert_status%
+%fiochat_inventoryalert_state%
+%fiochat_inventory_alert_full_enabled%
+%fiochat_inventory_alert_full_status%
+%fiochat_inventory_alert_prewarn_enabled%
+%fiochat_inventory_alert_prewarn_status%
+%fiochat_inventory_alert_threshold%
+%fiochat_inventoryalert_threshold%
+```
+
+### Channel, chat color, font, and mailbox placeholders
+
+```text
+%fiochat_channels_available%
+%fiochat_channel_current%
+%fiochat_chatcolor_raw%
+%fiochat_chatcolor_color_<text>%
+%fiochat_font%
+%fiochat_font_display%
+%fiochat_mailbox_unread_count%
+%fiochat_mailbox_message_state%
+%fiochat_mailbox_sound_state%
+%fiochat_mailbox_log_read%
+%fiochat_mailbox_log_deleted%
+%fiochat_mailbox_log_received%
+```
+
+## Dynamic placeholder families
+
+### Channel statistics
+
+The current source explicitly supports dynamic channel placeholders:
+
+```text
+%fiochat_channel_<id>_online%
+%fiochat_channel_<id>_offline%
+%fiochat_channel_<id>_messages_<window>%
+%fiochat_channel_<id>_chatters_<window>%
+```
+
+Examples:
+
+```text
+%fiochat_channel_global_online%
+%fiochat_channel_staff_messages_5m%
+%fiochat_channel_trade_chatters_1h%
+```
+
+The source comments and parser support windows such as:
+
+```text
+10s
+30s
+5m
+15m
+1h
+2h
+1d
+1w
+1mo
+1y
+all
+```
+
+### Redeem-code placeholders
+
+The current source supports both `coderedeem` and `redeemcode` families.
+
+```text
+%fiochat_coderedeem_<code_id>_time_left%
+%fiochat_coderedeem_<code_id>_max_use%
+%fiochat_coderedeem_<code_id>_left_to_claim%
+%fiochat_coderedeem_<code_id>_perms_req%
+%fiochat_coderedeem_<player>_<code_id>_status%
+%fiochat_coderedeem_<player>_<code_id>_timestamp%
+%fiochat_coderedeem_<code_id>_status%
+%fiochat_coderedeem_<code_id>_timestamp%
+%fiochat_redeemcode_<code_id>_max_use%
+%fiochat_redeemcode_<code_id>_left_to_claim%
+%fiochat_redeemcode_<code_id>_perms_req%
+%fiochat_redeemcode_<player>_<code_id>_status%
+%fiochat_redeemcode_<player>_<code_id>_timestamp%
+%fiochat_redeemcode_<code_id>_status%
+```
+
+### Command scheduler placeholders
+
+The current source also supports:
+
+```text
+%fiochat_cmd_scheduler_<key>_delay%
+%fiochat_cmd_scheduler_<key>_period%
+%fiochat_cmd_scheduler_<key>_status%
+```
+
+## Placeholder behavior notes
+
+The current placeholder expansion includes a few behavior rules that matter in practice:
+
+- `*_toggle` keys are normalized to `*_state` for backwards compatibility
+- dynamic chat color placeholders are resolved separately
+- redeem-code placeholders are resolved separately
+- command-scheduler placeholders are resolved separately
+- PlaceholderAPI passthrough aliases are resolved before the normal FioChat key map
+
+## Placeholder alias and replace support
+
+The display-tag ecosystem also supports placeholder aliasing and replacement maps in its own config.
+
+Example alias structure:
+
+```yaml
+settings:
+  placeholder:
+    aliases:
+      - 'fio_thing': "%fiochat_antibot_verified%%fiochat_afk_state% %fiochat_vanish_state%"
+```
+
+Example replace map:
+
+```yaml
+settings:
+  placeholder:
+    replace:
+      '%fiochat_afk_state%':
+        'true': ' &7(AFK)'
+        'false': ''
+```
+
+## Module token placeholders
+
+Some module configs use token placeholders with `{...}` syntax instead of `%fiochat_*%`.
+
+Examples come from files such as:
+
+- `modules/announce/Server Announcements/placeholder.yml`
+- `modules/announce/Message of the Day/placeholder.yml`
+
+These are module-defined tokens, not the same system as PlaceholderAPI expansion values.
+
+## Practical examples
+
+```yaml
+lines:
+  - "Platform: %fiochat_user_platform%"
+  - "Vanish: %fiochat_vanish_state%"
+  - "AFK: %fiochat_afk_state%"
+  - "Mentions: %fiochat_mentions_state%"
+  - "PM: %fiochat_message_state%"
+```
+
+```yaml
+lines:
+  - "Global online: %fiochat_channel_global_online%"
+  - "Global msgs (5m): %fiochat_channel_global_messages_5m%"
+  - "Staff chatters (15m): %fiochat_channel_staff_chatters_15m%"
+```
+
+```yaml
+lines:
+  - "Unread: %fiochat_mailbox_unread_count%"
+  - "Mail Msg Toggle: %fiochat_mailbox_message_state%"
+  - "Mail Sound Toggle: %fiochat_mailbox_sound_state%"
+```
+
+:::info[Page note]
+This page follows the current `FioChatPlaceholderExpansion` source and keeps the documented placeholders aligned with the live registered families rather than older partial lists.
+:::

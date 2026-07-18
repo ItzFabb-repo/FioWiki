@@ -1,0 +1,494 @@
+---
+title: Config
+---
+
+# Custom Join Quit Msg Config
+
+`config.yml` is the main control file for the Custom Join Quit Msg module. It does not only store text templates. It decides whether vanilla join and quit messages are suppressed, which profile parts are active, how the first join profile is delivered, which join/quit message presets exist, and which permission nodes are generated for selectable options.
+
+Source file:
+
+```text
+modules/announce/Custom Join Quit Msg/config.yml
+```
+
+Runtime player choices are saved outside this config in:
+
+```text
+modules/announce/Custom Join Quit Msg/player-preferences.yml
+```
+
+If database storage is enabled by the plugin, the same preference data can be stored under the `joinquit.preferences` namespace instead of only relying on the YAML file.
+
+## Module access
+
+The module itself is controlled by the global module path `modules.joinquit`. When that module setting is enabled, the Custom Join Quit Msg service loads this config and registers the join/quit behavior.
+
+Players need the base permission before they can use the module selector commands:
+
+```text
+fiochat.joinquit.use
+```
+
+The command permissions are separate:
+
+```text
+fiochat.joinquit.command.join
+fiochat.joinquit.command.quit
+```
+
+The plugin also uses toggle permissions for players who want to hide or restore their own view of join/quit message and sound output:
+
+```text
+fiochat.joinquit.toggle.join.message
+fiochat.joinquit.toggle.join.sound
+fiochat.joinquit.toggle.quit.message
+fiochat.joinquit.toggle.quit.sound
+```
+
+Those toggle permissions do not choose a preset. They only allow the player to control whether they personally receive the matching join/quit message or sound category.
+
+## Generated option permissions
+
+Every selectable option can have its own permission. The module builds those permission nodes from the option id.
+
+```text
+fiochat.joinquit.join.message.<preset-id>
+fiochat.joinquit.quit.message.<preset-id>
+fiochat.joinquit.join.sound.<sound-id>
+fiochat.joinquit.quit.sound.<sound-id>
+fiochat.joinquit.join.particle.<particle-id>
+fiochat.joinquit.quit.particle.<particle-id>
+fiochat.joinquit.join.style.<style-id>
+fiochat.joinquit.quit.style.<style-id>
+```
+
+For example, the `classic` join preset is checked as:
+
+```text
+fiochat.joinquit.join.message.classic
+```
+
+The selected option is only used if the player is allowed to use it. When a selected join or quit message preset is no longer available or no longer permitted, the module falls back to `classic`, then `default`, then the first preset that exists in the loaded map.
+
+## Commands
+
+The config header documents these module commands:
+
+```text
+/fiochat join
+/fiochat quit
+```
+
+`/fiochat join` opens the join selector flow. `/fiochat quit` opens the quit selector flow. The available message, sound, particle, and style options shown in those flows are controlled by this config together with `sound.yml`, `particles.yml`, and `styles.yml`.
+
+## `settings.debug-log`
+
+```yaml
+settings:
+  debug-log: false
+```
+
+`debug-log` controls extra module logging. Keep it `false` for normal production use. Set it to `true` when you need more service-side information while checking selector loading, preference loading, or join/quit delivery behavior.
+
+## Vanilla join and quit override
+
+```yaml
+settings:
+  override-vanilla-join-message: true
+  override-vanilla-quit-message: true
+```
+
+`override-vanilla-join-message` decides whether the normal Minecraft join line is removed when the Custom Join Quit Msg module handles a player join.
+
+`override-vanilla-quit-message` decides whether the normal Minecraft quit line is removed when the Custom Join Quit Msg module handles a player quit.
+
+When these values are `true`, the module becomes responsible for broadcasting the configured output. When they are `false`, vanilla output can still appear alongside module output depending on the server event behavior.
+
+## Device labels
+
+```yaml
+settings:
+  device:
+    java: "Java"
+    bedrock: "Bedrock"
+```
+
+`settings.device.java` is the text used when the player is detected as a Java player.
+
+`settings.device.bedrock` is the text used when the player is detected as a Bedrock player.
+
+These values feed the `%device%` placeholder used by join, quit, and first-join messages. Change the labels here when you want the same preset text to show different wording without editing every preset line.
+
+## Feature switches
+
+```yaml
+what-feature-enabled:
+  join:
+    message: true
+    sounds: true
+    particles: true
+    styles: true
+  quit:
+    message: true
+    sounds: true
+    particles: true
+    styles: true
+```
+
+These switches affect normal join and quit profiles. They do not affect the `first-join` profile.
+
+`what-feature-enabled.join.message` controls whether normal join messages and message-linked visual outputs are active. When this is `false`, the selected join message preset is not delivered, and message-tied outputs such as action bar, title, boss bar, and toast delivery are also treated as disabled for the normal join profile.
+
+`what-feature-enabled.join.sounds` controls whether the normal join sound profile can be delivered. When this is `false`, selected join sounds are not played even if a player has a saved join sound preference.
+
+`what-feature-enabled.join.particles` controls whether the selected join particle can spawn for the normal join profile.
+
+`what-feature-enabled.join.styles` controls whether the selected join particle style is used. When this is `false`, the service falls back to the default style behavior instead of applying a selected style id.
+
+`what-feature-enabled.quit.message` applies the same message delivery rule to normal quit output.
+
+`what-feature-enabled.quit.sounds` applies the same sound delivery rule to normal quit output.
+
+`what-feature-enabled.quit.particles` applies the same particle delivery rule to normal quit output.
+
+`what-feature-enabled.quit.styles` applies the same style delivery rule to normal quit output.
+
+The selector menus also use these switches to decide whether a category should be available. Disabling a feature is therefore stronger than hiding one option from a selector list.
+
+## First join profile
+
+`first-join` is used for the player's first recorded join. It is separate from the normal preset selector system, and it is not blocked by `what-feature-enabled`.
+
+### `first-join.message.enabled`
+
+```yaml
+first-join:
+  message:
+    enabled: true
+```
+
+When `true`, the first-join chat lines are broadcast. When `false`, the first-join chat message section is skipped while other enabled first-join sections can still run.
+
+### `first-join.message.lines`
+
+```yaml
+first-join:
+  message:
+    lines:
+      - "<dark_gray>(<red>%device%</red>)</dark_gray> ..."
+```
+
+`lines` is a list, so one first-join event can send multiple chat lines. Each line supports MiniMessage-style formatting used by FioChat, the module placeholders, and PlaceholderAPI placeholders when PlaceholderAPI is present.
+
+The current source config contains some mojibake glyphs in the decorative symbols. That is a source file encoding issue, not a separate module feature. You can replace those decorative characters in the YAML with clean symbols or plain text.
+
+### `first-join.actionbar.enabled`
+
+```yaml
+first-join:
+  actionbar:
+    enabled: false
+```
+
+When `true`, the first-join profile sends an action bar message. When `false`, the action bar part is skipped.
+
+### `first-join.actionbar.text`
+
+```yaml
+first-join:
+  actionbar:
+    text: "<yellow>Welcome %player_name% to the server!</yellow>"
+```
+
+`text` is the exact action bar content sent when the first-join action bar is enabled.
+
+### `first-join.title.enabled`
+
+```yaml
+first-join:
+  title:
+    enabled: false
+```
+
+When `true`, the first-join profile sends a title and subtitle. When `false`, title output is skipped.
+
+### `first-join.title.title`
+
+```yaml
+first-join:
+  title:
+    title: "<gold>Welcome!</gold>"
+```
+
+`title` is the large top title text.
+
+### `first-join.title.subtitle`
+
+```yaml
+first-join:
+  title:
+    subtitle: "<white>%player_name%</white>"
+```
+
+`subtitle` is the smaller line under the title.
+
+### `first-join.title.fade-in`
+
+```yaml
+first-join:
+  title:
+    fade-in: 5
+```
+
+`fade-in` is the title fade-in duration in ticks.
+
+### `first-join.title.stay`
+
+```yaml
+first-join:
+  title:
+    stay: 60
+```
+
+`stay` is the time the title remains fully visible, in ticks.
+
+### `first-join.title.fade-out`
+
+```yaml
+first-join:
+  title:
+    fade-out: 10
+```
+
+`fade-out` is the title fade-out duration in ticks.
+
+### `first-join.bossbar.enabled`
+
+```yaml
+first-join:
+  bossbar:
+    enabled: false
+```
+
+When `true`, the first-join profile sends a boss bar. When `false`, the boss bar part is skipped.
+
+### `first-join.bossbar.title`
+
+```yaml
+first-join:
+  bossbar:
+    title: "<gold>First time on the server!</gold>"
+```
+
+`title` is the boss bar text.
+
+### `first-join.bossbar.color`
+
+```yaml
+first-join:
+  bossbar:
+    color: "YELLOW"
+```
+
+`color` is the Bukkit boss bar color name.
+
+### `first-join.bossbar.style`
+
+```yaml
+first-join:
+  bossbar:
+    style: "SOLID"
+```
+
+`style` is the Bukkit boss bar style name.
+
+### `first-join.bossbar.progress`
+
+```yaml
+first-join:
+  bossbar:
+    progress: 1.0
+```
+
+`progress` is the fill amount of the boss bar. `1.0` means full.
+
+### `first-join.bossbar.seconds`
+
+```yaml
+first-join:
+  bossbar:
+    seconds: 5
+```
+
+`seconds` controls how long the boss bar stays visible.
+
+### `first-join.sound.enabled`
+
+```yaml
+first-join:
+  sound:
+    enabled: true
+```
+
+When `true`, the first-join sound is played. When `false`, the sound part is skipped.
+
+### `first-join.sound.name`
+
+```yaml
+first-join:
+  sound:
+    name: "ENTITY_PLAYER_LEVELUP"
+```
+
+`name` is the Bukkit sound id played by the first-join profile.
+
+### `first-join.sound.volume`
+
+```yaml
+first-join:
+  sound:
+    volume: 1.0
+```
+
+`volume` controls the sound volume.
+
+### `first-join.sound.pitch`
+
+```yaml
+first-join:
+  sound:
+    pitch: 1.0
+```
+
+`pitch` controls the sound pitch.
+
+### `first-join.particle.enabled`
+
+```yaml
+first-join:
+  particle:
+    enabled: true
+```
+
+When `true`, the first-join particle is spawned at the player location.
+
+### `first-join.particle.type`
+
+```yaml
+first-join:
+  particle:
+    type: "TOTEM"
+```
+
+`type` is the Bukkit particle id used by the first-join profile.
+
+### `first-join.particle.count`
+
+```yaml
+first-join:
+  particle:
+    count: 50
+```
+
+`count` is the number of particle instances requested from the server.
+
+### `first-join.particle.offset-x`
+
+```yaml
+first-join:
+  particle:
+    offset-x: 0.5
+```
+
+`offset-x` is the horizontal X spread around the player.
+
+### `first-join.particle.offset-y`
+
+```yaml
+first-join:
+  particle:
+    offset-y: 1.0
+```
+
+`offset-y` is the vertical spread around the player.
+
+### `first-join.particle.offset-z`
+
+```yaml
+first-join:
+  particle:
+    offset-z: 0.5
+```
+
+`offset-z` is the horizontal Z spread around the player.
+
+### `first-join.particle.extra`
+
+```yaml
+first-join:
+  particle:
+    extra: 0.02
+```
+
+`extra` is passed as the particle's extra data value. Bukkit particles commonly use this value as speed, but the exact meaning depends on the particle type.
+
+## Join and quit presets
+
+```yaml
+presets:
+  join:
+    classic:
+      display: "<green>Classic Join</green>"
+      material: "PAPER"
+      message: "<green>+</green> <white>%player_name%</white> <gray>joined the server.</gray>"
+  quit:
+    classic:
+      display: "<red>Classic Quit</red>"
+      material: "PAPER"
+      message: "<red>-</red> <white>%player_name%</white> <gray>left the server.</gray>"
+```
+
+`presets.join` contains the selectable join message presets.
+
+`presets.quit` contains the selectable quit message presets.
+
+The current source defines these ids for both join and quit:
+
+```text
+classic
+vanilla
+minimalist
+cheerful
+royal
+fantasy
+cyber
+fiery
+ocean
+spooky
+epic
+```
+
+Each preset id becomes part of the dynamic permission node. Keep ids lowercase and stable when players already have saved preferences, because the saved value points to the id.
+
+### `display`
+
+`display` is the name shown in the selector menu. It supports the same text formatting style used by the rest of the module.
+
+### `material`
+
+`material` is the Bukkit material used as the selector icon for that preset.
+
+### `message`
+
+`message` is the chat line that is broadcast when the preset is selected and allowed. It can use module placeholders such as `%player_name%`, `%player_displayname%`, `%player_world%`, `%device%`, and `%server_unique_joins%`. PlaceholderAPI placeholders are also processed when PlaceholderAPI is available.
+
+## Runtime message overrides
+
+The service also reads optional `messages.*` keys even though the default source config focuses on presets and first-join content. These optional keys let you override command feedback such as usage text, feature-disabled text, players-only text, no-permission text, selected-join text, selected-quit text, no-presets text, toggle usage, and toggle enabled or disabled messages.
+
+Use these only when you want to customize command feedback. They do not replace `presets.join`, `presets.quit`, or `first-join`.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

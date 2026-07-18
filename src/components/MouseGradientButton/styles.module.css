@@ -1,0 +1,81 @@
+.btn {
+  --mx: 50%;
+  --my: 50%;
+  --from: #52d9d0;
+  --to: #0ba5b3;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+  height: 40px;
+  min-width: 108px;
+  padding: 0 1.05rem;
+  box-sizing: border-box;
+
+  border-radius: 9999px;
+  border: 1px solid rgba(134, 204, 255, 0.35);
+
+  color: #eaf4ff;
+  text-decoration: none !important;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  background: rgba(10, 25, 44, 0.4);
+
+  transition:
+    border-color 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    var(--from) 0%,
+    var(--to) 100%
+  );
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:hover {
+  border-color: rgba(200, 220, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(153, 102, 204, 0.14);
+}
+
+.label {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  line-height: 1;
+
+  margin: 0;
+  padding: 0;
+
+  text-align: center;
+  white-space: nowrap;
+
+  transform: translateY(1px);
+}

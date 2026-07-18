@@ -1,0 +1,416 @@
+---
+title: Advancement Message
+sidebar_position: 1
+---
+
+# Advancement Message
+
+This page focuses on how to modify Advancement Message settings.
+
+## `settings.debug-log`
+
+Turns debug logging on or off.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  debug-log: true
+```
+
+## `settings.only-if-vanilla-visible`
+
+Controls whether FioChat only rewrites advancements that vanilla was already going to announce.
+
+Options:
+
+- `true`: only rewrites announcements that vanilla was already sending
+- `false`: allows FioChat to continue even when vanilla visibility is not present
+
+Example:
+
+```yaml
+settings:
+  only-if-vanilla-visible: true
+```
+
+## `settings.suppress-when-formatted-empty`
+
+Controls whether the announcement is cancelled when the final formatted line is empty.
+
+Options:
+
+- `true`: empty final output is suppressed
+- `false`: empty output is not suppressed by this setting
+
+Example:
+
+```yaml
+settings:
+  suppress-when-formatted-empty: true
+```
+
+## `settings.force-custom-broadcast-when-unsuppressible`
+
+Controls what happens if FioChat cannot suppress the vanilla advancement line.
+
+Options:
+
+- `true`: still sends the custom advancement line
+- `false`: skips the custom line to avoid duplicates
+
+Example:
+
+```yaml
+settings:
+  force-custom-broadcast-when-unsuppressible: false
+```
+
+## `settings.world-gamerule-fallback-enabled`
+
+Controls whether the module may use the world gamerule fallback when direct suppression fails.
+
+Options:
+
+- `true`
+- `false`
+
+Example:
+
+```yaml
+settings:
+  world-gamerule-fallback-enabled: true
+```
+
+## `settings.world-gamerule-fallback-cooldown-ms`
+
+Controls the retry cooldown for the world gamerule fallback.
+
+Example:
+
+```yaml
+settings:
+  world-gamerule-fallback-cooldown-ms: 2500
+```
+
+You can raise it if you want fewer fallback attempts, or lower it if you want retries to happen sooner.
+
+## `settings.world-whitelist`
+
+Lets you allow the module only in specific worlds.
+
+Options:
+
+- `[]`: all worlds are allowed
+- a list of world names: only those worlds are allowed
+
+Example:
+
+```yaml
+settings:
+  world-whitelist:
+    - "world"
+    - "world_nether"
+```
+
+## `settings.world-blacklist`
+
+Blocks the module in specific worlds.
+
+Options:
+
+- `[]`: no world is blocked
+- a list of world names: those worlds are blocked
+
+Example:
+
+```yaml
+settings:
+  world-blacklist:
+    - "world_the_end"
+```
+
+## `settings.region-whitelist`
+
+Lets you allow the module only inside specific WorldGuard regions.
+
+Options:
+
+- `[]`: all regions are allowed
+- a list of region ids: only those regions are allowed
+
+Example:
+
+```yaml
+settings:
+  region-whitelist:
+    - "spawn"
+    - "main_city"
+```
+
+## `settings.region-blacklist`
+
+Blocks the module inside specific WorldGuard regions.
+
+Options:
+
+- `[]`: no region is blocked
+- a list of region ids: those regions are blocked
+
+Example:
+
+```yaml
+settings:
+  region-blacklist:
+    - "event_admin"
+```
+
+## `settings.advancements-blacklist`
+
+Blocks specific advancements from being announced.
+
+You can use several styles here.
+
+Options:
+
+- exact key such as `story/root`
+- namespaced key such as `minecraft:story/root`
+- category wildcard such as `story/*`
+- root tab aliases such as `Minecraft`, `Nether`, `Adventure`, `Husbandry`, `The End`
+
+Example:
+
+```yaml
+settings:
+  advancements-blacklist:
+    - "story/root"
+    - "minecraft:story/root"
+    - "story/*"
+    - "Nether"
+    - "The End"
+```
+
+## `message.task-format`
+
+Changes the main chat line for task-type advancements.
+
+Current style example:
+
+```yaml
+message:
+  task-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has made the advancement</italic></white>> <smallfont:<green><italic>[%advancement_title%]</italic></green>>"
+```
+
+Other example contents:
+
+```yaml
+message:
+  task-format: "<gray>%player_name%</gray> <green>%advancement_type_label%</green> <white>[%advancement_title%]</white>"
+```
+
+```yaml
+message:
+  task-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has made the advancement</italic></white>> <smallfont:<green><italic>[%advancement_title%]</italic></green>>"
+```
+
+## `message.goal-format`
+
+Changes the main chat line for goal-type advancements.
+
+Example:
+
+```yaml
+message:
+  goal-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has reached the goal</italic></white>> <smallfont:<gold><italic>[%advancement_title%]</italic></gold>>"
+```
+
+## `message.challenge-format`
+
+Changes the main chat line for challenge-type advancements.
+
+Example:
+
+```yaml
+message:
+  challenge-format: "<gray>ðŸ”¥</gray> <smallfont:<white><italic>%player_name% has completed the challenge</italic></white>> <smallfont:<#ff55ff><italic>[%advancement_title%]</italic></#ff55ff>>"
+```
+
+## `message.task-hover`
+
+Changes the hover lines for task advancements.
+
+Options:
+
+- one line
+- multiple lines
+- title only
+- description only
+- title plus description plus key
+
+Example:
+
+```yaml
+message:
+  task-hover:
+    - "<green>%advancement_description%</green>"
+```
+
+Example with multiple lines:
+
+```yaml
+message:
+  task-hover:
+    - "<green>%advancement_title%</green>"
+    - "<gray>%advancement_description%</gray>"
+    - "<dark_gray>%advancement_full_key%</dark_gray>"
+```
+
+## `message.goal-hover`
+
+Changes the hover lines for goal advancements.
+
+Example:
+
+```yaml
+message:
+  goal-hover:
+    - "<gold>%advancement_description%</gold>"
+```
+
+Example with multiple lines:
+
+```yaml
+message:
+  goal-hover:
+    - "<gold>%advancement_title%</gold>"
+    - "<gray>%advancement_description%</gray>"
+```
+
+## `message.challenge-hover`
+
+Changes the hover lines for challenge advancements.
+
+Example:
+
+```yaml
+message:
+  challenge-hover:
+    - "<#ff55ff>%advancement_description%</#ff55ff>"
+```
+
+Example with multiple lines:
+
+```yaml
+message:
+  challenge-hover:
+    - "<#ff55ff>%advancement_title%</#ff55ff>"
+    - "<gray>%advancement_description%</gray>"
+    - "<dark_gray>%advancement_type%</dark_gray>"
+```
+
+## `actions.task`
+
+Runs actions when a task advancement is completed.
+
+Supported action styles:
+
+- `[CONSOLE] <command>`
+- `[PLAYER] <command>`
+- `[MESSAGE] <message>`
+- `[ACTIONBAR] <message>`
+- `[TITLE] title||subtitle||fadeIn||stay||fadeOut`
+- `[BOSSBAR] title||color||style||progress||seconds`
+- `[SOUND] sound:volume:pitch`
+
+Example:
+
+```yaml
+actions:
+  task:
+    - "[MESSAGE] <green>You unlocked %advancement_title%</green>"
+```
+
+## `actions.goal`
+
+Runs actions when a goal advancement is completed.
+
+Example:
+
+```yaml
+actions:
+  goal:
+    - "[SOUND] minecraft:ui.toast.challenge_complete:1.0:1.0"
+```
+
+## `actions.challenge`
+
+Runs actions when a challenge advancement is completed.
+
+Example:
+
+```yaml
+actions:
+  challenge:
+    - "[TITLE] <#ff55ff>Challenge Complete||<white>%advancement_title%</white>||10||40||10"
+```
+
+## `commands.task`, `commands.goal`, `commands.challenge`
+
+These are legacy sections that still work.
+
+Example:
+
+```yaml
+commands:
+  challenge:
+    - "[CONSOLE] broadcast %player_name% finished %advancement_title%"
+```
+
+## Title overrides
+
+You can override advancement titles by editing the registry entries.
+
+Supported key styles:
+
+- namespaced key such as `minecraft:story/mine_stone`
+- short key such as `story/mine_stone`
+
+Example:
+
+```json
+{
+  "display-names": {
+    "minecraft:story/mine_stone": "Stone Age",
+    "story/mine_stone": "Stone Age"
+  }
+}
+```
+
+## Useful placeholders for editing formats
+
+Common placeholders you can place inside message formats, hover lines, and actions:
+
+- `%player_name%`
+- `%advancement_title%`
+- `%advancement_description%`
+- `%advancement_key%`
+- `%advancement_full_key%`
+- `%advancement_type%`
+- `%advancement_type_label%`
+- `%vanilla_message%`
+
+Example:
+
+```yaml
+message:
+  task-format: "<white>%player_name%</white> <gray>-></gray> <green>%advancement_title%</green>"
+```
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

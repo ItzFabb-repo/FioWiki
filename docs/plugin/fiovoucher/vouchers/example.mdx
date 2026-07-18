@@ -1,0 +1,326 @@
+---
+title: Example
+---
+
+# Example
+
+This page lists the main configuration keys from `vouchers/example.yml`.
+
+Use this page when you want to understand what each part of the default example voucher controls.
+
+## File Location
+
+```text
+plugins/FioVoucher/vouchers/example.yml
+```
+
+The file is meant to be copied, renamed, and edited into a new voucher.
+
+## Root Voucher Keys
+
+| Key | Example value | Function |
+| --- | --- | --- |
+| `voucher.id` | `example` | Internal voucher id. Usually matches the file name. |
+| `voucher.display-name` | formatted `Armor Trims` text | Display name used by messages and menus. |
+| `voucher.enabled` | `true` | Enables or disables the voucher. |
+
+Basic shape:
+
+```yaml
+voucher:
+  id: example
+  display-name: "<gradient:#28C9A4:#84e0cb><shadow:#065A47:1>Armor Trims</shadow></gradient>"
+  enabled: true
+```
+
+## Item Section
+
+`voucher.item` controls the physical voucher item given to players.
+
+| Key | Example value | Function |
+| --- | --- | --- |
+| `material` | `PLAYER_HEAD` | Base item material. |
+| `texture` | base64 texture | Custom skull texture for `PLAYER_HEAD`. |
+| `amount` | `1` | Item amount shown for the voucher item. |
+| `model-data` | `67` commented | Optional custom model data. |
+| `flags` | `HIDE_ATTRIBUTES` commented | Optional hidden item flags. |
+| `name` | formatted `Armor Trims` text | Voucher item display name. |
+| `lore` | list of lines | Voucher item description. |
+| `glowing` | `false` | Adds glow when enabled. |
+
+Main example:
+
+```yaml
+item:
+  material: PLAYER_HEAD
+  texture: "base64_texture"
+  amount: 1
+  name: "<gradient:#28C9A4:#84e0cb><shadow:#065A47:1>Armor Trims</shadow></gradient>"
+  lore:
+    - "<dark_gray>Voucher"
+    - ""
+    - "<gray><italic>Inside this voucher is a custom"
+    - "<gray><italic>armor trims, a customization for"
+    - "<gray><italic>your armor."
+    - ""
+    - "<#28C9A4>| <white>Rewards</white><dark_gray>:</dark_gray> <#28C9A4>Armor Trim"
+    - "<#28C9A4>| <white>Type</white><dark_gray>:</dark_gray> <#28C9A4>Goods"
+    - "<#28C9A4>| <white>Quantity</white><dark_gray>:</dark_gray> <#28C9A4>1x"
+    - ""
+    - "<yellow>Click to redeem this voucher"
+  glowing: false
+```
+
+## Commands Section
+
+`voucher.commands` controls what happens when the voucher is redeemed, fails, or reaches claim limit.
+
+Main branches:
+
+- `random-claimed`
+- `claimed`
+- `failed`
+- `max`
+
+```yaml
+commands:
+  random-claimed:
+    enabled: false
+  claimed:
+    enabled: true
+  failed:
+    enabled: false
+  max:
+    enabled: false
+```
+
+## Random-Claimed
+
+`random-claimed` defines random reward branches.
+
+In `example.yml`, this section is configured but disabled:
+
+```yaml
+random-claimed:
+  enabled: false
+  random:
+    "1":
+      chance: "15%"
+      actions:
+        - "[CONSOLE] eco give %player_name% 2"
+```
+
+Each branch has:
+
+| Key | Function |
+| --- | --- |
+| `chance` | Chance weight or percentage string. |
+| `actions` | Actions executed if that branch is selected. |
+
+The sample branches include:
+
+- console money rewards
+- `[ITEM] COOKED_BEEF`
+- `<random:1-100>` for random money amount
+- `<random:1-3>` for random item amount
+
+## Claimed
+
+`claimed` runs when the voucher is successfully redeemed.
+
+In the sample, `claimed.enabled` is `true`.
+
+Action types used:
+
+| Action | Purpose |
+| --- | --- |
+| `[MESSAGE]` | Sends success text to the player. |
+| `[SOUND]` | Plays a sound. |
+| `[CONSOLE]` | Runs a console command. |
+| `[ITEM]` | Gives a custom item reward. |
+| `[EXP_LEVELS]` | Gives experience levels. |
+| `[EXP_POINTS]` | Gives raw experience points. |
+
+Example actions from `claimed.actions`:
+
+```yaml
+claimed:
+  enabled: true
+  actions:
+    - "[MESSAGE] <gray>You've succesfully redeemed <white>{voucherDisplayName}</white>!</gray>"
+    - "[SOUND] ENTTIY_PLAYER_LEVELUP 1 0.6 master"
+    - "[CONSOLE] eco give %player_name% 1"
+    - "[CONSOLE] give %player_name% DIAMOND 1"
+    - "[EXP_LEVELS] 1"
+    - "[EXP_POINTS] 1"
+```
+
+:::note
+The sound name is written as `ENTTIY_PLAYER_LEVELUP` in the bundled example file. If the sound does not play, check the spelling against your server version.
+:::
+
+## Claimed Item Rewards
+
+The example demonstrates many `[ITEM]` reward formats.
+
+| Reward | What it demonstrates |
+| --- | --- |
+| `BREAD 32 name:... lore:...` | Item amount, custom name, multiline lore. |
+| `PLAYER_HEAD 1 <texture:...>` | Custom head reward. |
+| `IRON_HELMET 1 <trim:...> <enchantments:...>` | Trim syntax from sample plus enchantments. |
+| `IRON_CHESTPLATE 1 <trim:...> <enchantments:...>` | Multiple enchantments. |
+| `WOODEN_SWORD 1 <flags:...>` | Hidden item flags. |
+| `BUNDLE 1 <inBundle:...>` | Bundle with items inside. |
+| `ENCHANTED_BOOK 1 sharpness:3` | Loose enchantment token. |
+| `WOODEN_PICKAXE <durability:1>` | Remaining durability. |
+| `DIAMOND_PICKAXE <unbreakable:true>` | Unbreakable item. |
+| `DIAMOND_PICKAXE <unbreakable:true> <flags:HIDE_UNBREAKABLE>` | Unbreakable item with hidden tooltip. |
+
+For detailed `[ITEM]` syntax, read [Item Example](/plugin/fiovoucher/vouchers/item-example).
+
+## Failed
+
+`failed` runs when the voucher item/action is invalid.
+
+In `example.yml`, this section is configured but disabled:
+
+```yaml
+failed:
+  enabled: false
+  actions:
+    - "[MESSAGE] <gray>Your voucher was identified as a Duplicated Voucher therefore this</gray>"
+    - "[MESSAGE] <gray>voucher data is invalidated.</gray>"
+    - "[SOUND] ENTITY_VILLAGER_NO 1 2 master"
+```
+
+Use this branch for duplicate or invalid voucher handling.
+
+## Max
+
+`max` runs when a player already reached the claim limit.
+
+In `example.yml`, this section is configured but disabled:
+
+```yaml
+max:
+  enabled: false
+  actions:
+    - "[MESSAGE] <gray>You've already claimed this voucher therefore</gray>"
+    - "[MESSAGE] <gray>you can't claim another of this voucher.</gray>"
+    - "[SOUND] ENTITY_VILLAGER_NO 1 2 master"
+```
+
+Use this branch when `settings.redeem.max-claim` blocks another redeem.
+
+## Settings Section
+
+`voucher.settings` controls trial behavior and redeem restrictions.
+
+Main branches:
+
+- `trial`
+- `redeem`
+
+## Trial Settings
+
+The bundled example includes trial settings but keeps trial mode disabled.
+
+```yaml
+trial:
+  enabled: false
+  duration: "10d"
+  allow-pause: false
+  allow-stack: false
+```
+
+| Key | Function |
+| --- | --- |
+| `enabled` | Makes the voucher act as a trial voucher. |
+| `duration` | Trial duration. Example: `10d`. |
+| `allow-pause` | Allows player to pause the trial. |
+| `allow-stack` | Allows stacking trial duration. |
+
+## Redeem Settings
+
+```yaml
+redeem:
+  max-claim: -1
+```
+
+| Key | Example value | Function |
+| --- | --- | --- |
+| `max-claim` | `-1` | Maximum claim count. `-1` means infinite claim. |
+
+## World Restriction
+
+World restriction controls where the voucher can be redeemed.
+
+```yaml
+world:
+  whitelist: []
+  blacklist: []
+```
+
+| Key | Function |
+| --- | --- |
+| `whitelist` | Only allow redeem in listed worlds. Empty means no whitelist limit. |
+| `blacklist` | Block redeem in listed worlds. Empty means no blocked worlds. |
+
+## Region Restriction
+
+Region restriction controls where the voucher can be redeemed by region.
+
+```yaml
+region:
+  whitelist: []
+  blacklist: []
+```
+
+| Key | Function |
+| --- | --- |
+| `whitelist` | Only allow redeem in listed regions. |
+| `blacklist` | Block redeem in listed regions. |
+
+## Permission Gates
+
+Permission gates control whether a player needs or must not have a permission.
+
+```yaml
+permissions:
+  whitelist:
+    enable: false
+    value: "example.done"
+    actions:
+      - "[MESSAGE] <gray>You don't have the <red>{value}</red> to this voucher."
+      - "[SOUND] ENTITY_VILLAGER_NO 1 2 master"
+  blacklist:
+    enable: false
+    value: "example.done"
+    actions:
+      - "[MESSAGE] <gray>You already have the permission <red>{value}</red> you can't use this voucher again!"
+      - "[SOUND] ENTITY_VILLAGER_NO 1 2 master"
+```
+
+| Gate | Meaning |
+| --- | --- |
+| `whitelist.enable` | When true, player must have `whitelist.value`. |
+| `blacklist.enable` | When true, player must not have `blacklist.value`. |
+| `actions` | Runs when the permission gate blocks the player. |
+
+The `{value}` placeholder is replaced with the configured permission value.
+
+## Main Config Checklist
+
+When creating a new voucher from `example.yml`, usually edit these first:
+
+1. `voucher.id`
+2. `voucher.display-name`
+3. `voucher.item.material`
+4. `voucher.item.name`
+5. `voucher.item.lore`
+6. `voucher.commands.claimed.actions`
+7. `voucher.settings.trial`
+8. `voucher.settings.redeem.max-claim`
+9. `voucher.settings.redeem.world`
+10. `voucher.settings.redeem.region`
+11. `voucher.settings.redeem.permissions`

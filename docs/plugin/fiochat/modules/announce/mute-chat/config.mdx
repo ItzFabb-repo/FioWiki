@@ -1,0 +1,273 @@
+---
+title: Config
+---
+
+# Mute Chat Config
+
+`config.yml` controls the Mute Chat module. The module is loaded from the announce folder, but the enforcement runs through the chat channel service and private message service.
+
+Source file:
+
+```text
+modules/announce/Mute Chat/config.yml
+```
+
+The old lowercase path `modules/announce/mutechat/config.yml` is treated as a legacy path and can be migrated by FioChat.
+
+## Module toggle
+
+```yaml
+modules:
+  mutechat: true
+```
+
+The master toggle is stored in `modules/settings.yml`.
+
+When `modules.mutechat` is `false`, `/fiochat mutechat` and admin mutechat commands are unavailable, normal mute checks do not block chat, and command blocking from this module does not run.
+
+The chat channel module and mutechat module are connected. The service method that reports Mute Chat availability requires both the chat channel service to be enabled and the mutechat module toggle to be enabled.
+
+## Admin permissions
+
+```text
+fiochat.admin.mutechat
+fiochat.admin.channel.mutechat
+```
+
+`fiochat.admin.mutechat` allows full/global mute control through commands such as:
+
+```text
+/fiochat mutechat all
+/fiochat mutechat *
+/fiochat admin mutechat
+```
+
+`fiochat.admin.channel.mutechat` allows per-channel mute control through commands such as:
+
+```text
+/fiochat mutechat <channel>
+/fiochat admin channel mutechat <channel>
+```
+
+The broader FioChat admin permission can also allow the command path, depending on the command permission helper.
+
+## Bypass permission
+
+```yaml
+settings:
+  bypass-permission: "fiochat.mutechat.bypass"
+```
+
+This permission lets a player continue chatting while global mute or channel mute is active.
+
+The service also accepts these compatible config keys:
+
+```text
+settings.bypass_permission
+settings.bypass
+```
+
+If no bypass permission is configured, the fallback is:
+
+```text
+fiochat.mutechat.bypass
+```
+
+Bypass affects:
+
+```text
+normal chat while global mute is active
+normal chat inside a muted channel
+private messages blocked by global mute
+configured command labels blocked by global mute
+```
+
+## `settings.disable_command`
+
+```yaml
+settings:
+  disable_command: false
+```
+
+When `false`, global mute blocks chat and private-message sending through FioChat's message service, but it does not cancel arbitrary command preprocess events from `disabled_command_list`.
+
+When `true`, the module also watches player commands while global chat is muted. If the command label matches the disabled command list and the player does not have bypass permission, the command is cancelled and the player receives the configured `chat-muted` message.
+
+The service also accepts the dashed key:
+
+```text
+settings.disable-command
+```
+
+## `settings.disabled_command_list`
+
+```yaml
+settings:
+  disabled_command_list:
+    - "/message"
+    - "/msg"
+    - "/m"
+    - "/tell"
+    - "/t"
+    - "/whisper"
+    - "/w"
+    - "/me"
+    - "/reply"
+    - "/r"
+```
+
+This list is only used when all of these are true:
+
+```text
+modules.mutechat is enabled
+settings.disable_command is true
+global chat is currently muted
+the command sender does not have the bypass permission
+```
+
+The service also accepts the dashed key:
+
+```text
+settings.disabled-command-list
+```
+
+If the configured list is missing or empty, the service falls back to its built-in default list, which matches the same command labels shown in the current source.
+
+## Command label normalization
+
+Entries can be written with or without `/`.
+
+The command checker normalizes command input by:
+
+```text
+removing the leading slash
+taking only the first command label before spaces
+removing a namespace prefix such as minecraft:
+lowercasing the result
+```
+
+Examples:
+
+```text
+/msg Steve hello -> msg
+msg Steve hello -> msg
+/minecraft:msg Steve hello -> msg
+/reply yes -> reply
+/r yes -> r
+```
+
+Only the normalized command label is compared against the disabled command list.
+
+## Teleport utility command exception
+
+Even when command blocking is enabled, the service intentionally ignores teleport utility commands before checking the disabled command list.
+
+The exception includes command families such as:
+
+```text
+spawn
+warp
+warps
+setwarp
+delwarp
+home
+homes
+sethome
+delhome
+tpa
+tpahere
+tpaccept
+tpdeny
+tp
+rtp
+wild
+```
+
+This prevents global mute from accidentally blocking movement or teleport utility commands through the mutechat command-blocking path.
+
+## Global mute behavior
+
+Global mute is toggled with:
+
+```text
+/fiochat mutechat all
+/fiochat mutechat *
+/fiochat admin mutechat
+```
+
+When global mute is active:
+
+```text
+normal chat is cancelled for non-bypass players
+FioChat private messages fail for non-bypass senders
+configured command labels can be cancelled if disable_command is true
+```
+
+The mute actor name is stored and inserted into mute messages through `%staff%`.
+
+## Channel mute behavior
+
+Channel mute is toggled with:
+
+```text
+/fiochat mutechat <channel>
+/fiochat admin channel mutechat <channel>
+```
+
+When a specific channel is muted, non-bypass players cannot speak in that channel. Other channels remain usable unless global mute is also active.
+
+The channel display name is inserted into channel mute messages through `%channel%`.
+
+## Message overrides
+
+The config source notes that message text comes from language files:
+
+```text
+lang/lang_en.yml -> overrides.modules.mutechat.messages
+lang/lang_id.yml -> overrides.modules.mutechat.messages
+lang/lang_ch.yml -> overrides.modules.mutechat.messages
+lang/lang_jp.yml -> overrides.modules.mutechat.messages
+```
+
+After language overrides are applied, the service reads these keys from the mutechat config:
+
+```text
+messages.feature-disabled
+messages.chat-muted
+messages.channel-muted
+messages.chat-muted-broadcast
+messages.chat-unmuted-broadcast
+messages.channel-muted-broadcast
+messages.channel-unmuted-broadcast
+```
+
+`messages.feature-disabled` is sent when a mutechat command is used while the module is disabled.
+
+`messages.chat-muted` is sent to a non-bypass player who tries to chat or run a blocked command while global mute is active.
+
+`messages.channel-muted` is sent to a non-bypass player who tries to speak in a muted channel.
+
+`messages.chat-muted-broadcast` is broadcast when global mute is enabled.
+
+`messages.chat-unmuted-broadcast` is broadcast when global mute is disabled.
+
+`messages.channel-muted-broadcast` is sent to the affected channel audience when that channel is muted.
+
+`messages.channel-unmuted-broadcast` is sent to the affected channel audience when that channel is unmuted.
+
+Supported placeholders include:
+
+```text
+%staff%
+%channel%
+```
+
+## Runtime state
+
+Mute state is runtime state. The global mute flag, muted channel ids, and mute actor names live in memory inside the chat channel service.
+
+Reloading or restarting the plugin can reset active mute state, while the config controls how the feature behaves when mute is toggled again.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

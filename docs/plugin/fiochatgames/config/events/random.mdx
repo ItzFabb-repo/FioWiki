@@ -1,0 +1,255 @@
+---
+title: random.yml
+sidebar_position: 1
+---
+
+# random.yml
+
+---
+
+# Game Preview (RANDOM)
+
+![FioChatGames RANDOM](../../../../img/fiochatgames/FioChatGames%20RANDOM.png)
+
+---
+
+File Location: `plugin\\fiochatgames\\config\\events\random.yml`
+
+```yaml
+# ==================================================================================================
+#  Chat Event Configuration Guide
+# ==================================================================================================
+# Purpose
+# This file defines a single chat-event game type, including round behavior, player messaging,
+# reward execution, and optional ranking presentation used by full-duration chat events.
+#
+# Core Fields
+# - game: Logical event identifier used by  internals.
+# - folder: Relative config path used by admin tools and diagnostics.
+# - enable: Enables or disables this event from automatic/manual selection.
+# - case-sensitive: If true, player answers must match exact letter case.
+# - points: Points granted to the winner of this event.
+#
+# Message Blocks
+# - messages.started: Broadcast when the event begins.
+# - messages.start: Multi-line event panel shown at round start.
+# - messages.correct: Winner announcement template.
+# Placeholders commonly available: %player%, %type%, %gameType%, %points%, %seconds%, %prompt%.
+#
+# Streak and Rewards
+# - streak.reset_on_loss: Resets non-winner streak values after a resolved round.
+# - streak.announce: Enables global streak announcement messages.
+# - streak_rewards: Executes extra rewards when a player reaches configured streak milestones.
+# - rewards.commands: Default reward pipeline for normal winner resolution.
+# - rewards.fastest.commands: Optional override used when winner policy is FASTEST in full-duration mode.
+#   If omitted/empty, the plugin falls back to rewards.commands.
+#
+# Full-Duration Ranking Presentation
+# The global toggle and top-count limit are controlled in config.yml:
+#   chat_event.full_duration.enabled
+#   chat_event.full_duration.announce_rankings
+#   chat_event.full_duration.top_announce_count
+#
+# Per-event ranking display templates are configured below:
+# - simple: Minimal single-template ranking display.
+# - advance: Per-position templates (1..10) with optional header/footer.
+#
+# Ranking Placeholders
+# - Per-line: %index%, %player%, %timetoGuess%
+# - Positional: %player_1%..%player_10%, %timetoGuess_1%..%timetoGuess_10%
+# - Generic: %max%, %type%
+#
+# Notes
+# - Keep YAML indentation as spaces only.
+# - Avoid tabs.
+# - Changes take effect after plugin reload.
+# ==================================================================================================
+game: RANDOM
+folder: games/events/random.yml
+
+enable: true
+case-sensitive: true
+points: 1
+
+messages:
+  started: '<green>A <gold>%type%</gold> game has started!</green>'
+  correct: '<green><bold>%player%</bold> solved the <gold>%type%</gold> game in <gold>%seconds%s</gold> and earned <gold>%points%</gold>!</green>'
+  recorded: "[prefix=false]<green>Recorded:</green> <yellow>%rank%</yellow> <gray>(%seconds%s)</gray>"
+  streak: '<green>You have <gold>%streak%</gold> WinStreak, on this Game Event <gold>%type%</gold>!</green>'
+  start:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#cfad3e><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:random></center>'
+    - ''
+    - '<center><gray><smallfont:be the first to win the event!></gray></center>'
+    - '<center><gray>Solve this challenge:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#cfad3e><shadow:#000000:1.0>%word%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  finish:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#cfad3e><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:random></center>'
+    - ''
+    - '<center><gray><smallfont:%player% solved this event first!></gray></center>'
+    - '<center><gray>The answer was:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#cfad3e><shadow:#00FF00:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+  ended:
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+    - '<center><#cfad3e><bold>Chat Event</bold></center>'
+    - '<center><#808080><smallfont:random></center>'
+    - ''
+    - '<center><gray><smallfont:The event has ended without a winner></gray></center>'
+    - '<center><gray>The answer was:</gray><dark_gray>:</dark_gray></center>'
+    - '<center><#cfad3e><shadow:#FF0000:0.3>%answer%</shadow></center>'
+    - ' '
+    - "<center><#7a7a7a><strikethrough>                                                             </strikethrough></center>"
+    - ' '
+title:
+  text: '<#cfad3e>Random Event'
+  enabled: true
+subtitle:
+  text: '<gray>%random%</gray>'
+  enabled: true
+
+length: 6
+character_type: ALPHANUMERIC
+# Other Type are:
+# ALPHA|ALPHANUMERIC|NUMERIC|SYMBOLIC|RANDOMIZED
+
+streak:
+  reset_on_loss: true
+  announce: false
+
+streak_rewards:
+  2:
+    commands:
+      - 'MESSAGE:<green>2 streak in %game%!'
+
+rewards:
+  commands:
+    - 'CONSOLE:eco give %player_name% 1000'
+    - 'CONSOLE:exp give %player_name% 100'
+    - 'ITEM:iron_ingot 5'
+    - 'ITEM:iron_pickaxe 1 efficiency:3 unbreaking:2'
+    - 'ITEM:enchanted_book 1 depth_strider:1'
+    - 'TITLE:<yellow><bold>Congratulations!\n<gray>You''ve won the <#00ff00>%gameType%<gray>!'
+    - 'ACTIONBAR:<gray>Congrats a rewards has been given'
+    - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+    - 'MESSAGE:<yellow><bold>!</bold> <gray>You are the one with the right answer congrats!'
+    - 'MESSAGE:<#7a7a7a><italic>(Reward has been given)'
+
+  # This section will be used if you have
+  #chat_event:
+  #  full_duration:
+  #    enabled: true #<-- this option in the main config.yml set to true.
+  1st_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 1000'
+      - 'CONSOLE:exp give %player_name% 100'
+      - 'ITEM:iron_ingot 5'
+      - 'ITEM:iron_pickaxe 1 efficiency:3 unbreaking:2'
+      - 'ITEM:enchanted_book 1 depth_strider:1'
+      - 'TITLE:<yellow><bold>Congratulations!\n<gray>You''ve won the <#00ff00>%gameType%<gray>!'
+      - 'ACTIONBAR:<gray>Congrats a rewards has been given'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'MESSAGE:<yellow><bold>!</bold> <gray>You are the one with the right answer congrats!'
+      - 'MESSAGE:<#7a7a7a><italic>(Reward has been given)'
+  2nd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 500'
+      - 'CONSOLE:exp give %player_name% 50'
+      - 'ITEM:iron_ingot 2'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 2nd place: <#00ff00>%gameType%<gray>!'
+  3rd_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'CONSOLE:exp give %player_name% 5'
+      - 'ITEM:coal 1'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 3rd place: <#00ff00>%gameType%<gray>!'
+  4th_reward:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 50'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'TITLE:<yellow><bold>Congratulations!\\n<gray>You won at 4th place: <#00ff00>%gameType%<gray>!'
+  5th_reward:
+    enabled: false
+    commands: []
+  6th_reward:
+    enabled: false
+    commands: []
+  participated:
+    enabled: true
+    commands:
+      - 'CONSOLE:eco give %player_name% 5'
+      - 'TITLE:<red><bold>You Lost!\\n<gray>Better luck next time!'
+      - 'ACTIONBAR:<gray>You''ve been given a participation reward from the server'
+      - 'TOAST:<gray>Keep it a good work!</gray>'
+      - 'SOUND:ITEM_GOAT_HORN_SOUND_0 100 1 master'
+      - 'MESSAGE:<yellow><bold>!</bold> <gray>You''re at %raceTypePlace% but you were still given a reward as participating to the event!'
+
+simple:
+  # Make things more easier for server owner to set it up by using this simple opt.
+  enabled: false
+  message:
+    header:
+      enabled: false # If true, there is going to be a header before the rankings: "X" sent.
+      message:
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+        - ""
+        - "<gray><italic>(Top 1-%max% Page of the %type% Winner)"
+        - ""
+    rankings: '<yellow>%index%</yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>'
+    footer:
+      enabled: false # If true, there is going to be a footer before the rankings: "X" sent.
+      message:
+        - ""
+        - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+
+advance:
+  # If you want to make it alot more advance you can use this.
+  enabled: true
+  header:
+    enabled: true # If true, there is going to be a header before the rankings: "X" sent.
+    message:
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+      - ""
+      - "<gray><italic><smallfont:(Top 1-%max% Page of the %type% Winner)></italic></gray>"
+      - ""
+  message:
+    1: "<dark_red><bold>1st</bold></dark_red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    2: "<red><bold>2nd</bold></red> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    3: "<gold><bold>3rd</bold></gold> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    4: "<yellow><bold>4th</bold></yellow> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    5: "<white>5.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    6: "<white>6.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    7: "<white>7.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    8: "<white>8.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    9: "<white>9.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    10: "<white>10.</white> <white>%player%</white> <dark_gray>-</dark_gray> <gold>%timetoGuess%</gold>"
+    # You can use either %player_1% %player_2% to define the player's name on that position.
+  footer:
+    enabled: true # If true, there is going to be a footer before the rankings: "X" sent.
+    message:
+      - ""
+      - '<gradient:#FFbb00:#00AAAA><strikethrough>                              </strikethrough></gradient>'
+```
+
+
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

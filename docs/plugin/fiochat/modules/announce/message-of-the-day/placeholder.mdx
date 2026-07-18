@@ -1,0 +1,229 @@
+---
+title: Placeholder
+---
+
+# Message of the Day Placeholder
+
+`placeholder.yml` defines interactive `{placeholder}` tokens for the player MOTD module. These placeholders are only for the player MOTD shown on join or after anti-bot verification.
+
+Source file:
+
+```text
+modules/announce/Message of the Day/placeholder.yml
+```
+
+Use the tokens inside:
+
+```text
+modules/announce/Message of the Day/motd.yml
+```
+
+Example:
+
+```yaml
+message:
+  lines:
+    - "<align:center>{link} <dark_gray>|</dark_gray> {store} <dark_gray>|</dark_gray> {discord}"
+```
+
+## `placeholders`
+
+```yaml
+placeholders:
+  discord:
+    format: "<smallfont:discord>"
+```
+
+Every key under `placeholders` becomes one token.
+
+The key `discord` creates this token:
+
+```text
+{discord}
+```
+
+The service normalizes placeholder ids to lowercase internally.
+
+## `placeholders.<id>.format`
+
+```yaml
+placeholders:
+  discord:
+    format: "<smallfont:discord>"
+```
+
+`format` is the visible text inserted when `{discord}` is rendered.
+
+If `format` is missing, the service falls back to the raw token text, such as `{discord}`.
+
+`format` supports player MOTD formatting and standard MOTD placeholders. PlaceholderAPI is applied when `settings.placeholderapi.message` is `true` in `motd.yml`.
+
+Put outer alignment, separators, and surrounding colors in `motd.yml` when you want the whole line to control layout. Use `format` for the token's own visible label.
+
+## `placeholders.<id>.hover.lines`
+
+```yaml
+placeholders:
+  discord:
+    hover:
+      lines:
+        - "<white>Click to visit our official Discord.</white>"
+```
+
+`hover.lines` is the preferred hover text list.
+
+Each line is rendered with player MOTD formatting. Multiple lines are joined with newline characters in the hover event.
+
+The service also supports a legacy shorthand path:
+
+```yaml
+hover:
+  - "<white>Hover line</white>"
+```
+
+Use `hover.lines` for the current source format.
+
+## `placeholders.<id>.action`
+
+```yaml
+placeholders:
+  discord:
+    action:
+      open_url:
+        - "https://discord.gg/example"
+```
+
+`action` defines the click behavior for the token.
+
+Only the first non-empty value from the first matching action type is used.
+
+If no action is configured, the token can still display visible text and hover text, but it will not be clickable.
+
+## `action.run_command`
+
+```yaml
+action:
+  run_command:
+    - "/vote"
+```
+
+Runs a command when the player clicks the token.
+
+Supported key aliases:
+
+```text
+run_command
+run-command
+command
+```
+
+The service trims the final command value before creating the click event.
+
+## `action.suggest_command`
+
+```yaml
+action:
+  suggest_command:
+    - "/msg "
+```
+
+Puts a command into the player's chat input without executing it.
+
+Supported key aliases:
+
+```text
+suggest_command
+suggest-command
+```
+
+The service left-trims leading whitespace but keeps the rest of the suggestion value.
+
+## `action.copy_to_clipboard`
+
+```yaml
+action:
+  copy_to_clipboard:
+    - "play.example.com"
+```
+
+Copies the configured value to the player's clipboard when clicked.
+
+Supported key aliases:
+
+```text
+copy_to_clipboard
+copy-to-clipboard
+copy
+```
+
+The service trims the final value.
+
+## `action.open_url`
+
+```yaml
+action:
+  open_url:
+    - "https://example.com/"
+```
+
+Opens the configured URL when clicked.
+
+Supported key aliases:
+
+```text
+open_url
+open-url
+url
+```
+
+The service trims the final URL value.
+
+## PlaceholderAPI behavior
+
+PlaceholderAPI is controlled in `motd.yml`:
+
+```yaml
+settings:
+  placeholderapi:
+    message: true
+```
+
+When this is `true`, PlaceholderAPI is applied to placeholder `format`, hover lines, and click action values.
+
+When this is `false`, only the module's own standard placeholders are resolved.
+
+## Channel behavior
+
+Interactive hover and click behavior only exists in normal chat MOTD lines from `message.lines`.
+
+Other MOTD channels still resolve the token's visible `format`, but they cannot carry hover or click events:
+
+```text
+title
+subtitle
+actionbar
+bossbar
+supported toast text
+```
+
+## Current source placeholders
+
+The current source defines:
+
+```text
+link
+store
+discord
+```
+
+`link` displays `<smallfont:website>`, shows a website hover line, and opens `https://example.com/`.
+
+`store` displays `<smallfont:store>`, shows a store hover line, and opens `https://example.com/store`.
+
+`discord` displays `<smallfont:discord>`, shows a Discord hover line, and opens `https://discord.gg/example`.
+
+Replace those URLs with your real server links before using the MOTD in production.
+
+:::info[Page note]
+This page is source-backed and includes a short callout so the content reads like a guide instead of plain reference text.
+:::

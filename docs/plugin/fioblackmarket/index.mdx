@@ -1,0 +1,111 @@
+﻿---
+title: About
+sidebar_position: 1
+---
+
+# FioBlackMarket
+
+FioBlackMarket is a scheduled market plugin focused on rotating item listings, stock-driven pricing, player buy and sell history, bulk trading, item performance charts, access filters, and optional hologram and NPC entry systems.
+
+## What the plugin actually includes
+
+### Player market flow
+
+The current source ships with these player-facing flows:
+
+- `/blackmarket` main market menu
+- direct buy and sell actions from the main menu
+- bulk buy and bulk sell submenus
+- personal transaction history menu
+- per-item performance graph menu
+- schedule status through `/blackmarket status`
+
+### Market item behavior
+
+Each market item can define:
+
+- listing probability
+- base trade amount
+- buy and sell price
+- stock
+- max buy and sell transaction limits
+- click-specific actions for left, shift-left, right, shift-right, and `Q`
+- optional post-transaction commands
+- optional per-item graph settings
+
+### Access and economy systems
+
+The main configuration includes:
+
+- world whitelist and blacklist access
+- region whitelist and blacklist access through WorldGuard
+- access bypass permission
+- multiple currency providers
+- optional permission and Vault-group rank pricing bonuses
+- dynamic pricing from stock pressure and surplus supply
+
+### Schedule and display systems
+
+The plugin also includes:
+
+- interval-based or weekly market scheduling
+- item rerolling on refresh
+- runtime data storage for stock, limits, and history
+- TEXT_DISPLAY holograms
+- packet-based market NPCs
+- language-driven menu and message text
+
+## Major systems
+
+### Schedule control
+
+The market can run permanently or on a timed schedule from `blackmarket-schedule`. The current source supports `INTERVAL` mode and recurring weekly dates, plus admin override commands such as force open, force close, refresh, and auto mode restore.
+
+### Pricing and stock
+
+The current build uses stock-aware dynamic pricing. When stock falls below default stock, buy and sell pressure can increase prices. When stock rises above default stock, sell value can be reduced. Global minimum and maximum multipliers apply after those calculations.
+
+### Menus and transaction history
+
+The menu tree is split across separate YAML files:
+
+- `menu/menu.yml`
+- `menu/history.yml`
+- `menu/bulk.yml`
+- `menu/view_graphic.yml`
+
+That split is important because the plugin treats the main listing, history view, bulk menu, and graph screen as separate systems rather than one giant menu file.
+
+### Holograms and NPCs
+
+Holograms and NPCs are not decorative notes in this plugin. They have their own command trees, runtime managers, storage files, and config-backed behavior.
+
+## Data and integrations
+
+Built-in integrations and storage support include:
+
+- ProtocolLib as a required dependency
+- Vault support
+- PlaceholderAPI support
+- PlayerPoints support
+- ExcellentEconomy support
+- WorldGuard access checks
+- YAML or MySQL runtime storage
+- material display names through `material.json`
+- language files under `lang/`
+
+## Documentation map
+
+Use these pages next:
+
+- [Commands & Permissions](/plugin/fioblackmarket/commands-permissions)
+- [Developer API](/plugin/fioblackmarket/api)
+- [Options & Configuration](/plugin/fioblackmarket/config)
+- [Black Market Items](/plugin/fioblackmarket/blackmarkets)
+- [Menus](/plugin/fioblackmarket/menus)
+- [Holograms](/plugin/fioblackmarket/hologram)
+- [NPCs](/plugin/fioblackmarket/npc)
+
+:::info[Page note]
+This page is rebuilt from the current FioBlackmarket source and keeps the overview tied to the real plugin structure instead of filling the wiki with generic market-plugin assumptions.
+:::
