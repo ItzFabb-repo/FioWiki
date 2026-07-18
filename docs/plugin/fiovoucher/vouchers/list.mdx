@@ -4,15 +4,15 @@ title: Voucher YAML List
 
 # Voucher YAML List
 
-File voucher bawaan berada di:
+Bundled voucher files are located in:
 
 ```text
 plugins/FioVoucher/vouchers/*.yml
 ```
 
-Setiap file memakai nilai `voucher.id` sebagai kode voucher. Kode ini yang dipakai di command seperti `/voucher redeem <code>`, `/voucher admin give <player> <voucherid> [amount]`, `/voucher info <code>`, dan `/voucher admin freeze <voucherid>`.
+Each file uses `voucher.id` as the voucher code. This code is used in commands such as `/voucher redeem <code>`, `/voucher admin give <player> <voucherid> [amount]`, `/voucher info <code>`, and `/voucher admin freeze <voucherid>`.
 
-## Usage cepat
+## Quick usage
 
 ```text
 /voucher list
@@ -25,43 +25,43 @@ Setiap file memakai nilai `voucher.id` sebagai kode voucher. Kode ini yang dipak
 ```
 
 :::tip
-Saat membuat voucher baru, copy salah satu YAML di folder `vouchers`, rename file-nya, lalu pastikan `voucher.id` ikut diganti. Gunakan `voucher.id`, bukan nama file, untuk command.
+When creating a new voucher, copy one of the YAML files in the `vouchers` folder, rename the file, then update `voucher.id`. Commands use `voucher.id`, not the file name.
 :::
 
-## Voucher bawaan
+## Bundled vouchers
 
-| File YAML | Voucher ID | Material | Usage |
+| YAML File | Voucher ID | Material | Usage |
 | --- | --- | --- | --- |
-| `example.yml` | `example` | `PLAYER_HEAD` | Template lengkap untuk contoh armor trims, command actions, toast, title, item reward, exp, bundle, enchantment, durability, unbreakable, dan permission gates. Cocok sebagai file awal saat membuat voucher baru. |
-| `money.yml` | `money` | `PAPER` | Voucher ekonomi sederhana. Dipakai untuk memberi uang lewat action `[CONSOLE]`, biasanya terhubung ke plugin economy seperti Vault/Economy command. |
-| `permission_kit.yml` | `permission_kit` | `CHEST` | Contoh voucher kit berbasis permission. Berguna untuk reward yang hanya bisa diklaim jika player memenuhi atau belum memiliki permission tertentu. |
-| `random_food.yml` | `random_food` | `COOKED_BEEF` | Contoh voucher reward random makanan. Memakai `commands.random-claimed` untuk memilih salah satu reward berdasarkan chance. |
-| `trial_vip.yml` | `trial_vip` | `PLAYER_HEAD` | Contoh voucher trial rank VIP. Dipakai untuk akses sementara dengan `settings.trial`, termasuk durasi trial dan opsi pause/stack bila diaktifkan. |
-| `world_crate.yml` | `world_crate` | `TRIPWIRE_HOOK` | Contoh voucher crate yang dibatasi world. Cocok untuk reward yang hanya boleh diklaim di world tertentu melalui `settings.redeem.world`. |
-| `behavior_banner_patterns.yml` | `behavior_banner_patterns` | `WHITE_BANNER` | Contoh item voucher dengan banner patterns. Dipakai untuk menguji metadata pattern pada banner. |
-| `behavior_bundle_container.yml` | `behavior_bundle_container` | `BUNDLE` | Contoh bundle yang menampilkan item di dalam bundle melalui behavior `bundle_container`. Item di dalamnya dikunci sebagai tampilan reward. |
-| `behavior_crossbow_model.yml` | `behavior_crossbow_model` | `CROSSBOW` | Contoh custom model data pada crossbow. Berguna untuk resource pack item model. |
-| `behavior_diamond_trim_chestplate.yml` | `behavior_diamond_trim_chestplate` | `DIAMOND_CHESTPLATE` | Contoh armor trim pada diamond chestplate. Dipakai untuk reward kosmetik armor modern. |
-| `behavior_glow_unbreakable.yml` | `behavior_glow_unbreakable` | `DIAMOND_SWORD` | Contoh item glow dan unbreakable. Cocok untuk reward special item tanpa durability loss. |
-| `behavior_gold_trim_boots.yml` | `behavior_gold_trim_boots` | `GOLDEN_BOOTS` | Contoh armor trim pada golden boots. Dipakai untuk variasi reward armor trim. |
-| `behavior_iron_trim_helmet.yml` | `behavior_iron_trim_helmet` | `IRON_HELMET` | Contoh armor trim pada iron helmet. Dipakai untuk dokumentasi kombinasi material armor dan trim. |
-| `behavior_leather_boots.yml` | `behavior_leather_boots` | `LEATHER_BOOTS` | Contoh pewarnaan leather boots. Berguna untuk reward armor leather dengan warna custom. |
-| `behavior_leather_chestplate.yml` | `behavior_leather_chestplate` | `LEATHER_CHESTPLATE` | Contoh pewarnaan leather chestplate. Cocok untuk set kosmetik leather armor. |
-| `behavior_leather_helmet.yml` | `behavior_leather_helmet` | `LEATHER_HELMET` | Contoh pewarnaan leather helmet. Dipakai untuk variasi warna item armor leather. |
-| `behavior_leather_horse_armor.yml` | `behavior_leather_horse_armor` | `LEATHER_HORSE_ARMOR` | Contoh pewarnaan leather horse armor. Berguna untuk reward cosmetic mount. |
-| `behavior_leather_leggings.yml` | `behavior_leather_leggings` | `LEATHER_LEGGINGS` | Contoh pewarnaan leather leggings. Dipakai untuk melengkapi set leather armor. |
-| `behavior_model_data.yml` | `behavior_model_data` | `PAPER` | Contoh `model-data` pada item voucher. Cocok untuk server dengan resource pack custom item. |
-| `behavior_netherite_trim_leggings.yml` | `behavior_netherite_trim_leggings` | `NETHERITE_LEGGINGS` | Contoh armor trim pada netherite leggings. Dipakai untuk reward armor premium. |
-| `behavior_potion_regeneration.yml` | `behavior_potion_regeneration` | `POTION` | Contoh potion metadata untuk regeneration. Berguna untuk reward potion siap pakai. |
-| `behavior_potion_speed.yml` | `behavior_potion_speed` | `SPLASH_POTION` | Contoh splash potion metadata untuk speed. Dipakai untuk reward potion area/throwable. |
-| `behavior_potion_strength.yml` | `behavior_potion_strength` | `LINGERING_POTION` | Contoh lingering potion metadata untuk strength. Dipakai untuk reward potion lingering. |
-| `behavior_random_reward.yml` | `behavior_random_reward` | `PRISMARINE_SHARD` | Contoh random reward behavior. Gunakan untuk melihat struktur chance reward group di `commands.random-claimed`. |
-| `behavior_shield_patterns.yml` | `behavior_shield_patterns` | `SHIELD` | Contoh pattern pada shield. Cocok untuk cosmetic shield voucher. |
-| `behavior_tipped_arrow.yml` | `behavior_tipped_arrow` | `TIPPED_ARROW` | Contoh tipped arrow metadata. Dipakai untuk reward panah dengan efek potion. |
+| `example.yml` | `example` | `PLAYER_HEAD` | Full template covering armor trims, command actions, toast, title, item rewards, experience, bundles, enchantments, durability, unbreakable items, and permission gates. Use it as a starting point for new voucher files. |
+| `money.yml` | `money` | `PAPER` | Simple economy voucher. It gives money through a `[CONSOLE]` action, typically connected to an economy plugin command. |
+| `permission_kit.yml` | `permission_kit` | `CHEST` | Permission-gated starter kit example. Use it for rewards that require the player to have, or not have, a specific permission. |
+| `random_food.yml` | `random_food` | `COOKED_BEEF` | Random food reward example. It uses `commands.random-claimed` to select one reward branch by chance. |
+| `trial_vip.yml` | `trial_vip` | `PLAYER_HEAD` | VIP trial voucher example. It grants temporary access through `settings.trial`, including trial duration and optional pause/stack behavior. |
+| `world_crate.yml` | `world_crate` | `TRIPWIRE_HOOK` | World-restricted crate voucher example. Use it for rewards that should only be claimable in specific worlds through `settings.redeem.world`. |
+| `behavior_banner_patterns.yml` | `behavior_banner_patterns` | `WHITE_BANNER` | Banner pattern item example. Use it to test pattern metadata on banner rewards. |
+| `behavior_bundle_container.yml` | `behavior_bundle_container` | `BUNDLE` | Bundle container example that renders items inside the bundle through `bundle_container` behavior. The displayed bundle contents are locked as reward presentation data. |
+| `behavior_crossbow_model.yml` | `behavior_crossbow_model` | `CROSSBOW` | Custom model data example for crossbows. Useful for servers with resource-pack item models. |
+| `behavior_diamond_trim_chestplate.yml` | `behavior_diamond_trim_chestplate` | `DIAMOND_CHESTPLATE` | Armor trim example for a diamond chestplate. Use it for modern cosmetic armor rewards. |
+| `behavior_glow_unbreakable.yml` | `behavior_glow_unbreakable` | `DIAMOND_SWORD` | Glow and unbreakable item example. Use it for special rewards that should not lose durability. |
+| `behavior_gold_trim_boots.yml` | `behavior_gold_trim_boots` | `GOLDEN_BOOTS` | Armor trim example for golden boots. Use it as another armor trim reward variant. |
+| `behavior_iron_trim_helmet.yml` | `behavior_iron_trim_helmet` | `IRON_HELMET` | Armor trim example for an iron helmet. Use it to document armor material and trim combinations. |
+| `behavior_leather_boots.yml` | `behavior_leather_boots` | `LEATHER_BOOTS` | Leather boots color example. Useful for custom-colored leather armor rewards. |
+| `behavior_leather_chestplate.yml` | `behavior_leather_chestplate` | `LEATHER_CHESTPLATE` | Leather chestplate color example. Use it as part of a cosmetic leather armor set. |
+| `behavior_leather_helmet.yml` | `behavior_leather_helmet` | `LEATHER_HELMET` | Leather helmet color example. Use it for custom-colored leather armor variants. |
+| `behavior_leather_horse_armor.yml` | `behavior_leather_horse_armor` | `LEATHER_HORSE_ARMOR` | Leather horse armor color example. Useful for cosmetic mount rewards. |
+| `behavior_leather_leggings.yml` | `behavior_leather_leggings` | `LEATHER_LEGGINGS` | Leather leggings color example. Use it to complete a custom leather armor set. |
+| `behavior_model_data.yml` | `behavior_model_data` | `PAPER` | `model-data` item example. Useful for servers using custom item models from a resource pack. |
+| `behavior_netherite_trim_leggings.yml` | `behavior_netherite_trim_leggings` | `NETHERITE_LEGGINGS` | Armor trim example for netherite leggings. Use it for premium armor rewards. |
+| `behavior_potion_regeneration.yml` | `behavior_potion_regeneration` | `POTION` | Potion metadata example for regeneration. Useful for ready-to-use potion rewards. |
+| `behavior_potion_speed.yml` | `behavior_potion_speed` | `SPLASH_POTION` | Splash potion metadata example for speed. Use it for throwable potion rewards. |
+| `behavior_potion_strength.yml` | `behavior_potion_strength` | `LINGERING_POTION` | Lingering potion metadata example for strength. Use it for lingering potion rewards. |
+| `behavior_random_reward.yml` | `behavior_random_reward` | `PRISMARINE_SHARD` | Random reward behavior example. Use it to understand chance-based reward groups in `commands.random-claimed`. |
+| `behavior_shield_patterns.yml` | `behavior_shield_patterns` | `SHIELD` | Shield pattern example. Useful for cosmetic shield vouchers. |
+| `behavior_tipped_arrow.yml` | `behavior_tipped_arrow` | `TIPPED_ARROW` | Tipped arrow metadata example. Use it for arrow rewards with potion effects. |
 
-## Pola command per voucher
+## Command pattern per voucher
 
-Ganti `<voucherid>` dengan salah satu ID dari tabel di atas:
+Replace `<voucherid>` with one of the IDs from the table above:
 
 ```text
 /voucher redeem <voucherid>
@@ -74,5 +74,5 @@ Ganti `<voucherid>` dengan salah satu ID dari tabel di atas:
 /voucher admin unfreeze <voucherid>
 ```
 
-`/voucher pause <voucherid>` hanya bekerja untuk voucher trial yang mengaktifkan `settings.trial.enabled` dan `settings.trial.allow-pause`.
+`/voucher pause <voucherid>` only works for trial vouchers with both `settings.trial.enabled` and `settings.trial.allow-pause` enabled.
 

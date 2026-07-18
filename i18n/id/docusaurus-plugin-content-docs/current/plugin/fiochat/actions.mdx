@@ -1,16 +1,16 @@
-﻿---
-title: Aksi Menu
+---
+title: Menu Actions
 sidebar_position: 3
 ---
 
-# Aksi Menu
-Halaman ini mendokumentasikan pola aksi GUI praktis yang digunakan di modul FioChat.
+# Menu Actions
+This page documents practical GUI action patterns used by FioChat modules.
 
 ---
 
-# Aksi Dasar
+# Basic Actions
 ### `SOUND:<sound>:<volume>:<pitch>`
-Memutar suara kustom saat diklik.
+Plays a custom sound when clicked.
 
 ```yaml
 SOUND:UI_BUTTON_CLICK:1:1
@@ -19,21 +19,21 @@ SOUND:ENTITY_EXPERIENCE_ORB_PICKUP:1:1
 ```
 
 ### `CLOSE`
-Menutup menu saat ini.
+Closes the current menu.
 
 ```yaml
 CLOSE
 ```
 
 ### `REOPEN`
-Membuka ulang menu saat ini (berguna setelah perubahan state).
+Reopens the current menu. This is useful after state changes.
 
 ```yaml
 REOPEN
 ```
 
 ### `OPEN_MENU:<id>`
-Membuka menu GUI lain berdasarkan id.
+Opens another GUI menu by id.
 
 ```yaml
 OPEN_MENU:mailbox_inbox
@@ -42,7 +42,7 @@ OPEN_MENU:giveaway_main
 ```
 
 ### `PLAYER_COMMAND:<command>`
-Menjalankan command sebagai pemain yang melakukan klik.
+Runs a command as the player who clicked.
 
 ```yaml
 PLAYER_COMMAND:fiochat toggle mentions
@@ -52,7 +52,7 @@ PLAYER_COMMAND:mailbox
 
 ---
 
-# Contoh Modul
+# Module Examples
 ### Mailbox
 ```yaml
 OPEN_MENU:mailbox_inbox
@@ -103,7 +103,8 @@ PLAYER_COMMAND:quit
 
 ---
 
-# Catatan
-- Nilai sound mengikuti nama enum sound Spigot/Paper.
-- Id menu yang tepat bergantung pada nama file konfigurasi menu di tiap modul.
-- Gunakan `REOPEN` untuk menu yang mengubah state toggle/konfigurasi secara dinamis.
+# Notes
+- Sound values follow Spigot/Paper sound enum names.
+- The exact menu id depends on the menu configuration file name in each module.
+- Use `REOPEN` for menus that dynamically change toggle or configuration state.
+
