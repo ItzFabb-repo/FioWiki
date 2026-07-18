@@ -159,6 +159,10 @@ claimed:
 The sound name is written as `ENTTIY_PLAYER_LEVELUP` in the bundled example file. If the sound does not play, check the spelling against your server version.
 :::
 
+Use the Spigot `Sound` Javadocs when choosing sound names:
+
+- [Spigot API: `org.bukkit.Sound`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+
 ## Claimed Item Rewards
 
 The example demonstrates many `[ITEM]` reward formats.
@@ -177,6 +181,16 @@ The example demonstrates many `[ITEM]` reward formats.
 | `DIAMOND_PICKAXE <unbreakable:true> <flags:HIDE_UNBREAKABLE>` | Unbreakable item with hidden tooltip. |
 
 For detailed `[ITEM]` syntax, read [Item Example](/plugin/fiovoucher/vouchers/item-example).
+
+## External References
+
+The example file combines FioVoucher syntax with standard Bukkit/Spigot enum names and MiniMessage text formatting. Use these references when editing values:
+
+- Materials: [Spigot API: `org.bukkit.Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+- Item flags: [Spigot API: `org.bukkit.inventory.ItemFlag`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html)
+- Sounds: [Spigot API: `org.bukkit.Sound`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+- Enchantments: [Spigot API: `org.bukkit.enchantments.Enchantment`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
+- MiniMessage tags: [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)
 
 ## Failed
 

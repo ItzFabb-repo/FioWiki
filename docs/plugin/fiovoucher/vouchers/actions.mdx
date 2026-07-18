@@ -17,6 +17,7 @@ Supported action ids in the source:
 - `[ACTIONBAR]`
 - `[TITLE]`
 - `[SUBTITLE]`
+- `[TOAST:<material>]`
 
 Example:
 
@@ -27,3 +28,10 @@ actions:
   - "[ITEM] DIAMOND 3"
 ```
 
+## External references
+
+Some action arguments are standard Bukkit/Spigot enum names or MiniMessage text:
+
+- Materials in `[ITEM]` and `[TOAST:<material>]`: [Spigot API: `org.bukkit.Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+- Sounds in `[SOUND]`: [Spigot API: `org.bukkit.Sound`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+- MiniMessage text in `[MESSAGE]`, `[ACTIONBAR]`, `[TITLE]`, `[SUBTITLE]`, and `[TOAST]`: [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)

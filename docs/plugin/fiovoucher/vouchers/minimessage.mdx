@@ -6,7 +6,9 @@ title: MiniMessage
 
 Voucher text uses MiniMessage formatting.
 
-Common tags in the source:
+FioVoucher applies MiniMessage to voucher names, lore, and several action messages. The bundle uses standard Adventure/Paper MiniMessage tags rather than a custom formatting language.
+
+Common tags in the source include:
 
 - `<gray>`
 - `<gold>`
@@ -28,3 +30,21 @@ Example:
 name: "<gradient:#95D5B2:#40916C>Random Food Voucher</gradient>"
 ```
 
+More examples:
+
+```yaml
+display-name: "<gradient:#FFD166:#F77F00><shadow:#6B3B00:1>Money Voucher</shadow></gradient>"
+lore:
+  - "<dark_gray>Voucher"
+  - "<gray>Reward: <yellow>Money"
+  - "<yellow>Click to redeem this voucher"
+```
+
+## External reference
+
+Use the official Adventure/Paper MiniMessage documentation for the complete standard tag list and syntax:
+
+- [PaperMC Docs: MiniMessage overview](https://docs.papermc.io/adventure/minimessage/)
+- [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)
+
+Important standard tags for FioVoucher authors include colors, decorations, gradients, rainbow, shadow color, hover/click events, fonts, and newlines. Availability can still depend on how the server platform renders Adventure components.

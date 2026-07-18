@@ -16,3 +16,25 @@ display-name: "<gradient:#28C9A4:#84e0cb><shadow:#065A47:1>Armor Trims</shadow><
 
 Use it when you want the voucher title to feel more polished.
 
+## Syntax
+
+MiniMessage shadow color uses this general pattern:
+
+```text
+<shadow:<color-or-hex>[:alpha]>Text</shadow>
+```
+
+Examples:
+
+```yaml
+name: "<shadow:#000000:0.75><gold>Premium Voucher</gold></shadow>"
+name: "<gradient:#28C9A4:#84e0cb><shadow:#065A47:1>Armor Trims</shadow></gradient>"
+```
+
+The color may be a named MiniMessage color or a hex value such as `#065A47`. The optional alpha value is a number from `0` to `1`.
+
+## External reference
+
+Shadow is a standard MiniMessage tag, not a separate FioVoucher-only feature. Use the official MiniMessage standard tags page for the full syntax:
+
+- [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)

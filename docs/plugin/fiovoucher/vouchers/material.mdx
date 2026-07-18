@@ -6,6 +6,8 @@ title: Material
 
 `item.material` defines the base Minecraft item for the voucher.
 
+FioVoucher resolves this value through Bukkit's `Material.matchMaterial(...)`, so the safest format is the uppercase Bukkit material enum name.
+
 Source examples use:
 
 - `PLAYER_HEAD`
@@ -27,4 +29,12 @@ Useful notes:
 - use `PLAYER_HEAD` when you want a custom textured voucher
 - use `PAPER` for simple vouchers
 - use `CHEST` or `TRIPWIRE_HOOK` when the voucher theme matches the reward
+- use the exact enum name from the Bukkit/Spigot material list for newer Minecraft items
 
+## External reference
+
+Use the official Spigot Javadocs as the source of truth for valid material names:
+
+- [Spigot API: `org.bukkit.Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+
+The Spigot `Material` page lists the enum constants accepted by Bukkit/Spigot servers. Material names can change across Minecraft versions, so check the Javadocs for the server version you target.

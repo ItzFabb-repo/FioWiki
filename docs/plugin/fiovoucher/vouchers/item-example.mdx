@@ -28,6 +28,7 @@ Rules:
 - second value is optional amount
 - if amount is missing, it defaults to `1`
 - amount can use `<random:min-max>`
+- material names should match the Bukkit/Spigot `Material` enum
 
 ## Name
 
@@ -38,6 +39,8 @@ Use `name:` to set the display name.
 ```
 
 The name supports FioVoucher text formatting through the same formatter used by messages.
+
+Reference: [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)
 
 ## Lore
 
@@ -76,7 +79,7 @@ The value can be the base64 Minecraft texture value used by the sample voucher f
 Use `<flags:...>` to hide tooltip parts.
 
 ```yaml
-- "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTMENTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword"
+- "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword"
 ```
 
 Multiple flags are separated with commas.
@@ -84,10 +87,16 @@ Multiple flags are separated with commas.
 Common flags from the example:
 
 - `HIDE_ATTRIBUTES`
-- `HIDE_ENCHANTMENTS`
+- `HIDE_ENCHANTS`
 - `HIDE_DYED_COLOR`
 - `HIDE_DESTROYS`
 - `HIDE_UNBREAKABLE`
+
+Reference: [Spigot API: `org.bukkit.inventory.ItemFlag`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html)
+
+:::warning[Exact enum names]
+FioVoucher uses Bukkit `ItemFlag.valueOf(...)` for `<flags:...>`. Use exact Spigot enum names. `HIDE_ENCHANTS` is valid; `HIDE_ENCHANTMENTS` is not a standard Spigot `ItemFlag`.
+:::
 
 ## Enchantments
 
@@ -115,6 +124,8 @@ Built-in aliases in the source:
 - `sharpness` maps to `damage_all`
 - `protection` maps to `protection_environmental`
 - `unbreaking` maps to `durability`
+
+Reference: [Spigot API: `org.bukkit.enchantments.Enchantment`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
 
 ## Durability
 
@@ -178,12 +189,21 @@ PlaceholderAPI is also applied after those built-in placeholders.
 actions:
   - "[ITEM] BREAD 32 name:<gold>Bread From FioVoucher lore:<gray>This bread has\n<white>Support multilines too!\n\n\n<green>And sum empty lines!"
   - "[ITEM] PLAYER_HEAD 1 <texture:base64_texture_here> name:<gold>Foxy Head lore:<gray>This is a custom head\n<gray>and it was given from FioVoucher"
-  - "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTMENTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword lore:<gray>But with no attributes information."
+  - "[ITEM] WOODEN_SWORD 1 <flags:HIDE_ATTRIBUTES,HIDE_ENCHANTS,HIDE_DYED_COLOR,HIDE_DESTROYS> name:<green>Ordinary Sword lore:<gray>But with no attributes information."
   - "[ITEM] BUNDLE 1 <inBundle:DIAMOND;32,ARROW;32> name:<gold>Starter Bundle lore:<gray>Inside of this bundle contained with\n<gray>x32 Diamond\n<gray>x32 Arrow."
   - "[ITEM] ENCHANTED_BOOK 1 sharpness:3"
   - "[ITEM] WOODEN_PICKAXE <durability:1>"
   - "[ITEM] DIAMOND_PICKAXE <unbreakable:true> <flags:HIDE_UNBREAKABLE>"
 ```
+
+## External References
+
+Use these external references when choosing values for item action arguments:
+
+- Materials: [Spigot API: `org.bukkit.Material`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)
+- Item flags: [Spigot API: `org.bukkit.inventory.ItemFlag`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html)
+- Enchantments: [Spigot API: `org.bukkit.enchantments.Enchantment`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
+- MiniMessage text: [PaperMC Docs: MiniMessage format and standard tags](https://docs.papermc.io/adventure/minimessage/format/)
 
 ## Important Source Note
 

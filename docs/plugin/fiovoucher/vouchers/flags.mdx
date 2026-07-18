@@ -12,14 +12,33 @@ Example:
 item:
   flags:
     - HIDE_ATTRIBUTES
-    - HIDE_ENCHANTMENTS
+    - HIDE_ENCHANTS
     - HIDE_DYED_COLOR
     - HIDE_DESTROYS
 ```
 
-Source examples also use:
+Inline `[ITEM]` actions can also use flags:
+
+```yaml
+actions:
+  - "[ITEM] DIAMOND_PICKAXE 1 <unbreakable:true> <flags:HIDE_UNBREAKABLE,HIDE_ATTRIBUTES>"
+```
+
+Source examples use:
 
 - `HIDE_UNBREAKABLE`
+- `HIDE_ATTRIBUTES`
 
 Use flags when you want the voucher item to look clean in inventory.
 
+:::warning[Exact enum names]
+FioVoucher passes flag names directly to Bukkit's `ItemFlag.valueOf(...)`. Use the exact Spigot enum constant. For example, use `HIDE_ENCHANTS`, not `HIDE_ENCHANTMENTS`.
+:::
+
+## External reference
+
+Use the official Spigot Javadocs for the full ItemFlag list:
+
+- [Spigot API: `org.bukkit.inventory.ItemFlag`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html)
+
+Some newer flags may be marked experimental in the Spigot API and may depend on the Minecraft/Paper/Spigot version running your server.
