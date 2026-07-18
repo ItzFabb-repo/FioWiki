@@ -5,67 +5,154 @@ sidebar_position: 1
 
 # FioVoucher
 
-FioVoucher is a YAML-driven voucher plugin for redeem flows, admin voucher management, trial vouchers, Bedrock support, confirmation menus, and developer integrations.
+FioVoucher is a YAML-driven voucher plugin for Minecraft servers. The current `1.8` source registers the Bukkit plugin as `FioVouchers` and provides voucher redemption, voucher item distribution, trial voucher handling, confirmation menus, player history menus, configurable storage, Bedrock handling, and a public Java API.
 
-## What the plugin actually includes
+This page is based on the current project files under `src/main/java` and `src/main/resources`, including `plugin.yml`, `config.yml`, the command handler, storage classes, menu managers, bundled voucher YAML files, and `FioVoucherAPI`.
 
-### Player flow
+## Verified Feature Set
 
-The current source ships with these player-facing flows:
+### Player Features
+
+The player-facing flow is intentionally small:
 
 - `/voucher redeem <code>`
-- voucher trial handling
-- voucher history views
-- confirmation menu before redeem
+- `/voucher trials`
+- `/voucher pause <code>`
+- voucher item redemption through the item listener
+- confirmation menu before the claim is executed
+- active trial and player history menu views
 
-### Voucher systems
+### Voucher Features
 
-The current build supports:
+The voucher system supports:
 
-- one-off or multi-use vouchers
-- command reward execution
-- item reward execution
+- file-based voucher definitions from `plugins/FioVoucher/vouchers/*.yml`
+- one-time, limited-use, or unlimited-use vouchers through `settings.redeem.max-claim`
+- fixed reward actions
+- weighted random reward groups through `commands.random-claimed`
+- item reward actions through the `[ITEM]` action prefix
 - trial vouchers
 - frozen vouchers
 - disabled vouchers
-- per-voucher world, region, and permission gates
-- duplicate protection
+- per-voucher world restrictions
+- per-voucher region restrictions
+- permission whitelist and blacklist checks
+- duplicate voucher item protection
+- voucher item protection rules for inventories, containers, item frames, armor slots, and selected environment damage cases
+- item metadata examples for custom model data, armor trims, leather colors, potion metadata, banner or shield patterns, bundle contents, glow, unbreakable items, flags, names, and lore
 
-### Runtime systems
+### Runtime Features
 
-The plugin also includes:
+The runtime layer includes:
 
-- YAML or MySQL storage
+- YAML storage with MySQL support and YAML fallback
+- player claim history and paused trial state
 - language files in `lang/*.yml`
-- Bedrock support through config
-- hibernation / idle wake handling
-- confirmation GUI
-- player history menus
+- configurable command aliases
+- Bedrock redeem control and optional confirmation bypass
+- hibernation and idle wake handling
+- confirmation, voucher history, and player history GUI files
+- player history and voucher history menus
+- update checker notifications for permitted admins
+- optional PlaceholderAPI support
 
-## Major systems
+## Command Surface
 
-### Redeem flow
+Main command:
 
-Players redeem a voucher code through the main command or voucher item. The plugin validates access, blacklists, frozen state, remaining uses, trial rules, and permission gates before the voucher is consumed.
+```text
+/voucher
+```
 
-### Voucher files
+Aliases from `plugin.yml`:
 
-File-based vouchers live in `vouchers/*.yml`. Each file defines the voucher item, rewards, and redeem settings.
+```text
+/vouchers
+/fiovoucher
+/fvoucher
+```
 
-### Developer integration
+Additional aliases can be configured through `settings.command-aliases`.
 
-The public `FioVoucherAPI` exposes voucher lookup, item creation, give/redeem helpers, and player history access.
+Common usage:
+
+```text
+/voucher redeem <code>
+/voucher trials
+/voucher pause <code>
+/voucher list
+/voucher info <code>
+/voucher admin give <player> <voucherid> [amount]
+/voucher admin giveall <voucherid> [amount]
+/voucher admin history <player>
+/voucher admin freeze <voucherid>
+/voucher admin unfreeze <voucherid>
+```
+
+Full permissions and command details are documented in [Commands & Permissions](/plugin/fiovoucher/commands-permissions).
+
+## Redeem Flow
+
+Players redeem a voucher code through `/voucher redeem <code>` or by using a voucher item. Before executing rewards, FioVoucher validates plugin readiness, Bedrock access, voucher existence, disabled state, frozen state, global blacklist rules, world restrictions, region restrictions, remaining uses, max-claim history, trial settings, and permission gates.
+
+When validation succeeds, the plugin executes the configured voucher actions, records player history, decrements remaining uses when applicable, and saves voucher state.
+
+## Voucher Files
+
+File-based vouchers live in:
+
+```text
+plugins/FioVoucher/vouchers/*.yml
+```
+
+Each voucher file uses this main structure:
+
+- `voucher.id`
+- `voucher.display-name`
+- `voucher.enabled`
+- `voucher.item`
+- `voucher.commands.random-claimed`
+- `voucher.commands.claimed`
+- `voucher.commands.failed`
+- `voucher.commands.max`
+- `voucher.settings.trial`
+- `voucher.settings.redeem`
+
+The bundled source contains `26` voucher YAML files. See [Voucher YAML List](/plugin/fiovoucher/vouchers/list) for the voucher ids, file names, materials, and usage notes.
+
+## Storage
+
+FioVoucher supports two storage modes:
+
+- `YAML`
+- `MYSQL`
+
+The storage type is configured through `storage.type`. If MySQL initialization fails, the current storage implementation attempts to fall back to YAML storage.
+
+## Developer API
+
+The public `FioVoucherAPI` exposes:
+
+- plugin readiness checks
+- voucher lookup by code
+- voucher list and voucher code access
+- voucher item creation
+- give voucher helpers for one player or all online players
+- redeem validation through `canRedeem`
+- redeem execution through `redeem`
+- formatted player history access
 
 ## Documentation map
 
-Use these pages next:
+Use these pages for implementation details:
 
 - [Commands & Permissions](/plugin/fiovoucher/commands-permissions)
 - [Configuration](/plugin/fiovoucher/config)
 - [Voucher Files](/plugin/fiovoucher/vouchers/how-to-create)
+- [Voucher YAML List](/plugin/fiovoucher/vouchers/list)
 - [Menus](/plugin/fiovoucher/menu)
 - [Developer API](/plugin/fiovoucher/api)
 
 :::info[Page note]
-This page is rebuilt from the current FioVoucher source and keeps the overview tied to the real plugin structure.
+This page intentionally describes only behavior visible in the current FioVoucher project source and bundled resources.
 :::

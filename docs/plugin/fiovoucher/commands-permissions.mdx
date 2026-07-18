@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Commands & Permissions
 
-FioVoucher keeps the public command tree compact, then fans out into redeem, list, info, trial, admin, and menu control.
+FioVoucher keeps the public command tree compact, then fans out into redeem, list, info, trial, admin, and menu control. This page follows the current `1.8` command handler and `plugin.yml`.
 
 ## Root command
 
@@ -23,6 +23,8 @@ Aliases from `plugin.yml`:
 /fvoucher
 ```
 
+The examples below use `/voucher`, but the same subcommands work through those aliases.
+
 ## Player commands
 
 | Command | Permission | Behavior |
@@ -34,6 +36,7 @@ Aliases from `plugin.yml`:
 | `/voucher info <code>` | `fiovoucher.command.info` | Shows voucher detail information. |
 | `/voucher reload` | `fiovoucher.command.reload` | Reloads config, language, menus, and voucher data. |
 | `/voucher delete <code>` | `fiovoucher.command.delete` | Deletes a voucher. |
+| `/voucher help` | none by itself | Shows the usage list filtered by the sender's permissions. |
 
 ## Admin commands
 
@@ -42,14 +45,21 @@ The admin branch supports:
 | Command | Permission | Behavior |
 | --- | --- | --- |
 | `/voucher admin` | `fiovoucher.command.admin` | Shows admin help. |
+| `/voucher admin help` | `fiovoucher.command.admin` | Shows admin help. |
 | `/voucher admin give <player> <voucherid> [amount]` | `fiovoucher.command.give` | Gives voucher items to one online player. |
 | `/voucher admin giveall <voucherid> [amount]` | `fiovoucher.command.giveall` | Gives voucher items to all online players. |
+| `/voucher admin list` | `fiovoucher.command.list` | Lists saved vouchers through the admin branch. |
+| `/voucher admin reload` | `fiovoucher.command.reload` | Reloads the plugin through the admin branch. |
 | `/voucher admin history <player>` | `fiovoucher.command.history` | Shows voucher history for one player. |
 | `/voucher admin freeze <voucherid>` | `fiovoucher.command.freeze` | Freezes a voucher. |
 | `/voucher admin unfreeze <voucherid>` | `fiovoucher.command.freeze` | Unfreezes a voucher. |
 | `/voucher admin menu open confirmation <player>` | `fiovoucher.command.menu.open` | Opens the confirmation menu for a player. |
-| `/voucher admin menu open history <player>` | `fiovoucher.command.menu.open` | Opens the voucher history menu. |
-| `/voucher admin menu open playerhistory <player>` | `fiovoucher.command.menu.open` | Opens the player history/trials menu. |
+| `/voucher admin menu open voucherhistory <player>` | `fiovoucher.command.menu.open` | Opens the voucher history menu. Alias: `history`. |
+| `/voucher admin menu open playerhistory <player>` | `fiovoucher.command.menu.open` | Opens the player history/trials menu. Alias: `trials`. |
+
+:::warning[Removed command]
+The current command handler does not expose `/voucher create`. Create and edit vouchers through YAML files in `plugins/FioVoucher/vouchers/`.
+:::
 
 ## Permission table
 
@@ -69,6 +79,41 @@ The admin branch supports:
 | `fiovoucher.command.history` | `op` | Allows viewing voucher history for a player. |
 | `fiovoucher.command.freeze` | `op` | Allows freezing or unfreezing vouchers. |
 | `fiovoucher.command.menu.open` | `op` | Allows forcing voucher menus open. |
+| `fiovoucher.update.notify` | `op` | Allows receiving update notifications. |
+
+## Voucher id usage
+
+Use the `voucher.id` value from the YAML file in command arguments:
+
+```text
+/voucher redeem money
+/voucher admin give Steve money 1
+/voucher admin giveall trial_vip 1
+/voucher info behavior_glow_unbreakable
+```
+
+The shipped voucher ids are listed in [Voucher YAML List](/plugin/fiovoucher/vouchers/list).
+
+:::tip
+For voucher command arguments, use the `voucher.id` inside the YAML file. The file name usually matches the id in the default examples, but the plugin resolves command input from the loaded voucher code.
+:::
+
+## Action tags
+
+Voucher YAML reward actions support these action prefixes:
+
+| Prefix | Usage |
+| --- | --- |
+| `[MESSAGE]` | Sends formatted text to the player. |
+| `[SOUND]` | Plays a configured sound. |
+| `[CONSOLE]` | Runs a console command. |
+| `[ITEM]` | Gives an item built from the inline item syntax. |
+| `[EXP_LEVELS]` | Gives experience levels. |
+| `[EXP_POINTS]` | Gives raw experience points. |
+| `[ACTIONBAR]` | Sends action bar text. |
+| `[TITLE]` | Sets title text. |
+| `[SUBTITLE]` | Sets subtitle text. |
+| `[TOAST:<material>]` | Sends an advancement toast using the given material icon. |
 
 ## Smart usage
 

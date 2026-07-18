@@ -145,6 +145,7 @@ const sidebars = {
               collapsed: true,
               items: [
                 'plugin/fiovoucher/vouchers/how-to-create',
+                'plugin/fiovoucher/vouchers/list',
                 'plugin/fiovoucher/vouchers/material',
                 'plugin/fiovoucher/vouchers/flags',
                 'plugin/fiovoucher/vouchers/lore',
