@@ -1,0 +1,99 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `FioAchievementsCommand.java`, and the current language command help.
+
+:::info[Scope]
+Use this page when you need the real FioAchievements command surface instead of an old shortcut list.
+:::
+
+## Root Command
+
+The plugin registers one root command:
+
+- `/fioachievements`
+
+Aliases:
+
+- `/fioach`
+- `/achievements`
+- `/ach`
+
+## User Commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fioachievements` | `fioachievements.command.open` | Open the main achievements GUI. |
+| `/fioachievements help` | `fioachievements.command.help` | Show player help. |
+| `/fioachievements open` | `fioachievements.command.open` | Open the main achievements GUI. |
+| `/fioachievements menu` | `fioachievements.command.open` | Alias for opening the main achievements GUI. |
+| `/fioachievements tiers` | `fioachievements.command.open` | Open the tier rewards menu. |
+| `/fioachievements tier` | `fioachievements.command.open` | Alias for the tier rewards menu. |
+| `/fioachievements view <player>` | `fioachievements.command.view` | View an online player's achievement GUI progress. |
+| `/fioachievements stats [player]` | `fioachievements.command.stats` | Open achievement history for yourself or another player. |
+
+## Legacy Admin-Style User Commands
+
+These commands are registered directly on the main command for compatibility:
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fioachievements reload` | `fioachievements.command.reload` | Reload configuration, language, achievements, leaderboard cache, and menus. |
+| `/fioachievements give <player> <achievementId>` | `fioachievements.command.give` | Mark an achievement as completed for an online player. |
+| `/fioachievements complete <player> <achievementId>` | `fioachievements.command.give` | Alias for `give`. |
+| `/fioachievements take <player> <achievementId>` | `fioachievements.command.take` | Remove a completed achievement from an online player. |
+| `/fioachievements remove <player> <achievementId>` | `fioachievements.command.take` | Alias for `take`. |
+| `/fioachievements reset <player>` | `fioachievements.command.reset` | Reset a player's achievement progress. |
+
+## Admin Commands
+
+Admin commands are routed through:
+
+- `/fioachievements admin ...`
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `admin help` | `fioachievements.command.admin.help` | Show admin command help. |
+| `admin reload` | `fioachievements.command.admin.reload` | Reload the plugin runtime data. |
+| `admin placeholders` | `fioachievements.command.admin.placeholders` | Show PlaceholderAPI placeholder patterns. |
+| `admin enable <achievementId>` | `fioachievements.command.admin.global-state` | Set an achievement global state to enabled. |
+| `admin disable <achievementId>` | `fioachievements.command.admin.global-state` | Set an achievement global state to disabled. |
+| `admin freeze <achievementId>` | `fioachievements.command.admin.global-state` | Freeze global progress for an achievement. |
+| `admin point <set\|give\|take> <player> <amount>` | `fioachievements.command.admin.point` | Edit a player's achievement points. |
+| `admin menu <open\|forceopen> <player> <main>` | `fioachievements.command.admin.menu` | Open the main achievements menu for a player. |
+| `admin set <achievementId> <unlocked\|locked\|onprogress\|deactive\|active> <player>` | `fioachievements.command.admin.set` | Change one player's achievement state. |
+| `admin tier <set\|add\|remove> <player> <amount>` | `fioachievements.command.admin.tier` | Edit a player's achievement tier value. |
+
+## Permission Nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fioachievements.command.help` | true | Allows `/fioachievements help`. |
+| `fioachievements.command.open` | true | Allows opening the achievement GUI. |
+| `fioachievements.command.view` | true | Allows viewing another online player's achievement GUI progress. |
+| `fioachievements.command.stats` | true | Allows viewing own achievement stats. |
+| `fioachievements.command.stats.others` | op | Allows viewing other players' achievement stats. |
+| `fioachievements.command.reload` | op | Allows the legacy direct reload command. |
+| `fioachievements.command.give` | op | Allows direct completion of an achievement for a player. |
+| `fioachievements.command.take` | op | Allows removing a completed achievement from a player. |
+| `fioachievements.command.reset` | op | Allows resetting player progress. |
+| `fioachievements.command.admin` | op | Allows using `/fioachievements admin`. |
+| `fioachievements.command.admin.help` | op | Allows admin help. |
+| `fioachievements.command.admin.reload` | op | Allows admin reload. |
+| `fioachievements.command.admin.placeholders` | op | Allows listing placeholders. |
+| `fioachievements.command.admin.point` | op | Allows point editing. |
+| `fioachievements.command.admin.menu` | op | Allows opening menus for players. |
+| `fioachievements.command.admin.set` | op | Allows changing achievement states. |
+| `fioachievements.command.admin.global-state` | op | Allows global enable, disable, and freeze. |
+| `fioachievements.command.admin.tier` | op | Allows tier editing. |
+| `fioachievements.admin` | op | Parent permission for admin-level access. |
+
+## Notes
+
+- `<achievementId>` uses the loaded id format from config, normally `category:file_id`.
+- Player targets for most edit commands must be online.
+- Amount parsing accepts compact suffixes such as `1k`, `2m`, and `3b` in command source.

@@ -1,0 +1,87 @@
+---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+FioAchievements registers the PlaceholderAPI identifier `fioachievements` when PlaceholderAPI is installed and enabled.
+
+:::info[Scope]
+This list was scanned from `FioAchievementExpansion.java` and the current language help.
+:::
+
+## Global Placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioachievements_completed%` | Total completed normal achievements for the player. |
+| `%fioachievements_total%` | Total loaded achievements. |
+| `%fioachievements_percent%` | Integer completion percentage. |
+| `%fioachievements_points%` | Player normal-scope points. |
+| `%fioachievements_point%` | Alias for normal-scope points. |
+| `%fioachievements_points_formatted%` | Player points using configured short number formatting. |
+| `%fioachievements_point_formatted%` | Alias for formatted points. |
+| `%fioachievements_points_max_formatted%` | Max normal-scope points using configured short number formatting. |
+| `%fioachievements_point_max_formatted%` | Alias for formatted max points. |
+| `%fioachievements_tier%` | Player calculated achievement tier. |
+
+## Achievement Placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioachievements_progress_<id>%` | Saved progress for one achievement id. |
+| `%fioachievements_completed_<id>%` | `true` or `false` for one achievement id. |
+| `%fioachievements_name_<id>%` | Display name for one achievement id. |
+
+Example:
+
+```text
+%fioachievements_progress_survive:survive_example_1%
+%fioachievements_completed_survive:survive_example_1%
+%fioachievements_name_survive:survive_example_1%
+```
+
+## Scope Placeholders
+
+The following aggregate scopes are supported:
+
+- `all`
+- `season`
+- `seasonal`
+- `exclusive`
+- `tier`
+- `tiered`
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioachievements_achievements_unlocked_total_<scope>%` | Completed count for an aggregate scope. |
+| `%fioachievements_achievements_total_<scope>%` | Total achievement count for an aggregate scope. |
+| `%fioachievements_achievements_unlocked_percentage_<scope>%` | Integer completion percentage for an aggregate scope. |
+| `%fioachievements_points_formatted_<scope>%` | Formatted points for an aggregate scope. |
+| `%fioachievements_points_max_formatted_<scope>%` | Formatted max points for an aggregate scope. |
+
+## Category Placeholders
+
+For non-aggregate suffixes, point placeholders are treated as category ids.
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioachievements_points_formatted_<category>%` | Formatted points earned in a category. |
+| `%fioachievements_points_max_formatted_<category>%` | Formatted max points for a category. |
+
+Example:
+
+```text
+%fioachievements_points_formatted_mining%
+%fioachievements_points_max_formatted_survive%
+```
+
+## Tier Material Placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioachievements_selected_tier_material%` | Pretty name for the player's selected tier reward material. |
+| `%fioachievements_tier_material%` | Alias for selected tier reward material. |
+| `%fioachievements_selected_tier_material_raw%` | Raw material key for the selected tier reward material. |
+| `%fioachievements_tier_material_raw%` | Alias for the raw selected material. |

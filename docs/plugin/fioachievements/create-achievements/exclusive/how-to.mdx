@@ -1,0 +1,371 @@
+---
+title: How-To
+sidebar_position: 1
+---
+
+# Create Exclusive Achievements - How-To
+
+This page explains how to create one exclusive achievement line by line. Exclusive achievements are used for limited-time goals and render only the exclusive variant section.
+
+:::info[Variant rule]
+For an Exclusive achievement, include `exclusiveAchievements:` and do not render `seasonalAchievements:` or `tierAchievements:`.
+:::
+
+## 1. File Location
+
+```text
+plugins/FioAchievements/achievementsCategory/nether/exclusives/exclusive_anchor_charge.yml
+```
+
+| Part | Explanation |
+| --- | --- |
+| `nether` | Category id. |
+| `exclusives` | Folder used to organize exclusive achievement files. |
+| `exclusive_anchor_charge.yml` | File name. Default loaded id: `nether:exclusive_anchor_charge`. |
+
+## 2. Enabled And Settings
+
+```yaml
+enabled: true
+
+settings:
+  priority: 100
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enabled: true` | Loads the exclusive achievement file. |
+| `settings:` | Starts per-achievement runtime options. |
+| `priority: 100` | Places this after lower-priority normal achievements. |
+| `repeatable: false` | Prevents repeat completions. |
+| `max-completions: 1` | Allows one completion per player. |
+| `hidden: false` | Shows the achievement while locked. |
+| `secret: false` | Shows the objective text. |
+| `preserve-progress-when-disabled: true` | Keeps progress when disabled later. |
+| `require-player-online: true` | Only online players can receive progress. |
+| `allow-progress-overflow: false` | Caps progress at the target amount. |
+| `progress-cooldown: 0` | No delay between progress gains. |
+| `ignore-cancelled-events: true` | Ignores cancelled events where supported. |
+| `stop-progress-after-completion: true` | Stops progress after completion. |
+| `save-completion-date: true` | Stores completion date for `{date_completion}`. |
+| `auto-claim-reward: true` | Runs rewards automatically on completion. |
+
+## 3. Exclusive Selection
+
+```yaml
+exclusiveAchievements:
+  enabled: true
+  stopProgress: true
+  hideIfLocked: true
+  exclusiveOnly:
+    date: "31/DEC/2026"
+    time: "11:59 PM"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `exclusiveAchievements:` | Starts the exclusive-only selection section. |
+| `enabled: true` | Marks this achievement as exclusive. |
+| `stopProgress: true` | Stops progress after the exclusive date and time. |
+| `hideIfLocked: true` | Hides expired locked achievements from players who did not complete them. |
+| `exclusiveOnly:` | Starts expiry settings. |
+| `date: "31/DEC/2026"` | Expiry date using `DD/MON/YYYY`. |
+| `time: "11:59 PM"` | Expiry time using `H:MM AM/PM`. |
+
+## 4. Exclusive Items
+
+```yaml
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Exclusive Anchor Charge</red>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<gray>Charge a respawn anchor 4 times</gray>"
+      - "<gray>during the exclusive event.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<#a83434>This achievement is exclusive."
+      - ""
+      - "<red>Locked</red>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `items:` | Starts GUI item states. |
+| `locked:` | Item shown before completion. |
+| `material: COAL` | Locked icon material. |
+| `amount: 1` | Stack amount. |
+| `behavior:` | Visual behavior options. |
+| `model-data: 0` | No CustomModelData. |
+| `glow: false` | No locked glow. |
+| `name:` | Locked display name. |
+| `{category}` | Replaced by the category alias where supported. |
+| `%rewards%` | Injects reward display lines. |
+| `{percent}` | Server unlock percentage. |
+| `This achievement is exclusive.` | Player-facing limited availability note. |
+
+```yaml
+  completed:
+    material: RESPAWN_ANCHOR
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Exclusive Anchor Charge</green>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<gray>Charge a respawn anchor 4 times</gray>"
+      - "<gray>during the exclusive event.</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+
+  claim:
+    material: RESPAWN_ANCHOR
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Exclusive Anchor Charge</green>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `completed:` | Item shown after completion. |
+| `material: RESPAWN_ANCHOR` | Completed icon matching the objective. |
+| `flags:` | Starts Bukkit item flags. |
+| `HIDE_ATTRIBUTES` | Hides default item attributes in the GUI. |
+| `claim:` | Item shown when rewards can be claimed. |
+| `glow: true` | Highlights the claim state. |
+
+## 5. Rewards And Task
+
+Use [Actions Reference](/plugin/fioachievements/create-achievements/actions-reference) when choosing values for `required` and `while`.
+
+```yaml
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>27</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "USE;RESPAWN_ANCHOR;CHARGE;4"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 27"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Exclusive Anchor Charge</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+27"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `rewards:` | Starts reward groups. |
+| `"1":` | Main reward group. |
+| `name:` | Reward display lines. |
+| `achievementTasks:` | Starts progress rules. |
+| `required:` | Required action list. |
+| `USE;RESPAWN_ANCHOR;CHARGE;4` | Tracks charging a respawn anchor 4 times. Format: `USE;<MATERIAL>;<ACTION>;<AMOUNT>`. |
+| `while: []` | No extra live condition required. |
+| `placeholderRules: []` | No PlaceholderAPI condition checks. |
+| `afterCompletion:` | Completion actions. |
+| `[FIOACHIEVEMENTS] Points+27` | Adds 27 achievement points. |
+
+## 6. Broadcast
+
+```yaml
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed exclusive achievement <yellow>Exclusive Anchor Charge</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Exclusive Anchor Charge</green>"
+      - "<gray>Charge a respawn anchor 4 times during the exclusive event.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `broadcast:` | Starts completion broadcast settings. |
+| `enabled: true` | Enables the broadcast. |
+| `mode: GLOBAL` | Sends to all online players. |
+| `message:` | Exclusive completion text. |
+| `hover:` | Adds hover details. |
+| `click:` | Adds click behavior. |
+| `value:` | Opens the completing player's achievement view. |
+
+## 7. Required Global Option
+
+```yaml
+achievements:
+  otherUniqueAchievements:
+    enable-exclusive-achievements: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enable-exclusive-achievements: true` | Makes Exclusive Achievements buttons and views visible. |
+
+## 8. Reload
+
+```text
+/fioachievements admin reload
+/fioachievements open
+```
+
+## Complete File
+
+```yaml
+enabled: true
+
+settings:
+  priority: 100
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+
+exclusiveAchievements:
+  enabled: true
+  stopProgress: true
+  hideIfLocked: true
+  exclusiveOnly:
+    date: "31/DEC/2026"
+    time: "11:59 PM"
+
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Exclusive Anchor Charge</red>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<gray>Charge a respawn anchor 4 times</gray>"
+      - "<gray>during the exclusive event.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<#a83434>This achievement is exclusive."
+      - ""
+      - "<red>Locked</red>"
+  completed:
+    material: RESPAWN_ANCHOR
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Exclusive Anchor Charge</green>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<gray>Charge a respawn anchor 4 times</gray>"
+      - "<gray>during the exclusive event.</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+  claim:
+    material: RESPAWN_ANCHOR
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Exclusive Anchor Charge</green>"
+    lore:
+      - "<dark_gray>{category} Exclusive</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>27</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "USE;RESPAWN_ANCHOR;CHARGE;4"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 27"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Exclusive Anchor Charge</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+27"
+
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed exclusive achievement <yellow>Exclusive Anchor Charge</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Exclusive Anchor Charge</green>"
+      - "<gray>Charge a respawn anchor 4 times during the exclusive event.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```

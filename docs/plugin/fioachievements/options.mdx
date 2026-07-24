@@ -1,0 +1,88 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+This page summarizes the main configuration systems used by FioAchievements.
+
+:::info[Scope]
+Use this page for a quick map. Use [Main Configuration](/plugin/fioachievements/config/config.yml) for the field-by-field reference.
+:::
+
+## Runtime Settings
+
+`settings` controls the language file, timezone, and debug logging.
+
+| Option | Description |
+| --- | --- |
+| `settings.language` | Loads `lang/lang_<key>.yml`. |
+| `settings.timezone` | Java `ZoneId` used by date placeholders and time checks. |
+| `settings.debug` | Enables extra console warnings while editing files. |
+
+## Achievement Loading
+
+| Option | Description |
+| --- | --- |
+| `achievements.enabled` | Master toggle for all progress tracking. |
+| `achievements.short_logging_achievements` | Hides per-file startup status lines when enabled. |
+| `achievements.category-default-enabled` | Default category state for generators and category metadata. |
+| `achievements.skip-disabled-categories` | Skips disabled categories during loading. |
+| `achievements.id-format` | Controls loaded achievement ids, normally `%category%:%id%`. |
+
+## Unique Achievement Menus
+
+| Option | Description |
+| --- | --- |
+| `achievements.otherUniqueAchievements.enable-seasonal-achievements` | Shows or hides seasonal achievement buttons and views. |
+| `achievements.otherUniqueAchievements.enable-exclusive-achievements` | Shows or hides exclusive achievement buttons and views. |
+
+## Progress Tracking
+
+Progress behavior includes autosave, quit-save, shutdown-save, movement sampling, and tracker toggles for joins, block breaks, mob kills, player kills, and walking.
+
+The `progress.walk` section keeps movement tracking lightweight by sampling at an interval and limiting large distance jumps.
+
+## Filters
+
+World and region filters can apply globally or to one achievement id.
+
+```yaml
+world:
+  whitelist:
+    - "world"
+    - "event_world[survive:survive_example_1]"
+  blacklist:
+    - "disabled_world"
+```
+
+Region filters use the same scoped entry style and can read common PlaceholderAPI region placeholders such as WorldGuard region outputs.
+
+## Completion
+
+`completion` controls duplicate completion, reward command execution, admin unlock behavior, broadcasts, and completion date formatting.
+
+Important switches:
+
+- `completion.prevent-duplicate-completion`
+- `completion.set-progress-to-required-on-unlock`
+- `completion.broadcast-enabled`
+- `completion.reward-commands-enabled`
+- `completion.reward-commands-run-as-console`
+- `completion.execute-rewards-on-admin-set`
+
+## Storage And Performance
+
+FioAchievements supports:
+
+- `SQLITE` with `player_data.db`
+- `MYSQL` with host, port, database, username, password, SSL, and table prefix
+- cached player progress
+- async database worker
+- autosave task
+- batch save on shutdown
+
+## Bedrock Support
+
+`bedrock.enabled` controls Bedrock detection support. `bedrock.geyser-prefix` is used as a fallback when Floodgate is unavailable.

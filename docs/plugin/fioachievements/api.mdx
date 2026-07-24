@@ -1,0 +1,84 @@
+---
+title: Developer API
+sidebar_position: 4
+---
+
+# Developer API
+
+FioAchievements exposes a small Bukkit-facing API through `com.itzfabb.fioachievements.api.FioAchievementsAPI`.
+
+:::info[Scope]
+This page was scanned from `FioAchievementsAPI.java` and `FioAchievementCompleteEvent.java`.
+:::
+
+## Accessing the API
+
+```java
+import com.itzfabb.fioachievements.api.FioAchievementsAPI;
+
+FioAchievementsAPI api = FioAchievementsAPI.get();
+```
+
+`FioAchievementsAPI.get()` throws an `IllegalStateException` if the plugin is not enabled.
+
+## Achievement Lookup
+
+| Method | Description |
+| --- | --- |
+| `getAchievement(String achievementId)` | Get one loaded achievement by id. |
+| `getAchievements()` | Get currently active achievements. |
+| `getAllAchievements()` | Get all known achievements. |
+| `getCategories()` | Get loaded category ids. |
+| `getTotalAchievements()` | Get total achievement count. |
+| `getTotalAchievements(String category)` | Get total achievement count for one category. |
+| `getAchievementPoints(String achievementId)` | Get point value for one achievement. |
+
+## Player Progress
+
+| Method | Description |
+| --- | --- |
+| `isCompleted(Player player, String achievementId)` | Check whether a player completed an achievement. |
+| `getProgress(Player player, String achievementId)` | Get saved progress for an achievement. |
+| `getCompletedAt(Player player, String achievementId)` | Get completion timestamp for an achievement. |
+| `loadProgress(UUID uuid)` | Load stored progress asynchronously. |
+| `getCompletedCount(Player player)` | Get completed count. |
+| `getCompletedCount(Player player, String category)` | Get completed count in one category. |
+| `getCompletedCountByScope(Player player, String scope)` | Get completed count for `all`, `season`, `exclusive`, or tier scopes. |
+
+## Points And Tiers
+
+| Method | Description |
+| --- | --- |
+| `getPoints(Player player)` | Get player points. |
+| `getPoints(Player player, String category)` | Get player points for a category. |
+| `getPointsByScope(Player player, String scope)` | Get player points for an aggregate scope. |
+| `getMaxPoints(String category)` | Get max points for a category. |
+| `getMaxPointsByScope(String scope)` | Get max points for an aggregate scope. |
+| `getTier(Player player)` | Get saved tier value. |
+| `getCalculatedTier(Player player)` | Get calculated tier value. |
+| `getUnclaimedTierRewards(Player player)` | Get unclaimed tier reward count. |
+
+## Mutations
+
+| Method | Description |
+| --- | --- |
+| `setCompleted(Player player, String achievementId, boolean completed)` | Set completion state. |
+| `setState(Player player, String achievementId, String state)` | Set achievement state such as `unlocked`, `locked`, `onprogress`, `deactive`, or `active`. |
+| `setPoints(Player player, int points)` | Set player points. |
+| `addPoints(Player player, int amount)` | Add or remove points. |
+| `reset(Player player)` | Reset a player's progress. |
+| `openMainMenu(Player player)` | Open the main achievement GUI. |
+| `openMenu(Player player, String menuId)` | Open a plugin menu by id. |
+
+## Completion Event
+
+Listen for `FioAchievementCompleteEvent` when you need to react to achievement completions.
+
+```java
+@EventHandler
+public void onAchievementComplete(FioAchievementCompleteEvent event) {
+    Player player = event.getPlayer();
+    String achievementId = event.getAchievementId();
+    long completedAt = event.getCompletedAt();
+}
+```

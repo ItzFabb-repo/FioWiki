@@ -1,0 +1,352 @@
+---
+title: How-To
+sidebar_position: 1
+---
+
+# Create Tier Achievements - How-To
+
+This page explains how to create tier achievements line by line. A tier file uses the tier selection only and should not render seasonal or exclusive variant sections.
+
+:::info[Variant rule]
+For a Tiers achievement file, include `tierAchievements:` and do not render `seasonalAchievements:` or `exclusiveAchievements:`.
+:::
+
+## 1. File Location
+
+```text
+plugins/FioAchievements/achievementsCategory/survive/Tiers/survive_tiers.yml
+```
+
+| Part | Explanation |
+| --- | --- |
+| `survive` | Category id for generated tier achievements. |
+| `Tiers` | Folder used for tier achievement generator files. |
+| `survive_tiers.yml` | Generator file that can create multiple tier achievements. |
+
+## 2. Enabled And Settings
+
+```yaml
+enabled: true
+
+settings:
+  priority: 0
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enabled: true` | Loads this tier generator file. |
+| `settings:` | Starts shared settings for generated tier achievements. |
+| `priority: 0` | Places tier achievements early in the menu. |
+| `repeatable: false` | Prevents repeated tier completion. |
+| `max-completions: 1` | Allows one completion per tier per player. |
+| `hidden: false` | Shows tier achievements while locked. |
+| `secret: false` | Shows tier descriptions. |
+| `preserve-progress-when-disabled: true` | Keeps tier progress if disabled later. |
+
+## 3. Shared Locked Item Template
+
+```yaml
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Survive Tier %tier_roman%</red>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<gray>{tier_description}</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `items:` | Starts shared item templates. |
+| `locked:` | Template used before each generated tier is completed. |
+| `material: COAL` | Locked icon. |
+| `amount: 1` | Stack amount. |
+| `behavior:` | Visual behavior options. |
+| `model-data: 0` | No CustomModelData. |
+| `glow: false` | No glow on locked tiers. |
+| `%tier_roman%` | Replaced by roman numerals such as `I`, `II`, or `III`. |
+| `{tier_description}` | Replaced by the tier entry description. |
+| `%rewards%` | Replaced by the tier entry reward display. |
+| `{percent}` | Server unlock percentage. |
+
+## 4. Shared Completed And Claim Templates
+
+```yaml
+  completed:
+    material: TOTEM_OF_UNDYING
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Survive Tier %tier_roman%</green>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<gray>{tier_description}</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+
+  claim:
+    material: TOTEM_OF_UNDYING
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Survive Tier %tier_roman%</green>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+    rewards: {}
+```
+
+| Line | Explanation |
+| --- | --- |
+| `completed:` | Template shown after a tier is completed. |
+| `material: TOTEM_OF_UNDYING` | Completed tier icon. |
+| `flags:` | Starts item flag list. |
+| `HIDE_ATTRIBUTES` | Hides default item attributes. |
+| `{date_completion}` | Completion date placeholder. |
+| `claim:` | Template shown when rewards can be claimed. |
+| `glow: true` | Highlights claimable tier rewards. |
+| `rewards: {}` | Keeps the claim item compatible with the menu structure. |
+
+## 5. Tier Selection
+
+Use [Actions Reference](/plugin/fioachievements/create-achievements/actions-reference) when choosing values for `required` and `while`.
+
+```yaml
+tierAchievements:
+  enabled: true
+  Tier:
+    "1":
+      description: "Sleep through the night once."
+      name:
+        - "<dark_gray>+</dark_gray><yellow>25</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "SERVER;SLEEP;1"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 15"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Survive Tier I</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+25"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `tierAchievements:` | Starts the tier-only selection section. |
+| `enabled: true` | Enables tier generation for this file. |
+| `Tier:` | Starts generated tier entries. |
+| `"1":` | First tier entry. |
+| `description:` | Text injected into `{tier_description}`. |
+| `name:` | Reward display injected into `%rewards%`. |
+| `achievementTasks:` | Starts this tier's progress rule. |
+| `required:` | Required action list for this tier. |
+| `SERVER;SLEEP;1` | Player must sleep once. |
+| `while: []` | No live conditions. |
+| `placeholderRules: []` | No PlaceholderAPI condition checks. |
+| `afterCompletion:` | Actions run after this tier completes. |
+
+## 6. Add Another Tier
+
+```yaml
+    "2":
+      description: "Eat cooked beef to survive longer."
+      name:
+        - "<dark_gray>+</dark_gray><yellow>30</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "ITEM;CONSUME;COOKED_BEEF;16"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 20"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Survive Tier II</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+30"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `"2":` | Second generated tier entry. |
+| `description:` | Description for Tier II. |
+| `ITEM;CONSUME;COOKED_BEEF;16` | Requires consuming 16 cooked beef. Format: `ITEM;CONSUME;<MATERIAL>;<AMOUNT>`. |
+| `Points+30` | Adds 30 achievement points for Tier II. |
+
+## 7. Broadcast Template
+
+```yaml
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed <yellow>Survive Tier %tier_roman%</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Survive Tier %tier_roman%</green>"
+      - "<gray>{tier_description}</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `broadcast:` | Starts broadcast settings shared by generated tiers. |
+| `%tier_roman%` | Replaced per generated tier. |
+| `{tier_description}` | Replaced by each tier description. |
+| `mode: GLOBAL` | Sends to all online players. |
+| `click.value` | Opens the completed player's achievement view. |
+
+## 8. Reload
+
+```text
+/fioachievements admin reload
+/fioachievements open
+```
+
+## Complete File
+
+```yaml
+enabled: true
+
+settings:
+  priority: 0
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Survive Tier %tier_roman%</red>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<gray>{tier_description}</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+  completed:
+    material: TOTEM_OF_UNDYING
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Survive Tier %tier_roman%</green>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<gray>{tier_description}</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+  claim:
+    material: TOTEM_OF_UNDYING
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    flags:
+      - HIDE_ATTRIBUTES
+    name: "<green>Survive Tier %tier_roman%</green>"
+    lore:
+      - "<dark_gray>Survive Tiered</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+    rewards: {}
+
+tierAchievements:
+  enabled: true
+  Tier:
+    "1":
+      description: "Sleep through the night once."
+      name:
+        - "<dark_gray>+</dark_gray><yellow>25</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "SERVER;SLEEP;1"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 15"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Survive Tier I</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+25"
+    "2":
+      description: "Eat cooked beef to survive longer."
+      name:
+        - "<dark_gray>+</dark_gray><yellow>30</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "ITEM;CONSUME;COOKED_BEEF;16"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 20"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Survive Tier II</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+30"
+
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed <yellow>Survive Tier %tier_roman%</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Survive Tier %tier_roman%</green>"
+      - "<gray>{tier_description}</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```

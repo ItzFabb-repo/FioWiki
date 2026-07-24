@@ -1,0 +1,151 @@
+---
+title: config.yml
+sidebar_position: 1
+---
+
+# config.yml
+
+This page documents the main `config.yml` sections included with FioAchievements.
+
+## settings
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `language` | `en` | Loads `lang/lang_<key>.yml`. |
+| `timezone` | `Asia/Jakarta` | Java `ZoneId` used by date placeholders and time checks. |
+| `debug` | `false` | Enables extra console warnings. |
+
+## categoryAlias
+
+Maps achievement category folder ids to menu-facing names.
+
+Default categories:
+
+- `survive`
+- `mining`
+- `farming`
+- `hunting`
+- `exploration`
+- `building`
+- `fishing`
+- `enchanting`
+- `nether`
+- `community`
+
+## vanillaOptions
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `shouldWeDisableVanilla` | `false` | Blocks vanilla achievements when enabled. |
+| `shouldWeRespectVanillaAchievements` | `true` | Makes FioAchievements respect Minecraft's default achievements. |
+| `shouldWeDisableAdvancementMsg` | `false` | Disables vanilla advancement chat messages. |
+
+## number-format
+
+Controls short number formatting for placeholders and menus.
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `enabled` | `true` | Enables compact suffixes. |
+| `decimals` | `1` | Decimal digits for compact values. |
+| `trim-zero-decimal` | `true` | Shows `1k` instead of `1.0k`. |
+| `suffixes.thousand` | `k` | Suffix for thousands. |
+| `suffixes.millions` | `m` | Suffix for millions. |
+
+## progress-bar
+
+Controls `%fioachievements_achievements_<category>_progress_bar%`.
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `length` | `30` | Number of rendered symbols. |
+| `symbol` | configured block symbol | Symbol used for each segment. |
+| `complete-color` | `<green>` | Color for completed progress. |
+| `remaining-color` | `<gray>` | Color for remaining progress. |
+| `reset-after` | `false` | Appends `<reset>` after the bar. |
+
+## database
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `type` | `SQLITE` | Storage driver. Supports `SQLITE` and `MYSQL`. |
+| `sqlite-file` | `player_data.db` | SQLite database file. |
+| `mysql.host` | `localhost` | MySQL host. |
+| `mysql.port` | `3306` | MySQL port. |
+| `mysql.database` | `minecraft` | MySQL schema/database. |
+| `mysql.username` | `root` | MySQL username. |
+| `mysql.password` | empty | MySQL password. |
+| `mysql.use-ssl` | `false` | Enables SSL in the JDBC URL. |
+| `mysql.table-prefix` | `fioach_` | Prefix for FioAchievements tables. |
+
+## achievements
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `enabled` | `true` | Master toggle for all progress tracking. |
+| `short_logging_achievements` | `false` | Hides per-file startup status lines. |
+| `category-default-enabled` | `true` | Default category state for generators and metadata. |
+| `skip-disabled-categories` | `true` | Skips disabled categories during loading. |
+| `id-format` | `%category%:%id%` | Loaded achievement id format. |
+| `otherUniqueAchievements.enable-seasonal-achievements` | `true` | Shows seasonal achievement menus. |
+| `otherUniqueAchievements.enable-exclusive-achievements` | `true` | Shows exclusive achievement menus. |
+
+## progress
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `save-interval-seconds` | `60` | Autosave interval. |
+| `save-on-quit` | `true` | Saves progress when a player leaves. |
+| `save-on-disable` | `true` | Saves cached progress during shutdown. |
+| `trackers.join` | `true` | Tracks join achievements. |
+| `trackers.block-break` | `true` | Tracks block break achievements. |
+| `trackers.mob-kill` | `true` | Tracks mob kill achievements. |
+| `trackers.player-kill` | `true` | Tracks player kill achievements. |
+| `trackers.walk` | `true` | Tracks walk achievements. |
+| `walk.interval-ticks` | `20` | Movement sample interval. |
+| `walk.max-distance-per-sample` | `12` | Large movement jump clamp. |
+| `walk.count-world-change` | `false` | Counts world changes as walk progress. |
+
+## world
+
+`world.whitelist` and `world.blacklist` control where progress can happen. Entries can be global world names or scoped to one achievement id:
+
+```yaml
+world:
+  whitelist:
+    - "world"
+    - "event_world[survive:survive_example_1]"
+```
+
+## regions
+
+`regions.whitelist` and `regions.blacklist` work like world filters, but compare against region placeholder outputs.
+
+## completion
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `date-format` | `dd/mmm/yy hh:mm a` | Format used by completion date placeholders. |
+| `prevent-duplicate-completion` | `true` | Prevents completed achievements from completing again. |
+| `set-progress-to-required-on-unlock` | `true` | Admin unlock sets progress to required amount. |
+| `broadcast-enabled` | `true` | Allows achievement broadcast messages. |
+| `reward-commands-enabled` | `true` | Allows reward commands. |
+| `reward-commands-run-as-console` | `true` | Runs reward commands from console instead of player. |
+| `execute-rewards-on-admin-set` | `false` | Runs normal rewards when admin sets an achievement unlocked. |
+
+## bedrock
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `enabled` | `true` | Enables Bedrock player detection support. |
+| `geyser-prefix` | `.` | Fallback Bedrock name prefix. |
+
+## performance
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `cache-player-progress` | `true` | Keeps player progress in memory. |
+| `async-database-worker` | `true` | Uses a dedicated database worker thread. |
+| `batch-save-on-disable` | `true` | Flushes cached data together on shutdown. |
+| `autosave-enabled` | `true` | Runs periodic autosaves. |
+| `reduce-move-event-work` | `true` | Keeps movement tracking lightweight. |

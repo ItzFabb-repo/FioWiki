@@ -1,0 +1,192 @@
+---
+title: Actions Reference
+sidebar_position: 1
+---
+
+# Actions Reference
+
+This page lists the action names you can use inside `achievementTasks.required` and `achievementTasks.while`.
+
+:::info[How to read this page]
+`required` actions add progress. `while` entries do not add progress; they only decide whether a required progress event is allowed to count.
+:::
+
+## required: []
+
+Use `required` for the action that should increase achievement progress.
+
+```yaml
+achievementTasks:
+  required:
+    - "BREAK_BLOCK;DIAMOND_ORE,DEEPSLATE_DIAMOND_ORE;10"
+  while: []
+```
+
+| Action | Format |
+| --- | --- |
+| `BREAK_BLOCK` | `BREAK_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `PLACE_BLOCK` | `PLACE_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `HARVEST` | `HARVEST;<MATERIALS>;<AMOUNT>` |
+| `DROP_ITEM` | `DROP_ITEM;<MATERIALS>;<AMOUNT>` |
+| `LEFT_CLICK_BLOCK` | `LEFT_CLICK_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `RIGHT_CLICK_BLOCK` | `RIGHT_CLICK_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `PHYSICAL_INTERACT_BLOCK` | `PHYSICAL_INTERACT_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `STEP_ON_BLOCK` | `STEP_ON_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `BONEMEAL` | `BONEMEAL;<MATERIALS>;<AMOUNT>` |
+| `SHEAR` | `SHEAR;<MATERIALS>;<AMOUNT>` |
+| `IGNITE` | `IGNITE;<MATERIALS>;<AMOUNT>` |
+| `EXTINGUISH` | `EXTINGUISH;<MATERIALS>;<AMOUNT>` |
+| `BURN_BLOCK` | `BURN_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `STRIP_BLOCK` | `STRIP_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `SCRAPE_BLOCK` | `SCRAPE_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `WAX_BLOCK` | `WAX_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `UNWAX_BLOCK` | `UNWAX_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `TILL_BLOCK` | `TILL_BLOCK;<MATERIALS>;<AMOUNT>` |
+| `CREATE_PATH` | `CREATE_PATH;<MATERIALS>;<AMOUNT>` |
+| `RING_BELL` | `RING_BELL;<AMOUNT>` |
+| `PLAY_JUKEBOX` | `PLAY_JUKEBOX;<MATERIALS>;<AMOUNT>` |
+| `REMOVE_JUKEBOX_DISC` | `REMOVE_JUKEBOX_DISC;<MATERIALS>;<AMOUNT>` |
+| `SIGN` | `SIGN;<ACTION>;<MATERIALS>;<AMOUNT>` |
+| `USE` | `USE;<MATERIAL>;<ACTION>;<AMOUNT>` |
+| `TRIAL_CHAMBER` | `TRIAL_CHAMBER;<SPAWNER_TYPE>;<ACTION>;<AMOUNT>` |
+| `ITEM` | `ITEM;<ACTION>;<MATERIALS>;<AMOUNT>` |
+| `ITEM_FRAME` | `ITEM_FRAME;<PLACE\|TAKE\|ROTATE>;<MATERIAL>;<AMOUNT>` |
+| `CRAFT` | `CRAFT;<MATERIAL>;<AMOUNT>` |
+| `SMELT` | `SMELT;<BLOCK>;<MATERIALS>;<AMOUNT>` |
+| `COOK` | `COOK;<BLOCK>;<MATERIALS>;<AMOUNT>` |
+| `BREW` | `BREW;<EFFECTS_OR_INGREDIENTS>;<AMOUNT>` |
+| `ENCHANT` | `ENCHANT;<MATERIALS>;<ENCHANT>[LEVEL];<AMOUNT>` |
+| `ANVIL` | `ANVIL;<ACTION>;<MATERIALS>;<AMOUNT>` |
+| `GRINDSTONE` | `GRINDSTONE;<MATERIALS>;<AMOUNT>` |
+| `SMITHING` | `SMITHING;<ACTION>;<MATERIALS_OR_TEMPLATE>;<AMOUNT>` |
+| `TRIM` | `TRIM;<TEMPLATE_OR_MATERIALS>;<AMOUNT>` |
+| `STONECUTTER` | `STONECUTTER;<MATERIALS>;<AMOUNT>` |
+| `LOOM` | `LOOM;<PATTERNS>;<AMOUNT>` |
+| `CARTOGRAPHY` | `CARTOGRAPHY;<MATERIALS>;<AMOUNT>` |
+| `DISCOVER_RECIPE` | `DISCOVER_RECIPE;<RECIPE_KEYS>;<AMOUNT>` |
+| `BUCKET` | `BUCKET;<ACTION>;<MATERIALS>;<AMOUNT>` |
+| `COLLECT_HONEY_BOTTLE` | `COLLECT_HONEY_BOTTLE;<AMOUNT>` |
+| `COLLECT_HONEYCOMB` | `COLLECT_HONEYCOMB;<AMOUNT>` |
+| `PROJECTILE` | `PROJECTILE;<MATERIAL>;<ACTION>;<AMOUNT>` |
+| `PROJECTILE_HIT` | `PROJECTILE_HIT;<MATERIAL>;<TARGETS>;<AMOUNT>` |
+| `HATCH_EGG` | `HATCH_EGG;<ENTITY_TYPES>;<AMOUNT>` |
+| `SPEAR_LUNGE` | `SPEAR_LUNGE;<FOOD_POINTS>` |
+| `HIT_ENTITY` | `HIT_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `DEAL_DAMAGE` | `DEAL_DAMAGE;<ENTITY_TYPES>;<TOTAL_HEALTH_POINTS>` |
+| `TAKE_HIT` | `TAKE_HIT;<DAMAGE_CAUSES>;<AMOUNT>` |
+| `TAKE_DAMAGE` | `TAKE_DAMAGE;<DAMAGE_CAUSES>;<TOTAL_HEALTH_POINTS>` |
+| `KILL_ENTITY` | `KILL_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `KILL_ENTITY_CAUSE` | `KILL_ENTITY_CAUSE;<ENTITY_TYPES>;<DAMAGE_CAUSES>;<AMOUNT>` |
+| `HIT_PLAYER` | `HIT_PLAYER;<AMOUNT>` |
+| `DAMAGE_PLAYER` | `DAMAGE_PLAYER;<TOTAL_HEALTH_POINTS>` |
+| `KILL_PLAYER` | `KILL_PLAYER;<AMOUNT>` |
+| `CRITICAL_HIT` | `CRITICAL_HIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `SWEEP_ATTACK_HIT` | `SWEEP_ATTACK_HIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `SMASH_ATTACK_HIT` | `SMASH_ATTACK_HIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `DAMAGE_WITH_ITEM` | `DAMAGE_WITH_ITEM;<ITEM_MATERIALS>;<ENTITY_TYPES>;<AMOUNT>` |
+| `KILL_WITH_ITEM` | `KILL_WITH_ITEM;<ITEM_MATERIALS>;<ENTITY_TYPES>;<AMOUNT>` |
+| `DAMAGE_WITH_PROJECTILE` | `DAMAGE_WITH_PROJECTILE;<PROJECTILE_TYPES>;<ENTITY_TYPES>;<AMOUNT>` |
+| `KILL_WITH_PROJECTILE` | `KILL_WITH_PROJECTILE;<PROJECTILE_TYPES>;<ENTITY_TYPES>;<AMOUNT>` |
+| `KILL_WITHOUT_WEAPON` | `KILL_WITHOUT_WEAPON;<ENTITY_TYPES>;<AMOUNT>` |
+| `ASSIST_KILL` | `ASSIST_KILL;<ENTITY_TYPES>;<AMOUNT>` |
+| `FIRST_HIT` | `FIRST_HIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `FINAL_HIT` | `FINAL_HIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `SURVIVE_DAMAGE` | `SURVIVE_DAMAGE;<DAMAGE_CAUSES>;<AMOUNT>` |
+| `SURVIVE_EXPLOSION` | `SURVIVE_EXPLOSION;<AMOUNT>` |
+| `SURVIVE_FALL` | `SURVIVE_FALL;<MINIMUM_DISTANCE>;<AMOUNT>` |
+| `DEATH` | `DEATH;<AMOUNT>` |
+| `DEATH_BY_CAUSE` | `DEATH_BY_CAUSE;<DAMAGE_CAUSES>;<AMOUNT>` |
+| `TAME_ENTITY` | `TAME_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `BREED_ENTITY` | `BREED_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `FEED_ENTITY` | `FEED_ENTITY;<ENTITY_TYPES>;<ITEM_MATERIALS>;<AMOUNT>` |
+| `SHEAR_ENTITY` | `SHEAR_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `DYE_ENTITY` | `DYE_ENTITY;<ENTITY_TYPES>;<COLORS>;<AMOUNT>` |
+| `LEASH_ENTITY` | `LEASH_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `UNLEASH_ENTITY` | `UNLEASH_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `MOUNT_ENTITY` | `MOUNT_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `DISMOUNT_ENTITY` | `DISMOUNT_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `NAME_ENTITY` | `NAME_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `NAME_ENTITY_VALUE` | `NAME_ENTITY_VALUE;<ENTITY_TYPES>;<ENTITY_NAMES>;<AMOUNT>` |
+| `CURE_ENTITY` | `CURE_ENTITY;<FROM_ENTITY>;<TO_ENTITY>;<AMOUNT>` |
+| `TRANSFORM_ENTITY` | `TRANSFORM_ENTITY;<FROM_ENTITY>;<TO_ENTITY>;<AMOUNT>` |
+| `RESURRECT_ENTITY` | `RESURRECT_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `MAKE_ENTITY_SIT` | `MAKE_ENTITY_SIT;<ENTITY_TYPES>;<AMOUNT>` |
+| `MAKE_ENTITY_STAND` | `MAKE_ENTITY_STAND;<ENTITY_TYPES>;<AMOUNT>` |
+| `ANGER_ENTITY` | `ANGER_ENTITY;<ENTITY_TYPES>;<AMOUNT>` |
+| `BECOME_ENTITY_TARGET` | `BECOME_ENTITY_TARGET;<ENTITY_TYPES>;<AMOUNT>` |
+| `ARMOR_STAND_EQUIP` | `ARMOR_STAND_EQUIP;<MATERIALS>;<SLOT>;<AMOUNT>` |
+| `ARMOR_STAND_UNEQUIP` | `ARMOR_STAND_UNEQUIP;<MATERIALS>;<SLOT>;<AMOUNT>` |
+| `TRADE` | `TRADE;<ENTITY_TYPES>;<MATERIAL_TRADED>;<AMOUNT>` |
+| `CURE_ZOMBIE_VILLAGER` | `CURE_ZOMBIE_VILLAGER;<AMOUNT>` |
+| `CHANGE_VILLAGER_PROFESSION` | `CHANGE_VILLAGER_PROFESSION;<PROFESSIONS>;<AMOUNT>` |
+| `LEVEL_UP_VILLAGER` | `LEVEL_UP_VILLAGER;<PROFESSION>;<LEVEL_TIER>;<AMOUNT>` |
+| `FISHING` | `FISHING;<ACTION>;<VALUE>;<AMOUNT>` |
+| `PHYSICAL` | `PHYSICAL;<ACTION>;<DISTANCE>` |
+| `PHYSICAL_ENTITY` | `PHYSICAL_ENTITY;<ENTITY>;<ACTION>;<DISTANCE>` |
+| `PHYSICAL_PORTAL` | `PHYSICAL_PORTAL;<PORTAL_TYPES>;<ACTION>;<AMOUNT>` |
+| `PHYSICAL_BIOME` | `PHYSICAL_BIOME;<BIOMES>;<ACTION>;<AMOUNT>` |
+| `SERVER` | `SERVER;<ACTION>;<AMOUNT>` |
+| `GAIN` | `GAIN;<ACTION>;<AMOUNT>` |
+| `MESSAGE` | `MESSAGE;SEND;<TEXT_OR_REGEX>;<AMOUNT>` |
+| `EVENT` | `EVENT;<ACTION>;<AMOUNT>` |
+| `TRIGGER` | `TRIGGER;<ACTION_OR_LOOT_TABLE>;<ACTION>;<AMOUNT>` |
+
+## while: []
+
+Use `while` for live conditions that must be true while the required action happens.
+
+```yaml
+achievementTasks:
+  required:
+    - "BREAK_BLOCK;DIAMOND_ORE;1"
+  while:
+    - "HOLD;DIAMOND_PICKAXE"
+    - "WORLD;WORLD"
+    - "HEALTH;10"
+```
+
+| Condition | Format | Meaning |
+| --- | --- | --- |
+| `HEALTH` | `HEALTH;<MAX_HEALTH>` | Player health must be at or below the value. |
+| `WEAR` | `WEAR;<MATERIALS>;<SLOT>` | Player must wear matching armor in `HELMET`, `CHEST`, `LEGS`, or `BOOTS`. |
+| `HOLD` | `HOLD;<MATERIALS>` | Player must hold one of the listed materials. |
+| `HOLDING` | `HOLDING;<MATERIALS>` | Alias for `HOLD`. |
+| `WORLD` | `WORLD;<WORLD_NAMES>` | Player must be in one of the listed worlds. |
+| `BIOME` | `BIOME;<BIOME_NAMES>` | Player must be in one of the listed biomes. |
+| `WEATHER` | `WEATHER;<CLEAR\|RAIN\|THUNDER>` | Player world weather must match. |
+| `PHYSICAL` | `PHYSICAL;<ACTION>` | Player must match a movement state such as `SNEAK`, `SPRINT`, `SWIM`, `CLIMB`, `GLIDE`, `FALL`, or `JUMP`. |
+| `PHYSICAL_ENTITY` | `PHYSICAL_ENTITY;<ENTITY>;<ACTION>` | Player must match a vehicle or entity movement state. |
+| `PHYSICAL_BIOME` | `PHYSICAL_BIOME;<BIOMES>;<ACTION>` | Player must match a biome physical condition. |
+| `SERVER` | `SERVER;<ACTION>` | Server/player lifecycle state must match where supported. |
+| `ITEM` | `ITEM;<ACTION>;<MATERIALS>` | Player item state must match where supported. |
+| `STEP_ON_BLOCK` | `STEP_ON_BLOCK;<MATERIALS>` | Player must stand on a matching block. |
+| `BUCKET` | `BUCKET;<ACTION>;<MATERIALS>` | Player bucket state must match where supported. |
+| `FISHING` | `FISHING;<ACTION>;<VALUE>` | Fishing state must match where supported. |
+| `GAIN` | `GAIN;<ACTION>` | Gain state must match where supported. |
+| Same action as `required` | Example: `BREAK_BLOCK;DIAMOND_ORE` | The condition must match the required action type and target. |
+| Placeholder rule name | Example: `PLAYER_SATURATION` | Matches a named entry from `placeholderRules`. |
+
+## Placeholder Rules For while
+
+Use `placeholderRules` when a `while` condition must compare PlaceholderAPI output.
+
+```yaml
+achievementTasks:
+  required:
+    - "BREAK_BLOCK;DIAMOND_ORE;1"
+  while:
+    - "PLAYER_SATURATION"
+placeholderRules:
+  1:
+    name: "PLAYER_SATURATION"
+    type: "GREATHER THAN OR EQUALS"
+    input: "%player_saturation%"
+    output: "10"
+```
+
+| Option | Description |
+| --- | --- |
+| `name` | Condition name used inside `while`. |
+| `type` | Comparison type used by the placeholder matcher. |
+| `input` | PlaceholderAPI value to read. |
+| `output` | Expected comparison value. |

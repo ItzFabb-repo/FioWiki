@@ -1,0 +1,352 @@
+---
+title: How-To
+sidebar_position: 1
+---
+
+# Create Seasonal Achievements - How-To
+
+This page explains how to create one seasonal achievement line by line. Seasonal achievements render only the seasonal variant section, not disabled server, exclusive, or tier selections.
+
+:::info[Variant rule]
+For a Seasonal achievement, include `seasonalAchievements:` and do not render `tierAchievements:` or `exclusiveAchievements:`.
+:::
+
+## 1. File Location
+
+```text
+plugins/FioAchievements/achievementsCategory/farming/seasons/spring_wheat_rush.yml
+```
+
+| Part | Explanation |
+| --- | --- |
+| `farming` | Category id shown in the achievement menu. |
+| `seasons` | Folder used to organize seasonal achievement files. |
+| `spring_wheat_rush.yml` | Achievement file. Default loaded id: `farming:spring_wheat_rush`. |
+
+## 2. Enabled And Settings
+
+```yaml
+enabled: true
+
+settings:
+  priority: 20
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enabled: true` | Loads this seasonal achievement. |
+| `settings:` | Starts runtime behavior options. |
+| `priority: 20` | Sorts this entry in the seasonal menu. |
+| `repeatable: false` | Completion is limited per player. |
+| `max-completions: 1` | Allows one completion. |
+| `hidden: false` | Shows the achievement before completion. |
+| `secret: false` | Shows objective details. |
+| `preserve-progress-when-disabled: true` | Keeps progress if disabled later. |
+| `require-player-online: true` | Requires online player progress. |
+| `allow-progress-overflow: false` | Caps progress at the required amount. |
+| `progress-cooldown: 0` | No progress cooldown. |
+| `ignore-cancelled-events: true` | Ignores cancelled events where supported. |
+| `stop-progress-after-completion: true` | Stops tracking after completion. |
+| `save-completion-date: true` | Enables `{date_completion}`. |
+| `auto-claim-reward: true` | Runs rewards immediately. |
+
+## 3. Seasonal Selection
+
+```yaml
+seasonalAchievements:
+  enabled: true
+  whatMonthisEnabled:
+    - "MARCH"
+    - "APRIL"
+    - "MAY"
+  disabledProgressifMonthsisDifferent: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `seasonalAchievements:` | Starts the seasonal-only selection section. |
+| `enabled: true` | Marks this achievement as seasonal. |
+| `whatMonthisEnabled:` | List of months where progress is allowed. |
+| `MARCH`, `APRIL`, `MAY` | Valid uppercase month names. |
+| `disabledProgressifMonthsisDifferent: true` | Blocks progress outside the listed months. |
+
+## 4. Seasonal Items
+
+```yaml
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Spring Wheat Rush</red>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `items:` | Starts GUI display states. |
+| `locked:` | Item shown before completion. |
+| `material: COAL` | Locked-state material. |
+| `amount: 1` | Item stack count. |
+| `behavior:` | Visual behavior block. |
+| `model-data: 0` | No CustomModelData. |
+| `glow: false` | No glow for locked state. |
+| `name:` | Display name. |
+| `lore:` | Menu description lines. |
+| `Spring Seasonal Achievements` | Seasonal category label. |
+| `Harvest 64 wheat during spring.` | Objective text shown to the player. |
+| `%rewards%` | Injects reward display lines. |
+| `{percent}` | Shows completion percentage. |
+| `Locked` | State label. |
+
+```yaml
+  completed:
+    material: WHEAT
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<green>Spring Wheat Rush</green>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+
+  claim:
+    material: WHEAT
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    name: "<green>Spring Wheat Rush</green>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `completed:` | Item shown after completion. |
+| `material: WHEAT` | Completed-state icon that matches the objective. |
+| `{date_completion}` | Completion date placeholder. |
+| `claim:` | Item shown when rewards are claimable. |
+| `glow: true` | Highlights the claim state. |
+
+## 5. Rewards And Task
+
+Use [Actions Reference](/plugin/fioachievements/create-achievements/actions-reference) when choosing values for `required` and `while`.
+
+```yaml
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>24</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "HARVEST;WHEAT;64"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 24"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Spring Wheat Rush</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+24"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `rewards:` | Starts reward groups. |
+| `"1":` | Main reward group. |
+| `name:` | Reward display shown through `%rewards%`. |
+| `achievementTasks:` | Starts the progress rule. |
+| `required:` | Required action list. |
+| `HARVEST;WHEAT;64` | Tracks 64 wheat harvests. Format: `HARVEST;<MATERIALS>;<AMOUNT>`. |
+| `while: []` | No extra live conditions. |
+| `placeholderRules: []` | No PlaceholderAPI condition checks. |
+| `afterCompletion:` | Commands/actions run after completion. |
+
+## 6. Broadcast
+
+```yaml
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed seasonal achievement <yellow>Spring Wheat Rush</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Spring Wheat Rush</green>"
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `mode: GLOBAL` | Broadcasts to all online players. |
+| `message:` | Seasonal completion message. |
+| `radius: 100` | Used only for `RADIUS` broadcasts. |
+| `permission:` | Used only for `PERMISSION` broadcasts. |
+| `hover:` | Hover text settings. |
+| `click:` | Click action settings. |
+
+## 7. Required Global Option
+
+```yaml
+achievements:
+  otherUniqueAchievements:
+    enable-seasonal-achievements: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enable-seasonal-achievements: true` | Makes Seasonal Achievements buttons and views visible. |
+
+## 8. Reload
+
+```text
+/fioachievements admin reload
+/fioachievements open
+```
+
+## Complete File
+
+```yaml
+enabled: true
+
+settings:
+  priority: 20
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+
+seasonalAchievements:
+  enabled: true
+  whatMonthisEnabled:
+    - "MARCH"
+    - "APRIL"
+    - "MAY"
+  disabledProgressifMonthsisDifferent: true
+
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>Spring Wheat Rush</red>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+  completed:
+    material: WHEAT
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<green>Spring Wheat Rush</green>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - ""
+      - "<green>Unlocked</green>"
+  claim:
+    material: WHEAT
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    name: "<green>Spring Wheat Rush</green>"
+    lore:
+      - "<gradient:<#FFB6C1>:<#00FF7F>:<#87CEEB>>Spring Seasonal Achievements</gradient>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>24</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "HARVEST;WHEAT;64"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 24"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>Spring Wheat Rush</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+24"
+
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed seasonal achievement <yellow>Spring Wheat Rush</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>Spring Wheat Rush</green>"
+      - "<gray>Harvest 64 wheat during spring.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```

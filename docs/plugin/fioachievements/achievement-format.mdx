@@ -1,0 +1,127 @@
+---
+title: Achievement File Format
+sidebar_position: 6
+---
+
+# Achievement File Format
+
+Achievement files are loaded recursively from:
+
+```text
+achievementsCategory/<category>/<optional-folder>/<achievement_id>.yml
+```
+
+With the default `achievements.id-format`, a file such as:
+
+```text
+achievementsCategory/survive/survive_example_1.yml
+```
+
+loads as:
+
+```text
+survive:survive_example_1
+```
+
+## Top-Level Sections
+
+| Section | Description |
+| --- | --- |
+| `enabled` | Enables or disables the achievement file. |
+| `settings` | Runtime behavior, sorting, repeatability, progress behavior, and menu hiding. |
+| `tierAchievements` | Generates tier achievements from `Tier` entries. |
+| `seasonalAchievements` | Marks an achievement as seasonal and controls allowed months. |
+| `exclusiveAchievements` | Marks an achievement as exclusive and can define an expiry date. |
+| `items` | Defines locked, completed, claim, and reward item display data. |
+| `broadcast` | Defines completion broadcast behavior. |
+
+## Required Tasks
+
+Regular achievements read their task rules from:
+
+```yaml
+items:
+  rewards:
+    "1":
+      achievementTasks:
+        required:
+          - "BREAK_BLOCK;DIAMOND_ORE,DEEPSLATE_DIAMOND_ORE;1"
+        while:
+          - "HEALTH;2"
+```
+
+The first valid required action controls progress tracking. `while` entries act as live conditions and do not add progress by themselves.
+
+## Common Required Action Families
+
+| Family | Examples |
+| --- | --- |
+| Blocks | `BREAK_BLOCK`, `PLACE_BLOCK`, `HARVEST`, `STRIP_BLOCK`, `WAX_BLOCK`, `TILL_BLOCK` |
+| Items | `ITEM;PICKUP`, `ITEM;CONSUME`, `ITEM;BREAK`, `ITEM;MEND`, `ITEM;POP_TOTEM` |
+| Workstations | `CRAFT`, `SMELT`, `COOK`, `BREW`, `ENCHANT`, `ANVIL`, `SMITHING` |
+| Combat | `HIT_ENTITY`, `DEAL_DAMAGE`, `KILL_ENTITY`, `KILL_PLAYER`, `SURVIVE_DAMAGE`, `DEATH` |
+| Entities | `TAME_ENTITY`, `BREED_ENTITY`, `FEED_ENTITY`, `SHEAR_ENTITY`, `NAME_ENTITY` |
+| Movement | `PHYSICAL`, `PHYSICAL_ENTITY`, `PHYSICAL_PORTAL`, `PHYSICAL_BIOME` |
+| Server | `SERVER`, `GAIN`, `MESSAGE`, `EVENT`, `TRIGGER` |
+
+## Conditions
+
+`achievementTasks.while` supports conditions such as:
+
+- `PHYSICAL;SNEAK`
+- `PHYSICAL;SPRINT`
+- `PHYSICAL;SWIM`
+- `PHYSICAL_ENTITY;HORSE;RIDING`
+- `WEAR;LEATHER_HELMET;HELMET;1;ANY`
+- `ITEM;EQUIP;DIAMOND_HELMET;HELMET;1`
+- `HOLD;DIAMOND_PICKAXE`
+- `STEP_ON_BLOCK;GOLD_BLOCK;1`
+- `WORLD;WORLD`
+- `BIOME;DEEP_DARK`
+- `WEATHER;RAIN,THUNDER`
+- `HEALTH;2`
+
+## Completion Actions
+
+Actions under `afterCompletion` run when the achievement is completed.
+
+```yaml
+afterCompletion:
+  - "[CONSOLE] exp give %player_name% 22"
+  - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+  - "[MESSAGE] <gray>Congratulations, you completed %achievement_name%.</gray>"
+  - "[FIOACHIEVEMENTS] Points+22"
+```
+
+Toast-style advancement notifications are also supported with `[TOAST:...]`.
+
+## Broadcasts
+
+Broadcasts can be configured per achievement.
+
+| Option | Description |
+| --- | --- |
+| `broadcast.enabled` | Enables completion broadcast for the achievement. |
+| `broadcast.mode` | Supports `GLOBAL`, `WORLD`, `RADIUS`, `PERMISSION`, or `NONE`. |
+| `broadcast.message` | Chat lines sent on completion. |
+| `broadcast.radius` | Radius used by `RADIUS` mode. |
+| `broadcast.permission` | Permission used by `PERMISSION` mode. |
+| `broadcast.hover` | Optional hover text. |
+| `broadcast.click` | Optional click action. |
+
+## Tier Achievements
+
+Tier files such as `achievementsCategory/survive/Tiers/survive_tiers.yml` can generate multiple achievements from one file.
+
+```yaml
+tierAchievements:
+  enabled: true
+  Tier:
+    "1":
+      description: "Sleep through the night once."
+      achievementTasks:
+        required:
+          - "SERVER;SLEEP;1"
+```
+
+Tier placeholders such as `%tier_roman%` and `{tier_description}` are replaced when the generated achievement is loaded.

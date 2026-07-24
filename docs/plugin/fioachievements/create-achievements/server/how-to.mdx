@@ -1,0 +1,361 @@
+---
+title: How-To
+sidebar_position: 1
+---
+
+# Create Server Achievements - How-To
+
+This page explains how to create a normal server achievement line by line. A server achievement uses the `SERVER` action family and should not include seasonal, exclusive, or tier variant sections.
+
+:::info[Variant rule]
+For a Server achievement, only render the normal achievement format: `enabled`, `settings`, `items`, `items.rewards`, and `broadcast`.
+:::
+
+## 1. File Location
+
+```text
+plugins/FioAchievements/achievementsCategory/survive/first_night_sleep.yml
+```
+
+| Part | Explanation |
+| --- | --- |
+| `achievementsCategory` | Root folder where FioAchievements scans achievement files. |
+| `survive` | Category id. This controls where the achievement appears. |
+| `first_night_sleep.yml` | File name. With the default id format, this becomes `survive:first_night_sleep`. |
+
+## 2. Enable The File
+
+```yaml
+enabled: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `enabled: true` | Loads this achievement file. Use `false` to keep the file present but disabled. |
+
+## 3. Runtime Settings
+
+```yaml
+settings:
+  priority: 10
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+```
+
+| Line | Explanation |
+| --- | --- |
+| `settings:` | Starts runtime behavior options for this achievement. |
+| `priority: 10` | Controls menu sorting. Lower numbers appear earlier. |
+| `repeatable: false` | Prevents the same player from completing this achievement repeatedly. |
+| `max-completions: 1` | Allows one completion per player. Use `-1` only for unlimited repeatable achievements. |
+| `hidden: false` | Shows the achievement in the menu before it is completed. |
+| `secret: false` | Shows the objective details instead of hiding the requirement. |
+| `preserve-progress-when-disabled: true` | Keeps saved player progress if the achievement is later disabled. |
+| `require-player-online: true` | Requires the target player to be online before progress can be applied. |
+| `allow-progress-overflow: false` | Prevents saved progress from going beyond the required amount. |
+| `progress-cooldown: 0` | No cooldown between progress gains. Value is in milliseconds. |
+| `ignore-cancelled-events: true` | Ignores cancelled Bukkit events where supported. |
+| `stop-progress-after-completion: true` | Stops tracking progress after completion. |
+| `save-completion-date: true` | Stores completion time for `{date_completion}`. |
+| `auto-claim-reward: true` | Runs completion rewards immediately instead of requiring manual claim. |
+
+## 4. Locked Item
+
+```yaml
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>First Night Sleep</red>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<gray>Sleep through the night once.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `items:` | Starts all GUI item states for this achievement. |
+| `locked:` | Item shown when the player has not completed the achievement. |
+| `material: COAL` | Bukkit material used as the locked icon. |
+| `amount: 1` | Stack amount displayed in the menu. |
+| `behavior:` | Starts visual behavior options. |
+| `model-data: 0` | CustomModelData value. `0` disables custom model data. |
+| `glow: false` | Does not apply enchanted glow to the locked item. |
+| `name: "<red>First Night Sleep</red>"` | Display name shown in the GUI. |
+| `lore:` | Starts the item description lines. |
+| `"<dark_gray>Survive</dark_gray>"` | Category label shown to the player. |
+| `""` | Blank spacer line. |
+| `"<gray>Sleep through the night once.</gray>"` | Human-readable objective. |
+| `"<gray>Rewards:</gray>"` | Reward heading. |
+| `"%rewards%"` | Replaced by `items.rewards."1".name` lines. |
+| `"{percent}"` | Replaced by the server unlock percentage. |
+| `"<red>Locked</red>"` | Final state label. |
+
+## 5. Completed And Claim Items
+
+```yaml
+  completed:
+    material: WHITE_BED
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<green>First Night Sleep</green>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<gray>Sleep through the night once.</gray>"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - "<#7a7676>congratulations!"
+      - ""
+      - "<green>Unlocked</green>"
+
+  claim:
+    material: WHITE_BED
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    name: "<green>First Night Sleep</green>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `completed:` | Item shown after the achievement is completed. |
+| `material: WHITE_BED` | Uses a bed icon because this example tracks sleeping. |
+| `glow: false` | Keeps the completed icon normal. |
+| `{date_completion}` | Replaced by the saved completion date. |
+| `claim:` | Item shown when rewards are waiting to be claimed manually. |
+| `glow: true` | Highlights the claim item. |
+| `"<green>Claim your Rewards</green>"` | Tells the player that reward claiming is available. |
+
+## 6. Reward Group And Server Task
+
+Use [Actions Reference](/plugin/fioachievements/create-achievements/actions-reference) when choosing values for `required` and `while`.
+
+```yaml
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>25</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "SERVER;SLEEP;1"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 25"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>First Night Sleep</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+25"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `rewards:` | Starts reward groups. The current loader reads the reward group here. |
+| `"1":` | Reward group id. Keep this as `"1"` for a simple achievement. |
+| `name:` | Lines displayed where `%rewards%` is used in lore. |
+| `+25 Achievement Points` | Visible reward description. |
+| `achievementTasks:` | Starts progress tracking rules. |
+| `required:` | Required action list. The first valid action controls progress. |
+| `SERVER;SLEEP;1` | Tracks one successful sleep action. Format: `SERVER;<ACTION>;<AMOUNT>`. |
+| `while: []` | No live conditions are required while progress is gained. |
+| `placeholderRules: []` | No PlaceholderAPI condition checks are required. |
+| `afterCompletion:` | Actions executed when the achievement completes. |
+| `[CONSOLE] exp give %player_name% 25` | Runs an experience command from console. |
+| `[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master` | Plays a sound to the player. |
+| `[MESSAGE] ...` | Sends a completion message. |
+| `[FIOACHIEVEMENTS] Points+25` | Adds 25 achievement points through the plugin action bridge. |
+
+Other valid server examples:
+
+```yaml
+- "SERVER;FIRST_JOIN;1"
+- "SERVER;JOIN;10"
+- "SERVER;QUIT;10"
+- "SERVER;RESPAWN;5"
+```
+
+## 7. Broadcast
+
+```yaml
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed <yellow>First Night Sleep</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>First Night Sleep</green>"
+      - "<gray>Sleep through the night once.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```
+
+| Line | Explanation |
+| --- | --- |
+| `broadcast:` | Starts completion broadcast settings. |
+| `enabled: true` | Sends a broadcast when completed. |
+| `mode: GLOBAL` | Sends the message to all online players. |
+| `message:` | Chat lines sent on completion. |
+| `%player_name%` | Placeholder replaced by the completing player. |
+| `radius: 100` | Used only when `mode` is `RADIUS`. |
+| `permission: "achievements.broadcast.receive"` | Used only when `mode` is `PERMISSION`. |
+| `hover:` | Starts hover text settings. |
+| `hover.enabled: true` | Enables hover text. |
+| `text:` | Lines shown when hovering over the broadcast. |
+| `click:` | Starts click action settings. |
+| `action: RUN_COMMAND` | Runs the configured command when clicked. |
+| `value: "/fioachievements view %player_name%"` | Opens the completed player's achievement view. |
+
+## 8. Reload And Test
+
+```text
+/fioachievements admin reload
+/fioachievements open
+```
+
+To test the achievement state directly:
+
+```text
+/fioachievements give <player> survive:first_night_sleep
+/fioachievements take <player> survive:first_night_sleep
+```
+
+## Complete File
+
+```yaml
+enabled: true
+
+settings:
+  priority: 10
+  repeatable: false
+  max-completions: 1
+  hidden: false
+  secret: false
+  preserve-progress-when-disabled: true
+  require-player-online: true
+  allow-progress-overflow: false
+  progress-cooldown: 0
+  ignore-cancelled-events: true
+  stop-progress-after-completion: true
+  save-completion-date: true
+  auto-claim-reward: true
+
+items:
+  locked:
+    material: COAL
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<red>First Night Sleep</red>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<gray>Sleep through the night once.</gray>"
+      - ""
+      - "<gray>Rewards:</gray>"
+      - "%rewards%"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<red>Locked</red>"
+  completed:
+    material: WHITE_BED
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: false
+    name: "<green>First Night Sleep</green>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<gray>Sleep through the night once.</gray>"
+      - ""
+      - "<#919191>Unlocked by {percent}% players"
+      - "<#919191>on this server."
+      - ""
+      - "<#7a7676>You achieved this at: {date_completion}"
+      - "<#7a7676>congratulations!"
+      - ""
+      - "<green>Unlocked</green>"
+  claim:
+    material: WHITE_BED
+    amount: 1
+    behavior:
+      model-data: 0
+      glow: true
+    name: "<green>First Night Sleep</green>"
+    lore:
+      - "<dark_gray>Survive</dark_gray>"
+      - ""
+      - "<green>Claim your Rewards</green>"
+  rewards:
+    "1":
+      name:
+        - "<dark_gray>+</dark_gray><yellow>25</yellow> <gray>Achievement Points</gray>"
+      achievementTasks:
+        required:
+          - "SERVER;SLEEP;1"
+        while: []
+      placeholderRules: []
+      afterCompletion:
+        - "[CONSOLE] exp give %player_name% 25"
+        - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+        - "[MESSAGE] <gray>Congratulations, you completed <gradient:#00FF00:#FF00FF:#7289da>First Night Sleep</gradient>.</gray>"
+        - "[FIOACHIEVEMENTS] Points+25"
+
+broadcast:
+  enabled: true
+  mode: GLOBAL
+  message:
+    - "<green>%player_name% completed <yellow>First Night Sleep</yellow>"
+  radius: 100
+  permission: "achievements.broadcast.receive"
+  hover:
+    enabled: true
+    text:
+      - "<green>First Night Sleep</green>"
+      - "<gray>Sleep through the night once.</gray>"
+  click:
+    enabled: true
+    action: RUN_COMMAND
+    value: "/fioachievements view %player_name%"
+```

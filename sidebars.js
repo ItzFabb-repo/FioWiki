@@ -115,6 +115,62 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioAchievements',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fioachievements/index',
+            'plugin/fioachievements/commands-permissions',
+            'plugin/fioachievements/api',
+            'plugin/fioachievements/options',
+            'plugin/fioachievements/placeholders',
+            'plugin/fioachievements/achievement-format',
+            {
+              type: 'category',
+              label: 'Configuration',
+              items: [
+                'plugin/fioachievements/config/config.yml',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Create Achievements',
+              items: [
+                'plugin/fioachievements/create-achievements/actions-reference',
+                {
+                  type: 'category',
+                  label: 'Server',
+                  items: [
+                    'plugin/fioachievements/create-achievements/server/how-to',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Seasonal',
+                  items: [
+                    'plugin/fioachievements/create-achievements/seasonal/how-to',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Exclusive',
+                  items: [
+                    'plugin/fioachievements/create-achievements/exclusive/how-to',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Tiers',
+                  items: [
+                    'plugin/fioachievements/create-achievements/tiers/how-to',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioGlow',
           collapsible: true,
           collapsed: true,
