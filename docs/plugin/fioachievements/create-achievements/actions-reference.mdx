@@ -130,6 +130,95 @@ achievementTasks:
 | `MESSAGE` | `MESSAGE;SEND;<TEXT_OR_REGEX>;<AMOUNT>` |
 | `EVENT` | `EVENT;<ACTION>;<AMOUNT>` |
 | `TRIGGER` | `TRIGGER;<ACTION_OR_LOOT_TABLE>;<ACTION>;<AMOUNT>` |
+| `AXPLAYERWARPS` | `AXPLAYERWARPS;<ACTION>;<AMOUNT>` |
+| `AXSELLWANDS` | `AXSELLWANDS;<PRICE>` |
+| `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<BUY\|SELL>;<MATERIAL>;<AMOUNT>` |
+| `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<INCOME\|OUTCOME>;<AMOUNT>` |
+| `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<INCOME\|OUTCOME>;<AMOUNT>;<MATERIAL>` |
+| `EVENMOREFISH` | `EVENMOREFISH;<ACTION>;<VALUE>;<AMOUNT>` |
+| `EVENMOREFISH` | `EVENMOREFISH;<GETWEIGHT\|INCOME\|OUTCOME>;<AMOUNT>` |
+
+## 3rd-party plugin actions
+
+These actions require the matching plugin to be installed on the server. FioAchievements registers them as soft dependencies, so the actions only gain progress when the related plugin event is available.
+
+### AXPlayerWarps
+
+Use `AXPLAYERWARPS;<ACTION>;<AMOUNT>`.
+
+Supported actions:
+
+| Action | Meaning |
+| --- | --- |
+| `CREATE` | Player creates a warp. |
+| `DELETE` | Player deletes a warp. |
+| `TELEPORT` | Player teleports with AxPlayerWarps. |
+| `EDIT` | Player runs an AxPlayerWarps edit command. |
+| `RENAME` | Player runs an AxPlayerWarps rename command. |
+| `FIRST_CREATE`, `FIRST_DELETE`, `FIRST_TELEPORT`, `FIRST_EDIT`, `FIRST_RENAME` | Counts only the first time that player performs the matching action. |
+
+```yaml
+achievementTasks:
+  required:
+    - "AXPLAYERWARPS;CREATE;1"
+  while: []
+```
+
+### AXSellWands
+
+Use `AXSELLWANDS;<PRICE>`.
+
+`<PRICE>` is the total money earned from AxSellWands sell-wand transactions.
+
+```yaml
+achievementTasks:
+  required:
+    - "AXSELLWANDS;10000"
+  while: []
+```
+
+### EconomyShopGUI
+
+Use EconomyShopGUI actions to track buy/sell item counts or total money from successful transactions.
+
+| Format | Meaning |
+| --- | --- |
+| `ECONOMYSHOPGUI;BUY;<MATERIAL>;<AMOUNT>` | Counts bought item amount. |
+| `ECONOMYSHOPGUI;SELL;<MATERIAL>;<AMOUNT>` | Counts sold item amount. |
+| `ECONOMYSHOPGUI;INCOME;<AMOUNT>` | Counts total money earned from sell transactions. |
+| `ECONOMYSHOPGUI;OUTCOME;<AMOUNT>` | Counts total money spent from buy transactions. |
+| `ECONOMYSHOPGUI;INCOME;<AMOUNT>;<MATERIAL>` | Counts money earned from selling one material. |
+| `ECONOMYSHOPGUI;OUTCOME;<AMOUNT>;<MATERIAL>` | Counts money spent from buying one material. |
+
+```yaml
+achievementTasks:
+  required:
+    - "ECONOMYSHOPGUI;SELL;WHEAT;96"
+    - "ECONOMYSHOPGUI;INCOME;5000"
+  while: []
+```
+
+### EvenMoreFish
+
+Use EvenMoreFish actions to track custom fish catches, fish weight, bait usage, bait purchases, competition participation, and money from fish sales.
+
+| Format | Meaning |
+| --- | --- |
+| `EVENMOREFISH;CATCH;<FISH_NAME>;<AMOUNT>` | Counts caught fish by normalized fish name. Spaces become `_` and names are matched uppercase. |
+| `EVENMOREFISH;GETWEIGHT;<AMOUNT>` | Counts total caught fish weight, rounded down per catch. |
+| `EVENMOREFISH;PARTICIPATE;<COMPETITION_NAME>;<AMOUNT>` | Counts catches or supported commands during an active competition. |
+| `EVENMOREFISH;BUY_BAIT;<BAIT_NAME>;<AMOUNT>` | Counts bait purchased from the bait menu. |
+| `EVENMOREFISH;APPLY_BAITS;<BAIT_NAME>;<AMOUNT>` | Counts bait applied to fishing rods. |
+| `EVENMOREFISH;INCOME;<AMOUNT>` | Counts money earned from selling EvenMoreFish fish. |
+| `EVENMOREFISH;OUTCOME;<AMOUNT>` | Counts money spent on EvenMoreFish bait purchases. |
+
+```yaml
+achievementTasks:
+  required:
+    - "EVENMOREFISH;CATCH;GOLDEN_CARP;3"
+    - "EVENMOREFISH;INCOME;2500"
+  while: []
+```
 
 ## while: []
 
