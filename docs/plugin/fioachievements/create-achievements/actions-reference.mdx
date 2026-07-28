@@ -134,13 +134,23 @@ achievementTasks:
 | `AXSELLWANDS` | `AXSELLWANDS;<PRICE>` |
 | `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<BUY\|SELL>;<MATERIAL>;<AMOUNT>` |
 | `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<INCOME\|OUTCOME>;<AMOUNT>` |
-| `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<INCOME\|OUTCOME>;<AMOUNT>;<MATERIAL>` |
-| `EVENMOREFISH` | `EVENMOREFISH;<ACTION>;<VALUE>;<AMOUNT>` |
+| `ECONOMYSHOPGUI` | `ECONOMYSHOPGUI;<INCOME\|OUTCOME>;<MATERIAL>;<AMOUNT>` |
+| `EVENMOREFISH` | `EVENMOREFISH;<CATCH\|PARTICIPATE\|BUY_BAIT\|BUY_BAIT_TIMES\|APPLY_BAITS>;<VALUE>;<AMOUNT>` |
 | `EVENMOREFISH` | `EVENMOREFISH;<GETWEIGHT\|INCOME\|OUTCOME>;<AMOUNT>` |
+| `EVENMOREFISH` | `EVENMOREFISH;OUTCOME;<BAIT>;<AMOUNT>` |
 
 ## 3rd-party plugin actions
 
 These actions require the matching plugin to be installed on the server. FioAchievements registers them as soft dependencies, so the actions only gain progress when the related plugin event is available.
+
+Supported soft dependencies:
+
+| Plugin | Action prefix |
+| --- | --- |
+| AxPlayerWarps | `AXPLAYERWARPS` |
+| AxSellwands | `AXSELLWANDS` |
+| EconomyShopGUI / EconomyShopGUI-Premium | `ECONOMYSHOPGUI` |
+| EvenMoreFish | `EVENMOREFISH` |
 
 ### AXPlayerWarps
 
@@ -187,8 +197,8 @@ Use EconomyShopGUI actions to track buy/sell item counts or total money from suc
 | `ECONOMYSHOPGUI;SELL;<MATERIAL>;<AMOUNT>` | Counts sold item amount. |
 | `ECONOMYSHOPGUI;INCOME;<AMOUNT>` | Counts total money earned from sell transactions. |
 | `ECONOMYSHOPGUI;OUTCOME;<AMOUNT>` | Counts total money spent from buy transactions. |
-| `ECONOMYSHOPGUI;INCOME;<AMOUNT>;<MATERIAL>` | Counts money earned from selling one material. |
-| `ECONOMYSHOPGUI;OUTCOME;<AMOUNT>;<MATERIAL>` | Counts money spent from buying one material. |
+| `ECONOMYSHOPGUI;INCOME;<MATERIAL>;<AMOUNT>` | Counts money earned from selling one material. |
+| `ECONOMYSHOPGUI;OUTCOME;<MATERIAL>;<AMOUNT>` | Counts money spent from buying one material. |
 
 ```yaml
 achievementTasks:
@@ -200,23 +210,37 @@ achievementTasks:
 
 ### EvenMoreFish
 
-Use EvenMoreFish actions to track custom fish catches, fish weight, bait usage, bait purchases, competition participation, and money from fish sales.
+Use EvenMoreFish actions to track custom fish catches, fish weight, bait usage, bait purchases, competition participation, and money from fish sales or bait purchases.
 
 | Format | Meaning |
 | --- | --- |
 | `EVENMOREFISH;CATCH;<FISH_NAME>;<AMOUNT>` | Counts caught fish by normalized fish name. Spaces become `_` and names are matched uppercase. |
 | `EVENMOREFISH;GETWEIGHT;<AMOUNT>` | Counts total caught fish weight, rounded down per catch. |
-| `EVENMOREFISH;PARTICIPATE;<COMPETITION_NAME>;<AMOUNT>` | Counts catches or supported commands during an active competition. |
+| `EVENMOREFISH;PARTICIPATE;<COMPETITION_TYPE>;<AMOUNT>` | Counts catches or supported `/emf top` and `/emf next` commands during an active competition. |
 | `EVENMOREFISH;BUY_BAIT;<BAIT_NAME>;<AMOUNT>` | Counts bait purchased from the bait menu. |
+| `EVENMOREFISH;BUY_BAIT_TIMES;<BAIT_NAME>;<AMOUNT>` | Counts separate bait purchase transactions/clicks. |
 | `EVENMOREFISH;APPLY_BAITS;<BAIT_NAME>;<AMOUNT>` | Counts bait applied to fishing rods. |
 | `EVENMOREFISH;INCOME;<AMOUNT>` | Counts money earned from selling EvenMoreFish fish. |
 | `EVENMOREFISH;OUTCOME;<AMOUNT>` | Counts money spent on EvenMoreFish bait purchases. |
+| `EVENMOREFISH;OUTCOME;<BAIT_NAME>;<AMOUNT>` | Counts money spent buying one normalized bait type. |
+
+Competition type aliases:
+
+| EvenMoreFish competition type | Extra alias |
+| --- | --- |
+| `LARGEST_TOTAL` | `MOST_WEIGHT` |
+| `SHORTEST_TOTAL` | `LEAST_WEIGHT` |
+
+:::tip[Name matching]
+Fish and bait names are normalized before matching: color codes and formatting are removed, non-alphanumeric characters become `_`, and the value is uppercased. Bait names also accept a singular alias when the normalized name ends in `S`.
+:::
 
 ```yaml
 achievementTasks:
   required:
-    - "EVENMOREFISH;CATCH;GOLDEN_CARP;3"
-    - "EVENMOREFISH;INCOME;2500"
+    - "EVENMOREFISH;CATCH;BLUEFISH;3"
+    - "EVENMOREFISH;BUY_BAIT_TIMES;SHRIMP;5"
+    - "EVENMOREFISH;OUTCOME;SHRIMP;1000"
   while: []
 ```
 
