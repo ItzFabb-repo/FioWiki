@@ -1915,6 +1915,12 @@ footer.footer {
     transform: translate3d(0, 0, 0) !important;
   }
 
+  .navbar.navbar-sidebar--show .navbar__toggle {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   .navbar.navbar-sidebar--show .navbar-sidebar__backdrop {
     opacity: 1 !important;
     pointer-events: auto !important;
