@@ -24,7 +24,7 @@ function MobileDocsSidebarMenu({sidebar, path}) {
         items={sidebar}
         activePath={path}
         onItemClick={(item) => {
-          if ((item.type === 'category' && item.href) || item.type === 'link') {
+          if (item.type === 'link') {
             mobileSidebar.toggle();
           }
         }}

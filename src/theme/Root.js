@@ -73,23 +73,6 @@ export default function Root({children}) {
     closeMobileSidebar();
   }, [location.pathname, location.search, location.hash]);
 
-  useEffect(() => {
-    const onSidebarLinkClick = (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      if (target.closest('.navbar-sidebar a')) {
-        window.setTimeout(() => {
-          closeMobileSidebar();
-        }, 0);
-      }
-    };
-
-    document.addEventListener('click', onSidebarLinkClick);
-    return () => {
-      document.removeEventListener('click', onSidebarLinkClick);
-    };
-  }, []);
-
   const applyTheme = (themeName) => {
     const normalized = persistTheme(themeName);
     setActiveTheme(normalized);
