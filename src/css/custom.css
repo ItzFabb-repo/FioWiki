@@ -1866,11 +1866,23 @@ footer.footer {
   }
 
   .navbar-sidebar__items {
+    display: block !important;
     height: calc(100dvh - var(--ifm-navbar-height) - env(safe-area-inset-top)) !important;
+    transform: none !important;
   }
 
   .navbar-sidebar__item {
+    width: 100% !important;
+    min-height: 100% !important;
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .navbar-sidebar__items--show-secondary .navbar-sidebar__item:first-child {
+    display: none !important;
+  }
+
+  .navbar-sidebar__items--show-secondary .navbar-sidebar__item:nth-child(2) {
+    display: block !important;
   }
 
   .navbar-sidebar__back {
