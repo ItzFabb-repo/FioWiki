@@ -191,7 +191,7 @@ body.is-scrolled .navbar {
 }
 
 .navbar__toggle {
-  display: none !important;
+  border-radius: 10px;
 }
 
 [data-theme='dark'] .navbar__logo {
@@ -1724,6 +1724,18 @@ footer.footer {
    Mobile UX Refresh (large update)
    ===================================== */
 @media (max-width: 996px) {
+  html,
+  body {
+    min-height: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    touch-action: pan-y;
+  }
+
   .navbar {
     min-height: calc(var(--ifm-navbar-height) + env(safe-area-inset-top));
     padding-top: env(safe-area-inset-top);
@@ -1767,7 +1779,27 @@ footer.footer {
   }
 
   .navbar__toggle {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
     margin-right: 0.3rem;
+    border: 1px solid rgba(134, 204, 255, 0.32);
+    border-radius: 11px;
+    background: rgba(10, 16, 30, 0.18);
+    color: var(--ifm-navbar-link-color);
+    box-shadow: none;
+  }
+
+  .navbar__toggle:active {
+    transform: translateY(1px);
+  }
+
+  .navbar__toggle svg {
+    width: 22px;
+    height: 22px;
   }
 
   .fiowiki-navbar-theme-switcher {
@@ -1803,10 +1835,29 @@ footer.footer {
     display: none !important;
   }
 
+  .navbar-sidebar {
+    width: min(86vw, 22rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    max-height: 100dvh !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .navbar-sidebar__brand {
+    min-height: var(--ifm-navbar-height);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .navbar-sidebar__items,
+  .navbar-sidebar__item {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .navbar-sidebar__backdrop {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    cursor: pointer;
   }
 
   .navbar-sidebar:not(.navbar-sidebar--show) {
@@ -1823,6 +1874,7 @@ footer.footer {
   .navbar-sidebar.navbar-sidebar--show {
     visibility: visible !important;
     pointer-events: auto !important;
+    transform: translate3d(0, 0, 0) !important;
   }
 
   .breadcrumbs {
@@ -1904,10 +1956,11 @@ footer.footer {
   }
 
   .fiowiki-scroll-down {
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     right: 0.9rem;
-    bottom: 1rem;
+    bottom: max(0.85rem, env(safe-area-inset-bottom));
+    z-index: 900;
   }
 }
 

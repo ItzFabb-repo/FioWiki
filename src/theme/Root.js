@@ -134,10 +134,11 @@ export default function Root({children}) {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight;
       const viewport = window.innerHeight;
+      const canScroll = scrollHeight > viewport + 120;
       const nearBottom = scrollTop + viewport >= scrollHeight - 120;
 
-      setShowScrollDown(!nearBottom);
-      setIsNearBottom(nearBottom);
+      setShowScrollDown(canScroll && !nearBottom);
+      setIsNearBottom(canScroll && nearBottom);
     };
 
     updateScrollDownVisibility();
