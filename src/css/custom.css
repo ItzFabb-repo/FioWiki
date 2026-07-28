@@ -1747,6 +1747,7 @@ footer.footer {
 
   :root {
     --ifm-navbar-height: 3.65rem;
+    --ifm-navbar-sidebar-width: min(86vw, 22rem);
   }
 
   .navbar__inner {
@@ -1791,6 +1792,8 @@ footer.footer {
     background: rgba(10, 16, 30, 0.18);
     color: var(--ifm-navbar-link-color);
     box-shadow: none;
+    position: relative;
+    z-index: 4;
   }
 
   .navbar__toggle:active {
@@ -1836,8 +1839,9 @@ footer.footer {
   }
 
   .navbar-sidebar {
-    width: min(86vw, 22rem) !important;
+    width: var(--ifm-navbar-sidebar-width) !important;
     max-width: calc(100vw - 2rem) !important;
+    height: 100dvh !important;
     max-height: 100dvh !important;
     overflow-y: auto !important;
     overscroll-behavior: contain;
@@ -1859,6 +1863,18 @@ footer.footer {
   .navbar-sidebar__item {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .navbar-sidebar__items {
+    height: calc(100dvh - var(--ifm-navbar-height) - env(safe-area-inset-top)) !important;
+  }
+
+  .navbar-sidebar__item {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .navbar-sidebar__back {
+    display: none !important;
   }
 
   .navbar-sidebar__backdrop {
