@@ -171,6 +171,27 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioLevels',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fiolevels/index',
+            'plugin/fiolevels/commands-permissions',
+            'plugin/fiolevels/api',
+            'plugin/fiolevels/options',
+            'plugin/fiolevels/placeholders',
+            {
+              type: 'category',
+              label: 'Configuration',
+              items: [
+                'plugin/fiolevels/config/config.yml',
+                'plugin/fiolevels/config/tasks.yml',
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioGlow',
           collapsible: true,
           collapsed: true,

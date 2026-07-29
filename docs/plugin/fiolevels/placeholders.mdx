@@ -1,0 +1,61 @@
+---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+FioLevels registers a PlaceholderAPI expansion when PlaceholderAPI is installed.
+
+Prefix used by the source plugin:
+
+- `%fiolevels_...%`
+
+## Level placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiolevels_level%` | Formatted player level. |
+| `%fiolevels_current_level%` | Rendered current level with selected bracket, font, and color formatting. |
+| `%fiolevels_current_level_raw%` | Raw numeric player level. |
+| `%fiolevels_current_progress%` | Current task progress value. |
+| `%fiolevels_progress_percent%` | Current progress percentage. |
+| `%fiolevels_current_progresspercent%` | Alias for current progress percentage. |
+| `%fiolevels_progress_bar%` | Rendered progress bar. |
+| `%fiolevels_current_progressbar%` | Alias for rendered progress bar. |
+
+## Bracket placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiolevels_current_bracket%` | Selected bracket id. |
+| `%fiolevels_brackets_id%` | Formatted selected bracket id. |
+| `%fiolevels_brackets_format%` | Rendered current bracket format. |
+| `%fiolevels_brackets_<bracket_id>_selected%` | Returns whether the player has a specific bracket selected. |
+
+## Font placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiolevels_current_font%` | Selected font id. |
+| `%fiolevels_fonts_id%` | Formatted selected font id. |
+| `%fiolevels_fonts_format%` | Current level rendered with selected font. |
+| `%fiolevels_fonts_<font_id>_preview%` | Preview text for a specific font id. |
+| `%fiolevels_fonts_<font_id>_format%` | Current level rendered with a specific font id. |
+
+## State placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiolevels_state_notification%` | Whether reward reminder notifications are enabled. |
+| `%fiolevels_state_progress%` | Whether progress announcement notifications are enabled. |
+
+## Source notes
+
+- PlaceholderAPI is optional; the plugin still renders internal placeholders for its own messages and menus.
+- Bracket and font placeholders depend on ids configured in `brackets.yml` and `fonts.yml`.
+- The README mentions older placeholders such as `%fiolevels_xp%`, `%fiolevels_required_xp%`, and platform values, but the current PlaceholderAPI expansion source lists the placeholders documented above.
+
+:::info[Page note]
+This page follows the current `FioLevelsPlaceholderExpansion.java` implementation.
+:::

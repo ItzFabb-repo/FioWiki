@@ -1,0 +1,153 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+This page summarizes the most important global options from the current bundled `config.yml`.
+
+## Formatting
+
+FioLevels supports both legacy Bukkit color codes and MiniMessage-style formatting. The message renderer also handles a safe shadow tag flow for legacy output.
+
+## Feature toggles
+
+```yaml
+feature:
+  enable_brackets: true
+  enable_fonts: true
+  enable_colors: true
+  enable_leaderboards: true
+  enable_profiles: true
+```
+
+These switches control whether the related menus and systems are available.
+
+## Language and pacing
+
+```yaml
+settings:
+  language: en
+  auto-save-seconds: 300
+  top-cache-seconds: 30
+  progress-bar-length: 20
+  enable_hidden_locked_task: true
+```
+
+Bundled language files:
+
+- `lang/lang_en.yml`
+- `lang/lang_id.yml`
+- `lang/lang_zh.yml`
+- `lang/lang_ja.yml`
+
+## Announcements and event actions
+
+Progress announcements can be triggered when the player's current level reaches configured percentages:
+
+```yaml
+announce:
+  progress-percentage:
+    - '100'
+```
+
+Level events can execute action lists:
+
+```yaml
+event:
+  taskCompleted:
+    - '[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master'
+    - '[TITLE] <yellow><bold>! LEVEL UP !</bold></yellow>'
+    - '[SUBTITLE] <white>You are now level:</white> <dark_gray>{old_level}-></dark_gray><yellow><bold>{new_level}</bold></yellow>'
+  taskOnProgress: []
+  taskOnClaim: []
+```
+
+Supported reward/config action tags include:
+
+- `[CONSOLE] <command>`
+- `[PLAYER] <command>`
+- `[SOUND] <sound> <volume> <pitch> <category>`
+- `[MESSAGE] <message>`
+- `[BOSSBAR:<duration>:<color>] <text>`
+- `[TITLE] <text>`
+- `[SUBTITLE] <text>`
+- `[ACTIONBAR] <text>`
+- `[ITEM] <material> <amount>`
+
+## Protection rules
+
+```yaml
+protection:
+  StopProgressifComplete: true
+  PreventDupeRewards: true
+  ShouldClaimRewardsBeforeNextLevel: true
+  ShouldweRespect3rdParty: true
+  ShouldSpawnerCountasProgress: true
+  SupportGeyserCrossplay: true
+  MustBeNaturall: true
+  ShouldweUnlockedDefault: false
+  defaultLevelUnlocked: "0"
+```
+
+These settings control duplicate progress, reward claiming, third-party event cancellation, spawner mobs, Bedrock support, natural block checks, and default unlocked level behavior.
+
+## Progress filters
+
+Players in configured gamemodes cannot gain task progress:
+
+```yaml
+gamemodes:
+  blacklist:
+    - "CREATIVE"
+    - "SPECTATOR"
+    - "ADVENTURE"
+```
+
+World and region filters use `<WORLD>;<LEVEL>` entries:
+
+```yaml
+worlds:
+  whitelist: []
+  blacklist: []
+
+regions:
+  whitelist: []
+  blacklist: []
+```
+
+Empty whitelist means all worlds are allowed unless blacklisted.
+
+## Storage backends
+
+Supported storage types:
+
+- `yaml`
+- `mysql`
+
+```yaml
+database:
+  type: yaml
+  mysql:
+    host: localhost
+    port: 3306
+    database: fiolevels
+    username: root
+    password: ""
+    table: fiolevels_players
+    use-ssl: false
+```
+
+## Leveling limit
+
+```yaml
+leveling:
+  max-level: 0
+```
+
+`0` means unlimited by config. Actual available progression still depends on the levels configured in `tasks.yml`.
+
+:::info[Page note]
+This page is source-backed and focuses on runtime behavior. Use `tasks.yml` for level requirement and reward definitions.
+:::

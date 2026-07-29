@@ -1,0 +1,170 @@
+---
+title: config.yml
+sidebar_position: 1
+---
+
+# `config.yml`
+
+`config.yml` controls runtime behavior. Level requirements and rewards live in `tasks.yml`.
+
+## Versioning
+
+```yaml
+config-version: 12
+force-update-config: false
+```
+
+When `force-update-config` is `true` and the saved config version is older than the plugin expects, FioLevels can replace the current `config.yml` with the bundled default.
+
+## `feature`
+
+```yaml
+feature:
+  enable_brackets: true
+  enable_fonts: true
+  enable_colors: true
+  enable_leaderboards: true
+  enable_profiles: true
+```
+
+Controls optional systems and their related menus.
+
+## `settings`
+
+```yaml
+settings:
+  language: en
+  auto-save-seconds: 300
+  top-cache-seconds: 30
+  progress-bar-length: 20
+  enable_hidden_locked_task: true
+```
+
+- `language`: active language key.
+- `auto-save-seconds`: automatic save interval. Values below 30 are clamped by source.
+- `top-cache-seconds`: leaderboard cache refresh interval.
+- `progress-bar-length`: number of characters in progress bar placeholders.
+- `enable_hidden_locked_task`: hides locked level requirements as `???`.
+
+## `announce`
+
+```yaml
+announce:
+  progress-percentage:
+    - '100'
+```
+
+Controls progress percentage thresholds that trigger progress announcements.
+
+## `event`
+
+```yaml
+event:
+  taskCompleted: []
+  taskOnProgress: []
+  taskOnClaim: []
+```
+
+These lists execute actions when a level is completed, when progress changes but is not complete, or when rewards are claimed.
+
+Supported tags:
+
+- `[CONSOLE]`
+- `[PLAYER]`
+- `[SOUND]`
+- `[MESSAGE]`
+- `[BOSSBAR:<duration>:<color>]`
+- `[TITLE]`
+- `[SUBTITLE]`
+- `[ACTIONBAR]`
+- `[ITEM]`
+
+## `geyser-support`
+
+```yaml
+geyser-support:
+  enabled: true
+```
+
+Enables optional Bedrock player detection through Floodgate first, then Geyser when available.
+
+## `protection`
+
+```yaml
+protection:
+  StopProgressifComplete: true
+  PreventDupeRewards: true
+  ShouldClaimRewardsBeforeNextLevel: true
+  ShouldweRespect3rdParty: true
+  ShouldSpawnerCountasProgress: true
+  SupportGeyserCrossplay: true
+  MustBeNaturall: true
+  ShouldweUnlockedDefault: false
+  defaultLevelUnlocked: "0"
+```
+
+This section controls progress safety, reward duplication, claim flow, third-party event cancellation, spawner mobs, Bedrock progression, natural gameplay checks, and default unlocked levels.
+
+## `gamemodes`
+
+```yaml
+gamemodes:
+  blacklist:
+    - "CREATIVE"
+    - "SPECTATOR"
+    - "ADVENTURE"
+```
+
+Blacklisted gamemodes cannot gain FioLevels task progress.
+
+## `worlds` and `regions`
+
+```yaml
+worlds:
+  whitelist: []
+  blacklist: []
+
+regions:
+  whitelist: []
+  blacklist: []
+```
+
+Entries use this format:
+
+```yaml
+- "world;1"
+```
+
+The first part is the world name. The second part is the level. `*` or `ANY` can be used for level matching.
+
+## `database`
+
+```yaml
+database:
+  type: yaml
+  mysql:
+    host: localhost
+    port: 3306
+    database: fiolevels
+    username: root
+    password: ""
+    table: fiolevels_players
+    use-ssl: false
+    connection-timeout-ms: 5000
+    socket-timeout-ms: 30000
+```
+
+Use `yaml` for local file storage or `mysql` for a database-backed setup.
+
+## `leveling`
+
+```yaml
+leveling:
+  max-level: 0
+```
+
+`0` means no config-enforced max level. Progression still depends on configured task entries.
+
+:::info[Page note]
+This page is source-backed from the bundled `src/main/resources/config.yml`.
+:::

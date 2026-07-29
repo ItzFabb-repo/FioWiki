@@ -1,0 +1,122 @@
+---
+title: Developer API
+sidebar_position: 4
+---
+
+# Developer API
+
+This page documents the API exposed by the current FioLevels source.
+
+## Package names
+
+Use the real source package names:
+
+```java
+import com.itzfabb.fiolevels.api.FioLevelsApi;
+import com.itzfabb.fiolevels.api.FioLevelsApiProvider;
+```
+
+## Accessing the API
+
+```java
+FioLevelsApi api = FioLevelsApiProvider.get();
+if (api != null) {
+    int level = api.getLevel(player);
+    api.addTaskProgress(player, "rules1", 1);
+}
+```
+
+Use `null` checks because the provider can return `null` when FioLevels is not available yet.
+
+## Player data
+
+```java
+PlayerLevelSnapshot getPlayerData(OfflinePlayer player);
+PlayerLevelSnapshot getPlayerData(UUID uuid);
+int getLevel(OfflinePlayer player);
+int setLevel(OfflinePlayer player, int level);
+int addLevel(OfflinePlayer player, int amount);
+int removeLevel(OfflinePlayer player, int amount);
+boolean isFrozen(OfflinePlayer player);
+boolean setFrozen(OfflinePlayer player, boolean frozen);
+void clearData(OfflinePlayer player);
+```
+
+## Progress API
+
+```java
+int getProgressPercent(OfflinePlayer player);
+String getProgressBar(OfflinePlayer player);
+long getRequiredProgress(int level);
+boolean addTaskProgress(Player player, String taskId, int amount);
+boolean completeTask(Player player, String taskId);
+boolean addRuleProgress(Player player, String type, Material material, int amount);
+boolean claimLevelReward(Player player, int level);
+```
+
+Use `addTaskProgress` when you know the configured requirement id, such as `rules0` or `rules1`. Use `addRuleProgress` when you want to add progress by task type and material.
+
+## Task and leaderboard reads
+
+```java
+List<LevelTaskSnapshot> getCurrentTasks(OfflinePlayer player);
+List<LevelTaskSnapshot> getTasksForLevel(int level);
+List<Integer> getConfiguredLevels();
+List<PlayerLevelSnapshot> getTopPlayers(int limit);
+```
+
+## Cosmetics API
+
+```java
+List<String> getBracketIds();
+List<String> getFontIds();
+List<String> getColorIds();
+
+String getSelectedBracketId(OfflinePlayer player);
+String getSelectedFontId(OfflinePlayer player);
+String getSelectedColorId(OfflinePlayer player);
+
+boolean selectBracket(Player player, String bracketId);
+boolean selectFont(Player player, String fontId);
+boolean selectColor(Player player, String colorId);
+
+String renderCurrentLevel(OfflinePlayer player);
+```
+
+## Save API
+
+```java
+void save();
+```
+
+## Example integration
+
+```java
+FioLevelsApi api = FioLevelsApiProvider.get();
+if (api == null) {
+    return;
+}
+
+int before = api.getLevel(player);
+api.addRuleProgress(player, "CUSTOM", null, 1);
+int after = api.getLevel(player);
+
+if (after > before) {
+    player.sendMessage("Level up!");
+}
+```
+
+## plugin.yml advice for integrations
+
+In your own plugin:
+
+```yaml
+softdepend:
+  - FioLevels
+```
+
+Then resolve the provider lazily or during `onEnable()` after the server has loaded soft dependencies.
+
+:::info[Page note]
+This page is source-backed from `FioLevelsApi.java`.
+:::

@@ -1,0 +1,187 @@
+---
+title: tasks.yml
+sidebar_position: 2
+---
+
+# `tasks.yml`
+
+`tasks.yml` defines the level progression content. Players complete every requirement in their current progression level before moving forward.
+
+## Root structure
+
+```yaml
+quests:
+  levels:
+    1:
+      requirements:
+        rules0:
+          type: "BLOCK_BREAK"
+          required: "10"
+        description:
+          0: "%status% <gray>Break 10 blocks</gray> <white>({currentProgress}/{maxProgress})</white>"
+      rewards:
+        commands:
+          - "[CONSOLE] eco give %player_name% 100"
+          - "[ITEM] BREAD 1"
+        description:
+          - "<dark_gray>-</dark_gray> <green>$100</green>"
+```
+
+## Level keys
+
+Each key under `quests.levels` is a numeric progression level.
+
+The bundled source uses:
+
+- `0` as the default unlocked level
+- `1` and above as progression entries
+- bundled examples up to `100`
+
+## Requirement rule fields
+
+Common fields:
+
+| Field | Description |
+| --- | --- |
+| `type` | Requirement objective type. |
+| `required` | Required amount for most objective types. |
+| `material` | Material filter for item or block based tasks. |
+| `block` | Block filter used by farming tasks. |
+| `entity` | Entity filter for combat, breeding, hatching, milking, and similar tasks. |
+| `effect` | Potion effect filter for brewing potion tasks. |
+| `amount` | Extra amount multiplier for damage-style tasks. |
+| `enchantId` | Enchantment id for enchanting tasks. |
+| `level` | Required enchantment level. |
+| `tools` | Tool/material matcher for enchanting tasks. |
+| `color` | Sheep color filter for shearing tasks. |
+| `whitelistBlock` | Block whitelist for furnace-style source blocks. |
+| `jobs` | Villager profession filter for trading tasks. |
+| `toGet` | Material received from trading. |
+| `value` | Placeholder value for PlaceholderAPI tasks, or legacy required value field. |
+| `rules` | Comparison operator for PlaceholderAPI tasks. |
+| `endValue` | Target value for PlaceholderAPI tasks. |
+
+## Supported task types
+
+Task types detected from the current listener and service source:
+
+- `JOIN_FIRST_TIME`
+- `BLOCK_BREAK`
+- `BLOCK_PLACE`
+- `BLOCK_FERTILIZE`
+- `FARMING`
+- `BUCKET_EMPTY`
+- `CONSUME`
+- `CRAFTING`
+- `SMELTING`
+- `BREWING_INGREDIENTS`
+- `BREWING_POTIONS`
+- `ENCHANTING`
+- `EXP_POINTS`
+- `EXP_LEVELS`
+- `FISHING`
+- `HATCHING`
+- `PROJECTILE_LAUNCH`
+- `SHEARING`
+- `ENTITY_BRED`
+- `ENTITY_DEAL_DAMAGE`
+- `PLAYER_KILL`
+- `HUNT`
+- `RESSURECTION`
+- `COMPOSTING`
+- `SMITHING`
+- `TRADING`
+- `MILKING`
+- `BARTERING`
+- `CURING`
+- `PLAYTIME`
+- `PLACEHOLDERAPI`
+
+## Description placeholders
+
+Requirement descriptions can use progress placeholders such as:
+
+- `%status%`
+- `{currentProgress}`
+- `{maxProgress}`
+- task text configured in each description line
+
+Menu rendering also supports level context placeholders such as:
+
+- `%level%`
+- `%description%`
+- `%requirements%`
+- `%rewards%`
+- `%state%`
+
+## Rewards
+
+Each level can define commands and menu descriptions:
+
+```yaml
+rewards:
+  commands:
+    - "[CONSOLE] eco give %player_name% 100"
+    - "[ITEM] BREAD 1"
+  description:
+    - "<dark_gray>-</dark_gray> <green>$100</green>"
+    - "<dark_gray>-</dark_gray> <gray>1x Bread</gray>"
+```
+
+Supported reward action tags include:
+
+- `[CONSOLE] <command>`
+- `[PLAYER] <command>`
+- `[SOUND] <sound> <volume> <pitch> <category>`
+- `[MESSAGE] <message>`
+- `[BOSSBAR:<duration>:<color>] <text>`
+- `[TITLE] <text>`
+- `[SUBTITLE] <text>`
+- `[ACTIONBAR] <text>`
+- `[ITEM] <material> <amount>`
+
+## Playtime format
+
+`PLAYTIME` requirements accept duration units:
+
+- `d`, `day`, `days`
+- `h`, `hour`, `hours`
+- `m`, `min`, `minute`, `minutes`
+- `s`, `sec`, `second`, `seconds`
+
+Example:
+
+```yaml
+rules1:
+  type: "PLAYTIME"
+  required: "1h"
+```
+
+## PlaceholderAPI tasks
+
+`PLACEHOLDERAPI` tasks compare a placeholder value against a target.
+
+Supported comparison operators:
+
+- `>=`
+- `<=`
+- `>`
+- `<`
+- `==`
+- `=`
+- `!=`
+
+Example shape:
+
+```yaml
+rules0:
+  type: "PLACEHOLDERAPI"
+  value: "%some_placeholder%"
+  rules: ">="
+  endValue: "10"
+  required: "1"
+```
+
+:::info[Page note]
+The source spelling is `RESSURECTION`, so use that exact type id unless the plugin source is renamed in a later build.
+:::

@@ -1,0 +1,109 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `lang/lang_en.yml`, and `FioLevelsCommand.java`.
+
+## Root command
+
+The plugin registers one root command:
+
+- `/fiolevels`
+
+Aliases:
+
+- `/level`
+- `/levels`
+- `/fiolevel`
+
+## User commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiolevels` | `fiolevels.command.open` | Open the main levels menu. |
+| `/fiolevels help` | `fiolevels.command.help` | Show player help. |
+| `/fiolevels info` | `fiolevels.command.info` | Open your own profile menu. |
+| `/fiolevels info <player>` | `fiolevels.command.info` | Open another online player's profile menu. |
+| `/fiolevels profile [player]` | `fiolevels.command.info` | Alias path for the profile menu. |
+| `/fiolevels leaderboards` | `fiolevels.command.leaderboards` | Open the leaderboard menu. |
+| `/fiolevels top` | `fiolevels.command.top` | Open the leaderboard menu through the top alias. |
+| `/fiolevels fonts` | `fiolevels.command.open` | Open the level font selector when the feature is enabled. |
+| `/fiolevels progress` | `fiolevels.command.progress` | Show current level task progress in chat. |
+| `/fiolevels tasks` | `fiolevels.command.progress` | Alias for progress. |
+| `/fiolevels toggle notification` | `fiolevels.command.toggle` | Toggle unclaimed reward reminder notifications. |
+| `/fiolevels toggle progress` | `fiolevels.command.toggle` | Toggle progress announcement notifications. |
+
+## User permission nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fiolevels.use` | `true` | Parent permission for normal player commands. |
+| `fiolevels.command.open` | `true` | Allows opening the main menu and feature menus. |
+| `fiolevels.command.help` | `true` | Allows help command. |
+| `fiolevels.command.info` | `true` | Allows profile/info command. |
+| `fiolevels.command.leaderboards` | `true` | Allows leaderboard command. |
+| `fiolevels.command.progress` | `true` | Allows progress/tasks command. |
+| `fiolevels.command.toggle` | `true` | Allows notification toggles. |
+| `fiolevels.command.top` | `true` | Allows `/fiolevels top`. |
+
+## Admin commands
+
+Admin commands use `/fiolevels admin ...`. The source also accepts `/fiolevels reload` as a shortcut for reload when the sender has reload permission.
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiolevels admin help` | `fiolevels.admin.help` | Show admin help. |
+| `/fiolevels admin reload` | `fiolevels.admin.reload` | Reload configuration and plugin-managed files. |
+| `/fiolevels reload` | `fiolevels.admin.reload` | Shortcut reload path. |
+| `/fiolevels admin authors` | `fiolevels.admin.authors` | Show plugin author. |
+| `/fiolevels admin version` | `fiolevels.admin.version` | Show plugin version. |
+| `/fiolevels admin add <player> <amount>` | `fiolevels.admin.level.add` | Add levels to a player. |
+| `/fiolevels admin set <player> <amount>` | `fiolevels.admin.level.set` | Set a player level. |
+| `/fiolevels admin remove <player> <amount>` | `fiolevels.admin.level.remove` | Remove levels from a player. |
+| `/fiolevels admin freeze <player>` | `fiolevels.admin.player.freeze` | Freeze a player's statistics and progress. |
+| `/fiolevels admin unfreeze <player>` | `fiolevels.admin.player.unfreeze` | Unfreeze a player's statistics and progress. |
+| `/fiolevels admin open <menu> <player>` | `fiolevels.admin.open` | Open a configured menu for a player. |
+| `/fiolevels admin forceOpen <menu> <player>` | `fiolevels.admin.open` | Force-open a menu for a player. |
+| `/fiolevels admin profile` | `fiolevels.admin.profile` | Open your admin profile view. |
+| `/fiolevels admin profile <player>` | `fiolevels.admin.profile` | Open a target player's profile view. |
+| `/fiolevels admin clearData <player>` | `fiolevels.admin.clear-data` | Clear player level data and reward history. |
+
+## Admin permission nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fiolevels.admin` | `op` | Parent permission for admin commands. |
+| `fiolevels.admin.help` | `op` | Admin help command. |
+| `fiolevels.admin.reload` | `op` | Reload command. |
+| `fiolevels.admin.authors` | `op` | Authors command. |
+| `fiolevels.admin.version` | `op` | Version command. |
+| `fiolevels.admin.level.add` | `op` | Add level command. |
+| `fiolevels.admin.level.set` | `op` | Set level command. |
+| `fiolevels.admin.level.remove` | `op` | Remove level command. |
+| `fiolevels.admin.player.freeze` | `op` | Freeze player command. |
+| `fiolevels.admin.player.unfreeze` | `op` | Unfreeze player command. |
+| `fiolevels.admin.open` | `op` | Open or forceOpen menu command. |
+| `fiolevels.admin.profile` | `op` | Admin profile command. |
+| `fiolevels.admin.clear-data` | `op` | Clear player data command. |
+
+## Named admin menus
+
+`admin open` and `admin forceOpen` accept these menu names from source:
+
+- `levels`
+- `level`
+- `leaderboards`
+- `leaderboard`
+- `profile`
+- `info`
+- `profiles`
+- `stats`
+- `statistics`
+- `fonts`
+
+:::info[Page note]
+Commands are feature-aware. If profiles, leaderboards, fonts, brackets, or colors are disabled in `config.yml`, the related menu action will not open.
+:::
