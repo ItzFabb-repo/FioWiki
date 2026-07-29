@@ -1,0 +1,22 @@
+---
+title: EXP Points
+sidebar_position: 13
+---
+
+# EXP Points
+
+`EXP_POINTS` adds progress from experience points gained by the player.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    11: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "EXP_POINTS" # Listen for raw experience point gain.
+          required: "100" # Total experience points required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Collect 100 EXP points</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+This counts EXP point amounts, not Minecraft experience levels.

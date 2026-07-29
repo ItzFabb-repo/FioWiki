@@ -1,0 +1,23 @@
+---
+title: Crafting
+sidebar_position: 8
+---
+
+# Crafting
+
+`CRAFTING` adds progress when a player crafts a matching item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    6: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "CRAFTING" # Listen for crafting output.
+          material: "BARREL" # Crafted item that should count.
+          required: "4" # Amount of matching crafted items required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Craft 4 barrels</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+The plugin counts the crafted result amount when possible.

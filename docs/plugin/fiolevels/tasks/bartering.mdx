@@ -1,0 +1,22 @@
+---
+title: Bartering
+sidebar_position: 28
+---
+
+# Bartering
+
+`BARTERING` adds progress when a player completes piglin bartering.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    26: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "BARTERING" # Listen for piglin bartering.
+          required: "4" # Number of barter completions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Complete 4 piglin barters</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+The source tracks the bartering input internally.

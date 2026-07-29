@@ -1,0 +1,23 @@
+---
+title: Shearing
+sidebar_position: 18
+---
+
+# Shearing
+
+`SHEARING` adds progress when a player shears sheep with matching colors.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    16: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "SHEARING" # Listen for sheep shearing.
+          color: "WHITE,RED" # Allowed sheep colors.
+          required: "4" # Number of matching sheep sheared.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Shear 4 white or red sheep</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Set `color: "ANY"` or remove the color filter if any sheep color should count.

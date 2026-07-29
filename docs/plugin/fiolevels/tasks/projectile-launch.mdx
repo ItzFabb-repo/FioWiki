@@ -1,0 +1,23 @@
+---
+title: Projectile Launch
+sidebar_position: 17
+---
+
+# Projectile Launch
+
+`PROJECTILE_LAUNCH` adds progress when a player launches a matching projectile item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    15: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "PROJECTILE_LAUNCH" # Listen for projectile launches.
+          material: "ENDER_PEARL,SNOWBALL" # Projectile item materials that should count.
+          required: "11" # Number of matching launches required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Launch 11 projectiles</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use comma-separated materials when several projectile items should count.

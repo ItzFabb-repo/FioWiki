@@ -1,0 +1,88 @@
+---
+title: Brackets
+sidebar_position: 1
+---
+
+# Menu: Brackets
+
+`menu/brackets.yml` controls the bracket selector GUI. The actual bracket formats are configured in `brackets.yml`.
+
+## Menu structure
+
+```yaml
+menu: # Static GUI settings.
+  title: "<dark_gray>Brackets</dark_gray>" # Inventory title.
+  rows: 6 # Inventory rows. Valid range is 1-6.
+  items: # Static items such as glass, close, back, clear, next, previous.
+    close: # Unique item id.
+      material: BARRIER # Bukkit material for the item.
+      name: "<red>Close</red>" # Display name.
+      lore: # Item lore lines.
+        - "<gray>Click to close</gray>" # First lore line.
+      slot: "49" # Inventory slot index.
+      actions: # Click actions.
+        any: # Runs on normal click.
+          - "[CLOSE]" # Close the inventory.
+          - "[SOUND] BLOCK_CHEST_CLOSE 1 2 master" # Play a sound.
+```
+
+## Dynamic bracket items
+
+```yaml
+bracket_items: # Template for bracket entries generated from brackets.yml.
+  slots: # Slots used for paginated bracket entries.
+    - "10-16" # Slot range.
+    - "19-25" # Another slot range.
+  items: # State templates.
+    available: # Player has permission and has not selected it.
+      material: GRAY_DYE # Item material.
+      name: "{bracket_preview}" # Rendered bracket preview.
+      lore: # Lore for available brackets.
+        - "<gray>ID:</gray> <white>{brackets_id}" # Formatted bracket id.
+        - "<gray>Preview:</gray> <white>{brackets_format}" # Rendered bracket format.
+      actions: # Click actions.
+        any:
+          - "[FIOLEVELS] bracket {bracket_id}" # Select this bracket.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## State templates
+
+| State | Used when |
+| --- | --- |
+| `available` | Player can select the bracket. |
+| `selected` | Player is currently using the bracket. |
+| `locked` | Player does not have the bracket permission. |
+
+## Bracket menu placeholders
+
+- `{bracket_id}`
+- `{brackets_id}`
+- `{bracket_preview}`
+- `{brackets_format}`
+- `{brackets_permission}`
+- `{selected_id}`
+- `{selected_brackets}`
+
+## Supported actions
+
+- `[FIOLEVELS] bracket <id>`
+- `[FIOLEVELS] bracket clear`
+- `[FIOLEVELS] levels`
+- `[FIOLEVELS] NEXT_PAGE+1`
+- `[FIOLEVELS] PREVIOUS_PAGE-1`
+- `[CLOSE]`
+- `[MESSAGE] <message>`
+- `[SOUND] <sound> <volume> <pitch> <category>`
+- `[STOPSOUND]`
+
+## How to add more visible bracket slots
+
+```yaml
+bracket_items: # Dynamic bracket list.
+  slots: # Add or remove slots here.
+    - "10-16" # First row of entries.
+    - "19-25" # Second row of entries.
+    - "28-34" # Third row of entries.
+    - "37-43" # Fourth row of entries.
+```

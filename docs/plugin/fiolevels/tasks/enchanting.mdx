@@ -1,0 +1,25 @@
+---
+title: Enchanting
+sidebar_position: 12
+---
+
+# Enchanting
+
+`ENCHANTING` adds progress when a player enchants an item with a matching enchantment and level.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    10: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "ENCHANTING" # Listen for enchant table output.
+          enchantId: "SHARPNESS" # Enchantment id or supported alias.
+          level: "1" # Minimum enchantment level required.
+          tools: "ANY" # Tool matcher. Use ANY or patterns like *_SWORD.
+          required: "1" # Number of matching enchant actions.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Enchant an item with Sharpness</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Supported source aliases include names such as `UNBREAKING`, `EFFICIENCY`, `FORTUNE`, `SHARPNESS`, `POWER`, and `INFINITY`.

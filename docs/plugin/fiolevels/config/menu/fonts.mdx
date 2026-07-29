@@ -1,0 +1,76 @@
+---
+title: Fonts
+sidebar_position: 3
+---
+
+# Menu: Fonts
+
+`menu/fonts.yml` controls the level font selector GUI. Font digit mappings are configured in `fonts.yml`.
+
+## Dynamic font item format
+
+```yaml
+font_items: # Template for font entries generated from fonts.yml.
+  slots: # Slots used for paginated font entries.
+    - "10-16" # Slot range.
+    - "19-25" # Slot range.
+  items: # State templates.
+    available: # Player can select this font.
+      material: GRAY_DYE # Item material.
+      name: "<gold>{fonts_id}</gold>" # Font id as item name.
+      lore: # Lore shown on the item.
+        - "<gray>ID:</gray> <white>{fonts_id}" # Formatted font id.
+        - "<gray>Preview:</gray>" # Label.
+        - "<white>{font_preview}" # Rendered preview of the font.
+      actions: # Click actions.
+        any:
+          - "[FIOLEVELS] font {font_id}" # Select this font.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## State templates
+
+| State | Used when |
+| --- | --- |
+| `available` | Player can select the font. |
+| `selected` | Player is currently using the font. |
+| `locked` | Player does not have the font permission. |
+
+## Font menu placeholders
+
+- `{font_id}`
+- `{fonts_id}`
+- `{font_preview}`
+- `{fonts_permission}`
+- `{selected_font_id}`
+- `{selected_font_preview}`
+
+## Clear font item
+
+```yaml
+clear_font: # Static item id.
+  ifhasFonts: # Template when player has selected a custom font.
+    material: ORANGE_DYE # Item material.
+    slot: "47" # Slot location.
+    actions:
+      any:
+        - "[FIOLEVELS] font clear" # Reset to default font.
+  ifnoFonts: # Template when no custom font is selected.
+    material: GRAY_DYE # Item material.
+    slot: "47" # Same slot.
+    actions:
+      any:
+        - "[MESSAGE] <gray>There are nothing to be cleared here..." # Feedback message.
+```
+
+## Supported actions
+
+- `[FIOLEVELS] font <id>`
+- `[FIOLEVELS] font clear`
+- `[FIOLEVELS] levels`
+- `[FIOLEVELS] NEXT_PAGE+1`
+- `[FIOLEVELS] PREVIOUS_PAGE-1`
+- `[CLOSE]`
+- `[MESSAGE] <message>`
+- `[SOUND] <sound> <volume> <pitch> <category>`
+- `[STOPSOUND]`

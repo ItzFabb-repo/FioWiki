@@ -1,0 +1,65 @@
+---
+title: Leaderboards
+sidebar_position: 5
+---
+
+# Menu: Leaderboards
+
+`menu/leaderboards.yml` controls the top player leaderboard GUI.
+
+## Static menu format
+
+```yaml
+menu: # Leaderboard menu settings.
+  title: "<dark_gray>Level Leaderboards</dark_gray>" # GUI title.
+  rows: 6 # Inventory rows.
+  items: # Static items such as back, close, or decoration.
+    back: # Unique item id.
+      material: SPRUCE_DOOR # Bukkit material.
+      name: "<gold>Go Back</gold>" # Display name.
+      slot: "48" # Inventory slot.
+      actions:
+        any:
+          - "[FIOLEVELS] levels" # Return to main levels menu.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## Leaderboard entry format
+
+```yaml
+leaderboard: # Dynamic leaderboard entries.
+  slots: # Slots used for top players.
+    - "10-16" # Slot range.
+    - "19-25" # Slot range.
+  item: # Template for each leaderboard player.
+    material: PLAYER_HEAD # Item material.
+    player: true # Use the target player's head.
+    name: "<gold>#%position%</gold> <white>%player%</white>" # Entry title.
+    lore: # Entry lore.
+      - "<gray>Level: <white>%level%</white></gray>" # Player level.
+      - "<gray>Position: <white>%position%</white></gray>" # Ranking position.
+      - "<yellow>Click to view profile</yellow>" # Click hint.
+    actions:
+      any:
+        - "[FIOLEVELS] profiles {player}" # Open this player's profile menu.
+        - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## Leaderboard placeholders
+
+- `%position%`
+- `%player%`
+- `%level%`
+- `%total_xp%`
+- `{player}`
+
+## How to add total progress to lore
+
+```yaml
+leaderboard: # Dynamic leaderboard entries.
+  item: # Template for each player.
+    lore: # Lore lines.
+      - "<gray>Level: <white>%level%</white></gray>" # Player level.
+      - "<gray>Total Progress: <white>%total_xp%</white></gray>" # Total task progress.
+      - "<yellow>Click to view profile</yellow>" # Click hint.
+```

@@ -1,0 +1,22 @@
+---
+title: Player Kill
+sidebar_position: 21
+---
+
+# Player Kill
+
+`PLAYER_KILL` adds progress when a player kills another player.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    19: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "PLAYER_KILL" # Listen for player-vs-player kills.
+          required: "2" # Number of player kills required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Kill 2 players</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Only kills credited to a player killer count.

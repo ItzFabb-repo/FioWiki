@@ -1,0 +1,24 @@
+---
+title: Milking
+sidebar_position: 27
+---
+
+# Milking
+
+`MILKING` adds progress when a player milks a matching entity with a matching item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    25: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "MILKING" # Listen for milking interactions.
+          material: "BUCKET" # Item used for milking.
+          entity: "COW" # Entity being milked.
+          required: "5" # Number of matching milking actions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Milk 5 cows</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Set `entity` to `MOOSHROOM` or another supported milkable entity when needed.

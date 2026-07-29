@@ -1,0 +1,23 @@
+---
+title: Hunt
+sidebar_position: 22
+---
+
+# Hunt
+
+`HUNT` adds progress when a player kills matching non-player entities.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    20: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "HUNT" # Listen for mob/entity kills.
+          entity: "SKELETON" # Entity type that should count.
+          required: "3" # Number of matching kills required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Kill 3 skeletons</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use comma-separated entity names when multiple mobs should count.

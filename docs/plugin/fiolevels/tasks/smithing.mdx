@@ -1,0 +1,23 @@
+---
+title: Smithing
+sidebar_position: 25
+---
+
+# Smithing
+
+`SMITHING` adds progress when a smithing result matches the configured material.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    23: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "SMITHING" # Listen for smithing table results.
+          material: "NETHERITE_SWORD" # Smithing result that should count.
+          required: "1" # Number of matching smithing results required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Create 1 netherite sword</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use the final output item as `material`.

@@ -1,0 +1,23 @@
+---
+title: Block Break
+sidebar_position: 2
+---
+
+# Block Break
+
+`BLOCK_BREAK` adds progress when a player breaks blocks.
+
+```yaml
+quests: # Root section for all level content.
+  levels: # Numeric level entries live here.
+    1: # The level this requirement belongs to.
+      requirements: # All requirements for Level 1.
+        rules0: # Unique requirement id.
+          type: "BLOCK_BREAK" # Listen for block break events.
+          material: "STONE,COBBLESTONE" # Optional block filter. Remove this line to allow any block.
+          required: "10" # Amount of matching blocks the player must break.
+        description: # Requirement descriptions for this level.
+          0: "%status%<reset> <gray>Break 10 stone blocks</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+If `material` is empty or omitted, any broken block can count.

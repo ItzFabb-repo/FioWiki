@@ -1,0 +1,75 @@
+---
+title: Fonts
+sidebar_position: 3
+---
+
+# Fonts
+
+`fonts.yml` controls how each digit in the level value is displayed.
+
+## Format
+
+```yaml
+fonts: # Root section for all number fonts.
+  clean: # Unique font id used by menus and placeholders.
+    0: "0" # Character used for digit 0.
+    1: "1" # Character used for digit 1.
+    2: "2" # Character used for digit 2.
+    3: "3" # Character used for digit 3.
+    4: "4" # Character used for digit 4.
+    5: "5" # Character used for digit 5.
+    6: "6" # Character used for digit 6.
+    7: "7" # Character used for digit 7.
+    8: "8" # Character used for digit 8.
+    9: "9" # Character used for digit 9.
+    permission: "" # Permission required to select this font. Use "" for public.
+    default: true # Optional. Set true if this is the fallback font.
+```
+
+## Roman-style font
+
+Roman fonts can define roman numeral values instead of normal digit-only mappings.
+
+```yaml
+fonts: # Root section for all number fonts.
+  roman: # Unique font id.
+    0: "0" # Fallback for zero.
+    1: "I" # Roman one.
+    5: "V" # Roman five.
+    10: "X" # Roman ten.
+    50: "L" # Roman fifty.
+    100: "C" # Roman one hundred.
+    500: "D" # Roman five hundred.
+    1000: "M" # Roman one thousand.
+    permission: "fiolevels.fonts.roman" # Required permission.
+```
+
+## How to add a new font
+
+1. Open `fonts.yml`.
+2. Add a new id under `fonts`.
+3. Define digit mappings from `0` to `9`, or roman numeral mappings.
+4. Add `permission` if it should be locked.
+5. Reload FioLevels.
+
+## Example: boxed digits
+
+```yaml
+fonts: # All number fonts.
+  boxed: # New font id.
+    0: "[0]" # Render digit 0 as [0].
+    1: "[1]" # Render digit 1 as [1].
+    2: "[2]" # Render digit 2 as [2].
+    3: "[3]" # Render digit 3 as [3].
+    4: "[4]" # Render digit 4 as [4].
+    5: "[5]" # Render digit 5 as [5].
+    6: "[6]" # Render digit 6 as [6].
+    7: "[7]" # Render digit 7 as [7].
+    8: "[8]" # Render digit 8 as [8].
+    9: "[9]" # Render digit 9 as [9].
+    permission: "fiolevels.fonts.boxed" # Player needs this permission to select it.
+```
+
+:::info[Menu note]
+The selector menu layout is controlled separately in [Menu / Fonts](/plugin/fiolevels/config/menu/fonts).
+:::

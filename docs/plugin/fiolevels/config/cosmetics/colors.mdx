@@ -1,0 +1,71 @@
+---
+title: Colors
+sidebar_position: 2
+---
+
+# Colors
+
+`colors.yml` controls how the numeric level value is colored by level range.
+
+## Format
+
+```yaml
+colors: # Root section for all level color sets.
+  emerald: # Unique color id used by menus and placeholders.
+    level: # Range rules for this color set.
+      - '1-10': "<green><value></green>" # Applies to levels 1 through 10.
+      - '11-25': "<gradient:#7CFFCB:#B8FF7C><value></gradient>" # Applies to levels 11 through 25.
+      - '26-INF': "<aqua><bold><value></bold></aqua>" # INF means the range continues forever.
+    permission: "fiolevels.colors.emerald" # Permission required to select this color. Use "" for public.
+    default: false # Optional. Set true on one entry to make it the fallback.
+```
+
+## Range format
+
+| Format | Meaning |
+| --- | --- |
+| `1-5` | Applies from level 1 through 5. |
+| `6-10` | Applies from level 6 through 10. |
+| `96-INF` | Applies from level 96 and above. |
+
+## Placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `<value>` | The current level value before final rendering. |
+
+## How to add a new color
+
+1. Open `colors.yml`.
+2. Add a new id under `colors`.
+3. Add one or more `level` range rules.
+4. Use `<value>` inside each format.
+5. Add `permission` if this color should be locked.
+6. Reload FioLevels.
+
+## Example: simple color
+
+```yaml
+colors: # All color presets.
+  clean_blue: # New color id.
+    level: # Level range rules.
+      - '1-INF': "<blue><value></blue>" # Every level renders blue.
+    permission: "" # Everyone can use this color.
+```
+
+## Example: gradient by level range
+
+```yaml
+colors: # All color presets.
+  rank_gradient: # New color id.
+    level: # Level range rules.
+      - '1-25': "<gray><value></gray>" # Early levels.
+      - '26-50': "<green><value></green>" # Mid levels.
+      - '51-75': "<aqua><value></aqua>" # High levels.
+      - '76-INF': "<gradient:#ffd166:#ef476f><value></gradient>" # Endgame levels.
+    permission: "fiolevels.colors.rank_gradient" # Locked color permission.
+```
+
+:::info[Menu note]
+The selector menu layout is controlled separately in [Menu / Colors](/plugin/fiolevels/config/menu/colors).
+:::

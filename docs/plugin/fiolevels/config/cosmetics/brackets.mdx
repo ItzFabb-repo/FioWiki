@@ -1,0 +1,55 @@
+---
+title: Brackets
+sidebar_position: 1
+---
+
+# Brackets
+
+`brackets.yml` controls the wrapper around the rendered level value. A bracket can be plain, colored, or MiniMessage-formatted.
+
+## Format
+
+```yaml
+brackets: # Root section for all bracket styles.
+  crystal_square: # Unique bracket id used by permissions and placeholders.
+    brackets: "<aqua>[</aqua><lvlcolor>%value%</lvlcolor><aqua>]</aqua>" # Format shown around the level value.
+    permission: "fiolevels.brackets.crystal_square" # Permission required to select this bracket. Use "" for no permission.
+    default: false # Optional. Set true on one entry if it should be the fallback default.
+```
+
+## Placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%value%` | The level value after font formatting. |
+| `<lvlcolor>...</lvlcolor>` | Applies the selected level color format around the value. |
+
+## How to add a new bracket
+
+1. Open `brackets.yml`.
+2. Add a new id under `brackets`.
+3. Set `brackets` to the MiniMessage format you want.
+4. Set `permission` to `""` for public use or a permission node for locked use.
+5. Reload FioLevels.
+
+## Example: public bracket
+
+```yaml
+brackets: # All bracket designs.
+  soft_round: # New bracket id.
+    brackets: "<gray>(</gray><lvlcolor>%value%</lvlcolor><gray>)</gray>" # Round bracket format.
+    permission: "" # Everyone can select this bracket.
+```
+
+## Example: permission bracket
+
+```yaml
+brackets: # All bracket designs.
+  premium_angle: # New premium bracket id.
+    brackets: "<gold><bold><</bold></gold><lvlcolor>%value%</lvlcolor><gold><bold>></bold></gold>" # Angle-style level wrapper.
+    permission: "fiolevels.brackets.premium_angle" # Player needs this permission to select it.
+```
+
+:::info[Menu note]
+The selector menu layout is controlled separately in [Menu / Brackets](/plugin/fiolevels/config/menu/brackets).
+:::

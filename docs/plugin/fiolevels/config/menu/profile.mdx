@@ -1,0 +1,86 @@
+---
+title: Profile
+sidebar_position: 6
+---
+
+# Menu: Profile
+
+`menu/profile.yml` controls the player statistics/profile GUI.
+
+## Root format
+
+Unlike most FioLevels menu files, `profile.yml` places `title`, `rows`, and `items` at the root.
+
+```yaml
+title: "<dark_gray>Player Statistics</dark_gray>" # GUI title.
+rows: 6 # Inventory rows. Valid range is 1-6.
+
+items: # Static statistics menu items.
+  player: # Unique item id.
+    material: PLAYER_HEAD # Item material.
+    player: true # Use the viewed player's head.
+    name: "<green>%player%</green>" # Display name.
+    lore: # Lore lines.
+      - "<gray>Level: <white>%level%</white></gray>" # Player level.
+      - "<gray>Total Progress: <white>%total_xp%</white></gray>" # Total task progress.
+    slot: "4" # Inventory slot.
+    actions:
+      any:
+        - "[NONE]" # No click action.
+```
+
+## Adding a new stats item
+
+```yaml
+items: # Static statistics menu items.
+  farming_stats: # New unique item id.
+    material: WHEAT # Bukkit material.
+    name: "<green>Farming Statistics</green>" # Display name.
+    lore: # Lore lines.
+      - "<dark_gray>Farming</dark_gray>" # Section label.
+      - "" # Blank line.
+      - "<gray>Wheat: <white>%statistic_mine_block:WHEAT%</white></gray>" # Bukkit/PlaceholderAPI statistic placeholder.
+      - "<gray>Carrots: <white>%statistic_mine_block:CARROTS%</white></gray>" # Another statistic line.
+    slot: "24" # Inventory slot.
+    actions:
+      any:
+        - "[NONE]" # Keep item informational only.
+```
+
+## Common profile placeholders
+
+- `%player%`
+- `%level%`
+- `%total_xp%`
+- `%statistic_mine_block:<MATERIAL>%`
+- `%statistic_kill_entity:<ENTITY>%`
+- `%statistic_player_kills%`
+- `%statistic_deaths%`
+- `%statistic_time_played%`
+- `%statistic_fish_caught%`
+- `%statistic_animals_bred%`
+- `%statistic_traded_with_villager%`
+- `%statistic_jump%`
+- `%statistic_craft_item:<MATERIAL>%`
+
+## Navigation buttons
+
+```yaml
+items: # Static profile items.
+  back: # Back button.
+    material: SPRUCE_DOOR # Button material.
+    name: "<gold>Go Back</gold>" # Display name.
+    slot: "48" # Slot location.
+    actions:
+      any:
+        - "[FIOLEVELS] leaderboards" # Return to leaderboards.
+        - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+
+  close: # Close button.
+    material: BARRIER # Button material.
+    name: "<red>Close</red>" # Display name.
+    slot: "49" # Slot location.
+    actions:
+      any:
+        - "[CLOSE]" # Close the inventory.
+```

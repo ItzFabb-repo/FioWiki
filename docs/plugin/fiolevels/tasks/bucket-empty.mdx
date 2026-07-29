@@ -1,0 +1,23 @@
+---
+title: Bucket Empty
+sidebar_position: 6
+---
+
+# Bucket Empty
+
+`BUCKET_EMPTY` adds progress when a player empties a matching bucket.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    4: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "BUCKET_EMPTY" # Listen for bucket empty actions.
+          material: "WATER_BUCKET" # Bucket material that should count.
+          required: "5" # Number of bucket empty actions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Empty 5 water buckets</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use bucket material names such as `WATER_BUCKET`, `LAVA_BUCKET`, or `POWDER_SNOW_BUCKET`.

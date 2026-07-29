@@ -1,0 +1,24 @@
+---
+title: Ressurection
+sidebar_position: 23
+---
+
+# Ressurection
+
+`RESSURECTION` adds progress when the player triggers the resurrection event handled by the source.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    21: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "RESSURECTION" # Source spelling. Use this exact id.
+          required: "1" # Number of resurrection events required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Use resurrection once</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+:::info[Source spelling]
+The current source uses `RESSURECTION`, so the docs keep that spelling for compatibility.
+:::

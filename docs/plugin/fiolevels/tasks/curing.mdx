@@ -1,0 +1,23 @@
+---
+title: Curing
+sidebar_position: 29
+---
+
+# Curing
+
+`CURING` adds progress when a player cures a matching entity.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    27: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "CURING" # Listen for curing progress.
+          entity: "ZOMBIE_VILLAGER" # Entity type being cured.
+          required: "1" # Number of cures required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Cure 1 zombie villager</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+The bundled tasks use `ZOMBIE_VILLAGER`.

@@ -1,0 +1,23 @@
+---
+title: Block Place
+sidebar_position: 3
+---
+
+# Block Place
+
+`BLOCK_PLACE` adds progress when a player places matching blocks.
+
+```yaml
+quests: # Root section for FioLevels tasks.
+  levels: # Numeric level entries.
+    1: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "BLOCK_PLACE" # Listen for block place events.
+          material: "TORCH" # Optional placed block filter.
+          required: "8" # Amount of matching blocks to place.
+        description: # Menu/chat descriptions.
+          0: "%status%<reset> <gray>Place 8 torches</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use comma-separated material names when more than one placed block should count.

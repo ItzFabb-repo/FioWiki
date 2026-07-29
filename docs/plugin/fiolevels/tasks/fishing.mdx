@@ -1,0 +1,23 @@
+---
+title: Fishing
+sidebar_position: 15
+---
+
+# Fishing
+
+`FISHING` adds progress when a player catches a matching item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    13: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "FISHING" # Listen for successful fishing catches.
+          material: "COD" # Caught item that should count.
+          required: "9" # Number of matching caught items required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Catch 9 cod</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+If `material` is omitted, any caught item can count.

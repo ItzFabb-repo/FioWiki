@@ -1,0 +1,25 @@
+---
+title: PlaceholderAPI
+sidebar_position: 31
+---
+
+# PlaceholderAPI
+
+`PLACEHOLDERAPI` completes when a PlaceholderAPI value matches the configured comparison rule.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    29: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "PLACEHOLDERAPI" # Evaluate a PlaceholderAPI value.
+          value: "%some_placeholder%" # PlaceholderAPI expression to read from the player.
+          rules: ">=" # Comparison operator used against endValue.
+          endValue: "10" # Target value for the comparison.
+          required: "1" # Keep at 1 because the task completes when comparison passes.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Reach placeholder value 10</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Supported operators are `>=`, `<=`, `>`, `<`, `==`, `=`, and `!=`.

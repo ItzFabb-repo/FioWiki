@@ -1,0 +1,26 @@
+---
+title: Join First Time
+sidebar_position: 1
+---
+
+# Join First Time
+
+`JOIN_FIRST_TIME` completes when the player joins for the first time. This is normally used for Level `0` as the default starter entry.
+
+```yaml
+quests: # Root section for all FioLevels progression data.
+  levels: # Every numeric child below this is one level entry.
+    0: # Level 0 is commonly used as the first unlocked/default level.
+      requirements: # Requirement rules that belong to this level.
+        rules0: # Unique rule id. Keep it unique inside this level.
+          type: "JOIN_FIRST_TIME" # Completes automatically on the player's first join.
+          required: "1" # Keep this at 1 because first join is a one-time state.
+        description: # Text shown in menus/chat for the rules above.
+          0: "%status%<reset> <gray>Join the server for the first time</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+      rewards: # Rewards shown/executed when this level is completed.
+        commands: [] # No reward commands for the default starter level.
+        description: # Reward lore shown in the level menu.
+          - "<dark_gray>-</dark_gray> <gray>[None]</gray>" # Displayed reward text.
+```
+
+Use this task when you want every new player to have a clean starting progression state.

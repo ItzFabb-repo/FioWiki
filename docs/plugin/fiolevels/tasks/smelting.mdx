@@ -1,0 +1,24 @@
+---
+title: Smelting
+sidebar_position: 9
+---
+
+# Smelting
+
+`SMELTING` adds progress when a furnace-like block produces a matching result.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    7: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "SMELTING" # Listen for smelting output.
+          material: "IRON_ORE" # Source/input material tracked by the smelting system.
+          whitelistBlock: "FURNACE,BLAST_FURNACE" # Furnace blocks that are allowed to count.
+          required: "8" # Amount of matching smelted progress required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Smelt 8 iron ore</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use `whitelistBlock` when only certain smelting blocks should count.

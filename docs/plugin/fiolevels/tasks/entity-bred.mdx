@@ -1,0 +1,23 @@
+---
+title: Entity Bred
+sidebar_position: 19
+---
+
+# Entity Bred
+
+`ENTITY_BRED` adds progress when a player breeds matching animals.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    17: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "ENTITY_BRED" # Listen for animal breeding.
+          entity: "AXOLOTL" # Entity type that should count.
+          required: "3" # Number of matching breeding actions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Breed 3 axolotls</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+If `entity` is omitted or set to `ANY`, any bred entity can count.

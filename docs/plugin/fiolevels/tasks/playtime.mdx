@@ -1,0 +1,22 @@
+---
+title: Playtime
+sidebar_position: 30
+---
+
+# Playtime
+
+`PLAYTIME` adds progress from online playtime.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    28: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "PLAYTIME" # Track online playtime.
+          required: "1h" # Duration target. Supports s, m, h, and d units.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Play for 1 hour</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Supported duration units include `s`, `m`, `h`, and `d`, plus full words like `seconds`, `minutes`, `hours`, and `days`.

@@ -1,0 +1,23 @@
+---
+title: Brewing Potions
+sidebar_position: 11
+---
+
+# Brewing Potions
+
+`BREWING_POTIONS` adds progress when a brewing result matches the configured potion effect.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    9: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "BREWING_POTIONS" # Listen for completed potion brewing.
+          effect: "SPEED;1" # Potion type and tier. Use ;2 for upgraded variants.
+          required: "3" # Number of matching potions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Brew 3 speed potions</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+If `effect` is omitted or set to `ANY`, any potion effect can count.

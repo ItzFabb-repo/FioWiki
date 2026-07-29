@@ -1,0 +1,113 @@
+---
+title: Levels
+sidebar_position: 4
+---
+
+# Menu: Levels
+
+`menu/levels.yml` controls the main FioLevels GUI.
+
+## Open and close actions
+
+```yaml
+open_menu: # Actions executed after the levels menu opens.
+  - "[SOUND] MUSIC_DISC_LAVA_CHICKEN 0.1 1 master" # Play background/open sound.
+
+close_sound: # Actions executed after the player fully leaves FioLevels menus.
+  - "[STOPSOUND]" # Stop currently playing sounds where supported.
+```
+
+## Static menu item format
+
+```yaml
+menu: # Main menu settings.
+  title: "<dark_gray>Player Level</dark_gray> <black>%currentPage%/%maxPage%</black>" # GUI title.
+  rows: 6 # Inventory rows. Valid range is 1-6.
+  items: # Static items.
+    leaderboards: # Unique item id.
+      material: OAK_SIGN # Bukkit material.
+      name: "<gold>Level Leaderboards</gold>" # Display name.
+      lore: # Lore lines.
+        - "<gray>Click to view the top players.</gray>" # Description.
+      slot: "53" # Inventory slot.
+      actions: # Click actions.
+        any:
+          - "[FIOLEVELS] leaderboards" # Open leaderboards menu.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## Level item templates
+
+```yaml
+level_task: # Dynamic level rendering settings.
+  locked_requirement_placeholder: "{locked_requirement_placeholder}" # Text used for hidden locked requirements.
+  slots: # Slots used to render levels.
+    - "9-10" # Slot range.
+    - "19" # Single slot.
+    - "28" # Single slot.
+  items: # Templates for each level state.
+    unlocked: # Current unlocked/completable level.
+      material: LIME_CANDLE # Item material.
+      name: "<green>Level %level%</green>" # %level% becomes the level number.
+      lore: # Lore template.
+        - "<gray>Requirements:</gray>" # Static label.
+        - "%requirements%" # Expanded from tasks.yml.
+        - "<gray>Rewards:</gray>" # Static label.
+        - "%rewards%" # Expanded from tasks.yml.
+      actions:
+        any:
+          - "[NONE]" # Do nothing on click.
+```
+
+## Level states
+
+| State | Meaning |
+| --- | --- |
+| `completed` | Player has already reached this level. |
+| `unlocked` | Level is available/current. |
+| `locked` | Previous progression is not completed. |
+| `onprogress` | Player is actively progressing this level. |
+
+## Common placeholders
+
+- `%currentPage%`
+- `%maxPage%`
+- `%level%`
+- `%description%`
+- `%requirements%`
+- `%rewards%`
+- `%state%`
+- `%player%`
+- `%xp%`
+- `%required_xp%`
+- `%total_xp%`
+- `%platform%`
+
+## Supported FioLevels actions
+
+- `[FIOLEVELS] leaderboards`
+- `[FIOLEVELS] levels`
+- `[FIOLEVELS] profile`
+- `[FIOLEVELS] profiles`
+- `[FIOLEVELS] brackets`
+- `[FIOLEVELS] fonts`
+- `[FIOLEVELS] colors`
+- `[FIOLEVELS] NEXT_PAGE+<amount>`
+- `[FIOLEVELS] PREVIOUS_PAGE-<amount>`
+
+## Adding a new button
+
+```yaml
+menu: # Main menu section.
+  items: # Static menu items.
+    my_button: # New unique item id.
+      material: EMERALD # Item material shown in the GUI.
+      name: "<green>My Button</green>" # Display name.
+      lore: # Lore shown under the name.
+        - "<gray>Open the profile menu.</gray>" # Description.
+      slot: "52" # Slot where the item appears.
+      actions:
+        any:
+          - "[FIOLEVELS] profile" # Run a FioLevels menu action.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Feedback sound.
+```

@@ -1,0 +1,77 @@
+---
+title: Colors
+sidebar_position: 2
+---
+
+# Menu: Colors
+
+`menu/colors.yml` controls the level color selector GUI. The actual color ranges are configured in `colors.yml`.
+
+## Dynamic color item format
+
+```yaml
+color_items: # Template for color entries generated from colors.yml.
+  slots: # Slots used for color entries.
+    - "10-16" # Slot range.
+    - "19-25" # Slot range.
+  items: # State templates.
+    available: # Player can select this color.
+      material: GRAY_DYE # Item material.
+      name: "{color_preview}" # Preview rendered from the color format.
+      lore: # Lore shown on the item.
+        - "<gray>ID:</gray> <white>{colors_id}" # Color id.
+        - "<gray>Preview:</gray> <white>{color_preview}" # Rendered preview.
+        - "<gray>Format:</gray> <white>{colors_format}" # Raw/rendered format.
+      actions: # Click actions.
+        any:
+          - "[FIOLEVELS] color {color_id}" # Select the color.
+          - "[SOUND] UI_BUTTON_CLICK 1 2 master" # Play click sound.
+```
+
+## State templates
+
+| State | Used when |
+| --- | --- |
+| `available` | Player can select the color. |
+| `selected` | Player is currently using the color. |
+| `locked` | Player does not have the color permission. |
+
+## Color menu placeholders
+
+- `{color_id}`
+- `{colors_id}`
+- `{color_preview}`
+- `{colors_format}`
+- `{colors_permission}`
+- `{selected_color_id}`
+- `{selected_color_preview}`
+
+## Clear color item
+
+```yaml
+clear_color: # Static item id.
+  ifhasColors: # Template when the player has selected a custom color.
+    material: ORANGE_DYE # Item material.
+    slot: "47" # Slot location.
+    actions:
+      any:
+        - "[FIOLEVELS] color clear" # Reset to default color.
+  ifnoColors: # Template when the player is already using default.
+    material: GRAY_DYE # Item material.
+    slot: "47" # Same slot.
+    actions:
+      any:
+        - "[MESSAGE] <gray>There are nothing to be cleared here..." # Feedback message.
+```
+
+## Supported actions
+
+- `[FIOLEVELS] color <id>`
+- `[FIOLEVELS] color clear`
+- `[FIOLEVELS] levels`
+- `[FIOLEVELS] NEXT_PAGE+1`
+- `[FIOLEVELS] PREVIOUS_PAGE-1`
+- `[CLOSE]`
+- `[MESSAGE] <message>`
+- `[SOUND] <sound> <volume> <pitch> <category>`
+- `[STOPSOUND]`

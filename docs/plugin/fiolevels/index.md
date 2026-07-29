@@ -114,8 +114,9 @@ Use these pages next:
 - [Placeholders](/plugin/fiolevels/placeholders)
 - [Developer API](/plugin/fiolevels/api)
 - [Options & Configuration](/plugin/fiolevels/options)
-- [config.yml](/plugin/fiolevels/config/config.yml)
-- [tasks.yml](/plugin/fiolevels/config/tasks.yml)
+- [Configuration](/plugin/fiolevels/config/config.yml)
+- [Join First Time task](/plugin/fiolevels/tasks/join-first-time)
+- [Block Break task](/plugin/fiolevels/tasks/block-break)
 
 :::info[Page note]
 This page is source-backed from the local `FioLevels` project and follows the same overview style as the FioChatGames wiki page.

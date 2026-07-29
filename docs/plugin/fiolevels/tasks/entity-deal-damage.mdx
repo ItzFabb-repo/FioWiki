@@ -1,0 +1,24 @@
+---
+title: Entity Deal Damage
+sidebar_position: 20
+---
+
+# Entity Deal Damage
+
+`ENTITY_DEAL_DAMAGE` adds progress from damage dealt to matching entities.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    18: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "ENTITY_DEAL_DAMAGE" # Listen for player damage dealt to entities.
+          entity: "ZOMBIE" # Entity type that should receive damage.
+          amount: "1" # Damage multiplier used by the source parser.
+          required: "25" # Required damage/progress target.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Deal 25 damage to zombies</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use this when you want damage dealt to matter, not just final kills.

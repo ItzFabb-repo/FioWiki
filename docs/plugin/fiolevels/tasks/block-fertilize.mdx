@@ -1,0 +1,23 @@
+---
+title: Block Fertilize
+sidebar_position: 4
+---
+
+# Block Fertilize
+
+`BLOCK_FERTILIZE` adds progress when bonemeal fertilizes a matching block or crop.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    2: # Target level.
+      requirements: # Requirements for this level.
+        rules0: # Unique rule id.
+          type: "BLOCK_FERTILIZE" # Listen for fertilize/bonemeal progress.
+          material: "WHEAT,CARROTS" # Optional block/crop filter.
+          required: "12" # Number of successful fertilize actions.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Fertilize 12 crops</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Keep `material` focused on valid Bukkit material names.

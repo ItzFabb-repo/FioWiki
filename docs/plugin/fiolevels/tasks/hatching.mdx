@@ -1,0 +1,24 @@
+---
+title: Hatching
+sidebar_position: 16
+---
+
+# Hatching
+
+`HATCHING` adds progress when an egg or tracked hatch event produces a matching entity.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    14: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "HATCHING" # Listen for hatching progress.
+          material: "EGG" # Optional item/block source filter.
+          entity: "CHICKEN" # Entity that should hatch.
+          required: "3" # Number of matching hatches required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Hatch 3 chickens</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use `entity` when only specific hatched mobs should count.

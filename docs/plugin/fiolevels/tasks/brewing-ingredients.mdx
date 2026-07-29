@@ -1,0 +1,23 @@
+---
+title: Brewing Ingredients
+sidebar_position: 10
+---
+
+# Brewing Ingredients
+
+`BREWING_INGREDIENTS` adds progress when a brewing stand uses a matching ingredient.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    8: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "BREWING_INGREDIENTS" # Listen for brewing ingredient usage.
+          material: "NETHER_WART" # Ingredient material that should count.
+          required: "5" # Amount of ingredient uses required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Brew with 5 nether wart</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use this when you want to reward potion brewing setup actions.

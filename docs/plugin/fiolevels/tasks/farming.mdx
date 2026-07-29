@@ -1,0 +1,23 @@
+---
+title: Farming
+sidebar_position: 5
+---
+
+# Farming
+
+`FARMING` adds progress when a player harvests matching crop blocks.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    3: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "FARMING" # Listen for farming/harvest progress.
+          block: "CARROTS" # Crop block that should count.
+          required: "28" # Amount of matching harvest progress required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Harvest 28 carrots</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+For farming tasks, use `block` instead of `material`.

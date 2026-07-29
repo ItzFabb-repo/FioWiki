@@ -1,0 +1,24 @@
+---
+title: Trading
+sidebar_position: 26
+---
+
+# Trading
+
+`TRADING` adds progress when a villager trade matches the profession and output item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    24: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "TRADING" # Listen for villager trade result items.
+          jobs: "FLETCHER" # Villager profession that should count.
+          toGet: "ARROW" # Item received from the trade.
+          required: "6" # Amount of matching traded output required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Trade for 6 arrows from fletchers</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use `jobs` for villager profession and `toGet` for the received item.

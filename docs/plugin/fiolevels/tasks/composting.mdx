@@ -1,0 +1,23 @@
+---
+title: Composting
+sidebar_position: 24
+---
+
+# Composting
+
+`COMPOSTING` adds progress when a player composts a matching material.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    22: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "COMPOSTING" # Listen for composter item input.
+          material: "WHEAT_SEEDS" # Material inserted into the composter.
+          required: "12" # Number of matching compost actions required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Compost 12 wheat seeds</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Remove `material` if any compostable item should count.

@@ -1,0 +1,23 @@
+---
+title: Consume
+sidebar_position: 7
+---
+
+# Consume
+
+`CONSUME` adds progress when a player consumes a matching item.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    5: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "CONSUME" # Listen for item consume events.
+          material: "COOKED_BEEF" # Item that must be consumed.
+          required: "6" # Number of matching items to consume.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Consume 6 cooked beef</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+This is useful for food, potions, and other consumable item progression.

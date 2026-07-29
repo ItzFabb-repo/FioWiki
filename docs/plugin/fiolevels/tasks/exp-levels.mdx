@@ -1,0 +1,22 @@
+---
+title: EXP Levels
+sidebar_position: 14
+---
+
+# EXP Levels
+
+`EXP_LEVELS` adds progress when the player's Minecraft experience level increases.
+
+```yaml
+quests: # Root task configuration.
+  levels: # Level entries.
+    12: # Target level.
+      requirements: # Requirement list.
+        rules0: # Unique rule id.
+          type: "EXP_LEVELS" # Listen for gained Minecraft EXP levels.
+          required: "3" # Number of gained levels required.
+        description: # Requirement descriptions.
+          0: "%status%<reset> <gray>Gain 3 EXP levels</gray> <white>({currentProgress}/{maxProgress})</white>" # Description for rules0.
+```
+
+Use this when progression should care about level increases rather than raw EXP points.
