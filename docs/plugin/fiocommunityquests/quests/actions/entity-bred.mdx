@@ -1,0 +1,31 @@
+---
+title: ENTITY_BRED
+sidebar_position: 7
+---
+
+# ENTITY_BRED
+
+`ENTITY_BRED` adds progress when a player breeds a matching entity.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "ENTITY_BRED"
+    goal: 10000
+    required:
+      - COW
+      - SHEEP
+      - PIG
+```
+
+## Required values
+
+Use Bukkit entity type names.
+
+| Example | Meaning |
+| --- | --- |
+| `COW` | Breeding a cow gives 1 point. |
+| `SHEEP:2` | Breeding sheep gives 2 points. |
+| `*` | Any bred entity gives 1 point. |

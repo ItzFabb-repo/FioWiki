@@ -1,0 +1,62 @@
+---
+title: ENCHANTING
+sidebar_position: 29
+---
+
+# ENCHANTING
+
+`ENCHANTING` adds progress when a player applies matching enchantments at or above the configured level.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "ENCHANTING"
+    goal: 800
+    required:
+      - "SHARPNESS:1"
+      - "UNBREAKING:3:2"
+    tools:
+      - "*_SWORD"
+      - "DIAMOND_PICKAXE"
+```
+
+## Required values
+
+Use this format:
+
+```text
+<ENCHANT>[:min_level][:points]
+```
+
+| Example | Meaning |
+| --- | --- |
+| `SHARPNESS:1` | Sharpness level 1 or higher gives 1 point. |
+| `UNBREAKING:3:2` | Unbreaking level 3 or higher gives 2 points. |
+| `*` | Any enchantment gives 1 point. |
+
+## Tool filter
+
+`tools` can be a string or list:
+
+```yaml
+tools: "ANY"
+```
+
+```yaml
+tools:
+  - "*_SWORD"
+  - "DIAMOND_PICKAXE"
+```
+
+Allowed patterns:
+
+- `ANY`
+- `*`
+- exact material names
+- wildcard patterns such as `*_SWORD`, `*_PICKAXE`, `*_AXE`
+
+## Notes
+
+The source checks both namespaced enchant keys and Bukkit enchant names.

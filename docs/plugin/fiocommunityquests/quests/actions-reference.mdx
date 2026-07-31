@@ -1,277 +1,869 @@
 ---
-title: Actions Reference
+title: Objective Actions
 sidebar_position: 2
 ---
 
-# Actions Reference
+# Objective Actions
 
-This page explains the action tags used when creating a new FioCommunityQuests quest.
+This page explains every `quest.objectives.type` supported by FioCommunityQuests when creating a new community quest.
 
-Actions are written inside quest lifecycle sections and reward sections. They execute from top to bottom, so order matters.
-
-## Where actions are used
-
-Lifecycle actions are usually placed here:
+Use these action types inside a quest file:
 
 ```yaml
 quest:
-  settings:
-    whenStarted:
-      commands:
-        enabled: true
-        actions: []
-    whenCompleted:
-      commands:
-        enabled: true
-        actions: []
-    whenFailed:
-      commands:
-        enabled: true
-        actions: []
+  objectives:
+    duration: "1d"
+    type: "BLOCK_BREAK"
+    goal: 1000
+    required:
+      - "STONE"
 ```
 
-Reward actions are placed here:
+## Shared format
+
+Most objective actions use the same target list format:
 
 ```yaml
-quest:
-  rewards:
-    top_contributions:
-      enabled: true
-      1:
-        enabled: true
-        actions: []
-    player_participated:
-      enabled: true
-      actions: []
+required:
+  - "TARGET"
+  - "TARGET:POINTS"
+  - "*"
 ```
 
-## Action tags
-
-| Action | Format | Description |
-| --- | --- | --- |
-| `[SOUND]` | `[SOUND] <sound> <volume> <pitch> <category>` | Plays a Bukkit sound. If the action has no target player, it plays for online players with notifications enabled. |
-| `[MESSAGE]` | `[MESSAGE] <MiniMessage text>` | Sends a MiniMessage-formatted message. If the action has no target player, it broadcasts to online players with notifications enabled. |
-| `[CONSOLE]` | `[CONSOLE] <command>` | Runs a command from console. Do not include `/` at the start. |
-| `[PLAYER]` | `[PLAYER] <command>` | Runs a command as the reward target player. This only works when the action has a player target. |
-| `[ITEM]` | `[ITEM] <material> [amount] [enchant:level ...]` | Gives an item to the target player, or drops leftovers naturally if the inventory is full. |
-| `[EXP_LEVELS]` | `[EXP_LEVELS] <amount>` | Gives or removes experience levels from the target player. A leading `+` is allowed. |
-| `[EXP_POINTS]` | `[EXP_POINTS] <amount>` | Gives or removes raw experience points from the target player. A leading `+` is allowed. |
-| `[CUSTOM:id]` | `[CUSTOM:<id>]` | Gives a custom reward item from `quest.rewards.custom.<id>`. Only works inside reward actions. |
-| `[NONE]` | `[NONE]` | Does nothing. Useful as a safe placeholder action. |
-
-## `[SOUND]`
-
-Use `[SOUND]` to play a Bukkit sound.
-
-```yaml
-actions:
-  - "[SOUND] ENTITY_PLAYER_LEVELUP 1 1 master"
-  - "[SOUND] ENTITY_VILLAGER_NO 1 0.8 master"
-```
-
-Format:
-
-```text
-[SOUND] <SOUND> <VOLUME> <PITCH> <CATEGORY>
-```
-
-Notes:
-
-- `<SOUND>` must match a Bukkit sound enum for the server version.
-- `<VOLUME>` defaults to `1.0` when omitted.
-- `<PITCH>` defaults to `1.0` when omitted.
-- `<CATEGORY>` defaults to `master` when omitted.
-
-## `[MESSAGE]`
-
-Use `[MESSAGE]` to send MiniMessage text.
-
-```yaml
-actions:
-  - "[MESSAGE] <green>Congratulations!</green> <gray>You helped finish the community quest.</gray>"
-```
-
-When the action runs for a reward winner or participant, only that player receives it. When the action runs globally from quest lifecycle commands, online players with notifications enabled receive it.
-
-## `[CONSOLE]`
-
-Use `[CONSOLE]` to run server commands as console.
-
-```yaml
-actions:
-  - "[CONSOLE] eco give %player_name% 5000"
-  - "[CONSOLE] lp user %player_name% permission set some.permission true"
-```
-
-Do not add `/` before the command.
-
-Useful reward placeholders:
-
-- `%player_name%`
-- `%date_given%` inside custom item name/lore
-
-## `[PLAYER]`
-
-Use `[PLAYER]` to make the target player run a command.
-
-```yaml
-actions:
-  - "[PLAYER] spawn"
-```
-
-This action only runs when a target player exists, so it is best used inside reward actions.
-
-## `[ITEM]`
-
-Use `[ITEM]` to give a simple item reward.
-
-```yaml
-actions:
-  - "[ITEM] DIAMOND 12"
-  - "[ITEM] BREAD 32"
-  - "[ITEM] ENCHANTED_BOOK 1 unbreaking:3"
-  - "[ITEM] DIAMOND_SWORD 1 sharpness:5 unbreaking:3 looting:2"
-```
-
-Format:
-
-```text
-[ITEM] <MATERIAL> [AMOUNT] [ENCHANT:LEVEL ...]
-```
-
-Notes:
-
-- `<MATERIAL>` must match a Bukkit material.
-- `amount` defaults to `1` when omitted.
-- Enchants are optional and separated by spaces.
-- Enchanted books receive stored enchants.
-- Other items receive unsafe enchants.
-- If the player's inventory is full, leftover items drop naturally at the player location.
-
-Supported friendly enchant aliases from source:
-
-- `UNBREAKING` maps to `DURABILITY`
-- `SHARPNESS` maps to `DAMAGE_ALL`
-- `LOOTING` maps to `LOOT_BONUS_MOBS`
-
-Minecraft namespaced keys can also work, for example `minecraft:unbreaking`.
-
-## `[EXP_LEVELS]`
-
-Use `[EXP_LEVELS]` to add or remove experience levels.
-
-```yaml
-actions:
-  - "[EXP_LEVELS] +5"
-  - "[EXP_LEVELS] -2"
-```
-
-The leading `+` is optional for positive values.
-
-## `[EXP_POINTS]`
-
-Use `[EXP_POINTS]` to add or remove raw experience points.
-
-```yaml
-actions:
-  - "[EXP_POINTS] +1000"
-  - "[EXP_POINTS] -100"
-```
-
-Use this when you want to reward exact experience points instead of whole levels.
-
-## `[CUSTOM:id]`
-
-Use `[CUSTOM:id]` to give an item configured under `quest.rewards.custom`.
-
-```yaml
-quest:
-  rewards:
-    custom:
-      1:
-        material: DIAMOND_SWORD
-        amount: 1
-        name: "<aqua>Master Diamond Sword</aqua>"
-        enchants:
-          - LOOTING:2
-          - UNBREAKING:3
-        lore:
-          - "<dark_gray>Combat Tool"
-          - "<dark_gray>[Signed By: %player_name%]"
-          - "<dark_gray>[Obtained at: %date_given%]"
-    top_contributions:
-      enabled: true
-      1:
-        enabled: true
-        actions:
-          - "[CUSTOM:1]"
-```
-
-Custom reward fields:
-
-| Field | Description |
+| Format | Meaning |
 | --- | --- |
-| `material` | Bukkit material for the item. |
-| `amount` | Item amount. Defaults to `1`. |
-| `name` | Display name. Supports MiniMessage-style item formatting. |
-| `lore` | Lore lines. Supports `%player_name%` and `%date_given%`. |
-| `enchants` | List of `ENCHANT:LEVEL` entries. |
+| `TARGET` | Matching action gives 1 contribution point. |
+| `TARGET:POINTS` | Matching action gives custom contribution points. |
+| `*` | Any target for that objective type can count. |
 
-`[CUSTOM:id]` is handled by reward actions, so use it inside `top_contributions` or `player_participated`.
+The `goal` is the total community progress required to complete the quest.
 
-## Lifecycle action example
+## BLOCK_BREAK
 
-```yaml
-quest:
-  settings:
-    whenStarted:
-      commands:
-        enabled: true
-        actions:
-          - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
-          - "[MESSAGE] <gray>A new community quest has begun! Use <yellow>/fiocommunityquest</yellow>.</gray>"
-    whenCompleted:
-      commands:
-        enabled: true
-        actions:
-          - "[SOUND] ENTITY_PLAYER_LEVELUP 1 1 master"
-          - "[MESSAGE] <green>The community quest has been completed!</green>"
-    whenFailed:
-      commands:
-        enabled: true
-        actions:
-          - "[SOUND] ENTITY_VILLAGER_NO 1 0.8 master"
-          - "[MESSAGE] <red>The community quest was not completed in time.</red>"
-```
-
-## Reward action example
+Adds progress when a player breaks a matching block.
 
 ```yaml
 quest:
-  rewards:
-    top_contributions:
-      enabled: true
-      1:
-        enabled: true
-        actions:
-          - "[MESSAGE] <green>You reached top 1 contribution!</green>"
-          - "[CONSOLE] eco give %player_name% 5000"
-          - "[ITEM] DIAMOND 12"
-          - "[EXP_LEVELS] +5"
-          - "[CUSTOM:1]"
-      2:
-        enabled: true
-        actions:
-          - "[MESSAGE] <green>You reached top 2 contribution!</green>"
-          - "[CONSOLE] eco give %player_name% 2500"
-          - "[ITEM] BREAD 32"
-    player_participated:
-      enabled: true
-      actions:
-        - "[MESSAGE] <gray>Thank you for participating.</gray>"
-        - "[ITEM] IRON_INGOT 4"
+  objectives:
+    type: "BLOCK_BREAK"
+    goal: 120000
+    required:
+      - "STONE"
+      - "DEEPSLATE:2"
 ```
+
+Notes:
+
+- Targets are Bukkit block material names.
+- `settings.naturalBlocks: true` prevents progress from blocks placed by players and then broken.
+- If a broken block is a fully grown crop, `FARMING` can also be checked separately.
+
+## BLOCK_PLACE
+
+Adds progress when a player places a matching block.
+
+```yaml
+quest:
+  objectives:
+    type: "BLOCK_PLACE"
+    goal: 50000
+    required:
+      - "OAK_PLANKS"
+      - "STONE_BRICKS"
+```
+
+Notes:
+
+- Targets are Bukkit block material names.
+- Placed egg blocks are also tracked for `HATCHING` when they later hatch.
+
+## BLOCK_FERTILIZE
+
+Adds progress when a player uses bone meal on a matching block or crop.
+
+```yaml
+quest:
+  objectives:
+    type: "BLOCK_FERTILIZE"
+    goal: 25000
+    required:
+      - "WHEAT"
+      - "CARROTS"
+      - "POTATOES"
+```
+
+Notes:
+
+- Targets are Bukkit block material names.
+- `settings.naturalCrops: true` blocks progress from crops that were placed by a player and immediately fertilized.
+
+## BUCKET_EMPTY
+
+Adds progress when a player empties a matching bucket into the world.
+
+```yaml
+quest:
+  objectives:
+    type: "BUCKET_EMPTY"
+    goal: 8000
+    required:
+      - "WATER_BUCKET"
+      - "LAVA_BUCKET"
+      - "POWDER_SNOW_BUCKET"
+```
+
+Legacy alias:
+
+- `EMPTY_BUCKET`
+
+## FARMING
+
+Adds progress when a player breaks a fully grown crop.
+
+```yaml
+quest:
+  objectives:
+    type: "FARMING"
+    goal: 40000
+    required:
+      - "WHEAT"
+      - "CARROTS"
+      - "POTATOES"
+```
+
+Notes:
+
+- The block must use ageable crop data and be fully grown.
+- `settings.naturalCrops: true` can prevent planted-and-farmed exploit progress.
+
+## HATCHING
+
+Adds progress when a player hatches a matching egg.
+
+```yaml
+quest:
+  objectives:
+    type: "HATCHING"
+    goal: 3000
+    required:
+      - "EGG"
+      - "TURTLE_EGG"
+      - "SNIFFER_EGG"
+```
+
+Supported hatching materials from source:
+
+- `EGG`
+- `TURTLE_EGG`
+- `SNIFFER_EGG`
+- `BROWN_EGG`
+- `BLUE_EGG`
+
+Legacy alias:
+
+- `HATCH_EGG`
+
+## ENTITY_BRED
+
+Adds progress when a player breeds a matching entity.
+
+```yaml
+quest:
+  objectives:
+    type: "ENTITY_BRED"
+    goal: 10000
+    required:
+      - "COW"
+      - "SHEEP"
+      - "PIG"
+```
+
+Targets are Bukkit entity type names.
+
+Legacy aliases:
+
+- `BREED`
+- `BREED_ENTITY`
+
+## ENTITY_DEAL_DAMAGE
+
+Adds progress when a player deals damage to a matching entity.
+
+```yaml
+quest:
+  objectives:
+    type: "ENTITY_DEAL_DAMAGE"
+    goal: 1000
+    required:
+      - "IRON_GOLEM;1000"
+      - "ZOMBIE;200"
+```
+
+Format:
+
+```text
+<ENTITY>;<TOTAL_DAMAGE>
+```
+
+Notes:
+
+- Damage progress uses the final damage rounded up.
+- Players can count as targets too, but same-IP player kill protection is handled elsewhere for kills.
+- `*;1000` can be used to allow any damaged entity.
+
+Legacy aliases:
+
+- `DEAL_DAMAGE`
+- `ENTITY_DAMAGE`
+- `DAMAGE_ENTITY`
+
+## HUNT
+
+Adds progress when a player kills a matching entity.
+
+```yaml
+quest:
+  objectives:
+    type: "HUNT"
+    goal: 30000
+    required:
+      - "ZOMBIE"
+      - "SKELETON"
+      - "CREEPER"
+```
+
+Notes:
+
+- Targets are Bukkit entity type names.
+- `settings.naturalMobSpawns: true` blocks mobs spawned from spawn eggs.
+- `settings.SpawnerNotCount: true` blocks mobs spawned by spawners.
+- `settings.blockSameIP: true` blocks same-IP player kill progress.
+
+Legacy aliases:
+
+- `KILL_ENTITY`
+- `ENTITY_KILL`
+
+## FISHING
+
+Adds progress when a player catches a matching item from fishing.
+
+```yaml
+quest:
+  objectives:
+    type: "FISHING"
+    goal: 12000
+    required:
+      - "COD"
+      - "SALMON"
+      - "PUFFERFISH"
+```
+
+Notes:
+
+- If the caught result is an item, its Bukkit material name is used.
+- If the caught result is not an item, `*` is used as the target.
+
+Legacy aliases:
+
+- `FISH`
+- `FISH_CAUGHT`
+
+## BREWING_INGREDIENTS
+
+Adds progress when a player brews using a matching ingredient.
+
+```yaml
+quest:
+  objectives:
+    type: "BREWING_INGREDIENTS"
+    goal: 12000
+    required:
+      - "NETHER_WART"
+      - "MAGMA_CREAM"
+      - "GHAST_TEAR"
+```
+
+Notes:
+
+- Targets are raw ingredient material names.
+- The plugin tracks the player who last placed the brewing ingredient.
+- Completed potions can also be counted by `BREWING_POTIONS`.
+
+Legacy aliases:
+
+- `BREWING`
+- `BREW_INGREDIENT`
+
+## BREWING_POTIONS
+
+Adds progress when a brewed potion result matches a potion effect and tier.
+
+```yaml
+quest:
+  objectives:
+    type: "BREWING_POTIONS"
+    goal: 6000
+    required:
+      - "SPEED;1"
+      - "STRENGTH;2"
+```
+
+Format:
+
+```text
+<POTION_TYPE>;<MIN_TIER>
+<POTION_TYPE>;<MIN_TIER>:<POINTS>
+```
+
+Notes:
+
+- Tier `1` is normal.
+- Tier `2` is upgraded.
+- Potion type names come from Bukkit potion data, for example `SPEED`.
+
+Legacy aliases:
+
+- `BREW_POTION`
+- `BREWING_POTION`
+
+## CRAFTING
+
+Adds progress when a player crafts a matching item.
+
+```yaml
+quest:
+  objectives:
+    type: "CRAFTING"
+    goal: 60000
+    required:
+      - "STICK"
+      - "DIAMOND_PICKAXE"
+```
+
+Notes:
+
+- Targets are crafted result material names.
+- Progress amount is multiplied by the recipe result amount.
+
+Legacy aliases:
+
+- `CRAFT`
+- `ITEM_CRAFT`
+
+## SMELTING
+
+Adds progress when a furnace smelts a matching input material.
+
+```yaml
+quest:
+  objectives:
+    type: "SMELTING"
+    goal: 45000
+    required:
+      - "RAW_IRON"
+      - "IRON_ORE"
+      - "GOLD_ORE"
+```
+
+Notes:
+
+- Targets are the input/source material, not the output item.
+- The plugin tracks which player interacted with the furnace input.
+
+Legacy alias:
+
+- `SMELT`
+
+## SMITHING
+
+Adds progress when a player uses a smithing table to create a matching result item.
+
+```yaml
+quest:
+  objectives:
+    type: "SMITHING"
+    goal: 1000
+    required:
+      - "NETHERITE_SWORD"
+      - "NETHERITE_PICKAXE"
+```
+
+Notes:
+
+- Targets are smithing result material names.
+- Progress amount is multiplied by the result amount.
+
+Legacy aliases:
+
+- `SMITH`
+- `SMITH_ITEM`
+
+## COMPOSTING
+
+Adds progress when a player uses a matching item on a composter.
+
+```yaml
+quest:
+  objectives:
+    type: "COMPOSTING"
+    goal: 10000
+    required:
+      - "WHEAT_SEEDS"
+      - "CARROT:2"
+```
+
+Notes:
+
+- Targets are the item material used on the composter.
+- The action is detected from right-clicking a composter with an item.
+
+Legacy aliases:
+
+- `COMPOST`
+- `COMPOST_ITEM`
+
+## TRADING
+
+Adds progress when a player receives a matching trade result from a villager, wandering trader, or merchant inventory.
+
+```yaml
+quest:
+  objectives:
+    type: "TRADING"
+    goal: 20000
+    required:
+      - "EMERALD;ANY"
+      - "ARROW;FLETCHER"
+      - "GOLDEN_CARROT;FARMER:2"
+```
+
+Format:
+
+```text
+<MATERIAL_TO_GET>;<VILLAGER_JOB>
+<MATERIAL_TO_GET>;<VILLAGER_JOB>:<POINTS>
+```
+
+Notes:
+
+- Use `ANY` or `*` for every villager job.
+- Wandering traders use `WANDERING_TRADER`.
+- Progress amount is multiplied by the result item amount.
+
+Legacy aliases:
+
+- `TRADE`
+- `VILLAGER_TRADE`
+- `MERCHANT_TRADE`
+
+## MILKING
+
+Adds progress when a player successfully milks a matching entity.
+
+```yaml
+quest:
+  objectives:
+    type: "MILKING"
+    goal: 5000
+    required:
+      - "COW"
+      - "MOOSHROOM_COW"
+      - "GOAT"
+```
+
+Notes:
+
+- The player must use a bucket and receive a milk bucket.
+- `MUSHROOM_COW` is also mapped to `MOOSHROOM_COW` compatibility.
+
+Legacy aliases:
+
+- `MILK`
+- `MILK_ENTITY`
+
+## BARTERING
+
+Adds progress when a player barters with a Piglin and receives a matching item.
+
+```yaml
+quest:
+  objectives:
+    type: "BARTERING"
+    goal: 10000
+    required:
+      - "GRAVEL"
+      - "ENDER_PEARL"
+```
+
+Notes:
+
+- Targets are Piglin barter outcome material names.
+- Progress amount is multiplied by the outcome item amount.
+
+Legacy aliases:
+
+- `BARTER`
+- `PIGLIN_BARTER`
+
+## CURING
+
+Adds progress when a player cures a matching entity.
+
+```yaml
+quest:
+  objectives:
+    type: "CURING"
+    goal: 100
+    required:
+      - "ZOMBIE_VILLAGER"
+```
+
+Notes:
+
+- Current source detects `ZOMBIE_VILLAGER` transforming into `VILLAGER`.
+- The player is tracked from Bukkit conversion player data or earlier golden apple interaction.
+
+Legacy aliases:
+
+- `CURE`
+- `CURE_ENTITY`
+- `ZOMBIE_VILLAGER_CURE`
+
+## PLAYTIME
+
+Adds progress every second while a player is online and allowed to progress.
+
+```yaml
+quest:
+  objectives:
+    type: "PLAYTIME"
+    goal: 3600
+    required:
+      - "1h"
+```
+
+Notes:
+
+- Required values can be raw seconds or duration strings.
+- Supported duration units: `y`, `mo`, `w`, `d`, `h`, `m`, `s`.
+- If no valid required duration is provided, the plugin uses `goal`.
+
+Legacy aliases:
+
+- `TIME_PLAYED`
+- `PLAY_TIME`
+- `ONLINE_TIME`
+
+## PLACEHOLDERAPI
+
+Adds progress when a PlaceholderAPI comparison passes for a player.
+
+```yaml
+quest:
+  objectives:
+    type: "PLACEHOLDERAPI"
+    goal: 1
+    value: "%vault_eco_balance%"
+    operator: ">="
+    endValue: "10000"
+    required:
+      - "*"
+```
+
+Notes:
+
+- PlaceholderAPI must be installed.
+- The plugin checks placeholder quests every 5 seconds.
+- When the comparison passes, the player receives 1 progress.
+- Numeric comparisons ignore commas.
+
+Supported operators:
+
+- `>`
+- `>=`
+- `<`
+- `<=`
+- `==`
+- `!=`
+- `=` as alias for `==`
+- `=<` as alias for `<=`
+
+Legacy aliases:
+
+- `PLACEHOLDER`
+- `PAPI`
+
+## EXP_POINTS
+
+Adds progress when a player gains raw experience points.
+
+```yaml
+quest:
+  objectives:
+    type: "EXP_POINTS"
+    goal: 250000
+    required:
+      - "250000"
+```
+
+Notes:
+
+- Only positive experience changes count.
+- If `required` contains a positive number, that number is treated as the goal helper.
+- If `required` contains `*` or no valid number, `goal` is used.
+
+Legacy alias:
+
+- `EXP`
+
+## EXP_LEVELS
+
+Adds progress when a player gains Minecraft experience levels.
+
+```yaml
+quest:
+  objectives:
+    type: "EXP_LEVELS"
+    goal: 1000
+    required:
+      - "1000"
+```
+
+Notes:
+
+- Only level increases count.
+- Losing levels does not add progress.
+- If `required` contains a positive number, that number is treated as the goal helper.
+
+Legacy aliases:
+
+- `LEVELS`
+- `EXP_LEVEL`
+
+## PROJECTILE_LAUNCH
+
+Adds progress when a player launches a matching projectile.
+
+```yaml
+quest:
+  objectives:
+    type: "PROJECTILE_LAUNCH"
+    goal: 20000
+    required:
+      - "ARROW"
+      - "SNOWBALL"
+      - "ENDER_PEARL"
+      - "TRIDENT"
+```
+
+Targets are Bukkit projectile entity type names.
+
+Legacy aliases:
+
+- `LAUNCH_PROJECTILE`
+- `PROJECTILE`
+
+## SHEARING
+
+Adds progress when a player shears a matching entity or wool color.
+
+```yaml
+quest:
+  objectives:
+    type: "SHEARING"
+    goal: 15000
+    required:
+      - "WOOL"
+      - "WHITE_WOOL"
+      - "BLACK_WOOL"
+```
+
+Notes:
+
+- Sheep return their wool material name, such as `WHITE_WOOL`.
+- `WOOL` matches any sheep wool color.
+- Non-sheep entities use the entity type as the target.
+
+Legacy aliases:
+
+- `SHEAR`
+- `SHEAR_ENTITY`
+
+## RESSURECTION
+
+Adds progress when a player is saved by a totem of undying.
+
+```yaml
+quest:
+  objectives:
+    type: "RESSURECTION"
+    goal: 10
+    required:
+      - "TOTEM_OF_UNDYING"
+```
+
+Notes:
+
+- The source spelling is `RESSURECTION`.
+- The player must be holding a totem in main hand or off hand when the resurrect event fires.
+
+Legacy aliases:
+
+- `RESURRECTION`
+- `TOTEM_POP`
+- `TOTEM_OF_UNDYING`
+
+## ITEM_ENCHANT
+
+Adds progress when a player enchants a matching item material.
+
+```yaml
+quest:
+  objectives:
+    type: "ITEM_ENCHANT"
+    goal: 100
+    required:
+      - "DIAMOND_SWORD"
+```
+
+Notes:
+
+- Targets are enchanted item material names.
+- Use `ENCHANTING` when you want to match the enchantment name and level instead of the item material.
+
+Legacy alias:
+
+- `ENCHANT_ITEM`
+
+## ENCHANTING
+
+Adds progress when a player enchants an item with a matching enchantment and minimum level.
+
+```yaml
+quest:
+  objectives:
+    type: "ENCHANTING"
+    goal: 800
+    required:
+      - "SHARPNESS:1"
+      - "UNBREAKING:3:2"
+    tools:
+      - "*_SWORD"
+      - "DIAMOND_PICKAXE"
+```
+
+Required format:
+
+```text
+<ENCHANT>
+<ENCHANT>:<MIN_LEVEL>
+<ENCHANT>:<MIN_LEVEL>:<POINTS>
+```
+
+Tool filter format:
+
+```yaml
+tools: "ANY"
+```
+
+or:
+
+```yaml
+tools:
+  - "*_SWORD"
+  - "*_PICKAXE"
+  - "DIAMOND_AXE"
+```
+
+Notes:
+
+- `tools` can be `ANY`, `*`, exact material names, or wildcard patterns.
+- Enchant names are normalized and support namespaced keys.
+
+Legacy alias:
+
+- `ENCHANT`
+
+## CONSUME
+
+Adds progress when a player consumes a matching item.
+
+```yaml
+quest:
+  objectives:
+    type: "CONSUME"
+    goal: 10000
+    required:
+      - "GOLDEN_APPLE"
+      - "POTION"
+```
+
+Targets are consumed item material names.
+
+Legacy alias:
+
+- `ITEM_CONSUME`
+
+## MANUAL
+
+Does not listen to gameplay automatically. Progress must be added by command/API or custom integration.
+
+```yaml
+quest:
+  objectives:
+    type: "MANUAL"
+    goal: 100
+    required:
+      - "*"
+```
+
+Useful API method:
+
+```java
+api.addProgress(player.getUniqueId(), player.getName(), "quest_id", 1);
+```
+
+Manual quests are useful for:
+
+- custom scripts
+- admin-controlled events
+- external plugin integrations
+- special quests that should only progress from API calls
+
+## Legacy aliases summary
+
+| Alias | Normalized action |
+| --- | --- |
+| `BREAK_BLOCK` | `BLOCK_BREAK` |
+| `PLACE_BLOCK` | `BLOCK_PLACE` |
+| `HATCH_EGG` | `HATCHING` |
+| `EMPTY_BUCKET` | `BUCKET_EMPTY` |
+| `KILL_ENTITY`, `ENTITY_KILL` | `HUNT` |
+| `BREED`, `BREED_ENTITY` | `ENTITY_BRED` |
+| `DEAL_DAMAGE`, `ENTITY_DAMAGE`, `DAMAGE_ENTITY` | `ENTITY_DEAL_DAMAGE` |
+| `FISH`, `FISH_CAUGHT` | `FISHING` |
+| `BREWING`, `BREW_INGREDIENT` | `BREWING_INGREDIENTS` |
+| `BREW_POTION`, `BREWING_POTION` | `BREWING_POTIONS` |
+| `CRAFT`, `ITEM_CRAFT` | `CRAFTING` |
+| `SMELT` | `SMELTING` |
+| `SMITH`, `SMITH_ITEM` | `SMITHING` |
+| `COMPOST`, `COMPOST_ITEM` | `COMPOSTING` |
+| `TRADE`, `VILLAGER_TRADE`, `MERCHANT_TRADE` | `TRADING` |
+| `MILK`, `MILK_ENTITY` | `MILKING` |
+| `BARTER`, `PIGLIN_BARTER` | `BARTERING` |
+| `CURE`, `CURE_ENTITY`, `ZOMBIE_VILLAGER_CURE` | `CURING` |
+| `TIME_PLAYED`, `PLAY_TIME`, `ONLINE_TIME` | `PLAYTIME` |
+| `PLACEHOLDER`, `PAPI` | `PLACEHOLDERAPI` |
+| `EXP` | `EXP_POINTS` |
+| `LEVELS`, `EXP_LEVEL` | `EXP_LEVELS` |
+| `LAUNCH_PROJECTILE`, `PROJECTILE` | `PROJECTILE_LAUNCH` |
+| `SHEAR`, `SHEAR_ENTITY` | `SHEARING` |
+| `RESURRECTION`, `TOTEM_POP`, `TOTEM_OF_UNDYING` | `RESSURECTION` |
+| `ENCHANT_ITEM` | `ITEM_ENCHANT` |
+| `ENCHANT` | `ENCHANTING` |
+| `ITEM_CONSUME` | `CONSUME` |
 
 :::info[Page note]
-This page is source-backed from `QuestLifecycleService.java` and the bundled quest YAML files.
+This page is source-backed from `QuestActionType.java`, `QuestProgressListener.java`, and `Quest.java`.
 :::

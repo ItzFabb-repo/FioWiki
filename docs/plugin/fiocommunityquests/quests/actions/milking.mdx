@@ -1,0 +1,34 @@
+---
+title: MILKING
+sidebar_position: 18
+---
+
+# MILKING
+
+`MILKING` adds progress when a player milks a matching entity.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "MILKING"
+    goal: 5000
+    required:
+      - COW
+      - MOOSHROOM_COW
+      - GOAT
+```
+
+## Required values
+
+Supported milkable entity targets from source:
+
+- `COW`
+- `MUSHROOM_COW`
+- `MOOSHROOM_COW`
+- `GOAT`
+
+## Notes
+
+The plugin checks the next tick that the player has a `MILK_BUCKET` in hand before adding progress.

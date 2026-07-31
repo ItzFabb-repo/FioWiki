@@ -1,0 +1,35 @@
+---
+title: FISHING
+sidebar_position: 10
+---
+
+# FISHING
+
+`FISHING` adds progress when a player catches a fish or item.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "FISHING"
+    goal: 12000
+    required:
+      - COD
+      - SALMON
+      - TROPICAL_FISH
+```
+
+## Required values
+
+Use the caught item material name.
+
+| Example | Meaning |
+| --- | --- |
+| `COD` | Catching cod gives 1 point per item amount. |
+| `PUFFERFISH:2` | Catching pufferfish gives 2 points per item amount. |
+| `*` | Any caught fish/item gives 1 point per item amount. |
+
+## Notes
+
+Only `PlayerFishEvent.State.CAUGHT_FISH` is counted.

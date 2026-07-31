@@ -1,0 +1,34 @@
+---
+title: BLOCK_PLACE
+sidebar_position: 2
+---
+
+# BLOCK_PLACE
+
+`BLOCK_PLACE` adds progress when a player places a matching block.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BLOCK_PLACE"
+    goal: 50000
+    required:
+      - OAK_PLANKS
+      - STONE_BRICKS:2
+```
+
+## Required values
+
+Use Bukkit block material names.
+
+| Example | Meaning |
+| --- | --- |
+| `OAK_PLANKS` | Placing oak planks gives 1 point. |
+| `STONE_BRICKS:2` | Placing stone bricks gives 2 points. |
+| `*` | Any placed block gives 1 point. |
+
+## Notes
+
+Placed blocks are tracked by location so `BLOCK_BREAK` can optionally ignore break progress from blocks players placed themselves.

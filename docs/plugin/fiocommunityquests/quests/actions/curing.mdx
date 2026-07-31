@@ -1,0 +1,29 @@
+---
+title: CURING
+sidebar_position: 20
+---
+
+# CURING
+
+`CURING` adds progress when a player cures a zombie villager into a villager.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "CURING"
+    goal: 100
+    required:
+      - ZOMBIE_VILLAGER
+```
+
+## Required values
+
+Current source progress target:
+
+- `ZOMBIE_VILLAGER`
+
+## Notes
+
+The plugin uses Bukkit's conversion player when available, or tracks the player who used a golden apple on the zombie villager.

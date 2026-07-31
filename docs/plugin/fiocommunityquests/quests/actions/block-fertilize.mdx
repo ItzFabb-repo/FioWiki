@@ -1,0 +1,35 @@
+---
+title: BLOCK_FERTILIZE
+sidebar_position: 3
+---
+
+# BLOCK_FERTILIZE
+
+`BLOCK_FERTILIZE` adds progress when a player fertilizes a matching block or crop with bone meal.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BLOCK_FERTILIZE"
+    goal: 25000
+    required:
+      - WHEAT
+      - CARROTS
+      - POTATOES
+```
+
+## Required values
+
+Use the fertilized block material name.
+
+| Example | Meaning |
+| --- | --- |
+| `WHEAT` | Fertilizing wheat gives 1 point. |
+| `CARROTS:2` | Fertilizing carrots gives 2 points. |
+| `*` | Any fertilized block gives 1 point. |
+
+## Notes
+
+If `settings.naturalCrops` is enabled, fertilizing a player-placed tracked crop location can be blocked from progress.

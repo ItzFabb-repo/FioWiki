@@ -1,0 +1,31 @@
+---
+title: BUCKET_EMPTY
+sidebar_position: 4
+---
+
+# BUCKET_EMPTY
+
+`BUCKET_EMPTY` adds progress when a player empties a matching filled bucket.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BUCKET_EMPTY"
+    goal: 8000
+    required:
+      - WATER_BUCKET
+      - LAVA_BUCKET
+      - POWDER_SNOW_BUCKET
+```
+
+## Required values
+
+Use the bucket material returned by Bukkit, not the placed fluid block.
+
+| Example | Meaning |
+| --- | --- |
+| `WATER_BUCKET` | Emptying a water bucket gives 1 point. |
+| `LAVA_BUCKET:2` | Emptying a lava bucket gives 2 points. |
+| `*` | Any emptied bucket gives 1 point. |

@@ -1,0 +1,30 @@
+---
+title: CONSUME
+sidebar_position: 30
+---
+
+# CONSUME
+
+`CONSUME` adds progress when a player consumes a matching item.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "CONSUME"
+    goal: 10000
+    required:
+      - GOLDEN_APPLE
+      - COOKED_BEEF
+```
+
+## Required values
+
+Use Bukkit material names for consumable items.
+
+| Example | Meaning |
+| --- | --- |
+| `GOLDEN_APPLE` | Consuming a golden apple gives 1 point. |
+| `COOKED_BEEF:2` | Consuming cooked beef gives 2 points. |
+| `*` | Consuming any item that fires the consume event gives 1 point. |

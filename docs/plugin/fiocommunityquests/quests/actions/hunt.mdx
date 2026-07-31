@@ -1,0 +1,37 @@
+---
+title: HUNT
+sidebar_position: 9
+---
+
+# HUNT
+
+`HUNT` adds progress when a player kills a matching entity.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "HUNT"
+    goal: 30000
+    required:
+      - ZOMBIE
+      - SKELETON
+      - CREEPER
+```
+
+## Required values
+
+Use Bukkit entity type names.
+
+| Example | Meaning |
+| --- | --- |
+| `ZOMBIE` | Killing a zombie gives 1 point. |
+| `ENDER_DRAGON:50` | Killing an ender dragon gives 50 points. |
+| `*` | Killing any entity gives 1 point. |
+
+## Notes
+
+- Mobs from spawn eggs are blocked when `settings.naturalMobSpawns` is enabled.
+- Mobs from spawners are blocked when `settings.SpawnerNotCount` is enabled.
+- Player kills from the same IP are blocked when `settings.blockSameIP` is enabled.

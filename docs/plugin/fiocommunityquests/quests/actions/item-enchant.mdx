@@ -1,0 +1,34 @@
+---
+title: ITEM_ENCHANT
+sidebar_position: 28
+---
+
+# ITEM_ENCHANT
+
+`ITEM_ENCHANT` adds progress when a player enchants a matching item material.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "ITEM_ENCHANT"
+    goal: 500
+    required:
+      - DIAMOND_SWORD
+      - DIAMOND_PICKAXE
+```
+
+## Required values
+
+Use the enchanted item material name.
+
+| Example | Meaning |
+| --- | --- |
+| `DIAMOND_SWORD` | Enchanting a diamond sword gives 1 point. |
+| `DIAMOND_PICKAXE:2` | Enchanting a diamond pickaxe gives 2 points. |
+| `*` | Enchanting any item gives 1 point. |
+
+## Notes
+
+This is different from `ENCHANTING`: `ITEM_ENCHANT` checks the item material, not the enchantment name or level.

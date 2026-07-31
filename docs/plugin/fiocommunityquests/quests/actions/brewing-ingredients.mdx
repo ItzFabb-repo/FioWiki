@@ -1,0 +1,35 @@
+---
+title: BREWING_INGREDIENTS
+sidebar_position: 11
+---
+
+# BREWING_INGREDIENTS
+
+`BREWING_INGREDIENTS` adds progress when a tracked player brews with a matching ingredient.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BREWING_INGREDIENTS"
+    goal: 12000
+    required:
+      - NETHER_WART
+      - MAGMA_CREAM
+      - GHAST_TEAR
+```
+
+## Required values
+
+Use Bukkit material names for the brewing ingredient.
+
+| Example | Meaning |
+| --- | --- |
+| `NETHER_WART` | Brewing with nether wart gives 1 point. |
+| `GUNPOWDER:2` | Brewing with gunpowder gives 2 points. |
+| `*` | Any tracked brewing ingredient gives 1 point. |
+
+## Notes
+
+The plugin tracks who interacted with the brewing stand ingredient slot, then counts when `BrewEvent` fires.

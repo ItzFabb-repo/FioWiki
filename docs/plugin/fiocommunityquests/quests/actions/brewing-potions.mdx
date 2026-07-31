@@ -1,0 +1,38 @@
+---
+title: BREWING_POTIONS
+sidebar_position: 12
+---
+
+# BREWING_POTIONS
+
+`BREWING_POTIONS` adds progress for completed potion results after brewing.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BREWING_POTIONS"
+    goal: 6000
+    required:
+      - "SPEED;1"
+      - "STRENGTH;2"
+```
+
+## Required values
+
+Use this format:
+
+```text
+<POTION_TYPE>;<MIN_TIER>[:points]
+```
+
+| Example | Meaning |
+| --- | --- |
+| `SPEED;1` | Speed tier 1 or higher gives 1 point. |
+| `STRENGTH;2:3` | Strength tier 2 or higher gives 3 points. |
+| `*;1` | Any potion tier 1 or higher gives 1 point. |
+
+## Notes
+
+The plugin checks the potion base type and whether the potion is upgraded. Upgraded potions count as tier `2`; otherwise tier `1`.

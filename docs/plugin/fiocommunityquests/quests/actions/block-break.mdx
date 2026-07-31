@@ -1,0 +1,35 @@
+---
+title: BLOCK_BREAK
+sidebar_position: 1
+---
+
+# BLOCK_BREAK
+
+`BLOCK_BREAK` adds progress when a player breaks a matching block.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BLOCK_BREAK"
+    goal: 120000
+    required:
+      - STONE
+      - DEEPSLATE:2
+```
+
+## Required values
+
+Use Bukkit material names. Add `:<points>` to make one action worth more than one contribution point.
+
+| Example | Meaning |
+| --- | --- |
+| `STONE` | Breaking stone gives 1 point. |
+| `DEEPSLATE:2` | Breaking deepslate gives 2 points. |
+| `*` | Any broken block gives 1 point. |
+
+## Notes
+
+- Progress is skipped for player-placed blocks when `settings.naturalBlocks` is enabled.
+- `BLOCK_BREAK` can also trigger `FARMING` when the broken block is a fully grown crop.

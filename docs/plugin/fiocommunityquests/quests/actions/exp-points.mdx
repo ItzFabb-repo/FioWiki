@@ -1,0 +1,32 @@
+---
+title: EXP_POINTS
+sidebar_position: 23
+---
+
+# EXP_POINTS
+
+`EXP_POINTS` adds progress from positive raw experience point changes.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "EXP_POINTS"
+    goal: 250000
+    required:
+      - "250000"
+```
+
+## Required values
+
+Use a numeric required value, or `*` to fall back to `goal`.
+
+| Example | Meaning |
+| --- | --- |
+| `1000` | Required point goal is 1000. |
+| `*` | Required point goal uses `goal`. |
+
+## Notes
+
+Progress amount is the positive amount from `PlayerExpChangeEvent`.

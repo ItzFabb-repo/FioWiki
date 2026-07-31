@@ -1,0 +1,35 @@
+---
+title: PLAYTIME
+sidebar_position: 21
+---
+
+# PLAYTIME
+
+`PLAYTIME` adds progress every second while the player is online and allowed to progress.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "PLAYTIME"
+    goal: 3600
+    required:
+      - "1h"
+```
+
+## Required values
+
+Use a duration string or seconds.
+
+| Example | Meaning |
+| --- | --- |
+| `3600` | 3600 seconds. |
+| `1h` | 1 hour. |
+| `1d,5h` | 1 day and 5 hours. |
+
+## Notes
+
+- If `required` contains a valid duration, that value is used.
+- If no valid required duration exists, the plugin falls back to `goal`.
+- Background checks run once per second.

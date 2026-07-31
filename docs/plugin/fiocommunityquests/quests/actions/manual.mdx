@@ -1,0 +1,39 @@
+---
+title: MANUAL
+sidebar_position: 31
+---
+
+# MANUAL
+
+`MANUAL` does not listen to a gameplay event. Progress must be added by command, API, or another integration.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "MANUAL"
+    goal: 100
+    required: []
+```
+
+## How progress is added
+
+Use the public API:
+
+```java
+FioCommunityQuestsApi api = FioCommunityQuestsProvider.get();
+if (api != null) {
+    api.addProgress(player.getUniqueId(), player.getName(), "manual_quest", 1);
+}
+```
+
+Or use admin tools that modify active contribution points:
+
+```text
+/fiocommunityquest admin contributionpoints add <player> <value>
+```
+
+## Notes
+
+Empty or unknown objective types are normalized to `MANUAL`.

@@ -1,0 +1,32 @@
+---
+title: EXP_LEVELS
+sidebar_position: 24
+---
+
+# EXP_LEVELS
+
+`EXP_LEVELS` adds progress when the player's experience level increases.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "EXP_LEVELS"
+    goal: 50
+    required:
+      - "50"
+```
+
+## Required values
+
+Use a numeric required value, or `*` to fall back to `goal`.
+
+| Example | Meaning |
+| --- | --- |
+| `5` | Required level gain goal is 5. |
+| `*` | Required level gain goal uses `goal`. |
+
+## Notes
+
+Progress amount is `newLevel - oldLevel`, and only positive gains count.

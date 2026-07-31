@@ -1,0 +1,36 @@
+---
+title: HATCHING
+sidebar_position: 6
+---
+
+# HATCHING
+
+`HATCHING` adds progress when a player hatches a supported egg.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "HATCHING"
+    goal: 3000
+    required:
+      - EGG
+      - TURTLE_EGG
+      - SNIFFER_EGG
+```
+
+## Required values
+
+Supported hatching targets from source:
+
+- `EGG`
+- `TURTLE_EGG`
+- `SNIFFER_EGG`
+- `BROWN_EGG`
+- `BLUE_EGG`
+
+## Notes
+
+- Thrown chicken eggs count as `EGG` when they hatch.
+- Placed hatchable egg blocks are tracked when placed, then counted when Bukkit fires grow/fade style hatch events.

@@ -1,0 +1,34 @@
+---
+title: SMITHING
+sidebar_position: 15
+---
+
+# SMITHING
+
+`SMITHING` adds progress when a player takes a matching smithing table result.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "SMITHING"
+    goal: 1000
+    required:
+      - NETHERITE_SWORD
+      - NETHERITE_PICKAXE
+```
+
+## Required values
+
+Use the smithing result material.
+
+| Example | Meaning |
+| --- | --- |
+| `NETHERITE_SWORD` | Smithing a netherite sword gives 1 point. |
+| `NETHERITE_PICKAXE:3` | Smithing a netherite pickaxe gives 3 points. |
+| `*` | Any smithing result gives 1 point. |
+
+## Notes
+
+The multiplier uses the smithing result amount.

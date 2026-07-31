@@ -1,0 +1,34 @@
+---
+title: BARTERING
+sidebar_position: 19
+---
+
+# BARTERING
+
+`BARTERING` adds progress when a player barters with a piglin and receives matching outcome items.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "BARTERING"
+    goal: 10000
+    required:
+      - GRAVEL
+      - ENDER_PEARL:2
+```
+
+## Required values
+
+Use Bukkit material names for piglin barter outcome items.
+
+| Example | Meaning |
+| --- | --- |
+| `GRAVEL` | Receiving gravel gives 1 point per item amount. |
+| `ENDER_PEARL:2` | Receiving ender pearls gives 2 points per item amount. |
+| `*` | Any barter outcome gives 1 point per item amount. |
+
+## Notes
+
+The plugin tracks the player who interacted with or threw gold to the piglin, then counts the barter outcome.

@@ -1,0 +1,30 @@
+---
+title: COMPOSTING
+sidebar_position: 16
+---
+
+# COMPOSTING
+
+`COMPOSTING` adds progress when a player right-clicks a composter with a matching item.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "COMPOSTING"
+    goal: 10000
+    required:
+      - WHEAT_SEEDS
+      - CARROT:2
+```
+
+## Required values
+
+Use the item material in the player's hand.
+
+| Example | Meaning |
+| --- | --- |
+| `WHEAT_SEEDS` | Composting wheat seeds gives 1 point. |
+| `CARROT:2` | Composting carrots gives 2 points. |
+| `*` | Any item used on a composter gives 1 point. |

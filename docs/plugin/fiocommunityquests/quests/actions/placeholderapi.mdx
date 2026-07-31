@@ -1,0 +1,48 @@
+---
+title: PLACEHOLDERAPI
+sidebar_position: 22
+---
+
+# PLACEHOLDERAPI
+
+`PLACEHOLDERAPI` adds progress when a PlaceholderAPI comparison passes.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "PLACEHOLDERAPI"
+    goal: 1
+    value: "%vault_eco_balance%"
+    operator: ">="
+    endValue: "10000"
+    required:
+      - "1"
+```
+
+## Comparison fields
+
+| Field | Description |
+| --- | --- |
+| `value` | PlaceholderAPI placeholder to resolve for the player. |
+| `operator` | Comparison operator. |
+| `endValue` | Expected value to compare against. |
+
+Supported operators:
+
+- `>`
+- `>=`
+- `<`
+- `<=`
+- `=<` alias for `<=`
+- `==`
+- `=` alias for `==`
+- `!=`
+
+## Notes
+
+- PlaceholderAPI must be installed.
+- Numeric comparisons are used when both values can be parsed as numbers.
+- `==` and `!=` can compare text values case-insensitively.
+- Background checks run every 5 seconds.

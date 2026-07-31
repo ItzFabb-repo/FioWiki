@@ -1,0 +1,39 @@
+---
+title: TRADING
+sidebar_position: 17
+---
+
+# TRADING
+
+`TRADING` adds progress when a player takes a matching villager or wandering trader trade result.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "TRADING"
+    goal: 20000
+    required:
+      - "EMERALD;ANY"
+      - "ARROW;FLETCHER:2"
+```
+
+## Required values
+
+Use this format:
+
+```text
+<RESULT_MATERIAL>;<VILLAGER_PROFESSION>[:points]
+```
+
+| Example | Meaning |
+| --- | --- |
+| `EMERALD;ANY` | Any profession trade that returns emeralds gives 1 point per result amount. |
+| `ARROW;FLETCHER:2` | Fletcher trades returning arrows give 2 points per result amount. |
+| `*;WANDERING_TRADER` | Any wandering trader result gives 1 point per result amount. |
+
+## Notes
+
+- `ANY` and `*` match every profession.
+- Wandering traders use `WANDERING_TRADER` as the profession value.

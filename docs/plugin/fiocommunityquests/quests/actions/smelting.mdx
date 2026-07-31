@@ -1,0 +1,34 @@
+---
+title: SMELTING
+sidebar_position: 14
+---
+
+# SMELTING
+
+`SMELTING` adds progress when a tracked furnace smelts a matching input material.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "SMELTING"
+    goal: 45000
+    required:
+      - RAW_IRON
+      - IRON_ORE
+```
+
+## Required values
+
+Use the source/input material, not the smelted result.
+
+| Example | Meaning |
+| --- | --- |
+| `RAW_IRON` | Smelting raw iron gives 1 point. |
+| `IRON_ORE:2` | Smelting iron ore gives 2 points. |
+| `*` | Any tracked smelted input gives 1 point. |
+
+## Notes
+
+The plugin tracks the furnace input after player inventory interaction, then counts when `FurnaceSmeltEvent` fires.

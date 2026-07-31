@@ -1,0 +1,36 @@
+---
+title: FARMING
+sidebar_position: 5
+---
+
+# FARMING
+
+`FARMING` adds progress when a player breaks a fully grown crop block.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "FARMING"
+    goal: 40000
+    required:
+      - WHEAT
+      - CARROTS
+      - POTATOES
+```
+
+## Required values
+
+Use crop block material names.
+
+| Example | Meaning |
+| --- | --- |
+| `WHEAT` | Harvesting fully grown wheat gives 1 point. |
+| `CARROTS:2` | Harvesting fully grown carrots gives 2 points. |
+| `*` | Any fully grown ageable crop gives 1 point. |
+
+## Notes
+
+- The block must use Bukkit `Ageable` data and be at maximum age.
+- If `settings.naturalCrops` is enabled, player-placed tracked crop locations can be blocked from progress.

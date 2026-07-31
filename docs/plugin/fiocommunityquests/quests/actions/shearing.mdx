@@ -1,0 +1,35 @@
+---
+title: SHEARING
+sidebar_position: 26
+---
+
+# SHEARING
+
+`SHEARING` adds progress when a player shears a matching entity or wool color.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "SHEARING"
+    goal: 15000
+    required:
+      - WOOL
+      - WHITE_WOOL
+      - BLACK_WOOL
+```
+
+## Required values
+
+For sheep, the plugin uses the wool material name based on sheep color. For other entities, it uses the entity type name.
+
+| Example | Meaning |
+| --- | --- |
+| `WOOL` | Any sheep wool color gives 1 point. |
+| `WHITE_WOOL` | White sheep wool gives 1 point. |
+| `MUSHROOM_COW` | Shearing a mooshroom-type entity gives 1 point if Bukkit fires the shear event. |
+
+## Notes
+
+`WOOL` is treated as a broad match for targets ending in `_WOOL`.

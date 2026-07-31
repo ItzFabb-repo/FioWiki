@@ -1,0 +1,31 @@
+---
+title: PROJECTILE_LAUNCH
+sidebar_position: 25
+---
+
+# PROJECTILE_LAUNCH
+
+`PROJECTILE_LAUNCH` adds progress when a player launches, throws, or shoots a matching projectile.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "PROJECTILE_LAUNCH"
+    goal: 20000
+    required:
+      - ARROW
+      - SNOWBALL
+      - TRIDENT
+```
+
+## Required values
+
+Use Bukkit projectile entity type names.
+
+| Example | Meaning |
+| --- | --- |
+| `ARROW` | Shooting an arrow gives 1 point. |
+| `ENDER_PEARL:2` | Throwing an ender pearl gives 2 points. |
+| `*` | Any player-launched projectile gives 1 point. |

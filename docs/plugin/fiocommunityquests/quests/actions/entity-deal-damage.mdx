@@ -1,0 +1,38 @@
+---
+title: ENTITY_DEAL_DAMAGE
+sidebar_position: 8
+---
+
+# ENTITY_DEAL_DAMAGE
+
+`ENTITY_DEAL_DAMAGE` adds progress from damage dealt by a player or by a projectile shot by a player.
+
+## Format
+
+```yaml
+quest:
+  objectives:
+    type: "ENTITY_DEAL_DAMAGE"
+    goal: 1000
+    required:
+      - "IRON_GOLEM;1000"
+      - "ZOMBIE;500"
+```
+
+## Required values
+
+Use this format:
+
+```text
+<ENTITY>;<TOTAL_DAMAGE_GOAL>
+```
+
+| Example | Meaning |
+| --- | --- |
+| `IRON_GOLEM;1000` | Count damage dealt to iron golems. |
+| `ZOMBIE;500` | Count damage dealt to zombies. |
+| `*;1000` | Count damage dealt to any entity. |
+
+## Notes
+
+Progress amount is the final damage rounded up with `Math.ceil`.
