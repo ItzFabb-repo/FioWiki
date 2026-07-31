@@ -1,0 +1,33 @@
+---
+title: Quests History
+sidebar_position: 3
+---
+
+# Menu: QuestsHistory
+
+`menu/QuestsHistory.yml` controls the previous quest history GUI.
+
+## Purpose
+
+The history menu lets players inspect previous community quest contribution records for themselves or another player.
+
+## Opening
+
+```text
+/fiocommunityquest history
+/fiocommunityquest history <player>
+```
+
+Admin menu names accepted by source include both `QuestHistory` and `QuestsHistory`.
+
+## Useful placeholders
+
+- player name placeholders
+- previous quest id
+- previous quest points
+- previous ranking position
+- contribution count
+
+:::info[Page note]
+History data is read from the plugin storage backend, either SQLite or MySQL.
+:::

@@ -1,0 +1,77 @@
+---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+FioCommunityQuests registers a PlaceholderAPI expansion when PlaceholderAPI is installed.
+
+Prefix used by the source plugin:
+
+- `%fiocommunityquests_...%`
+
+## Profile placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiocommunityquests_profile_completed_total%` | Number of completed community quests for the player. |
+| `%fiocommunityquests_profile_total_points%` | Total contribution points from the player's saved progress. |
+
+## Best history placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiocommunityquests_best_history_position_previousquests%` | Best previous quest ranking position. |
+| `%fiocommunityquests_best_history_points_previousquests%` | Points from the player's best previous quest ranking. |
+| `%fiocommunityquests_best_history_howmuch_times_previousquests%` | Number of previous quest contributions counted for history. |
+| `%fiocommunityquests_best_history_quest_previousquests%` | Quest id for the player's best previous quest result. |
+
+## Contribution aliases
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiocommunityquests_best_contribution_position%` | Alias for best history position. |
+| `%fiocommunityquests_best_contribution_points%` | Alias for best history points. |
+| `%fiocommunityquests_best_contribution_howmuch_times%` | Alias for history contribution count. |
+
+## Participation aliases
+
+| Placeholder | Description |
+| --- | --- |
+| `%fiocommunityquests_best_participated_position%` | Alias for best history position. |
+| `%fiocommunityquests_best_participated_points%` | Alias for best history points. |
+| `%fiocommunityquests_best_participated_howmuch_times%` | Alias for history contribution count. |
+
+## Quest and menu placeholders
+
+Quest descriptions, menus, bossbars, actionbars, and holograms also use internal placeholders such as:
+
+- `%progress%`
+- `%required%`
+- `%percentage%`
+- `%progress_bar%`
+- `%timeLeft%`
+- `%contributed%`
+- `%gained%`
+- `%player_name%`
+- `%player_contributed_1%`
+- `%player_contributed_2%`
+- `%player_contributed_3%`
+- `%totalUserParticipated%`
+- `%nextQuestsName%`
+- `%nextQuestsCountdown%`
+- `%myposition%`
+
+Hologram templates also use brace placeholders such as:
+
+- `{fiocommunityquests_running_quests}`
+- `{fiocommunityquests_next_quest_roll_in}`
+- `{questFormattedName}`
+- `{totalParticipation}`
+- `{position}`
+- `{click}`
+
+:::info[Page note]
+This page follows `FioCommunityQuestsExpansion.java`, `lang/lang_en.yml`, menu files, quest files, and `hologram.yml`.
+:::

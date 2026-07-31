@@ -1,0 +1,86 @@
+---
+title: Hologram
+sidebar_position: 2
+---
+
+# Hologram
+
+`hologram.yml` controls FioCommunityQuests TEXT_DISPLAY holograms.
+
+## Engine
+
+FioCommunityQuests uses `TEXT_DISPLAY` entities, not armor stands. Plugin-owned displays are cleaned up on load, reload, disable, and restart to avoid duplicates.
+
+## Defaults
+
+```yaml
+defaults:
+  type: "FIXED"
+  freeze: true
+  facing: "PLAYER"
+  display_range: 48
+  update_interval: 20
+  scale: 1.0
+  template: "default"
+```
+
+These values are copied when a new hologram is created by command.
+
+## Display and hitbox
+
+```yaml
+display:
+  width: 6.0
+  height: 4.0
+  line_width: 320
+
+hitbox:
+  width: 3.2
+  height: 2.0
+  min_size: 0.5
+```
+
+`display` controls TEXT_DISPLAY metadata. `hitbox` controls the invisible interaction hitbox used for reliable clicks.
+
+## Scale
+
+```yaml
+scale:
+  default: 1.0
+  min: 0.1
+  max: 10.0
+```
+
+These limits are used by `/fiocommunityquest admin hologram setScale`.
+
+## Leaderboard behavior
+
+```yaml
+leaderboard:
+  max_positions: 10
+  indicator_refresh_seconds: 300
+  participation_scan_limit: 1000
+```
+
+Controls contribution rows, rank movement indicators, and how much participation history can be scanned.
+
+## Templates
+
+Main templates:
+
+- `templates.main`: overview page with active quests and next roll countdown.
+- `templates.running_quest`: repeated renderer for active quest entries.
+- `templates.contributions`: active quest contribution leaderboard page.
+- `templates.position`: top contribution positions.
+
+## Hologram storage
+
+```yaml
+holograms: {}
+```
+
+This section stores created holograms. Command-based editing is safer than manual editing.
+
+:::info[Page note]
+This page is source-backed from the bundled `src/main/resources/hologram.yml`.
+:::

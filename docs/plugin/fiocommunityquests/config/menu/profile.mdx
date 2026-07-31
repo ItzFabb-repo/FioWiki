@@ -1,0 +1,43 @@
+---
+title: Quests Profile
+sidebar_position: 2
+---
+
+# Menu: QuestsProfile
+
+`menu/QuestsProfile.yml` controls the player profile GUI.
+
+## Purpose
+
+The profile menu shows a player's community quest summary, including:
+
+- total contribution points
+- completed community quests
+- best previous ranking position
+- best previous points
+- previous contribution count
+
+## Opening
+
+Players can open their own profile with:
+
+```text
+/fiocommunityquest profile
+```
+
+Admins can open it for an online player with:
+
+```text
+/fiocommunityquest admin open <player> QuestsProfile <target>
+```
+
+## Common placeholders
+
+- `%player_name%`
+- `%statistic_time_played%`
+- `%fiocommunityquests_profile_completed_total%`
+- `%fiocommunityquests_profile_total_points%`
+- `%fiocommunityquests_best_history_position_previousquests%`
+- `%fiocommunityquests_best_history_points_previousquests%`
+- `%fiocommunityquests_best_history_howmuch_times_previousquests%`
+- `%fiocommunityquests_best_history_quest_previousquests%`

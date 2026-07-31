@@ -1,0 +1,145 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+This page summarizes the most important global options from the bundled `config.yml`.
+
+## Formatting
+
+FioCommunityQuests uses MiniMessage for language files, menus, quest descriptions, bossbars, actionbars, messages, and hologram text.
+
+## Language and timezone
+
+```yaml
+language: en
+timezone: "Asia/Jakarta"
+```
+
+Bundled language files:
+
+- `lang/lang_en.yml`
+- `lang/lang_id.yml`
+- `lang/lang_zh.yml`
+- `lang/lang_ja.yml`
+
+`timezone` is used by scheduled quest execution and countdown placeholders.
+
+## Runtime settings
+
+```yaml
+settings:
+  max-bossbar: 1
+  rotateBossbar: true
+  naturalBlocks: true
+  naturalMobSpawns: true
+  SpawnerNotCount: false
+  naturalCrops: false
+  blockSameIP: true
+```
+
+These options control bossbar visibility and common exploit-prevention checks.
+
+## PlaceholderAPI progress bar
+
+```yaml
+placeholderapi:
+  history:
+    top_limit: 10
+  progress_bar:
+    length: 50
+    filled_character: "|"
+    empty_character: "|"
+    format: "<#98FB98>%filled%</#98FB98><dark_gray>%empty%</dark_gray>"
+```
+
+The progress bar is used by `%progress_bar%` in quest descriptions, menus, bossbars, and holograms.
+
+## Execution mode
+
+```yaml
+execute:
+  mode:
+    schedule: true
+    random: false
+  settings:
+    max_quest_run: 6
+```
+
+Scheduled quests use quest ids from the `quests/` folder. Entries can include a specific time:
+
+```yaml
+execute:
+  schedule:
+    MONDAY:
+      - 'daily_miner;16:00'
+```
+
+Without `;HH:mm`, the quest uses `00:00` in the configured timezone.
+
+## Music
+
+```yaml
+event:
+  ShouldweplayMusic: false
+
+music:
+  settings:
+    loopMusic: "2700"
+    loop: true
+    playIfJoined: true
+    playIfReJoined: true
+  whenStarted:
+    - 'MUSIC_DISC_LAVA_CHICKEN 0.1 1 master'
+```
+
+Music can play when a community quest starts and can loop while the event is active.
+
+## Restrictions
+
+Global restrictions are configured under:
+
+- `worlds.blacklist`
+- `worlds.whitelist`
+- `regions.blacklist`
+- `regions.whitelist`
+- `gamemode.blacklist`
+- `players.blacklist`
+- `players.whitelist`
+
+World, region, and player entries can target one quest or every quest:
+
+```yaml
+worlds:
+  blacklist:
+    - survival:daily_miner
+    - resource_world:*
+```
+
+## Storage backends
+
+Supported storage types:
+
+- `sqlite`
+- `mysql`
+
+```yaml
+storage:
+  type: sqlite
+  mysql:
+    host: localhost
+    port: 3306
+    database: fio_community_quests
+    username: root
+    password: ""
+    useSSL: false
+    properties: "allowPublicKeyRetrieval=true&characterEncoding=utf8"
+```
+
+SQLite stores player data in `plugins/FioCommunityQuests/player.db`.
+
+:::info[Page note]
+This page is source-backed and focuses on runtime behavior. Use quest pages for individual community quest definitions.
+:::

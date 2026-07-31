@@ -1,0 +1,118 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `lang/lang_en.yml`, and `QuestCommand.java`.
+
+## Root command
+
+The plugin registers one root command:
+
+- `/fiocommunityquest`
+
+Aliases:
+
+- `/fcq`
+- `/fioquests`
+- `/communityquests`
+- `/quests`
+
+## User commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiocommunityquest` | `fioquests.command.menu` | Open the main community quests menu. |
+| `/fiocommunityquest help` | `fioquests.command.help` | Show player help. |
+| `/fiocommunityquest toggle notification` | `fioquests.command.toggle` | Toggle personal quest notifications. |
+| `/fiocommunityquest toggle participate` | `fioquests.command.toggle` | Toggle whether your progress is counted. |
+| `/fiocommunityquest leaderboards` | `fioquests.command.leaderboards` | Open the all-time contribution leaderboard menu. |
+| `/fiocommunityquest profile` | `fioquests.command.profile` | Open your own profile menu. |
+| `/fiocommunityquest profile <player>` | `fioquests.command.profile.others` | Open another player's profile menu. |
+| `/fiocommunityquest history` | `fioquests.command.history` | Open your own quest history menu. |
+| `/fiocommunityquest history <player>` | `fioquests.command.history.others` | Open another player's quest history menu. |
+| `/fiocommunityquest topcontributions` | `fioquests.command.topcontributions` | Show active quest contribution leaders in chat. |
+| `/fiocommunityquest mycontributions` | `fioquests.command.mycontributions` | Show your contribution summary in chat. |
+| `/fiocommunityquest list` | `fioquests.use` | List loaded quests in chat. |
+
+## User permission nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fioquests.use` | `true` | Basic user access. |
+| `fioquests.command.menu` | `true` | Allows opening the main quest menu. |
+| `fioquests.command.help` | `true` | Allows help command. |
+| `fioquests.command.toggle` | `true` | Allows personal notification and participation toggles. |
+| `fioquests.command.leaderboards` | `true` | Allows leaderboard menu. |
+| `fioquests.command.profile` | `true` | Allows own profile menu. |
+| `fioquests.command.profile.others` | `true` | Allows viewing other player profiles. |
+| `fioquests.command.history` | `true` | Allows own history menu. |
+| `fioquests.command.history.others` | `true` | Allows viewing other player histories. |
+| `fioquests.command.topcontributions` | `true` | Allows active contribution leaderboard chat output. |
+| `fioquests.command.mycontributions` | `true` | Allows contribution summary chat output. |
+
+## Admin commands
+
+Admin commands use `/fiocommunityquest admin ...`. The source also accepts `/fiocommunityquest reload` and `/fiocommunityquest create <id> <goal> <name...>` as shortcut admin paths.
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiocommunityquest admin help` | `fioquests.admin.help` | Show admin help. |
+| `/fiocommunityquest admin reload` | `fioquests.admin.reload` | Reload config, language, quests, and database. |
+| `/fiocommunityquest reload` | `fioquests.admin` | Shortcut reload command. |
+| `/fiocommunityquest admin authors` | `fioquests.admin.authors` | Show plugin author. |
+| `/fiocommunityquest admin version` | `fioquests.admin.version` | Show plugin version. |
+| `/fiocommunityquest admin placeholders` | `fioquests.admin.placeholders` | Show PlaceholderAPI placeholders. |
+| `/fiocommunityquest admin open <player> <menuId> [argument]` | `fioquests.admin.open` | Open a configured menu for an online player. |
+| `/fiocommunityquest admin forceopen <player> <menuId> [argument]` | `fioquests.admin.forceopen` | Force-open a configured menu for an online player. |
+| `/fiocommunityquest admin questStart <questId> <time>` | `fioquests.admin.queststart` | Start a quest for a duration such as `1m`, `30m`, `1h`, or `1d`. |
+| `/fiocommunityquest admin questList` | `fioquests.admin.questlist` | List currently running quests. |
+| `/fiocommunityquest admin questStop <questId/all>` | `fioquests.admin.queststop` | Stop one running quest or all running quests. |
+| `/fiocommunityquest admin questDisable <questId>` | `fioquests.admin.questdisable` | Disable a quest and stop it if it is running. |
+| `/fiocommunityquest admin questDisable list` | `fioquests.admin.questdisable.list` | List disabled quests. |
+| `/fiocommunityquest admin questEnable <questId>` | `fioquests.admin.questenable` | Enable a disabled quest. |
+| `/fiocommunityquest admin questEnable list` | `fioquests.admin.questenable.list` | List enabled quests. |
+| `/fiocommunityquest admin contributionpoints <set/add/take> <player> <value>` | `fioquests.admin.contributionpoints` | Adjust player contribution points across active quests. |
+| `/fiocommunityquest admin blacklist <player/world/region/gamemode> <add/remove> <argument>` | `fioquests.admin.blacklist` | Edit blacklist entries. |
+| `/fiocommunityquest admin blacklist list <player/world/region/gamemode>` | `fioquests.admin.blacklist.list` | List blacklist entries. |
+| `/fiocommunityquest admin whitelist <player/world/region> <add/remove> <argument>` | `fioquests.admin.whitelist` | Edit whitelist entries. |
+| `/fiocommunityquest admin whitelist list <player/world/region>` | `fioquests.admin.whitelist.list` | List whitelist entries. |
+| `/fiocommunityquest create <id> <goal> <name...>` | `fioquests.admin` | Create a simple manual quest file. |
+
+## Hologram admin commands
+
+`/fiocommunityquest admin hologram ...` uses `fioquests.admin.hologram`.
+
+| Action | Description |
+| --- | --- |
+| `create <hologramId>` | Create a TEXT_DISPLAY hologram at your location. |
+| `remove <hologramId>` | Remove a configured hologram. |
+| `list` | List configured holograms. |
+| `nearby [radius]` | List nearby holograms. |
+| `setType [hologramId] <type>` | Set type to `FIXED`, `PLAYER`, `CENTER`, `VERTICAL`, or `HORIZONTAL`. |
+| `teleport <hologramId>` | Teleport to a hologram. |
+| `move_here <hologramId>` | Move a hologram to your location. |
+| `center <hologramId>` | Center a hologram on its block/location. |
+| `setFreeze [hologramId] <true/false>` | Toggle freeze behavior. |
+| `setFacing [hologramId] <value>` | Set facing to a cardinal direction or dynamic facing mode. |
+| `setDisplayRange [hologramId] <range>` | Set display range. |
+| `setUpdateInterval [hologramId] <ticks/duration>` | Set refresh interval. |
+| `setScale [hologramId] <scale>` | Set visual scale. |
+| `clone <hologramId> <newHologramId>` | Clone an existing hologram. |
+
+## Named admin menus
+
+`admin open` and `admin forceopen` accept these menu names from source:
+
+- `QuestsMenu`
+- `QuestsProfile`
+- `QuestContributions`
+- `QuestHistory`
+- `QuestsHistory`
+- `Leaderboards`
+
+:::info[Page note]
+Commands are permission-aware and some menu commands require an online player target.
+:::

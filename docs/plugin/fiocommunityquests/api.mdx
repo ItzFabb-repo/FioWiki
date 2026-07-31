@@ -1,0 +1,108 @@
+---
+title: Developer API
+sidebar_position: 4
+---
+
+# Developer API
+
+This page documents the API exposed by the current FioCommunityQuests source.
+
+## Package names
+
+Use the real source package names:
+
+```java
+import com.itzfabb.fioquests.api.FioCommunityQuestsApi;
+import com.itzfabb.fioquests.api.FioCommunityQuestsProvider;
+```
+
+## Accessing the API
+
+```java
+FioCommunityQuestsApi api = FioCommunityQuestsProvider.get();
+if (api != null) {
+    api.startQuest("daily_miner", 60L * 60L * 1000L);
+    api.addProgress(player.getUniqueId(), player.getName(), "daily_miner", 1);
+}
+```
+
+Use `null` checks because the provider can return `null` when FioCommunityQuests is not loaded yet.
+
+## Provider methods
+
+```java
+FioCommunityQuestsApi get();
+boolean isAvailable();
+```
+
+## Quest reads
+
+```java
+Collection<Quest> getQuests();
+Quest getQuest(String questId);
+Map<Quest, Long> getActiveQuests();
+boolean isQuestActive(String questId);
+```
+
+`getActiveQuests()` returns active quests mapped to their end time.
+
+## Quest lifecycle
+
+```java
+boolean startQuest(String questId, long durationMillis);
+boolean startQuest(String questId, long durationMillis, boolean showTimeLeftInHologram);
+boolean stopQuest(String questId);
+int stopAllQuests();
+```
+
+Use milliseconds for `durationMillis`.
+
+## Progress API
+
+```java
+int getCommunityProgress(String questId);
+void addProgress(UUID uuid, String playerName, String questId, int amount);
+PlayerQuestProgress getPlayerProgress(UUID uuid, String questId);
+List<PlayerQuestProgress> getPlayerProgress(UUID uuid);
+List<PlayerQuestProgress> getQuestProgress(String questId);
+```
+
+`addProgress` is useful for custom objectives, external events, or manual integrations.
+
+## Leaderboard API
+
+```java
+List<ContributionEntry> getQuestLeaderboard(String questId, int limit);
+List<ContributionEntry> getActiveLeaderboard(int limit);
+List<ContributionEntry> getAllTimeLeaderboard(int limit);
+```
+
+Use these methods for menu integrations, external leaderboards, Discord sync, or web dashboards.
+
+## Example integration
+
+```java
+FioCommunityQuestsApi api = FioCommunityQuestsProvider.get();
+if (api == null) {
+    return;
+}
+
+if (api.isQuestActive("daily_miner")) {
+    api.addProgress(player.getUniqueId(), player.getName(), "daily_miner", 5);
+}
+```
+
+## plugin.yml advice for integrations
+
+In your own plugin:
+
+```yaml
+softdepend:
+  - FioCommunityQuests
+```
+
+Then resolve the provider lazily or during `onEnable()` after the server has loaded soft dependencies.
+
+:::info[Page note]
+This page is source-backed from `FioCommunityQuestsApi.java` and `FioCommunityQuestsProvider.java`.
+:::

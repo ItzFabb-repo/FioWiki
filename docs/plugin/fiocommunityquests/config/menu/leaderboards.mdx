@@ -1,0 +1,42 @@
+---
+title: Leaderboards
+sidebar_position: 5
+---
+
+# Menu: Leaderboards
+
+`menu/Leaderboards.yml` controls the all-time contribution leaderboard GUI.
+
+## Opening
+
+```text
+/fiocommunityquest leaderboards
+```
+
+or from menu action:
+
+```yaml
+- '[FIOCOMMUNITYQUESTS] Leaderboards'
+```
+
+## Sorting actions
+
+The menu action parser supports leaderboard sorting actions:
+
+- `[FIOCOMMUNITYQUESTS] leaderboard sort`
+- `[FIOCOMMUNITYQUESTS] SORT_LEADERBOARD_DOWN`
+- `[FIOCOMMUNITYQUESTS] SORT_LEADERBOARD_UP`
+- `[FIOCOMMUNITYQUESTS] SORT_LEADERBOAD_DOWN`
+- `[FIOCOMMUNITYQUESTS] SORT_LEADERBOAD_UP`
+
+The misspelled `LEADERBOAD` variants are accepted by source for compatibility.
+
+## Common display data
+
+The leaderboard menu can show:
+
+- player names
+- all-time contribution points
+- current viewer position
+- sort direction
+- paged leaderboard entries

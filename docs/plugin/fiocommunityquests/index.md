@@ -154,7 +154,7 @@ Common player commands include:
 
 - `/fiocommunityquest`
 - `/fiocommunityquest help`
-- `/fiocommunityquest toggle <notification|participate>`
+- `/fiocommunityquest toggle <notification/participate>`
 - `/fiocommunityquest leaderboards`
 - `/fiocommunityquest profile [player]`
 - `/fiocommunityquest history [player]`

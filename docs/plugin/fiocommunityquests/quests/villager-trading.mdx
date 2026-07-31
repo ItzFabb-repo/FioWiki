@@ -1,0 +1,22 @@
+---
+title: Village Trading Day
+sidebar_position: 20
+---
+
+# Village Trading Day
+
+`villager_trading.yml` defines a cooperative villager trading quest.
+
+| Field | Value |
+| --- | --- |
+| Quest id | `villager_trading` |
+| Name | `<green>Village Trading Day</green>` |
+| Material | `EMERALD` |
+| Mode | `coop` |
+| Duration | `1d` |
+| Objective type | `TRADING` |
+| Goal | `20000` |
+
+## Objective behavior
+
+`TRADING` counts matching villager trade results. Required entries use `<MATERIAL_TO_GET>;<VILLAGER_JOB>`, with `ANY` or `*` allowed for every villager job.

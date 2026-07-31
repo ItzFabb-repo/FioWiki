@@ -1,0 +1,32 @@
+---
+title: Daily Miner
+sidebar_position: 2
+---
+
+# Daily Miner
+
+`daily_miner.yml` defines a cooperative mining quest.
+
+| Field | Value |
+| --- | --- |
+| Quest id | `daily_miner` |
+| Name | `<gold>Mine x120,000 Stone</gold>` |
+| Material | `STONE` |
+| Mode | `coop` |
+| Duration | `1d,1h` |
+| Objective type | `BLOCK_BREAK` |
+| Goal | `120000` |
+
+## Required objectives
+
+```yaml
+required:
+  - STONE
+  - DEEPSLATE:2
+```
+
+Stone gives 1 contribution point. Deepslate gives 2 contribution points.
+
+## Rewards
+
+The bundled quest includes top contribution rewards for ranks 1-3 and participation rewards for every contributing player.

@@ -1,0 +1,123 @@
+---
+title: Quest Format
+sidebar_position: 1
+---
+
+# Quest Format
+
+Quest definitions live in `plugins/FioCommunityQuests/quests/`. Bundled examples are stored under `src/main/resources/quests/`.
+
+## Base structure
+
+```yaml
+quest:
+  name: "<gold>Mine x120,000 Stone</gold>"
+  material: "STONE"
+  priority: 1
+  mode: coop
+  description:
+    - "<dark_gray>Community Quest</dark_gray>"
+  objectives:
+    duration: "1d"
+    type: "BLOCK_BREAK"
+    goal: 120000
+    required:
+      - STONE
+      - DEEPSLATE:2
+```
+
+## Quest id
+
+The file name is used as the quest id unless `quest.id` is set. For example:
+
+```text
+quests/daily_miner.yml
+```
+
+becomes:
+
+```text
+daily_miner
+```
+
+## Modes
+
+| Mode | Meaning |
+| --- | --- |
+| `coop` | Players work together toward one shared community goal. |
+| `comp` | Players compete through contribution ranking while the quest is active. |
+
+## Duration
+
+Supported time units include:
+
+- `y`
+- `mo`
+- `w`
+- `d`
+- `h`
+- `m`
+- `s`
+
+Examples:
+
+```yaml
+duration: "1d"
+duration: "1d,1h"
+duration: "2h,30m"
+```
+
+## Required target points
+
+Simple format:
+
+```yaml
+required:
+  - STONE
+```
+
+Custom points per matching action:
+
+```yaml
+required:
+  - DEEPSLATE:2
+```
+
+Special formats are used by some objective types, such as:
+
+- `IRON_GOLEM;1000` for entity damage goals
+- `EMERALD;FLETCHER` for villager trading
+- `SPEED;1` for potion tier
+- `SHARPNESS:1` for enchant level
+
+## Event sections
+
+Each quest can configure feedback for:
+
+- `settings.whenStarted`
+- `settings.whenOnProgress`
+- `settings.whenCompleted`
+- `settings.whenFailed`
+
+Supported feedback includes bossbars, actionbars, messages, sounds, and command actions.
+
+## Rewards
+
+Quest rewards can include:
+
+- `rewards.custom`
+- `rewards.top_contributions`
+- `rewards.player_participated`
+
+Action examples:
+
+- `[MESSAGE] <message>`
+- `[CONSOLE] eco give %player_name% 5000`
+- `[ITEM] DIAMOND 12`
+- `[EXP_LEVELS] +5`
+- `[EXP_POINTS] +1000`
+- `[CUSTOM:1]`
+
+:::info[Page note]
+This page is source-backed from bundled quest YAML files and `Quest.java`.
+:::

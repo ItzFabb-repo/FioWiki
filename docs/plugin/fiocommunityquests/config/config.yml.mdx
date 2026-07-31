@@ -1,0 +1,183 @@
+---
+title: Configuration
+sidebar_position: 1
+---
+
+# Configuration
+
+`config.yml` controls runtime behavior. Quest definitions live in the `quests/` folder.
+
+## Language
+
+```yaml
+language: en
+timezone: "Asia/Jakarta"
+```
+
+- `language`: reads `lang/lang_<key>.yml`.
+- `timezone`: Java timezone id used for schedules and countdown placeholders.
+
+## Debug
+
+```yaml
+debug:
+  enabled: false
+```
+
+Enable only while diagnosing a problem.
+
+## Settings
+
+```yaml
+settings:
+  max-bossbar: 1
+  rotateBossbar: true
+  naturalBlocks: true
+  naturalMobSpawns: true
+  SpawnerNotCount: false
+  naturalCrops: false
+  blockSameIP: true
+```
+
+- `max-bossbar`: maximum quest bossbars visible at once.
+- `rotateBossbar`: rotates visible bossbars when more quests are active than the limit.
+- `naturalBlocks`: prevents place and break block exploitation.
+- `naturalMobSpawns`: prevents spawned mobs from counting.
+- `SpawnerNotCount`: prevents spawner kills from counting when enabled.
+- `naturalCrops`: prevents planted then instantly fertilized crops from counting.
+- `blockSameIP`: blocks same-IP player kill progress.
+
+## PlaceholderAPI
+
+```yaml
+placeholderapi:
+  history:
+    top_limit: 10
+  progress_bar:
+    length: 50
+    filled_character: "|"
+    empty_character: "|"
+    format: "<#98FB98>%filled%</#98FB98><dark_gray>%empty%</dark_gray>"
+```
+
+`top_limit` controls how selective previous-history placeholders are. Use `0` to allow every contributed player to show their best history.
+
+## Disabled quests
+
+```yaml
+disabled-quests: []
+```
+
+Quest ids listed here cannot be started by manual command, schedule, or random execution. Disabling a running quest through command also stops it.
+
+## Event music
+
+```yaml
+event:
+  ShouldweplayMusic: false
+```
+
+```yaml
+music:
+  settings:
+    loopMusic: "2700"
+    loop: true
+    playIfJoined: true
+    playIfReJoined: true
+  whenStarted:
+    - 'MUSIC_DISC_LAVA_CHICKEN 0.1 1 master'
+```
+
+Music entries use:
+
+```text
+<SOUND> <VOLUME> <PITCH> <CATEGORY>
+```
+
+## Integrations
+
+```yaml
+integrations:
+  geyser:
+    enabled: true
+```
+
+Geyser detection is optional. Floodgate is detected automatically if present.
+
+## Execute
+
+```yaml
+execute:
+  mode:
+    schedule: true
+    random: false
+  settings:
+    max_quest_run: 6
+  schedule:
+    MONDAY:
+      - 'alchemist_ingredients'
+```
+
+Schedule entries use quest ids from `quests/`. Optional time format:
+
+```yaml
+- 'daily_miner;16:00'
+```
+
+## Restrictions
+
+```yaml
+worlds:
+  blacklist: []
+  whitelist: []
+
+regions:
+  blacklist: []
+  whitelist: []
+
+gamemode:
+  blacklist:
+    - 'CREATIVE'
+    - 'SPECTATOR'
+    - 'ADVENTURE'
+
+players:
+  blacklist: []
+  whitelist: []
+```
+
+World and region entries use:
+
+```yaml
+- world_name:quest_id
+- world_name:*
+```
+
+Player entries use:
+
+```yaml
+- Notch;daily_miner
+- Notch;*
+- Notch
+```
+
+## Storage
+
+```yaml
+storage:
+  type: sqlite
+  mysql:
+    host: localhost
+    port: 3306
+    database: fio_community_quests
+    username: root
+    password: ""
+    useSSL: false
+    properties: "allowPublicKeyRetrieval=true&characterEncoding=utf8"
+```
+
+Use `sqlite` for local storage or `mysql` for a database-backed setup.
+
+:::info[Page note]
+This page is source-backed from the bundled `src/main/resources/config.yml`.
+:::

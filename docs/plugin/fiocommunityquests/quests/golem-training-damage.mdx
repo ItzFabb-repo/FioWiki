@@ -1,0 +1,22 @@
+---
+title: Golem Training
+sidebar_position: 12
+---
+
+# Golem Training
+
+`golem_training_damage.yml` defines a competitive entity damage quest.
+
+| Field | Value |
+| --- | --- |
+| Quest id | `golem_training_damage` |
+| Name | `<gray>Golem Training</gray>` |
+| Material | `IRON_BLOCK` |
+| Mode | `comp` |
+| Duration | `1d` |
+| Objective type | `ENTITY_DEAL_DAMAGE` |
+| Goal | `1000` |
+
+## Objective behavior
+
+`ENTITY_DEAL_DAMAGE` counts total damage dealt to matching entities. Required entries can use `<ENTITY>;<TOTAL_DEAL_DAMAGE>`.

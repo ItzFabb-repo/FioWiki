@@ -1,0 +1,66 @@
+---
+title: Quests Menu
+sidebar_position: 1
+---
+
+# Menu: QuestsMenu
+
+`menu/QuestsMenu.yml` controls the main community quests GUI.
+
+## Menu frame
+
+```yaml
+title: "<dark_gray>Community Quests</dark_gray>"
+rows: 6
+```
+
+Static glass items fill the top and bottom rows. The close button uses slot `49`.
+
+## Empty and active display
+
+The `display` item has two states:
+
+- `ifEmpty`: shown when no community quest is running.
+- `ifNotEmpty`: shown when at least one community quest is running.
+
+Useful placeholders:
+
+- `%nextQuestsName%`
+- `%nextQuestsCountdown%`
+
+## Profile button
+
+The profile button uses a player head and opens the profile menu:
+
+```yaml
+actions:
+  any:
+    - '[FIOCOMMUNITYQUESTS] QuestsProfile %player_name%'
+```
+
+It displays best contribution, best participation, and last-history placeholders.
+
+## Leaderboards button
+
+The leaderboard button opens all-time contribution leaderboards:
+
+```yaml
+actions:
+  any:
+    - '[FIOCOMMUNITYQUESTS] Leaderboards'
+```
+
+## Quest content slots
+
+```yaml
+quests:
+  content-slot:
+    - '11'
+    - '13'
+    - '15'
+    - '29'
+    - '31'
+    - '33'
+```
+
+Active quest entries render into these slots.
