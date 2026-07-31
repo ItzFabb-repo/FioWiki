@@ -253,6 +253,15 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioCommunityQuests',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fiocommunityquests/index',
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioGlow',
           collapsible: true,
           collapsed: true,
