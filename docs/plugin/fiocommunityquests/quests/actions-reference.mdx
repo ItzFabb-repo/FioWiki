@@ -1,0 +1,277 @@
+---
+title: Actions Reference
+sidebar_position: 2
+---
+
+# Actions Reference
+
+This page explains the action tags used when creating a new FioCommunityQuests quest.
+
+Actions are written inside quest lifecycle sections and reward sections. They execute from top to bottom, so order matters.
+
+## Where actions are used
+
+Lifecycle actions are usually placed here:
+
+```yaml
+quest:
+  settings:
+    whenStarted:
+      commands:
+        enabled: true
+        actions: []
+    whenCompleted:
+      commands:
+        enabled: true
+        actions: []
+    whenFailed:
+      commands:
+        enabled: true
+        actions: []
+```
+
+Reward actions are placed here:
+
+```yaml
+quest:
+  rewards:
+    top_contributions:
+      enabled: true
+      1:
+        enabled: true
+        actions: []
+    player_participated:
+      enabled: true
+      actions: []
+```
+
+## Action tags
+
+| Action | Format | Description |
+| --- | --- | --- |
+| `[SOUND]` | `[SOUND] <sound> <volume> <pitch> <category>` | Plays a Bukkit sound. If the action has no target player, it plays for online players with notifications enabled. |
+| `[MESSAGE]` | `[MESSAGE] <MiniMessage text>` | Sends a MiniMessage-formatted message. If the action has no target player, it broadcasts to online players with notifications enabled. |
+| `[CONSOLE]` | `[CONSOLE] <command>` | Runs a command from console. Do not include `/` at the start. |
+| `[PLAYER]` | `[PLAYER] <command>` | Runs a command as the reward target player. This only works when the action has a player target. |
+| `[ITEM]` | `[ITEM] <material> [amount] [enchant:level ...]` | Gives an item to the target player, or drops leftovers naturally if the inventory is full. |
+| `[EXP_LEVELS]` | `[EXP_LEVELS] <amount>` | Gives or removes experience levels from the target player. A leading `+` is allowed. |
+| `[EXP_POINTS]` | `[EXP_POINTS] <amount>` | Gives or removes raw experience points from the target player. A leading `+` is allowed. |
+| `[CUSTOM:id]` | `[CUSTOM:<id>]` | Gives a custom reward item from `quest.rewards.custom.<id>`. Only works inside reward actions. |
+| `[NONE]` | `[NONE]` | Does nothing. Useful as a safe placeholder action. |
+
+## `[SOUND]`
+
+Use `[SOUND]` to play a Bukkit sound.
+
+```yaml
+actions:
+  - "[SOUND] ENTITY_PLAYER_LEVELUP 1 1 master"
+  - "[SOUND] ENTITY_VILLAGER_NO 1 0.8 master"
+```
+
+Format:
+
+```text
+[SOUND] <SOUND> <VOLUME> <PITCH> <CATEGORY>
+```
+
+Notes:
+
+- `<SOUND>` must match a Bukkit sound enum for the server version.
+- `<VOLUME>` defaults to `1.0` when omitted.
+- `<PITCH>` defaults to `1.0` when omitted.
+- `<CATEGORY>` defaults to `master` when omitted.
+
+## `[MESSAGE]`
+
+Use `[MESSAGE]` to send MiniMessage text.
+
+```yaml
+actions:
+  - "[MESSAGE] <green>Congratulations!</green> <gray>You helped finish the community quest.</gray>"
+```
+
+When the action runs for a reward winner or participant, only that player receives it. When the action runs globally from quest lifecycle commands, online players with notifications enabled receive it.
+
+## `[CONSOLE]`
+
+Use `[CONSOLE]` to run server commands as console.
+
+```yaml
+actions:
+  - "[CONSOLE] eco give %player_name% 5000"
+  - "[CONSOLE] lp user %player_name% permission set some.permission true"
+```
+
+Do not add `/` before the command.
+
+Useful reward placeholders:
+
+- `%player_name%`
+- `%date_given%` inside custom item name/lore
+
+## `[PLAYER]`
+
+Use `[PLAYER]` to make the target player run a command.
+
+```yaml
+actions:
+  - "[PLAYER] spawn"
+```
+
+This action only runs when a target player exists, so it is best used inside reward actions.
+
+## `[ITEM]`
+
+Use `[ITEM]` to give a simple item reward.
+
+```yaml
+actions:
+  - "[ITEM] DIAMOND 12"
+  - "[ITEM] BREAD 32"
+  - "[ITEM] ENCHANTED_BOOK 1 unbreaking:3"
+  - "[ITEM] DIAMOND_SWORD 1 sharpness:5 unbreaking:3 looting:2"
+```
+
+Format:
+
+```text
+[ITEM] <MATERIAL> [AMOUNT] [ENCHANT:LEVEL ...]
+```
+
+Notes:
+
+- `<MATERIAL>` must match a Bukkit material.
+- `amount` defaults to `1` when omitted.
+- Enchants are optional and separated by spaces.
+- Enchanted books receive stored enchants.
+- Other items receive unsafe enchants.
+- If the player's inventory is full, leftover items drop naturally at the player location.
+
+Supported friendly enchant aliases from source:
+
+- `UNBREAKING` maps to `DURABILITY`
+- `SHARPNESS` maps to `DAMAGE_ALL`
+- `LOOTING` maps to `LOOT_BONUS_MOBS`
+
+Minecraft namespaced keys can also work, for example `minecraft:unbreaking`.
+
+## `[EXP_LEVELS]`
+
+Use `[EXP_LEVELS]` to add or remove experience levels.
+
+```yaml
+actions:
+  - "[EXP_LEVELS] +5"
+  - "[EXP_LEVELS] -2"
+```
+
+The leading `+` is optional for positive values.
+
+## `[EXP_POINTS]`
+
+Use `[EXP_POINTS]` to add or remove raw experience points.
+
+```yaml
+actions:
+  - "[EXP_POINTS] +1000"
+  - "[EXP_POINTS] -100"
+```
+
+Use this when you want to reward exact experience points instead of whole levels.
+
+## `[CUSTOM:id]`
+
+Use `[CUSTOM:id]` to give an item configured under `quest.rewards.custom`.
+
+```yaml
+quest:
+  rewards:
+    custom:
+      1:
+        material: DIAMOND_SWORD
+        amount: 1
+        name: "<aqua>Master Diamond Sword</aqua>"
+        enchants:
+          - LOOTING:2
+          - UNBREAKING:3
+        lore:
+          - "<dark_gray>Combat Tool"
+          - "<dark_gray>[Signed By: %player_name%]"
+          - "<dark_gray>[Obtained at: %date_given%]"
+    top_contributions:
+      enabled: true
+      1:
+        enabled: true
+        actions:
+          - "[CUSTOM:1]"
+```
+
+Custom reward fields:
+
+| Field | Description |
+| --- | --- |
+| `material` | Bukkit material for the item. |
+| `amount` | Item amount. Defaults to `1`. |
+| `name` | Display name. Supports MiniMessage-style item formatting. |
+| `lore` | Lore lines. Supports `%player_name%` and `%date_given%`. |
+| `enchants` | List of `ENCHANT:LEVEL` entries. |
+
+`[CUSTOM:id]` is handled by reward actions, so use it inside `top_contributions` or `player_participated`.
+
+## Lifecycle action example
+
+```yaml
+quest:
+  settings:
+    whenStarted:
+      commands:
+        enabled: true
+        actions:
+          - "[SOUND] ITEM_GOAT_HORN_SOUND_0 1 2 master"
+          - "[MESSAGE] <gray>A new community quest has begun! Use <yellow>/fiocommunityquest</yellow>.</gray>"
+    whenCompleted:
+      commands:
+        enabled: true
+        actions:
+          - "[SOUND] ENTITY_PLAYER_LEVELUP 1 1 master"
+          - "[MESSAGE] <green>The community quest has been completed!</green>"
+    whenFailed:
+      commands:
+        enabled: true
+        actions:
+          - "[SOUND] ENTITY_VILLAGER_NO 1 0.8 master"
+          - "[MESSAGE] <red>The community quest was not completed in time.</red>"
+```
+
+## Reward action example
+
+```yaml
+quest:
+  rewards:
+    top_contributions:
+      enabled: true
+      1:
+        enabled: true
+        actions:
+          - "[MESSAGE] <green>You reached top 1 contribution!</green>"
+          - "[CONSOLE] eco give %player_name% 5000"
+          - "[ITEM] DIAMOND 12"
+          - "[EXP_LEVELS] +5"
+          - "[CUSTOM:1]"
+      2:
+        enabled: true
+        actions:
+          - "[MESSAGE] <green>You reached top 2 contribution!</green>"
+          - "[CONSOLE] eco give %player_name% 2500"
+          - "[ITEM] BREAD 32"
+    player_participated:
+      enabled: true
+      actions:
+        - "[MESSAGE] <gray>Thank you for participating.</gray>"
+        - "[ITEM] IRON_INGOT 4"
+```
+
+:::info[Page note]
+This page is source-backed from `QuestLifecycleService.java` and the bundled quest YAML files.
+:::

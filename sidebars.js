@@ -290,6 +290,7 @@ const sidebars = {
               label: 'Quests',
               items: [
                 'plugin/fiocommunityquests/quests/explanation',
+                'plugin/fiocommunityquests/quests/actions-reference',
                 'plugin/fiocommunityquests/quests/daily-miner',
                 'plugin/fiocommunityquests/quests/alchemist-ingredients',
                 'plugin/fiocommunityquests/quests/alchemist-potions',
