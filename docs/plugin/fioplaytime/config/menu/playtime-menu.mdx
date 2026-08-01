@@ -93,18 +93,18 @@ actions:
 | --- | --- |
 | `[CLOSE]` | Close the open inventory. |
 | `[NONE]` | Do nothing. |
-| `[MESSAGE] &lt;message&gt;` | Send a message to the player. |
-| `[SOUND] &lt;sound&gt; [volume] [pitch]` | Play a sound. |
-| `[PLAYER] &lt;command&gt;` | Run a command as the player. |
-| `[CONSOLE] &lt;command&gt;` | Run a command as console. |
-| `[FIOPLAYTIME] CLAIM &lt;tier&gt;` | Claim one reward tier. |
-| `[FIOPLAYTIME] NEXT_PAGE+&lt;amount&gt;` | Move forward through paginated content. |
-| `[FIOPLAYTIME] PREVIOUS_PAGE-&lt;amount&gt;` | Move backward through paginated content. |
+| `[MESSAGE] [message]` | Send a message to the player. |
+| `[SOUND] [sound] [volume] [pitch]` | Play a sound. |
+| `[PLAYER] [command]` | Run a command as the player. |
+| `[CONSOLE] [command]` | Run a command as console. |
+| `[FIOPLAYTIME] CLAIM [tier]` | Claim one reward tier. |
+| `[FIOPLAYTIME] NEXT_PAGE+[amount]` | Move forward through paginated content. |
+| `[FIOPLAYTIME] PREVIOUS_PAGE-[amount]` | Move backward through paginated content. |
 | `[FIOPLAYTIME] Materials` | Open the material selector menu. |
 | `[FIOPLAYTIME] Leaderboards` | Open the leaderboard menu. |
-| `[FIOPLAYTIME] Profile &lt;player&gt;` | Open a player's profile menu. |
+| `[FIOPLAYTIME] Profile [player]` | Open a player's profile menu. |
 | `[FIOPLAYTIME] BACK` | Return to the previous menu. |
 
 :::info[Page note]
-If an `unclaimed` tier has only `[NONE]`, the source automatically replaces it with `[FIOPLAYTIME] CLAIM &lt;tier&gt;`.
+If an `unclaimed` tier has only `[NONE]`, the source automatically replaces it with `[FIOPLAYTIME] CLAIM [tier]`.
 :::
