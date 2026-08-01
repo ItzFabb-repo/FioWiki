@@ -1,0 +1,88 @@
+---
+title: Developer API
+sidebar_position: 4
+---
+
+# Developer API
+
+FioPlaytime exposes `FioPlaytimeApi` through Bukkit Services.
+
+## Getting the API
+
+```java
+RegisteredServiceProvider<FioPlaytimeApi> provider =
+        Bukkit.getServicesManager().getRegistration(FioPlaytimeApi.class);
+
+if (provider == null) {
+    return;
+}
+
+FioPlaytimeApi api = provider.getProvider();
+```
+
+## Read playtime
+
+| Method | Description |
+| --- | --- |
+| `getPlaytimeSeconds(UUID uniqueId)` | Return the player's stored/current playtime in seconds. |
+| `getFormattedPlaytime(UUID uniqueId)` | Return formatted playtime text. |
+| `getPlaytime(UUID uniqueId)` | Return a `PlaytimeSnapshot` for an existing player record. |
+| `getOrCreatePlaytime(UUID uniqueId, String name)` | Return a snapshot and create the record when needed. |
+| `getLeaderboard()` | Return leaderboard snapshots. |
+| `getLeaderboard(int limit)` | Return leaderboard snapshots capped by `limit`. |
+| `getLoadedPlayerCount()` | Return how many player records are loaded. |
+
+## Modify playtime
+
+| Method | Description |
+| --- | --- |
+| `addPlaytime(UUID uniqueId, String name, long seconds)` | Add seconds to a player. |
+| `removePlaytime(UUID uniqueId, String name, long seconds)` | Remove seconds from a player. |
+| `setPlaytime(UUID uniqueId, String name, long seconds)` | Set a player's playtime. |
+| `resetPlayer(UUID uniqueId)` | Reset one player's playtime data. |
+| `resetAll()` | Reset all playtime data. |
+| `save()` | Save currently managed playtime data. |
+
+## Counting state
+
+| Method | Description |
+| --- | --- |
+| `pauseCounting(UUID uniqueId)` | Pause playtime counting for a player UUID. |
+| `resumeCounting(Player player)` | Resume playtime counting for an online player. |
+| `refreshSession(Player player)` | Refresh the active counting session for a player. |
+| `isBlacklisted(UUID uniqueId)` | Check whether the player is blacklisted. |
+| `isFrozen(UUID uniqueId)` | Check whether the player is frozen. |
+| `isCountingPaused(UUID uniqueId)` | Check whether counting is currently paused. |
+| `addBlacklist(UUID uniqueId, String name)` | Add blacklist state. |
+| `removeBlacklist(UUID uniqueId)` | Remove blacklist state. |
+| `addFreeze(UUID uniqueId, String name)` | Add freeze state. |
+| `removeFreeze(UUID uniqueId)` | Remove freeze state. |
+
+## Tier and preference state
+
+| Method | Description |
+| --- | --- |
+| `getTier(UUID uniqueId)` | Return the stored tier list for the player. |
+| `getTierStatus(UUID uniqueId)` | Return the stored tier status list for the player. |
+| `setTier(UUID uniqueId, String tier, String status)` | Set tier state. |
+| `addTier(UUID uniqueId, String tier, String status)` | Add tier state. |
+| `removeTier(UUID uniqueId, String tier, String status)` | Remove tier state. |
+| `isNotificationsEnabled(UUID uniqueId)` | Check notification preference. |
+| `toggleNotifications(UUID uniqueId)` | Toggle notification preference and return the new state. |
+| `isBossBarEnabled(UUID uniqueId)` | Check bossbar preference. |
+| `toggleBossBar(UUID uniqueId)` | Toggle bossbar preference and return the new state. |
+| `getSelectedMaterial(UUID uniqueId)` | Return selected reward material id. |
+| `setSelectedMaterial(UUID uniqueId, String selectedMaterial)` | Set selected reward material id. |
+
+## `PlaytimeSnapshot`
+
+`PlaytimeSnapshot` contains:
+
+- `UUID uniqueId`
+- `String lastName`
+- `long seconds`
+- `String formatted`
+
+:::info[Page note]
+The API is intended for integration plugins that need to read playtime, adjust time, manage frozen/blacklisted users, or display leaderboard data.
+:::

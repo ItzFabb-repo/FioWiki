@@ -1,0 +1,86 @@
+---
+title: Materials Menu
+sidebar_position: 4
+---
+
+# Materials Menu
+
+`menu/Materials.yml` controls the reward material selector.
+
+## Layout
+
+```yaml
+title: "<dark_gray>Materials</dark_gray>"
+rows: 6
+```
+
+The bundled menu uses pagination, a player summary, a close button, a back button, and a reset-to-default button.
+
+## Reset button
+
+```yaml
+items:
+  materials:
+    ifSelected:
+      actions:
+        any:
+          - '[FIOPLAYTIME] ClearSelectedMaterials'
+    ifNotSelected:
+      actions:
+        any:
+          - '[NONE]'
+```
+
+When the player has selected a custom material pack, this button clears the selection.
+
+## Content slots
+
+```yaml
+materials:
+  content-slot:
+    - '11-15'
+    - '20-24'
+    - '29-33'
+    - '38-42'
+```
+
+Entries are generated from `materials.yml`.
+
+## Material status styles
+
+```yaml
+materials:
+  status:
+    noPermission: {}
+    hasPermission: {}
+    hasSelected: {}
+```
+
+| Status | Meaning |
+| --- | --- |
+| `noPermission` | Player cannot select this pack. |
+| `hasPermission` | Player can select this pack. |
+| `hasSelected` | Player currently uses this pack. |
+
+## Material actions
+
+| Action | Description |
+| --- | --- |
+| `[FIOPLAYTIME] SelectMaterials %id%` | Select the material pack. |
+| `[FIOPLAYTIME] ClearSelectedMaterials` | Return to the default pack. |
+| `[FIOPLAYTIME] PreviewMaterials %id%` | Preview the pack with animation behavior. |
+| `[MESSAGE] &lt;message&gt;` | Send feedback. |
+| `[SOUND] &lt;sound&gt; [volume] [pitch]` | Play feedback sound. |
+
+## Cooldown
+
+```yaml
+settings:
+  cooldown: 30s
+```
+
+The bundled menu uses this under each material status to limit right-click preview spam.
+
+:::info[Page note]
+The menu display comes from `Materials.yml`; the actual available packs and their item colors come from `materials.yml`.
+:::

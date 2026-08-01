@@ -253,6 +253,42 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioPlaytime',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fioplaytime/index',
+            'plugin/fioplaytime/commands-permissions',
+            'plugin/fioplaytime/api',
+            'plugin/fioplaytime/options',
+            'plugin/fioplaytime/placeholders',
+            {
+              type: 'category',
+              label: 'Configuration',
+              items: [
+                {
+                  type: 'doc',
+                  id: 'plugin/fioplaytime/config/config.yml',
+                  label: 'Configuration',
+                },
+                'plugin/fioplaytime/config/rewards.yml',
+                'plugin/fioplaytime/config/materials.yml',
+                {
+                  type: 'category',
+                  label: 'Menu',
+                  items: [
+                    'plugin/fioplaytime/config/menu/playtime-menu',
+                    'plugin/fioplaytime/config/menu/profiles',
+                    'plugin/fioplaytime/config/menu/leaderboards',
+                    'plugin/fioplaytime/config/menu/materials',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioCommunityQuests',
           collapsible: true,
           collapsed: true,

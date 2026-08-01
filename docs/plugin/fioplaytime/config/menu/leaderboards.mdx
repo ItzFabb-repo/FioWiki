@@ -1,0 +1,58 @@
+---
+title: Leaderboards
+sidebar_position: 3
+---
+
+# Leaderboards
+
+`menu/Leaderboards.yml` controls the playtime top list.
+
+## Layout
+
+```yaml
+title: "<dark_gray>Leaderboards</dark_gray>"
+rows: 6
+```
+
+The bundled menu uses a 6-row inventory with a player summary in the header, a back button, and generated leaderboard entries.
+
+## Content slots
+
+```yaml
+leaderboards:
+  content-slot:
+    - '13'
+    - '20-24'
+    - '28-34'
+    - '37-43'
+```
+
+FioPlaytime fills these slots with leaderboard entries from stored playtime data.
+
+## Entry template
+
+```yaml
+leaderboards:
+  material: PLAYER_HEAD
+  player: true
+  refresh: true
+  name: "<yellow>#%player_top_position%</yellow> <white>%player_top_name%</white>"
+  lore:
+    - '<gray>Position:</gray> <white>#%player_top_position%</white>'
+    - '<gray>Playtime:</gray> <white>%player_top_playtime%</white>'
+  actions:
+    any:
+      - '[FIOPLAYTIME] PROFILE %player_top_name%'
+```
+
+## Leaderboard placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%player_top_position%` | Rank position. |
+| `%player_top_name%` | Ranked player name. |
+| `%player_top_playtime%` | Ranked player's formatted playtime. |
+
+:::info[Page note]
+Clicking a leaderboard entry opens that player's profile through `[FIOPLAYTIME] PROFILE %player_top_name%`.
+:::

@@ -1,0 +1,149 @@
+---
+title: Configuration
+sidebar_position: 1
+---
+
+# Configuration
+
+`config.yml` controls runtime tracking, storage, bossbar, language, and protection behavior. Reward tiers live in `rewards.yml`, and visual reward materials live in `materials.yml`.
+
+## Versioning
+
+```yaml
+config-version: 4
+force-update-config: false
+```
+
+- `config-version`: bundled config schema version.
+- `force-update-config`: when enabled, the plugin can replace an older config with the bundled default.
+
+## Debug
+
+```yaml
+debug:
+  enabled: false
+```
+
+Enables extra diagnostic output for troubleshooting.
+
+## Settings
+
+```yaml
+settings:
+  language: en
+  autosave-minutes: 5
+  BlockSameIP: true
+  PreventDupedRewards: true
+```
+
+- `language`: active language file key, such as `en` or `id`.
+- `autosave-minutes`: interval for saving playtime data.
+- `BlockSameIP`: prevents duplicate playtime counting from the same IP session.
+- `PreventDupedRewards`: protects reward claiming from duplicated payouts.
+
+## Tier formatting
+
+```yaml
+settings:
+  tierPlaytime:
+    roman: true
+    replaceNum:
+      1: "..."
+```
+
+- `roman`: renders tier numbers as Roman numerals in menu placeholders where the source applies it.
+- `replaceNum`: optional number replacement map for custom tier styling.
+
+## World filters
+
+```yaml
+settings:
+  worlds:
+    blacklist: []
+    whitelist: []
+```
+
+- If `blacklist` contains the player's world, playtime is not counted.
+- If `whitelist` is not empty, only listed worlds count.
+
+## Region filters
+
+```yaml
+settings:
+  regions:
+    blacklist: []
+    whitelist: []
+```
+
+Region filters let you stop or allow tracking in named regions when region support is available.
+
+## Gamemode filters
+
+```yaml
+settings:
+  gamemodes:
+    blacklist:
+      - "CREATIVE"
+      - "SPECTATOR"
+```
+
+Players in blacklisted gamemodes do not gain playtime.
+
+## Player filters
+
+```yaml
+settings:
+  players:
+    blacklist: []
+    whitelist: []
+```
+
+Entries can be player names or UUIDs. Blacklisted players do not gain tracked time. If the whitelist is not empty, only whitelisted players are counted.
+
+## Default player options
+
+```yaml
+settings:
+  defaultOption:
+    notification: true
+    bossbar: true
+```
+
+Controls default preference values for new player records.
+
+## Bossbar
+
+```yaml
+bossbar:
+  color: YELLOW
+  style: PROGRESS
+  text: "<yellow><bold>|</bold> Your Playtime:</yellow> <white>{current_playtime}</white>"
+```
+
+- `color`: Bukkit bossbar color.
+- `style`: Bukkit bossbar style.
+- `text`: bossbar title. `{current_playtime}` is replaced with the player's formatted playtime.
+
+## Storage
+
+```yaml
+database:
+  storage:
+    type: yaml
+    mysql:
+      host: localhost
+      port: 3306
+      database: fioplaytime
+      username: root
+      password: ""
+      table: fioplaytime_players
+      use-ssl: false
+```
+
+- `type: yaml`: stores player data in local YAML files.
+- `type: mysql`: stores player data in MySQL using the configured connection fields.
+- `table`: must be alphanumeric or underscore because the source validates the table name.
+
+:::info[Page note]
+Playtime requirements and payout actions are intentionally separated into `rewards.yml`, so normal runtime tracking stays clean in `config.yml`.
+:::

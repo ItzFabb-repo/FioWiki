@@ -1,0 +1,129 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml`, `README.md`, `PlaytimeCommand.java`, and `FioPlaytimeCommand.java`.
+
+## Root commands
+
+The plugin registers two root commands:
+
+- `/playtime`
+- `/fioplaytime`
+
+Aliases:
+
+- `/ptime`
+- `/fpt`
+
+## User commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/playtime` | `fioplaytime.menu` | Open the main playtime menu. |
+| `/playtime &lt;player&gt;` | `fioplaytime.playtime.others` | Show another player's playtime in chat. |
+| `/fioplaytime` | `fioplaytime.menu` | Open the main playtime menu. |
+| `/fioplaytime info` | `fioplaytime.info.self` | Show your own playtime information. |
+| `/fioplaytime info &lt;player&gt;` | `fioplaytime.info.others` | Show another player's playtime information. |
+| `/fioplaytime help` | `fioplaytime.help` | Show player help. |
+| `/fioplaytime toggle notification` | `fioplaytime.toggle.notification` | Toggle reward notification messages. |
+| `/fioplaytime toggle bossbar` | `fioplaytime.toggle.bossbar` | Toggle the playtime bossbar. |
+| `/fioplaytime claim &lt;tier&gt;` | `fioplaytime.claim` | Claim one available playtime reward tier. |
+| `/fioplaytime claimall` | `fioplaytime.claimall` | Claim every available unclaimed reward tier. |
+| `/fioplaytime leaderboards` | `fioplaytime.leaderboards` | Open the playtime leaderboard menu. |
+| `/fioplaytime materials` | `fioplaytime.materials` | Open the material selector menu. |
+| `/fioplaytime reload` | `fioplaytime.reload` | Reload plugin files from a shortcut command. |
+| `/fioplaytime status [player]` | `fioplaytime.status` | Show runtime tracking status for yourself or a player. |
+
+## User permission nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fioplaytime.playtime` | `true` | Allows the `/playtime` command. |
+| `fioplaytime.menu` | `true` | Allows opening the main playtime menu. |
+| `fioplaytime.info.self` | `true` | Allows checking your own info. |
+| `fioplaytime.info.others` | `op` | Allows checking another player's info. |
+| `fioplaytime.help` | `true` | Allows help command. |
+| `fioplaytime.toggle.notification` | `true` | Allows notification toggle. |
+| `fioplaytime.toggle.bossbar` | `true` | Allows bossbar toggle. |
+| `fioplaytime.claim` | `true` | Allows claiming a single tier. |
+| `fioplaytime.claimall` | `true` | Allows claiming all available tiers. |
+| `fioplaytime.leaderboards` | `true` | Allows opening leaderboards. |
+| `fioplaytime.materials` | `op` | Allows opening the material selector command. |
+| `fioplaytime.reload` | `op` | Allows reload shortcut. |
+| `fioplaytime.status` | `op` | Allows status command. |
+| `fioplaytime.playtime.others` | `op` | Allows `/playtime &lt;player&gt;`. |
+
+## Admin commands
+
+Admin commands use `/fioplaytime admin ...`.
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fioplaytime admin info &lt;player&gt;` | `fioplaytime.admin.info` | Show stored playtime data for a player. |
+| `/fioplaytime admin blacklist add &lt;player&gt;` | `fioplaytime.admin.blacklist.add` | Stop a player from being tracked. |
+| `/fioplaytime admin blacklist remove &lt;player&gt;` | `fioplaytime.admin.blacklist.remove` | Remove a player from blacklist. |
+| `/fioplaytime admin blacklist list` | `fioplaytime.admin.blacklist.list` | List blacklisted players. |
+| `/fioplaytime admin freeze add &lt;player&gt;` | `fioplaytime.admin.freeze.add` | Freeze a player's playtime progress. |
+| `/fioplaytime admin freeze remove &lt;player&gt;` | `fioplaytime.admin.freeze.remove` | Unfreeze a player. |
+| `/fioplaytime admin freeze list` | `fioplaytime.admin.freeze.list` | List frozen players. |
+| `/fioplaytime admin time add &lt;player&gt; &lt;value&gt;` | `fioplaytime.admin.time.add` | Add playtime to a player. |
+| `/fioplaytime admin time remove &lt;player&gt; &lt;value&gt;` | `fioplaytime.admin.time.remove` | Remove playtime from a player. |
+| `/fioplaytime admin time set &lt;player&gt; &lt;value&gt;` | `fioplaytime.admin.time.set` | Set a player's playtime. |
+| `/fioplaytime admin player &lt;player\|all&gt; reset` | `fioplaytime.admin.player.reset` | Reset one player or every player's playtime data. |
+| `/fioplaytime admin player &lt;player&gt; tier set &lt;value&gt; [status]` | `fioplaytime.admin.player.tier.set` | Set a player's tier state. |
+| `/fioplaytime admin player &lt;player&gt; tier remove &lt;value&gt; [status]` | `fioplaytime.admin.player.tier.remove` | Remove a tier state from a player. |
+| `/fioplaytime admin player &lt;player&gt; tier add &lt;value&gt; [status]` | `fioplaytime.admin.player.tier.add` | Add a tier state to a player. |
+| `/fioplaytime admin reload` | `fioplaytime.admin.reload` | Reload plugin-managed files. |
+| `/fioplaytime admin placeholders` | `fioplaytime.admin.placeholders` | Show available PlaceholderAPI placeholders. |
+| `/fioplaytime admin help` | `fioplaytime.admin.help` | Show admin help. |
+| `/fioplaytime admin authors` | `fioplaytime.admin.authors` | Show plugin author. |
+| `/fioplaytime admin open &lt;player&gt; &lt;menu&gt; [arg]` | `fioplaytime.admin.open` | Open a configured menu for a target player. |
+| `/fioplaytime admin forceOpen &lt;player&gt; &lt;menu&gt; [arg]` | `fioplaytime.admin.forceopen` | Force-open a menu for a target player. |
+
+## Admin permission nodes
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `fioplaytime.admin` | `op` | Parent permission for admin commands. |
+| `fioplaytime.admin.info` | `op` | Admin info command. |
+| `fioplaytime.admin.blacklist.add` | `op` | Add blacklist state. |
+| `fioplaytime.admin.blacklist.remove` | `op` | Remove blacklist state. |
+| `fioplaytime.admin.blacklist.list` | `op` | List blacklist state. |
+| `fioplaytime.admin.freeze.add` | `op` | Add freeze state. |
+| `fioplaytime.admin.freeze.remove` | `op` | Remove freeze state. |
+| `fioplaytime.admin.freeze.list` | `op` | List freeze state. |
+| `fioplaytime.admin.time.add` | `op` | Add playtime. |
+| `fioplaytime.admin.time.remove` | `op` | Remove playtime. |
+| `fioplaytime.admin.time.set` | `op` | Set playtime. |
+| `fioplaytime.admin.player.reset` | `op` | Reset player data. |
+| `fioplaytime.admin.player.tier.set` | `op` | Set tier state. |
+| `fioplaytime.admin.player.tier.remove` | `op` | Remove tier state. |
+| `fioplaytime.admin.player.tier.add` | `op` | Add tier state. |
+| `fioplaytime.admin.reload` | `op` | Reload plugin files. |
+| `fioplaytime.admin.placeholders` | `op` | Show placeholder list. |
+| `fioplaytime.admin.help` | `op` | Show admin help. |
+| `fioplaytime.admin.authors` | `op` | Show author info. |
+| `fioplaytime.admin.open` | `op` | Open menu for a player. |
+| `fioplaytime.admin.forceopen` | `op` | Force-open menu for a player. |
+| `fioplaytime.admin.update` | `op` | Reserved update permission from `plugin.yml`. |
+
+## Duration values
+
+Admin time commands parse comma-separated durations:
+
+- `10s`
+- `5m`
+- `2h`
+- `3d`
+- `1w`
+- `1mo`
+- `1y`
+- `1h,30m,10s`
+
+:::info[Page note]
+Tier status tab-completion includes `unlocked`, `locked`, `freeze`, and `onprogress`.
+:::

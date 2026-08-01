@@ -1,0 +1,46 @@
+---
+title: Profiles
+sidebar_position: 2
+---
+
+# Profiles
+
+`menu/Profiles.yml` controls the player profile view.
+
+## Layout
+
+```yaml
+title: "<dark_gray>Profile</dark_gray>"
+rows: 3
+```
+
+The bundled file uses a compact 3-row inventory with decoration panes, a close button, a back button, and a player head profile item.
+
+## Profile item
+
+```yaml
+items:
+  profile:
+    material: PLAYER_HEAD
+    player: true
+    refresh: true
+    name: "<green>%player_name%'s Profile</green>"
+    lore:
+      - '<gray>Name:</gray> <white>%player_name%</white>'
+      - '<gray>Playtime:</gray> <white>%fioplaytime_player_date_formatted%</white>'
+      - '<gray>Notifications:</gray> <white>%fioplaytime_notification_state%</white>'
+      - '<gray>Bossbar:</gray> <white>%fioplaytime_bossbar_state%</white>'
+    slot: 13
+```
+
+## Navigation
+
+The bundled profile menu includes:
+
+- `[CLOSE]` on the close button
+- `[SOUND] BLOCK_CHEST_CLOSE 1 2 master`
+- `[FIOPLAYTIME] BACK` on the back button
+
+:::info[Page note]
+Profile values are refreshed, so playtime and preference placeholders can update while the menu is open.
+:::

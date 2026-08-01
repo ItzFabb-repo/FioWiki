@@ -1,0 +1,88 @@
+---
+title: Materials
+sidebar_position: 3
+---
+
+# Materials
+
+`materials.yml` controls the visual material packs used by generated playtime reward entries.
+
+## Settings
+
+```yaml
+settings:
+  shouldWeAnimate: true
+  animationCooldown: 10
+```
+
+- `shouldWeAnimate`: enables preview animation behavior.
+- `animationCooldown`: cooldown used by preview animation logic.
+
+## Material pack structure
+
+```yaml
+playtime:
+  materials:
+    default:
+      isthisDefault: true
+      permission: ""
+      icon:
+        material: YELLOW_CONCRETE
+        name: "<yellow>Default</yellow>"
+      items:
+        locked:
+          material: RED_CONCRETE
+        unlocked:
+          material: LIME_CONCRETE
+        onprogress:
+          material: YELLOW_CONCRETE
+        unclaimed:
+          material: YELLOW_CONCRETE
+          behavior:
+            glow: true
+```
+
+## Keys
+
+| Key | Description |
+| --- | --- |
+| `permission` | Permission required to select this pack. Leave empty for the default pack. |
+| `isthisDefault` | Marks the fallback/default pack. |
+| `icon` | Item shown in the material selector menu. |
+| `items.locked` | Material used for locked reward tiers. |
+| `items.unlocked` | Material used for claimed tiers. |
+| `items.onprogress` | Material used for the currently progressing tier. |
+| `items.unclaimed` | Material used for claimable tiers. |
+| `behavior.glow` | Adds a glow effect for supported states. |
+
+## Bundled material packs
+
+The bundled `materials.yml` includes:
+
+- `default`
+- `glass`
+- `concrete`
+- `wool`
+- `terracotta`
+- `dye`
+- `banner`
+- `carpet`
+- `glazed`
+- `shulker`
+- `ore`
+- `gem`
+
+## Permission example
+
+```yaml
+playtime:
+  materials:
+    glass:
+      permission: fioplaytime.material.glass
+```
+
+Players without the permission can still preview the pack if the menu status action allows previewing, but they cannot select it.
+
+:::info[Page note]
+The material selector menu reads these entries dynamically, so adding a new pack here makes it available in `Materials.yml` pagination.
+:::

@@ -1,0 +1,82 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+This page explains the main FioPlaytime systems before you edit the individual YAML files.
+
+## Tracking flow
+
+1. Player joins the server.
+2. FioPlaytime loads or creates the player's playtime record.
+3. The tracker checks worlds, regions, gamemodes, player filters, blacklist, freeze state, and same-IP rules.
+4. Eligible players gain playtime while online.
+5. Menus and placeholders render the current playtime.
+6. Reward tiers become claimable when the required playtime is reached.
+
+## Reward flow
+
+Rewards are not written in `config.yml`. They live in `rewards.yml`:
+
+```yaml
+playtime:
+  rewards:
+    1:
+      description:
+        - '<gray>- <white>100 Coins</white></gray>'
+      required:
+        playtime: 10m
+        one-time: true
+      commands:
+        - '[CONSOLE] eco give %player_name% 100'
+        - '[MESSAGE] <green>You claimed tier %tier%.</green>'
+```
+
+When a tier is claimable, the main menu renders it as `unclaimed`. Clicking the tier runs `[FIOPLAYTIME] CLAIM %tier_raw%`, then the reward actions run from `rewards.yml`.
+
+## Menu flow
+
+FioPlaytime menu files share a common structure:
+
+- `title`: inventory title
+- `rows`: menu height
+- `items`: static buttons and decorations
+- `content-slot`: slots used by paginated content
+- `actions`: click behavior
+- `status`: visual states for generated entries
+
+The menu action system supports normal click, right click, left click, shift click, message, sound, console command, player command, close, and FioPlaytime-specific navigation actions.
+
+## Storage flow
+
+Use YAML for simple servers:
+
+```yaml
+database:
+  storage:
+    type: yaml
+```
+
+Use MySQL when multiple tools need central storage or the server has a large player base:
+
+```yaml
+database:
+  storage:
+    type: mysql
+```
+
+## Player preferences
+
+Players can control:
+
+- reward notification state
+- bossbar state
+- selected reward material
+
+These preferences are exposed in menus and placeholders.
+
+:::info[Page note]
+For exact keys, continue to the `config.yml`, `rewards.yml`, `materials.yml`, and menu pages.
+:::

@@ -1,0 +1,125 @@
+---
+title: Rewards
+sidebar_position: 2
+---
+
+# Rewards
+
+`rewards.yml` defines playtime tiers and the actions that run when a player claims each tier.
+
+## Basic structure
+
+```yaml
+playtime:
+  rewards:
+    1:
+      description:
+        - '<gray>- <white>100 Coins</white></gray>'
+      required:
+        playtime: 10m,10s
+        one-time: true
+      commands:
+        - '[ITEM] DIAMOND 1'
+        - '[CONSOLE] eco give %player_name% 100'
+        - '[MESSAGE] <green>You claimed Playtime %tier%.</green>'
+```
+
+## Tier keys
+
+Tier ids are stored under `playtime.rewards`.
+
+```yaml
+playtime:
+  rewards:
+    1: {}
+    2: {}
+    3: {}
+```
+
+The bundled source sorts numeric tier keys in order, so `1` is processed before `2`, `2` before `3`, and so on.
+
+## `description`
+
+```yaml
+description:
+  - '<gray>- <white>100 Coins</white></gray>'
+  - '<gray>- <white>1 Diamond</white></gray>'
+```
+
+Descriptions are rendered into menu lore through the `{rewards}` placeholder in `PlaytimeMenu.yml`.
+
+## `required.playtime`
+
+```yaml
+required:
+  playtime: 1h,30m
+  one-time: true
+```
+
+Supported duration units:
+
+| Unit | Meaning |
+| --- | --- |
+| `s` | seconds |
+| `m` | minutes |
+| `h` | hours |
+| `d` | days |
+| `w` | weeks |
+| `mo` | months, calculated as 30 days |
+| `y` | years, calculated as 365 days |
+
+You can combine units with commas:
+
+```yaml
+required:
+  playtime: 1d,2h,30m,10s
+```
+
+## `commands`
+
+`commands` is the reward action list. Actions run when the tier is claimed.
+
+| Action | Format | Description |
+| --- | --- | --- |
+| `[ITEM]` | `[ITEM] &lt;material&gt; [amount]` | Gives an item directly to the player. Overflow drops naturally at the player's location. |
+| `[CONSOLE]` | `[CONSOLE] &lt;command&gt;` | Runs a command as console. |
+| `[PLAYER]` | `[PLAYER] &lt;command&gt;` | Runs a command as the claiming player. |
+| `[MESSAGE]` | `[MESSAGE] &lt;message&gt;` | Sends a colored message to the player. |
+| `[SOUND]` | `[SOUND] &lt;sound&gt; [volume] [pitch]` | Plays a Bukkit sound at the player location. |
+| `[TITLE]` | `[TITLE] &lt;text&gt;` | Sets the title text shown after the reward list finishes. |
+| `[SUBTITLE]` | `[SUBTITLE] &lt;text&gt;` | Sets the subtitle text shown with `[TITLE]`. |
+
+## Reward placeholders
+
+Reward actions support:
+
+| Placeholder | Value |
+| --- | --- |
+| `%player%` | Player name. |
+| `%player_name%` | Player name. |
+| `%uuid%` | Player UUID. |
+| `%tier%` | Claimed tier id. |
+
+## Example tier
+
+```yaml
+playtime:
+  rewards:
+    5:
+      description:
+        - '<gray>- <white>500 Coins</white></gray>'
+        - '<gray>- <white>2 Diamonds</white></gray>'
+      required:
+        playtime: 50m
+        one-time: true
+      commands:
+        - '[ITEM] DIAMOND 2'
+        - '[CONSOLE] eco give %player_name% 500'
+        - '[SOUND] UI_TOAST_CHALLENGE_COMPLETE 1 1'
+        - '[TITLE] <gold>Playtime %tier%</gold>'
+        - '[SUBTITLE] <yellow>Reward claimed!</yellow>'
+```
+
+:::info[Page note]
+Claim state is stored per player. A tier that is already in the player's unlocked tier list cannot be claimed again.
+:::

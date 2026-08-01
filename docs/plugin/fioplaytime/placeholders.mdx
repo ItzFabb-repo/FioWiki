@@ -1,0 +1,56 @@
+---
+title: Placeholders
+sidebar_position: 3
+---
+
+# Placeholders
+
+FioPlaytime registers the PlaceholderAPI identifier `fioplaytime`.
+
+## Available placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%fioplaytime_player_date_formatted%` | Shows the player's current playtime using the plugin's detailed formatter. |
+| `%fioplaytime_player_date_&lt;format&gt;%` | Shows the player's current playtime using a custom token format. |
+| `%fioplaytime_notification_state%` | Returns `true` or `false` for the player's notification preference. |
+| `%fioplaytime_bossbar_state%` | Returns `true` or `false` for the player's bossbar preference. |
+
+## Custom format tokens
+
+Custom placeholders start with `player_date_`.
+
+Example:
+
+```txt
+%fioplaytime_player_date_dd:HH:mm:ss%
+```
+
+Supported tokens:
+
+| Token | Meaning |
+| --- | --- |
+| `yyyy` | Total years calculated from playtime days. |
+| `dd` | Total days, padded to two digits. |
+| `HH` | Hours in 24-hour style, padded to two digits. |
+| `hh` | Hours in 12-hour style, padded to two digits. |
+| `mm` | Minutes, padded to two digits. |
+| `mmm` | Minutes, padded to two digits. |
+| `MMM` | Minutes, padded to two digits. |
+| `ss` | Seconds, padded to two digits. |
+| `a` | `AM` or `PM` based on the current hour value. |
+
+## Menu usage
+
+The bundled menus use placeholders such as:
+
+```yaml
+lore:
+  - '<gray>Total Playtime:</gray> <white>%fioplaytime_player_date_formatted%</white>'
+  - '<gray>Notifications:</gray> <white>%fioplaytime_notification_state%</white>'
+  - '<gray>Bossbar:</gray> <white>%fioplaytime_bossbar_state%</white>'
+```
+
+:::info[Page note]
+PlaceholderAPI must be installed for external plugins to resolve `%fioplaytime_*%` placeholders. FioPlaytime also renders these values inside its own menus.
+:::
