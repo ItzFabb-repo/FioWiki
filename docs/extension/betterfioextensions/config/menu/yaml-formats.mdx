@@ -1,0 +1,174 @@
+---
+title: YAML Formats
+sidebar_position: 2
+---
+
+# YAML Formats
+
+This page documents the menu YAML files shipped by BetterFioExtensions under `src/main/resources/menu`.
+Each section below lists the real file format used by the extension and explains how that menu is meant to be edited.
+
+## Shared menu format
+
+Most menus use this layout:
+
+```yaml
+title: "<inventory title>"
+rows: 6
+
+items:
+  item_key:
+    slot: 10
+    material: DIAMOND
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Line one"
+      - "<yellow>Click to use"
+    actions:
+      any:
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+        - "[OPEN_MENU] team"
+```
+
+Use `slot` for a single slot and `slots` for a list or repeated decoration slots. `actions.any` runs for any supported click key. Static buttons usually use `[OPEN_MENU]`, `[GOBACK]`, `[PLAYER]`, `[SOUND]`, or `[BETTERFIOEXTENSIONS]`.
+
+## Role-aware format
+
+Some menus are split by BetterTeams role:
+
+```yaml
+DEFAULT:
+  title: "<title>"
+  rows: 6
+  items: {}
+
+ADMIN:
+  title: "<title>"
+  rows: 6
+  items: {}
+
+OWNER:
+  title: "<title>"
+  rows: 6
+  items: {}
+```
+
+The extension opens the section matching the player's team rank. Edit the correct role section when changing buttons for members, admins, or owners.
+
+## State-aware item format
+
+Some items change material, name, lore, flags, or enchants based on live state:
+
+```yaml
+items:
+  invites:
+    slot: 24
+    material:
+      noRequests:
+        material: BOOK
+        name: "<yellow>Open Team Invitations"
+      hasRequests:
+        material: BOOK
+        name: "<yellow>Open Team Invitations"
+        flags:
+          - HIDE_ENCHANTS
+        enchants:
+          - UNBREAKING:1
+```
+
+Keep the state keys used by the original file. Rename display text freely, but do not rename the state keys unless the Java source also supports the new key.
+
+## Create Team menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Create Team/noteam.yml` | `title`, `rows`, `items`; static item keys include `list`, `create`, and `invites`. | Main no-team menu. Use `[OPEN_MENU] teamlist` for the public team browser, `[BETTERFIOEXTENSIONS] CREATE_TEAM` for the create-team flow, and `[OPEN_MENU] invites` for invitations. |
+| `menu/Create Team/teamlist.yml` | `title`, `rows`, `items`; generated team entries use `%team%`, `%betterfioextensions_list_team_name%`, and pagination actions. | Public team list. Use `[BETTERFIOEXTENSIONS] REQUEST_JOIN %team%` on generated team items, then keep `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE`, `[BETTERFIOEXTENSIONS] NEXT_PAGE`, and `[GOBACK]` for navigation. |
+| `menu/Create Team/invites.yml` | `title`, `rows`, `items`; generated invitation entries use invitation placeholders and pagination buttons. | Invitation list for players without a team. Use `[BETTERFIOEXTENSIONS] ACCEPT_INVITATION` on generated invitation entries and keep the page/back buttons for navigation. |
+
+## Main team menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/teamMenu.yml` | Role-aware root: `DEFAULT`, `ADMIN`, `OWNER`; each role contains `title`, `rows`, and `items`. | Main team hub. Put member-only buttons under `DEFAULT`, staff buttons under `ADMIN`, and owner-only controls under `OWNER`. The bundled menu opens saved locations, permissions, leaderboards, bank, levels, team members, ally requests, logs, banner, and control panel. |
+| `menu/Team Menu/teamMembers.yml` | `title`, `rows`, `items`; generated member entries use `%player_name%` and page actions. | Team member list. Use `[BETTERFIOEXTENSIONS] MANAGE_PLAYER %player_name%` on generated member items so the clicked player opens in the management menu. |
+| `menu/Team Menu/teamMemberManage.yml` | `title`, `rows`, `items`; member action buttons use `%player_name%`. | Manage one member. Use the exact bundled formats: `[BETTERFIOEXTENSIONS] KICK %player_name%`, `BAN`, `UNBAN`, `PROMOTE`, and `DEMOTE`. Ownership transfer opens with `[OPEN_MENU] transfer-ownership %player_name%`. |
+| `menu/Team Menu/joinRequests.yml` | `title`, `rows`, `items`; generated request entries use accept/deny actions and pagination. | Pending team join requests. Use `[BETTERFIOEXTENSIONS] ACCEPT_REQUEST` and `[BETTERFIOEXTENSIONS] DENY_REQUEST` on request entries. |
+| `menu/Team Menu/teamAllyRequest.yml` | `title`, `rows`, `items`; generated ally entries use `%team%`, filter actions, and page actions. | Ally request browser. Use `[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%`, `[BETTERFIOEXTENSIONS] ACCEPT_ALLY_REQUESTS`, `[BETTERFIOEXTENSIONS] FILTER`, `[BETTERFIOEXTENSIONS] VIEW_ALLIED`, and `[BETTERFIOEXTENSIONS] VIEW_PENDING`. |
+
+## Bank and log menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/teamBank.yml` | `settings`, `STAFF`; bank button groups include `deposit`, `withdraw`, `percentage`, and custom sign prompt items. | Team bank menu. Edit percentage buttons by changing their `percentage` value and display item. Keep Vault-dependent placeholders such as `%betterfioextensions_player_balance%`, `%betterfioextensions_team_money%`, and `%betterfioextensions_team_bank_limit%` when showing balances. |
+| `menu/Team Menu/teamBankLogs.yml` | `title`, `rows`, `items`; generated log entries and sort/page controls. | Bank transaction logs. Use `[BETTERFIOEXTENSIONS] SORT` to cycle log ordering and keep previous/next page actions for generated logs. |
+| `menu/Team Menu/teamLogsCategory.yml` | `title`, `rows`, `items`; static category buttons. | Log category selector. Use `[OPEN_MENU] teamBankLogs` for bank logs and `[OPEN_MENU] teamLogs` for team activity logs. |
+| `menu/Team Menu/teamLogs.yml` | `title`, `rows`, `items`; generated activity log entries and pagination. | Team activity logs. Keep previous/next page actions and edit display/lore only if you want to change how log entries are shown. |
+
+## Levels and guide menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/teamLevels.yml` | `title`, `rows`, `items`; generated team level entries and pagination. | BetterTeams level display. Use this menu to show available levels, prices, status, and page buttons. Level upgrade behavior is handled by BetterTeams/extension logic, not by adding aliases. |
+| `menu/Team Menu/teamGuide.yml` | Role-aware root: `settings`, `DEFAULT`, `ADMIN`, `OWNER`; uses `[BETTERFIOEXTENSIONS] GUIDE_SORT`. | Role guide menu. Edit each role section separately and keep the guide sort action if you want players to cycle guide views. |
+
+## Control and visual menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/teamControlPanel.yml` | Role-aware/settings format: `OWNER`, `SETTINGS`; buttons call team toggles and prompts. | Owner control panel. Use `[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION`, `MANAGE_RENAME`, `TEAM_PVP_TOGGLE`, `TEAM_OPEN_TOGGLE`, `TEAM_HEAD_BANNER_TOGGLE`, `TEAM_GLOW_VIEW_TOGGLE`, and `[OPEN_MENU] teamColorPicker` exactly as configured. |
+| `menu/Team Menu/teamColorPicker.yml` | `title`, `rows`, `items`, `order`; generated color entries use picker placeholders. | Team color picker. Define color choices in `order`/generated items and keep `[BETTERFIOEXTENSIONS] SELECT_COLOR %betterfioextensions_picker_color_id%` for selection. |
+| `menu/Team Menu/teamGlowPicker.yml` | `title`, `rows`, `items`, `order`; generated glow entries plus clear-glow item. | Team glow picker. Use `[BETTERFIOEXTENSIONS] SELECT_GLOW %betterfioextensions_picker_color_id%` for glow selection and `[BETTERFIOEXTENSIONS] CLEAR_GLOW_EFFECT` for the clear option. |
+| `menu/Team Menu/Banner Style/teamBanner.yml` | `title`, `rows`, `items`; generated banner style entries and pagination. | Team banner selector. Keep the generated banner permission/name placeholders and page actions. Banner visuals are stored by the extension. |
+
+## Saved location menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/Saved Location/teamSavedLocation.yml` | `title`, `rows`, `items`; static category buttons for saved locations. | Saved location category menu. Use it as the hub that opens team home, team anchor, and team warp menus. |
+| `menu/Team Menu/Saved Location/savedLocationHome.yml` | `title`, `rows`, `items`; home display/remove confirmation button. | Team home menu. It shows saved home state and opens `[OPEN_MENU] confirmHomeRemove` when removing a saved home. |
+| `menu/Team Menu/Saved Location/savedLocationAnchor.yml` | `title`, `rows`, `items`; anchor set/teleport/remove buttons. | Team anchor menu. Use `[BETTERFIOEXTENSIONS] TELEPORT_TEAM_ANCHOR`, `[BETTERFIOEXTENSIONS] SET_TEAM_ANCHOR`, and `[OPEN_MENU] confirmAnchorRemove`. |
+| `menu/Team Menu/Saved Location/teamWarp.yml` | `title`, `rows`, `items`; generated warp entries use `%warp%` and pagination. | Team warp list. Use `[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%` for left/general warp use and `[BETTERFIOEXTENSIONS] DELETE_TEAM_WARP %warp%` for delete actions. |
+
+## Leaderboard menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/Leaderboard/categoryLeaderboard.yml` | `title`, `rows`, `commands`, `items`; static metric buttons. | Leaderboard category menu. Static buttons open `money`, `score`, `kills`, `deaths`, or `members` with `[OPEN_MENU]`. |
+| `menu/Team Menu/Leaderboard/money.yml` | `title`, `rows`, `items`; generated entries, pagination, and sort. | Money leaderboard. Use `[BETTERFIOEXTENSIONS] SORT` to switch ordering and keep page buttons for generated entries. |
+| `menu/Team Menu/Leaderboard/score.yml` | `title`, `rows`, `items`; generated entries, pagination, and sort. | Score leaderboard. Same format as the other metric pages, with score placeholders in the item display. |
+| `menu/Team Menu/Leaderboard/kills.yml` | `title`, `rows`, `items`; generated entries, pagination, and sort. | Kills leaderboard. Keep sort and page actions; edit display items/lore for presentation only. |
+| `menu/Team Menu/Leaderboard/deaths.yml` | `title`, `rows`, `items`; generated entries, pagination, and sort. | Deaths leaderboard. Keep sort and page actions; edit display items/lore for presentation only. |
+| `menu/Team Menu/Leaderboard/members.yml` | `title`, `rows`, `items`; generated entries, pagination, and sort. | Members leaderboard. Keep sort and page actions; edit display items/lore for presentation only. |
+
+## Permissions menu
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/Team Menu/Permissions/teamPermissions.yml` | `settings`, `OWNER`, `ADMIN`, `DEFAULT`, `permissions`; each role section has `permissionSlots`, `items`, and page controls. | Per-team permission editor. Owners can toggle more roles, admins have limited management, and default members are view-only. Add/edit entries under `permissions` and keep `permissionSlots` large enough for generated permission items. |
+
+Example permission definition format:
+
+```yaml
+permissions:
+  permission_key:
+    name: "<yellow>Permission Name"
+    material: PAPER
+    lore:
+      - "<gray>Description"
+```
+
+## Confirmation menus
+
+| Menu file | YAML format | How to use |
+| --- | --- | --- |
+| `menu/confirmationTeam/leave.yml` | `title`, `rows`, `items`; confirm/cancel buttons. | Confirm leaving a team. Cancel returns to `[OPEN_MENU] team`; confirm behavior is handled by the extension's confirmation holder. |
+| `menu/confirmationTeam/disband.yml` | `title`, `rows`, `items`; confirm/cancel buttons. | Confirm team disband. Keep the confirm button in the original structure so the holder can detect the intended action. |
+| `menu/confirmationTeam/home-remove.yml` | `title`, `rows`, `items`; confirm/cancel buttons. | Confirm team home removal from the saved home menu. |
+| `menu/confirmationTeam/anchor-remove.yml` | `title`, `rows`, `items`; confirm/cancel buttons. | Confirm team anchor removal from the saved anchor menu. |
+| `menu/confirmationTeam/transfer-ownership.yml` | `title`, `rows`, `items`; confirm/cancel buttons and `%player_name%` context. | Confirm ownership transfer for the selected member. Open it with `[OPEN_MENU] transfer-ownership %player_name%`. |
+| `menu/confirmationTeam/ally-neutral.yml` | `title`, `rows`, `items`; confirm/cancel buttons and selected ally context. | Confirm neutralizing an ally relationship. Keep the original item keys so the extension can map the clicked choice. |
+
+:::info[Source]
+This page is based on the bundled menu YAML files from `C:\Users\idfab\Downloads\Custom Build\BetterFioExtension\src\main\resources\menu`.
+:::

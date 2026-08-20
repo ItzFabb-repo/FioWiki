@@ -856,6 +856,7 @@ const sidebars = {
                   label: 'Menu',
                   items: [
                     'extension/betterfioextensions/config/menu/overview',
+                    'extension/betterfioextensions/config/menu/yaml-formats',
                     'extension/betterfioextensions/config/menu/create-team',
                     'extension/betterfioextensions/config/menu/team-menu',
                     'extension/betterfioextensions/config/menu/team-systems',
