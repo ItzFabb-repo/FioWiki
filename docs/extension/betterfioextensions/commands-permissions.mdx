@@ -1,0 +1,110 @@
+---
+title: Commands & Permissions
+sidebar_position: 3
+---
+
+# Commands & Permissions
+
+This page was scanned from `plugin.yml` and `NoTeamMenu.java`.
+
+## Root commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fioteam` | `bfe.menu.noteam` | Open the team/no-team menu depending on player state. |
+| `/fioteam requests` | `bfe.requests.view` | View pending join requests for the player's team. |
+| `/fioteam requests accept [player]` | `bfe.requests.manage` | Approve a pending join request. |
+| `/fioteam requests deny [player]` | `bfe.requests.manage` | Deny a pending join request. |
+| `/bfe help` | `bfe.player` | Show player command help. |
+| `/bfe info` | `bfe.player` | Show extension/team information. |
+| `/bfe info [team]` | `bfe.player` | Show information for a named team. |
+
+## Admin commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/bfe admin help` | `bfe.admin` | Show admin help. |
+| `/bfe admin reload` | `bfe.admin` | Reload config, menus, and runtime caches. |
+| `/bfe admin author` | `bfe.admin` | Show author information. |
+| `/bfe admin open [player] [menu]` | `bfe.admin` | Open a configured menu for a player. |
+| `/bfe admin forceOpen [player] [menu]` | `bfe.admin` | Force-open a configured menu for a player. |
+| `/bfe admin glowTeam set [team] [color]` | `bfe.admin` | Set and enable a team glow color. |
+| `/bfe admin glowTeam enable [team] [color]` | `bfe.admin` | Enable team glow using a color. |
+| `/bfe admin glowTeam disable [team] [color]` | `bfe.admin` | Disable team glow. |
+| `/bfe admin bannerTeam set [team] [num]` | `bfe.admin` | Set a team banner style. |
+| `/bfe admin bannerTeam enable [team] [num]` | `bfe.admin` | Enable a team banner style. |
+| `/bfe admin bannerTeam disable [team] [num]` | `bfe.admin` | Disable a team banner style. |
+| `/bfe admin info [team]` | `bfe.admin` | Show stored extension data for a team. |
+
+## Parent permissions
+
+| Permission | Default | Description |
+| --- | --- | --- |
+| `bfe.admin` | `op` | Full extension access. |
+| `bfe.player` | `true` | Default player access and parent for player menus. |
+| `bfe.command.use` | `false` | Use `/bfe` player command. |
+| `bfe.command.admin` | `op` | Use `/bfe admin` commands. |
+| `bfe.menu.*` | custom | Wildcard accepted by source for all menu permissions. |
+| `bfe.glow.*` | `op` | Access all glow colors. |
+| `bfe.banner.*` | `op` | Access all configured banner styles. |
+
+## Menu permissions
+
+The `bfe.player` parent grants the bundled menu permissions.
+
+| Permission | Description |
+| --- | --- |
+| `bfe.menu.noteam` | No-team starter menu. |
+| `bfe.menu.invites` | Team invitation menu. |
+| `bfe.menu.teamlist` | Public team list. |
+| `bfe.menu.team` | Main team menu. |
+| `bfe.menu.teamguide` | Team guide menu. |
+| `bfe.menu.teamcolorpicker` | Team color picker. |
+| `bfe.menu.teamglowpicker` | Team glow picker. |
+| `bfe.menu.teamsavedlocation` | Saved location category. |
+| `bfe.menu.savedlocationhome` | Team home detail menu. |
+| `bfe.menu.savedlocationanchor` | Team anchor detail menu. |
+| `bfe.menu.teamwarp` | Team warp menu. |
+| `bfe.menu.teambank` | Team bank. |
+| `bfe.menu.teambanklogs` | Team bank transaction logs. |
+| `bfe.menu.teamlogscategory` | Team logs category. |
+| `bfe.menu.teamlogs` | Team activity logs. |
+| `bfe.menu.teamlevels` | Team levels menu. |
+| `bfe.menu.teamallyrequest` | Ally request menu. |
+| `bfe.menu.teamcontrolpanel` | Team control panel. |
+| `bfe.menu.categoryleaderboard` | Leaderboard category menu. |
+| `bfe.menu.teamleaderboard` | Generic leaderboard menu. |
+| `bfe.menu.kills` | Kills leaderboard. |
+| `bfe.menu.deaths` | Deaths leaderboard. |
+| `bfe.menu.members` | Members leaderboard. |
+| `bfe.menu.money` | Money leaderboard. |
+| `bfe.menu.score` | Score leaderboard. |
+| `bfe.menu.teambanner` | Team banner style menu. |
+| `bfe.menu.teampermissions` | Per-team permissions menu. |
+| `bfe.menu.joinrequests` | Join requests menu. |
+| `bfe.menu.teammembers` | Team members menu. |
+| `bfe.menu.teammembermanage` | Member management menu. |
+
+## Glow permissions
+
+Glow color permissions use:
+
+```txt
+bfe.glow.[color]
+```
+
+Bundled colors include `black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, and `white`.
+
+## Banner permissions
+
+Banner style permissions use:
+
+```txt
+bfe.banner.[style-id]
+```
+
+The style id comes from `menu/Team Menu/Banner Style/teamBanner.yml`.
+
+:::info[Page note]
+`bfe.admin` bypasses extension permission checks. `bfe.player` also acts as a fallback for many `bfe.menu.*`, `bfe.requests.view`, and `bfe.requests.manage` checks.
+:::

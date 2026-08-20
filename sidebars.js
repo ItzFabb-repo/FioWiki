@@ -827,6 +827,51 @@ const sidebars = {
 
     {
       type: 'category',
+      label: 'Extension',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: 'category',
+          label: 'BetterFioExtensions',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'extension/betterfioextensions/index',
+            'extension/betterfioextensions/actions',
+            'extension/betterfioextensions/commands-permissions',
+            'extension/betterfioextensions/api',
+            'extension/betterfioextensions/options',
+            'extension/betterfioextensions/placeholders',
+            {
+              type: 'category',
+              label: 'Configuration',
+              items: [
+                {
+                  type: 'doc',
+                  id: 'extension/betterfioextensions/config/config.yml',
+                  label: 'Configuration',
+                },
+                'extension/betterfioextensions/config/material_en.json',
+                {
+                  type: 'category',
+                  label: 'Menu',
+                  items: [
+                    'extension/betterfioextensions/config/menu/overview',
+                    'extension/betterfioextensions/config/menu/create-team',
+                    'extension/betterfioextensions/config/menu/team-menu',
+                    'extension/betterfioextensions/config/menu/team-systems',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'Setup',
       collapsible: true,
       collapsed: true,

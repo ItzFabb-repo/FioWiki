@@ -1,0 +1,71 @@
+---
+title: Options & Configuration
+sidebar_position: 5
+---
+
+# Options & Configuration
+
+BetterFioExtensions is mostly configured through `config.yml` and many menu YAML files under `menu/`.
+
+## Runtime flow
+
+1. Player runs `/fioteam` or a BetterTeams command intercepted by the extension.
+2. The extension checks whether the player has a team.
+3. It opens `noteam.yml` for players without a team or `teamMenu.yml` for team members.
+4. Menu actions route the player into team bank, members, saved locations, permissions, leaderboards, banners, colors, glow, or control-panel flows.
+5. The extension stores addon data in YAML/SQLite/MySQL depending on `storage.type`.
+
+## Role-aware menus
+
+Many menu files contain sections such as:
+
+```yaml
+DEFAULT: {}
+ADMIN: {}
+OWNER: {}
+```
+
+The extension chooses the matching section from the player's BetterTeams rank. Examples:
+
+- `teamMenu.yml`
+- `teamBank.yml`
+- `teamControlPanel.yml`
+- `teamPermissions.yml`
+
+## Prompt systems
+
+The extension uses prompts for flows that cannot be represented by a normal inventory click:
+
+- create team
+- invite player
+- set team warp
+- set team color
+- set team glow
+- edit team description
+- rename team
+- custom bank deposit/withdraw amounts
+
+## Visual systems
+
+Team visuals include:
+
+- team glow
+- team head banner
+- banner style selection
+- per-player visibility toggles
+- hidden-player checks for vanish/invisibility/sneaking
+
+## Team management systems
+
+The extension adds GUI wrappers for:
+
+- team member kick/ban/unban/promote/demote
+- ownership transfer confirmation
+- join request approval/denial
+- ally request and neutral confirmation
+- team activity logs
+- team bank transaction logs
+
+:::info[Page note]
+If a menu key is not recognized, the source logs an unknown menu action target warning. Use the canonical menu names from the Menu Overview page.
+:::

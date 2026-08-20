@@ -1,0 +1,170 @@
+---
+title: Configuration
+sidebar_position: 1
+---
+
+# Configuration
+
+`config.yml` controls storage, visual filters, hidden-player behavior, default banner behavior, prompts, and messages.
+
+## Versioning
+
+```yaml
+debug: false
+force-update-config: false
+config-version: 28
+```
+
+- `debug`: enables troubleshooting logs.
+- `force-update-config`: replaces bundled config/menu/resource files when the config version is outdated.
+- `config-version`: internal format version.
+
+## Storage
+
+```yaml
+storage:
+  type: yaml
+  sqlite:
+    file: "betterfioextensions.db"
+    table-prefix: "betterfioextensions_"
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "betterfioextensions"
+    username: "root"
+    password: ""
+    use-ssl: false
+    table-prefix: "betterfioextensions_"
+    parameters: "useUnicode=true&characterEncoding=utf8"
+```
+
+Available storage types:
+
+- `yaml`
+- `db` or `sqlite`
+- `mysql`
+
+## Prefix
+
+```yaml
+settings:
+  prefix: '<gray>[<aqua>BetterFioExtension<gray>] '
+```
+
+Used for extension messages.
+
+## Saved location safety
+
+```yaml
+settings:
+  saved-location:
+    unsafe-blocks:
+      - AIR
+      - LAVA
+      - WATER
+      - MAGMA_BLOCK
+```
+
+Unsafe blocks are used by Team Home and Team Anchor checks. If the player stands on one of these blocks, the saved-location menu can warn that the location is unsafe.
+
+## Invitation and request timers
+
+```yaml
+settings:
+  invitation-countdown:
+    permanent: "Never"
+    zero: "0s"
+    days: "d"
+    hours: "h"
+    minutes: "m"
+    seconds: "s"
+  join-request:
+    expiry-seconds: 300
+```
+
+- `invitation-countdown`: formatting labels.
+- `join-request.expiry-seconds`: pending join request expiry time.
+
+## Team glow filters
+
+```yaml
+settings:
+  team-glow:
+    blacklist:
+      enabled: true
+      worlds: []
+      regions: []
+      players: []
+      effects:
+        - 'INVISIBILITY'
+      gamemodes:
+        - 'CREATIVE'
+        - 'SPECTATOR'
+        - 'ADVENTURE'
+    whitelist:
+      enabled: true
+      worlds: []
+      regions: []
+      players: []
+      effects: []
+      gamemodes:
+        - 'SURVIVAL'
+```
+
+Blacklist rules disable glow when matched. Whitelist rules allow glow only when at least one configured rule matches.
+
+## Team head banner
+
+```yaml
+settings:
+  team-head-banner:
+    hide-when-player-hidden: true
+    block-toggle-while-player-hidden: true
+    hide-when-sneaking: true
+    required-air-gap-blocks: 1
+    y-offset: -0.5
+```
+
+Controls the visible banner entity above players.
+
+## Hidden player visuals
+
+```yaml
+settings:
+  hidden-player-visuals:
+    default-view-toggle-enabled: false
+    detect:
+      potion-invisibility: true
+      vanish-metadata: true
+      hidden-by-cansee: true
+    vanish-metadata-keys:
+      - "vanished"
+      - "essentials:vanished"
+```
+
+Used to hide glow/head-banner visuals for vanished or invisible players.
+
+## Default banner
+
+```yaml
+defaultBanner:
+  defaultSetting: default
+  material: BLUE_BANNER
+  styleBanner:
+    - 'YELLOW:ROUNDEL'
+    - 'BLUE:FLOWER_CHARGE'
+```
+
+`defaultSetting` supports:
+
+- `default`
+- `random`
+- `specific:[number]`
+
+## Messages
+
+The `messages` section contains command, team, create, invite, and join-request messages. Message keys are used by source aliases, so keep the section names intact when editing.
+
+:::info[Page note]
+Menu layout is not controlled from `config.yml`. It lives under `menu/`.
+:::

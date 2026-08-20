@@ -1,0 +1,128 @@
+---
+title: Actions
+sidebar_position: 2
+---
+
+# Actions
+
+BetterFioExtensions menu files execute actions from YAML under `actions`.
+
+```yaml
+actions:
+  any:
+    - '[SOUND] UI_BUTTON_CLICK 1 1 master'
+    - '[OPEN_MENU] teamMenu'
+```
+
+## Click keys
+
+Supported click sections:
+
+| Key | Meaning |
+| --- | --- |
+| `any` | Any click. |
+| `left` | Normal left click. |
+| `right` | Normal right click. |
+| `shift_left` | Shift left click. |
+| `shift_right` | Shift right click. |
+| `shift` | Any shift click. |
+| `q` or `drop` | Drop key click. |
+| `middle` | Middle click. |
+| `number_key` or `hotbar` | Hotbar number key. |
+
+## Base action tags
+
+| Action | Format | Description |
+| --- | --- | --- |
+| `[NONE]` | `[NONE]` | Do nothing. |
+| `[MESSAGE]` | `[MESSAGE] [message]` | Send a colored message to the player. |
+| `[TITLE]` | `[TITLE] [text]` | Send title text. |
+| `[SUBTITLE]` | `[SUBTITLE] [text]` | Send subtitle text. |
+| `[ACTIONBAR]` | `[ACTIONBAR] [text]` | Send actionbar text. |
+| `[PLAYER]` | `[PLAYER] [command]` | Run a command as the player. |
+| `[CONSOLE]` | `[CONSOLE] [command]` | Run a command as console. |
+| `[SOUND]` | `[SOUND] [sound] [volume] [pitch]` | Play a Bukkit sound. |
+| `[GOBACK]` | `[GOBACK]` | Return to the previous BetterFioExtensions menu. |
+| `[OPEN_MENU]` | `[OPEN_MENU] [menu]` | Open a configured extension menu. |
+| `[CHATPROMPT]` | `[CHATPROMPT] [prompt]` | Open a configured chat prompt. |
+
+## BetterFioExtensions actions
+
+Both tags are accepted:
+
+- `[BETTERFIOEXTENSIONS]`
+- `[BETTERFIOEXTENSION]`
+
+### General navigation
+
+| Action | Description |
+| --- | --- |
+| `BACK`, `GO_BACK`, `GOBACK` | Go back in menu history. |
+| `CLOSE` | Close the inventory. |
+| `OPEN_INVITES`, `TEAM_INVITATIONS`, `INVITATION_REQ` | Open invitation list. |
+| `TEAM_LISTS`, `TEAM_LIST` | Open public team list. |
+| `JOIN_REQUESTS` | Open team join requests. |
+
+### Team creation and prompts
+
+| Action | Description |
+| --- | --- |
+| `CREATE_TEAM` | Open team creation chat prompt. |
+| `TEAM_INVITE`, `TEAM_INVITE_PROMPT`, `INVITE_PLAYER` | Start invite-player chat prompt. |
+| `TEAM_DESCRIPTION`, `MANAGE_DESCRIPTION`, `SET_TEAM_DESCRIPTION` | Start team description editor. |
+| `TEAM_RENAME`, `MANAGE_RENAME`, `RENAME_TEAM` | Start team rename editor. |
+| `TEAM_WARP_SET`, `SET_TEAM_WARP`, `SET_WARP` | Start team warp set prompt. |
+| `TEAM_COLOR_PROMPT`, `SET_TEAM_COLOR` | Start team color prompt. |
+| `TEAM_GLOW_PROMPT`, `SET_TEAM_GLOW` | Start team glow prompt. |
+
+### Team menus
+
+| Action | Description |
+| --- | --- |
+| `SWITCH_CHAT` | Cycle BetterTeams chat mode. |
+| `TEAM_LOGO` | Handle team logo/banner interaction. |
+| `TEAM_PERMISSIONS`, `TEAM_PERMISSION` | Open per-team permissions menu. |
+| `GUIDE_SORT` | Cycle team guide view. |
+| `TEAM_HOME`, `TEAM_HOMES`, `HOME_LIST` | Open saved location category. |
+| `TEAM_WARP`, `TEAM_WARPS`, `WARP_LIST` | Open team warp menu. |
+| `TEAM_BANK`, `TEAM_VAULT`, `BANK_MENU` | Open team bank. |
+| `TEAM_LEVELS`, `TEAM_RANKUP`, `LEVELS_MENU` | Open team levels. |
+| `TEAM_ALLY_REQUEST`, `TEAM_ALLIES` | Open ally request menu. |
+| `TEAM_CONTROL_PANEL`, `CONTROL_PANEL` | Open team control panel. |
+| `TEAM_MEMBERS`, `TEAM_MEMBER_LIST` | Open members menu. |
+| `TEAM_SAVED_LOCATION`, `SAVED_LOCATION` | Open saved locations. |
+
+### Team settings
+
+| Action | Description |
+| --- | --- |
+| `TEAM_PVP_TOGGLE` | Run BetterTeams PVP toggle and refresh. |
+| `TEAM_OPEN_TOGGLE` | Toggle public/private join state and refresh. |
+| `TEAM_HEAD_BANNER_TOGGLE` | Toggle head-banner visibility preference. |
+| `TEAM_GLOW_VIEW_TOGGLE` | Toggle glow visibility preference. |
+| `TEAM_COLOR` or `TEAM_COLOR_PICKER` | Open team color picker. |
+| `TEAM_GLOW` | Open team glow picker. |
+| `SELECT_COLOR [color]` | Select a team color. |
+| `SELECT_GLOW [color]` | Select a glow color. |
+| `CLEAR_GLOW_EFFECT`, `CLEAR_TEAM_GLOW`, `DISABLE_TEAM_GLOW` | Disable team glow. |
+
+### Warps and members
+
+| Action | Description |
+| --- | --- |
+| `TELEPORT_TEAM_WARP [name]` | Teleport to a configured team warp. |
+| `DELETE_TEAM_WARP [name]` | Delete a configured team warp. |
+| `REMOVE_TEAM_WARP [name]` | Delete a configured team warp. |
+| `TELEPORT_TEAM_ANCHOR` | Teleport to team anchor. |
+| `SET_TEAM_ANCHOR` | Save current location as anchor. |
+| `MANAGE_PLAYER [name]` | Open member management menu for a player. |
+| `KICK [name]` | Kick a team member. |
+| `BAN [name]` | Ban a player from the team. |
+| `UNBAN [name]` | Unban a player. |
+| `PROMOTE [name]` | Promote a member. |
+| `DEMOTE [name]` | Demote a member. |
+| `TRANSFER_OWNERSHIP [name]` | Open ownership transfer flow. |
+
+:::info[Page note]
+Unknown action targets are ignored or logged as warnings. Use canonical menu names from the Menu Overview page when possible.
+:::

@@ -1,0 +1,93 @@
+---
+title: Placeholders
+sidebar_position: 6
+---
+
+# Placeholders
+
+BetterFioExtensions uses placeholders inside its own menu renderer and can also pass text through PlaceholderAPI when PlaceholderAPI is installed.
+
+## Common placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%betterfioextensions_team_name%` | Current team name, formatted with BetterTeams color where available. |
+| `%betterfioextensions_team_members%` | Current member count display. |
+| `%betterfioextensions_team_members_total%` | Total members in generated member menus. |
+| `%betterfioextensions_team_open%` | Team public/private state. |
+| `%betterfioextensions_team_rank%` | Player's team rank. |
+| `%betterfioextensions_team_money%` | Team money/bank value. |
+| `%betterfioextensions_team_money_short%` | Compact team money value. |
+| `%betterfioextensions_team_score%` | Team score. |
+| `%betterfioextensions_team_kills%` | Team kills. |
+| `%betterfioextensions_team_deaths%` | Team deaths. |
+| `%betterfioextensions_team_bank_limit%` | BetterTeams bank limit display. |
+| `%betterfioextensions_player_balance%` | Player balance through Vault. |
+| `%betterfioextensions_player_total_invitations%` | Player invitation count. |
+| `%betterfioextensions_requests_total%` | Pending join request count. |
+| `%betterfioextensions_page_current%` | Current page number. |
+| `%betterfioextensions_page_max%` | Max page number. |
+
+## Control panel placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%betterfioextensions_controlpanel_team_name%` | Current team name in rename UI. |
+| `%betterfioextensions_controlpanel_description_lines%` | Current team description rendered as lines. |
+| `%betterfioextensions_controlpanel_description_preview%` | Description preview value. |
+| `%betterfioextensions_controlpanel_rename_preview%` | Rename preview value. |
+
+## Bank and log placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%betterfioextensions_bank_logs_total%` | Number of bank log entries. |
+| `%betterfioextensions_banklog_sort%` | Current bank log sort mode. |
+| `%betterfioextensions_banklog_player%` | Bank log player. |
+| `%betterfioextensions_banklog_action%` | Deposit or withdraw action display. |
+| `%betterfioextensions_banklog_amount%` | Bank log amount. |
+| `%betterfioextensions_banklog_before%` | Balance before transaction. |
+| `%betterfioextensions_banklog_after%` | Balance after transaction. |
+| `%betterfioextensions_banklog_date%` | Transaction date. |
+| `%betterfioextensions_team_logs_total%` | Number of team activity log entries. |
+| `%betterfioextensions_teamlog_action%` | Team log action display. |
+| `%betterfioextensions_teamlog_player%` | Team log player. |
+| `%betterfioextensions_teamlog_date%` | Team log date. |
+
+## Generated menu placeholders
+
+| Placeholder | Description |
+| --- | --- |
+| `%betterfioextensions_level_key%` | Team level key. |
+| `%betterfioextensions_level_price%` | Upgrade price. |
+| `%betterfioextensions_level_status%` | Level state label. |
+| `%betterfioextensions_leaderboard_metric%` | Active leaderboard metric. |
+| `%betterfioextensions_leaderboard_position%` | Generated leaderboard rank. |
+| `%betterfioextensions_leaderboard_team_name%` | Generated leaderboard team. |
+| `%betterfioextensions_leaderboard_value%` | Generated leaderboard value. |
+| `%betterfioextensions_member_name%` | Generated member name. |
+| `%betterfioextensions_member_role%` | Generated member role. |
+| `%betterfioextensions_request_player%` | Join request player. |
+| `%betterfioextensions_request_expiry%` | Join request expiry. |
+| `%betterfioextensions_invitation_team_name%` | Invitation team name. |
+| `%betterfioextensions_warp_name%` | Team warp name. |
+| `%betterfioextensions_saved_location_type%` | Home or anchor display type. |
+| `%betterfioextensions_banner_name%` | Banner style name. |
+| `%betterfioextensions_banner_permission%` | Permission node for a banner style. |
+| `%betterfioextensions_picker_color_name%` | Color/glow picker option name. |
+| `%betterfioextensions_glow_permission%` | Permission node for a glow color. |
+
+## BetterTeams and PlaceholderAPI
+
+Menus can also include external placeholders such as:
+
+```txt
+%betterteams_level%
+%betterteams_score%
+%betterteams_money%
+%changeoutput_equals_input:{betterteams_open}_matcher:true_ifmatch:Public_else:Private%
+```
+
+:::info[Page note]
+Most `betterfioextensions` placeholders are internal menu placeholders. They are not documented as a separate PlaceholderAPI expansion in the scanned source.
+:::

@@ -1,0 +1,57 @@
+---
+title: Create Team Menus
+sidebar_position: 2
+---
+
+# Create Team Menus
+
+These menus are shown to players before they join or create a BetterTeams team.
+
+## `noteam.yml`
+
+`noteam.yml` is the starter menu for players without a team.
+
+Bundled buttons:
+
+| Item | Action | Description |
+| --- | --- | --- |
+| `list` | `[OPEN_MENU] teamlist` | Opens the public team list. |
+| `create` | `[BETTERFIOEXTENSIONS] CREATE_TEAM` | Starts the create team chat prompt. |
+| `invites` | `[OPEN_MENU] invites` | Opens the player's active invitations. |
+
+## `teamlist.yml`
+
+`teamlist.yml` renders public/open teams and lets players request to join.
+
+Generated placeholders include:
+
+- `%betterfioextensions_list_total_teams%`
+- `%betterfioextensions_list_team_name%`
+- `%betterfioextensions_list_team_members%`
+- `%betterfioextensions_request_expiry%`
+- `%team%`
+
+## `invites.yml`
+
+`invites.yml` renders team invitations.
+
+Generated placeholders include:
+
+- `%betterfioextensions_player_total_invitations%`
+- `%betterfioextensions_invitation_team_name%`
+- `%betterfioextensions_invitation_team_whom_invited%`
+- `%betterfioextensions_invitation_team_date_invited%`
+- `%betterfioextensions_player_invitation_expiry%`
+
+## Join request flow
+
+When a player requests to join a public team:
+
+1. The request is saved in `join-requests.yml`.
+2. Team staff are notified.
+3. Staff can use `/fioteam requests`, `/fioteam requests accept [player]`, or `/fioteam requests deny [player]`.
+4. Approved players either join directly or receive an invitation depending on BetterTeams state.
+
+:::info[Page note]
+The create team prompt respects BetterTeams name validation, including min/max length, banned names, spaces, and banned characters.
+:::

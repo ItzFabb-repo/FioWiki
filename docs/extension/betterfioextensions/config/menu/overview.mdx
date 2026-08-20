@@ -1,0 +1,115 @@
+---
+title: Menu Overview
+sidebar_position: 1
+---
+
+# Menu Overview
+
+BetterFioExtensions ships many YAML inventory menus under `menu/`.
+
+## Menu file groups
+
+### Create Team
+
+| File | Purpose |
+| --- | --- |
+| `menu/Create Team/noteam.yml` | Main menu for players without a team. |
+| `menu/Create Team/teamlist.yml` | Public/open team browser. |
+| `menu/Create Team/invites.yml` | Player invitation list. |
+
+### Team Menu
+
+| File | Purpose |
+| --- | --- |
+| `menu/Team Menu/teamMenu.yml` | Main role-aware team menu. |
+| `menu/Team Menu/teamMembers.yml` | Team member list. |
+| `menu/Team Menu/teamMemberManage.yml` | Manage a specific member. |
+| `menu/Team Menu/joinRequests.yml` | Pending join request list. |
+| `menu/Team Menu/teamBank.yml` | Deposit/withdraw UI. |
+| `menu/Team Menu/teamBankLogs.yml` | Bank transaction logs. |
+| `menu/Team Menu/teamLogsCategory.yml` | Activity log category selector. |
+| `menu/Team Menu/teamLogs.yml` | Activity log list. |
+| `menu/Team Menu/teamLevels.yml` | BetterTeams level/perk UI. |
+| `menu/Team Menu/teamGuide.yml` | Role guide. |
+| `menu/Team Menu/teamControlPanel.yml` | Owner/settings control panel. |
+| `menu/Team Menu/teamColorPicker.yml` | BetterTeams color picker. |
+| `menu/Team Menu/teamGlowPicker.yml` | Team glow picker. |
+| `menu/Team Menu/teamAllyRequest.yml` | Ally request browser. |
+
+### Subfolders
+
+| Folder | Purpose |
+| --- | --- |
+| `Team Menu/Banner Style/teamBanner.yml` | Banner style selector. |
+| `Team Menu/Leaderboard/*.yml` | Leaderboard category and metric menus. |
+| `Team Menu/Permissions/teamPermissions.yml` | Per-team permission UI. |
+| `Team Menu/Saved Location/*.yml` | Team home, anchor, and warp UI. |
+| `confirmationTeam/*.yml` | Confirmation menus for leave, disband, remove home/anchor, transfer ownership, and ally neutral. |
+
+## Canonical menu names
+
+Use these names in `[OPEN_MENU]` actions or admin open commands:
+
+```txt
+noteam
+invites
+teamlist
+team
+teamColorPicker
+teamGlowPicker
+teamSavedLocation
+savedLocationHome
+savedLocationAnchor
+teamWarp
+teamBank
+teamBankLogs
+teamLogsCategory
+teamLogs
+teamLevels
+teamAllyRequest
+teamControlPanel
+categoryLeaderboard
+teamBanner
+teamPermissions
+teamGuide
+joinRequests
+teamMembers
+confirmLeave
+confirmDisband
+confirmHomeRemove
+confirmAnchorRemove
+transferOwnership
+```
+
+Leaderboard menu names also accept:
+
+```txt
+money
+score
+kills
+deaths
+members
+```
+
+## Shared item keys
+
+Common item keys:
+
+| Key | Description |
+| --- | --- |
+| `title` | Inventory title. |
+| `rows` | Inventory row count. |
+| `items` | Static menu items. |
+| `material` | Bukkit material name or state map. |
+| `slot` | Single slot number. |
+| `slots` | Multiple slots or ranges. |
+| `name` | Display name. |
+| `lore` | Item lore. |
+| `flags` | Item flags. |
+| `enchants` | Enchant glint/visual enchant configuration. |
+| `hide_tooltip` | Hides tooltip where supported. |
+| `actions` | Click action section. |
+
+:::info[Page note]
+Most menus are role-aware or state-aware. If a section contains `DEFAULT`, `ADMIN`, and `OWNER`, the extension renders the section matching the player's BetterTeams rank.
+:::

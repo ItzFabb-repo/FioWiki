@@ -1,0 +1,101 @@
+---
+title: Team Systems
+sidebar_position: 4
+---
+
+# Team Systems
+
+This page summarizes the larger team system menus.
+
+## Team bank
+
+`teamBank.yml` supports:
+
+- percentage deposits
+- percentage withdrawals
+- custom amount sign prompts
+- Vault/player balance display
+- BetterTeams bank limit checks
+- transaction logs through `teamBankLogs.yml`
+
+Amount suffixes accepted by the custom prompt include:
+
+| Suffix | Value |
+| --- | --- |
+| `k` | thousand |
+| `m` | million |
+| `b` | billion |
+| `t` | trillion |
+| `q` | quadrillion |
+
+## Team logs
+
+Team activity log data is stored in `team-logs.yml`. The source caps stored team activity logs per team.
+
+Menus:
+
+- `teamLogsCategory.yml`
+- `teamLogs.yml`
+
+## Saved locations
+
+Saved location menus handle:
+
+- team home
+- team anchor
+- team warp list
+- team warp set/delete
+- safety checks using `settings.saved-location.unsafe-blocks`
+
+Menus:
+
+- `teamSavedLocation.yml`
+- `savedLocationHome.yml`
+- `savedLocationAnchor.yml`
+- `teamWarp.yml`
+
+## Leaderboards
+
+Leaderboard menus support:
+
+- money
+- score
+- kills
+- deaths
+- members
+
+The category command fallback can also open leaderboards from configured commands such as `team leaderboard` and `fioteam leaderboard`.
+
+## Team permissions
+
+`teamPermissions.yml` renders per-team permissions by role. Owners can edit more roles than admins, while default members are view-only.
+
+Examples of permission definitions:
+
+- team disband
+- set team description
+- rename team
+- public invitation toggle
+- promote/demote member
+- change team color
+- request/reject team ally
+- invite/kick/ban/unban member
+- set/delete team home and anchor
+- set/delete team warp
+- deposit/withdraw team vault
+- access team chat, ally chat, home, warp, ender chest, and leaderboard info
+
+## Team banner and visuals
+
+`teamBanner.yml` controls selectable banner styles. Team visuals are stored separately from BetterTeams data and can be hidden by vanish/invisibility checks.
+
+Visual menus:
+
+- `teamBanner.yml`
+- `teamColorPicker.yml`
+- `teamGlowPicker.yml`
+- `teamControlPanel.yml`
+
+:::info[Page note]
+Team bank transactions and team logs are persisted by BetterFioExtensions, not by BetterTeams alone.
+:::
