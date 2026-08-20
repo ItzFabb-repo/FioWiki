@@ -5,32 +5,90 @@ sidebar_position: 25
 
 # teamPermissions.yml
 
-`menu/Team Menu/Permissions/teamPermissions.yml` renders per-team permission controls.
+`Team Menu/Permissions/teamPermissions.yml` is part of the BetterFioExtensions bundled menu configuration. Per-team permission editor.
 
 ## YAML format
 
-```yaml
-settings:
-  roleDisplay: {}
-  clickHint: {}
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
 
-OWNER:
-  title: "<title>"
+```yaml
+# teamPermissions.yml
+settings:
+  # shared display or behavior settings
+
+DEFAULT:
+  title: "<same bundled small-cap title style>"
   rows: 6
-  permissionSlots: []
+  items:
+    item_key:
+      slot: 10
+      material: BOOK
+      name: "<yellow>Display Name"
+      lore: []
+      actions:
+        any:
+          - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+
+ADMIN:
+  title: "<admin view title>"
+  rows: 6
   items: {}
 
-ADMIN: {}
-DEFAULT: {}
-
-permissions:
-  permission_key:
-    name: "<yellow>Permission Name"
-    material: PAPER
-    lore: []
+OWNER:
+  title: "<owner view title>"
+  rows: 6
+  items: {}
 ```
 
-## How to use
+## Bundled item style example
 
-Add permission definitions under `permissions`. Use `permissionSlots` to decide where generated permission items appear. Owners can edit more roles, admins have limited controls, and default members are view-only.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+    previous:
+      slot: 48
+      material: RED_SHULKER_BOX
+      name: "<red><bold>← <red>Previous"
+      lore:
+        - "<dark_gray>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ"
+        - " "
+        - "<red>| <gray>ᴄʟɪᴄᴋ ᴛᴏ ꜱᴡɪᴛᴄʜ ᴛᴏ ᴛʜᴇ"
+        - "<red>| <gray>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ."
+        - " "
+        - "<red>[ᴄʟɪᴄᴋ ᴛᴏ ᴘʀᴇᴠ ᴘᴀɢᴇ]"
+      actions:
+        any:
+          - '[SOUND] UI_BUTTON_CLICK 1 1 master'
+          - '[BETTERFIOEXTENSIONS] PREVIOUS_PAGE'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `settings`: Shared menu settings used by the renderer or generated entries.
+- `OWNER`: View used for team owners.
+- `ADMIN`: View used for team admins.
+- `DEFAULT`: View used for normal team members.
+- `permissions`: Generated per-team permission definitions.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Permission entries are generated from the `permissions` section.
+- Keep `permissionSlots` large enough for generated permission buttons.
+
+:::info[Source]
+This page is based on `Team Menu/Permissions/teamPermissions.yml` from the BetterFioExtensions project.
+:::

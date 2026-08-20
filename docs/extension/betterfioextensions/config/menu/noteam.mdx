@@ -5,43 +5,79 @@ sidebar_position: 1
 
 # noteam.yml
 
-`menu/Create Team/noteam.yml` is the starter inventory for players who do not have a BetterTeams team.
+`Create Team/noteam.yml` is part of the BetterFioExtensions bundled menu configuration. Main no-team menu shown when a player has not joined or created a BetterTeams team.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ɢᴇᴛ ᴀ ᴛᴇᴀᴍ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>GET A TEAM"
+title: "<black><bold>| <dark_gray>ɢᴇᴛ ᴀ ᴛᴇᴀᴍ"
 rows: 5
 
 items:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
+    actions:
+      any:
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+```
+
+## Bundled item style example
+
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
+
+```yaml
   list:
     slot: 20
     material: BOOK
     name: "<yellow>Team Lists"
-    lore: []
+    lore:
+      - '<dark_gray>ʟɪꜱᴛꜱ'
+      - ' '
+      - '<gray>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ ᴀʟʟ ᴛᴇᴀᴍꜱ'
+      - '<gray>ᴀɴᴅ ꜱᴇɴᴅ ᴀ ᴊᴏɪɴ ʀᴇǫᴜᴇꜱᴛ ɪꜰ ᴏᴘᴇɴ.'
+      - ' '
+      - '<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ'
     actions:
-      any:
-        - "[SOUND] BLOCK_COPPER_CHEST_OPEN 1 100 master"
-        - "[OPEN_MENU] teamlist"
-
-  create:
-    slot: 22
-    material: OAK_SIGN
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] CREATE_TEAM"
-
-  invites:
-    slot: 24
-    material:
-      noRequests: {}
-      hasRequests: {}
-    actions:
-      any:
-        - "[OPEN_MENU] invites"
 ```
 
-## How to use
+### Click keys used here
 
-Use `list` to send players to `teamlist.yml`, `create` to start the create-team flow, and `invites` to show active invitations. The `invites.material` state map changes the item display depending on whether the player has invitations.
+- `any`: Runs for any click type supported by the item.
 
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] CREATE_TEAM` | Starts the BetterFioExtensions create-team flow. The extension validates the name using BetterTeams rules before creating the team. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[OPEN_MENU] invites` | Opens the configured menu target `invites`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamlist` | Opens the configured menu target `teamlist`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[SOUND] BLOCK_COPPER_CHEST_OPEN 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_CARTOGRAPHY_TABLE_TAKE_RESULT 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_LOOM_TAKE_RESULT 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Keep the `list`, `create`, and `invites` actions intact unless you intentionally remove that feature from the no-team flow.
+- The bundled font style uses MiniMessage colors and small-cap glyphs in `title`, `name`, and `lore`. Keep that style if you want the menu to match BFE.
+
+:::info[Source]
+This page is based on `Create Team/noteam.yml` from the BetterFioExtensions project.
+:::

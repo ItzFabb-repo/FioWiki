@@ -5,28 +5,86 @@ sidebar_position: 17
 
 # teamGlowPicker.yml
 
-`menu/Team Menu/teamGlowPicker.yml` lets owners choose or clear the team glow effect.
+`Team Menu/teamGlowPicker.yml` is part of the BetterFioExtensions bundled menu configuration. Team glow picker and clear-glow menu.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ɢʟᴏᴡ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM GLOW"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ɢʟᴏᴡ"
 rows: 5
 
 items:
-  glow:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] SELECT_GLOW %betterfioextensions_picker_color_id%"
-  clear:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] CLEAR_GLOW_EFFECT"
-
-order: []
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use generated glow items for selectable colors. Keep the clear action on the clear item so players can disable glow.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  "CURRENT":
+    material: GLOW_INK_SAC
+    name: "<yellow>Current Team Glow"
+    lore:
+      - "<dark_gray>ɢʟᴏᴡ"
+      - ""
+      - "<gray>ᴛʜɪꜱ ɪꜱ ʏᴏᴜʀ ᴛᴇᴀᴍ'ꜱ"
+      - "<gray>ᴄᴜʀʀᴇɴᴛ ɢʟᴏᴡ ᴄᴏʟᴏʀ."
+      - ""
+      - " <gold>| <white>ᴄᴜʀʀᴇɴᴛ<dark_gray>: %betterfioextensions_team_glow_preview%%betterfioextensions_team_glow_name%"
+      - ""
+    slot: 4
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+- `order`: Render order for generated picker entries.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] CLEAR_GLOW_EFFECT` | Clears the current team glow effect. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] SELECT_GLOW %betterfioextensions_picker_color_id%` | Applies the selected team glow color option. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[MESSAGE] <dark_gray>(This means your player has no glowing effect)` | Sends a chat message to the player. | Use it for feedback or warnings. Keep MiniMessage formatting if you want the BFE style. |
+| `[MESSAGE] <gray>You` | Sends a chat message to the player. | Use it for feedback or warnings. Keep MiniMessage formatting if you want the BFE style. |
+| `[MESSAGE] <gray>You don` | Sends a chat message to the player. | Use it for feedback or warnings. Keep MiniMessage formatting if you want the BFE style. |
+| `[NONE]` | Does nothing. | Use it for locked, unavailable, or informational items. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_BAT_TAKEOFF 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Glow selection uses the same picker id placeholder as color selection.
+- Keep `CLEAR_GLOW_EFFECT` for the no-glow/clear option.
+
+:::info[Source]
+This page is based on `Team Menu/teamGlowPicker.yml` from the BetterFioExtensions project.
+:::

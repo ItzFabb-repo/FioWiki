@@ -5,26 +5,78 @@ sidebar_position: 11
 
 # teamLogsCategory.yml
 
-`menu/Team Menu/teamLogsCategory.yml` is the category selector for logs.
+`Team Menu/teamLogsCategory.yml` is part of the BetterFioExtensions bundled menu configuration. Small hub menu that opens bank logs or team activity logs.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴏɢꜱ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM LOGS"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴏɢꜱ"
 rows: 3
 
 items:
-  bank:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[OPEN_MENU] teamBankLogs"
-  activity:
-    actions:
-      any:
-        - "[OPEN_MENU] teamLogs"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu as a small hub. Buttons should open either transaction logs or team activity logs.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  transactionLogs:
+    slot: 11
+    material: WRITABLE_BOOK
+    name: "<yellow>Transaction Logs"
+    lore:
+      - '<dark_gray>ʟᴏɢꜱ'
+      - ' '
+      - '<gray>ᴠɪᴇᴡ ᴀʟʟ ᴛᴇᴀᴍ ᴅᴇᴘᴏꜱɪᴛ ᴀɴᴅ'
+      - '<gray>ᴡɪᴛʜᴅʀᴀᴡ ʀᴇᴄᴏʀᴅꜱ ᴡɪᴛʜ ᴅᴇᴛᴀɪʟꜱ.'
+      - ' '
+      - '<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ'
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[OPEN_MENU] teamBankLogs` | Opens the configured menu target `teamBankLogs`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamLogs` | Opens the configured menu target `teamLogs`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This is only a navigation hub.
+- Point category items to the exact menu names `teamBankLogs` and `teamLogs`.
+
+:::info[Source]
+This page is based on `Team Menu/teamLogsCategory.yml` from the BetterFioExtensions project.
+:::

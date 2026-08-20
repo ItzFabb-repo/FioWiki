@@ -5,28 +5,90 @@ sidebar_position: 15
 
 # teamControlPanel.yml
 
-`menu/Team Menu/teamControlPanel.yml` controls team settings and prompts.
+`Team Menu/teamControlPanel.yml` is part of the BetterFioExtensions bundled menu configuration. Owner/settings control panel for team visuals and team behavior toggles.
 
 ## YAML format
 
-```yaml
-OWNER:
-  title: "<title>"
-  rows: 6
-  items:
-    description:
-      actions:
-        any:
-          - "[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION"
-    rename:
-      actions:
-        any:
-          - "[BETTERFIOEXTENSIONS] MANAGE_RENAME"
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
 
-SETTINGS: {}
+```yaml
+# teamControlPanel.yml
+OWNER:
+  title: "<owner view title>"
+  rows: 6
+  items: {}
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu for owner settings. Keep toggle actions exactly as shipped: `TEAM_PVP_TOGGLE`, `TEAM_OPEN_TOGGLE`, `TEAM_HEAD_BANNER_TOGGLE`, `TEAM_GLOW_VIEW_TOGGLE`, and `TEAM_GLOW`.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+    description:
+      slot: 12
+      material: WRITABLE_BOOK
+      name: "<yellow>Set Team Description"
+      lore:
+        - "<dark_gray>ᴄᴏɴᴛʀᴏʟ"
+        - " "
+        - "<gray>ᴏᴘᴇɴ ᴛʜᴇ ᴄʜᴀᴛ ᴇᴅɪᴛᴏʀ ᴛᴏ"
+        - "<gray>ᴀᴅᴅ, ᴇᴅɪᴛ, ᴏʀ ʀᴇᴍᴏᴠᴇ"
+        - "<gray>ʏᴏᴜʀ ᴛᴇᴀᴍ ᴅᴇꜱᴄʀɪᴘᴛɪᴏɴ."
+        - " "
+        - "<dark_gray><strikethrough>                "
+        - "<yellow>Team Description:"
+        - "%betterfioextensions_controlpanel_description_lines%"
+        - "<dark_gray><strikethrough>                "
+        - " "
+        - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴍᴏᴅɪꜰʏ"
+      actions:
+        any:
+          - '[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION'
+          - '[CHATPROMPT] MANAGE_DESCRIPTION'
+        chat_prompt:
+          MANAGE_DESCRIPTION:
+            exit_prompt: "cancel, exit"
+            messages:
+              - '<gray>Please insert the new description of your teams.</gray>'
+              - '<gray>you can use <white>\n</white> to create a new line</gray>'
+              - '<gray>or else you can type in "<red>Cancel</red>" to exit this prompt</gray>'
+            actions:
+              - '[SOUND] ITEM_BOOK_PAGE_TURN 1 2 master'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `OWNER`: View used for team owners.
+- `SETTINGS`: Shared control-panel settings/state definitions.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION` | Starts the team description editing prompt. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] MANAGE_RENAME` | Starts the team rename prompt. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_GLOW` | Opens the team glow picker flow. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_GLOW_VIEW_TOGGLE` | Toggles whether team glow visuals are shown. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_HEAD_BANNER_TOGGLE` | Toggles the team head banner visual preference. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_OPEN_TOGGLE` | Toggles whether the team is open/public for joining. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_PVP_TOGGLE` | Toggles BetterTeams PVP state for the current team. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[CHATPROMPT] MANAGE_DESCRIPTION` | Starts chat prompt `MANAGE_DESCRIPTION`. | Use it when the next input should come from chat. |
+| `[CHATPROMPT] MANAGE_RENAME` | Starts chat prompt `MANAGE_RENAME`. | Use it when the next input should come from chat. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[OPEN_MENU] teamColorPicker` | Opens the configured menu target `teamColorPicker`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ITEM_BOOK_PAGE_TURN 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This menu is for owner/settings controls.
+- Use BFE toggle actions exactly as written because each one maps to a specific handler.
+
+:::info[Source]
+This page is based on `Team Menu/teamControlPanel.yml` from the BetterFioExtensions project.
+:::

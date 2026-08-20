@@ -5,28 +5,78 @@ sidebar_position: 13
 
 # teamLevels.yml
 
-`menu/Team Menu/teamLevels.yml` renders BetterTeams level and perk information.
+`Team Menu/teamLevels.yml` is part of the BetterFioExtensions bundled menu configuration. Team level and perk display menu.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴇᴠᴇʟꜱ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM LEVELS"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴇᴠᴇʟꜱ"
 rows: 6
 
 items:
-  level:
-    slots: []
-  previous:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
-  next:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu to style generated level entries. Level state, price, and status are calculated by the extension and BetterTeams data.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  info:
+    slot: 4
+    name: "<yellow>Your Team Score"
+    lore:
+      - '<dark_gray>ʟᴇᴠᴇʟ'
+      - ' '
+      - '<gold>| <white>ᴄᴜʀʀᴇɴᴛ ᴛᴇᴀᴍ ꜱᴄᴏʀᴇ<dark_gray>: <yellow>Ⓢ%betterfioextensions_team_score%'
+      - '<gold>| <white>ᴄᴜʀʀᴇɴᴛ ᴛᴇᴀᴍ ʟᴇᴠᴇʟ<dark_gray>: <yellow>%betterfioextensions_team_level%'
+      - ' '
+      - '<yellow>ᴛʜɪꜱ ɪᴛᴇᴍ ᴜꜱᴇꜱ ʏᴏᴜʀ ᴛᴇᴀᴍ ʟᴏɢᴏ.'
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Level entries are generated from BetterTeams level data.
+- Do not add invented upgrade aliases; the extension decides level behavior from the generated entry context.
+
+:::info[Source]
+This page is based on `Team Menu/teamLevels.yml` from the BetterFioExtensions project.
+:::

@@ -5,24 +5,82 @@ sidebar_position: 16
 
 # teamColorPicker.yml
 
-`menu/Team Menu/teamColorPicker.yml` lets owners choose a BetterTeams color.
+`Team Menu/teamColorPicker.yml` is part of the BetterFioExtensions bundled menu configuration. Team color picker menu.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴄᴏʟᴏʀ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM COLOR"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴄᴏʟᴏʀ"
 rows: 5
 
 items:
-  color:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] SELECT_COLOR %betterfioextensions_picker_color_id%"
-
-order: []
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use `order` and generated color items to control available colors. Keep `%betterfioextensions_picker_color_id%` in the select action.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  "CURRENT":
+    material: NAME_TAG
+    name: "<yellow>Current Team Color"
+    lore:
+      - "<dark_gray>ᴄᴏʟᴏʀ"
+      - ""
+      - "<gray>ᴛʜɪꜱ ɪꜱ ʏᴏᴜʀ ᴛᴇᴀᴍ'ꜱ"
+      - "<gray>ᴄᴜʀʀᴇɴᴛ ʙᴇᴛᴛᴇʀᴛᴇᴀᴍꜱ ᴄᴏʟᴏʀ."
+      - ""
+      - " <gold>| <white>ᴄᴜʀʀᴇɴᴛ<dark_gray>: %betterfioextensions_team_color_preview%%betterfioextensions_team_color_name%"
+      - ""
+    slot: 4
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+- `order`: Render order for generated picker entries.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] SELECT_COLOR %betterfioextensions_picker_color_id%` | Applies the selected team color option. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[MESSAGE] <gray>You` | Sends a chat message to the player. | Use it for feedback or warnings. Keep MiniMessage formatting if you want the BFE style. |
+| `[NONE]` | Does nothing. | Use it for locked, unavailable, or informational items. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_BAT_TAKEOFF 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- The picker id comes from `%betterfioextensions_picker_color_id%`.
+- Keep the bundled color order style if you want the generated buttons to stay consistent.
+
+:::info[Source]
+This page is based on `Team Menu/teamColorPicker.yml` from the BetterFioExtensions project.
+:::

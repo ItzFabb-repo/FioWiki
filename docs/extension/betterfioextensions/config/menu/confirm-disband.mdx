@@ -5,23 +5,76 @@ sidebar_position: 31
 
 # disband.yml
 
-`menu/confirmationTeam/disband.yml` confirms team disband.
+`confirmationTeam/disband.yml` is part of the BetterFioExtensions bundled menu configuration. Confirmation menu for disbanding a team.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴄᴏɴꜰɪʀᴍ ᴅɪꜱʙᴀɴᴅ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>CONFIRM DISBAND"
+title: "<black><bold>| <dark_gray>ᴄᴏɴꜰɪʀᴍ ᴅɪꜱʙᴀɴᴅ"
 rows: 3
 
 items:
-  confirm: {}
-  cancel:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[OPEN_MENU] team"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu only as a confirmation screen. Do not move disband logic into a random action alias; the extension handles it through the confirmation context.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  confirm:
+    slot: 11
+    type: "CONFIRM"
+    material: TNT
+    name: "<red>Confirm Disband"
+    lore:
+      - "<dark_gray>ᴄᴏɴꜰɪʀᴍ"
+      - " "
+      - "<gray>ᴄʟɪᴄᴋ ᴛᴏ ᴅɪꜱʙᴀɴᴅ ʏᴏᴜʀ"
+      - "<gray>ᴄᴜʀʀᴇɴᴛ ᴛᴇᴀᴍ."
+      - " "
+      - "<red>ᴄʟɪᴄᴋ ᴛᴏ ᴄᴏɴꜰɪʀᴍ"
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[OPEN_MENU] team` | Opens the configured menu target `team`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This confirmation menu uses extension context; do not replace it with a made-up action.
+- Keep the confirm/cancel item purpose clear in name and lore.
+
+:::info[Source]
+This page is based on `confirmationTeam/disband.yml` from the BetterFioExtensions project.
+:::

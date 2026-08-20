@@ -5,39 +5,86 @@ sidebar_position: 3
 
 # invites.yml
 
-`menu/Create Team/invites.yml` shows pending team invitations for a player without a team.
+`Create Team/invites.yml` is part of the BetterFioExtensions bundled menu configuration. Invitation list for players who do not currently have a team.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ɪɴᴠɪᴛᴀᴛɪᴏɴꜱ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM INVITATIONS"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ɪɴᴠɪᴛᴀᴛɪᴏɴꜱ"
 rows: 6
 
 items:
-  invitation:
-    slots: []
-    material: PAPER
-    name: "%betterfioextensions_invitation_team_name%"
-    lore: []
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] ACCEPT_INVITATION"
-
-  previous:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
-  next:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
-  back:
-    actions:
-      any:
-        - "[GOBACK]"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Edit the generated invitation item to change how invitations look. Keep `[BETTERFIOEXTENSIONS] ACCEPT_INVITATION` on the clickable invitation entry so the selected invitation can be accepted.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+    available:
+      name: "<yellow>Invitation<dark_gray>: <white>%betterfioextensions_invitation_team_name%"
+      lore:
+        - "<dark_gray>ɪɴᴠɪᴛᴀᴛɪᴏɴ"
+        - " "
+        - "<gray>ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ ᴀɴ ɪɴᴠɪᴛᴀᴛɪᴏɴ."
+        - "<gray>ꜰʀᴏᴍ ᴛʜɪꜱ ᴛᴇᴀᴍ."
+        - ' '
+        - "<gold>| <white>ɪɴᴠɪᴛᴀᴛɪᴏɴ ᴇxᴘɪʀʏ ɪɴ<dark_gray>: <yellow>⌚%betterfioextensions_player_invitation_expiry%"
+        - "<gold>| <white>ɪɴᴠɪᴛᴇᴅ ʙʏ<dark_gray>: <yellow>%betterfioextensions_invitation_team_whom_invited%"
+        - "<gold>| <white>ᴅᴀᴛᴇ ɪɴᴠɪᴛᴇᴅ<dark_gray>: <yellow>%betterfioextensions_invitation_team_date_invited%"
+        - " "
+        - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴀᴄᴄᴇᴘᴛ"
+      actions:
+        any:
+          - '[BETTERFIOEXTENSIONS] ACCEPT_INVITATION'
+          - '[SOUND] BLOCK_NOTE_BLOCK_BELL 1 1 master'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] ACCEPT_INVITATION` | Accepts the selected invitation from the invitations menu. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_NOTE_BLOCK_BELL 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Invitation entries are generated from runtime invitation data.
+- Use invitation placeholders in `name` and `lore`; keep `ACCEPT_INVITATION` on the clickable entry.
+
+:::info[Source]
+This page is based on `Create Team/invites.yml` from the BetterFioExtensions project.
+:::

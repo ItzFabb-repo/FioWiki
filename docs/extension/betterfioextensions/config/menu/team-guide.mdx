@@ -5,23 +5,89 @@ sidebar_position: 14
 
 # teamGuide.yml
 
-`menu/Team Menu/teamGuide.yml` explains role capabilities to team members.
+`Team Menu/teamGuide.yml` is part of the BetterFioExtensions bundled menu configuration. Role guide menu for member, admin, and owner capabilities.
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-settings: {}
+# teamGuide.yml
+settings:
+  # shared display or behavior settings
 
 DEFAULT:
-  title: "<title>"
+  title: "<same bundled small-cap title style>"
+  rows: 6
+  items:
+    item_key:
+      slot: 10
+      material: BOOK
+      name: "<yellow>Display Name"
+      lore: []
+      actions:
+        any:
+          - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+
+ADMIN:
+  title: "<admin view title>"
   rows: 6
   items: {}
 
-ADMIN: {}
-OWNER: {}
+OWNER:
+  title: "<owner view title>"
+  rows: 6
+  items: {}
 ```
 
-## How to use
+## Bundled item style example
 
-Edit each role section separately. Use `[BETTERFIOEXTENSIONS] GUIDE_SORT` if you want players to cycle the guide view.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  sort:
+    slot: 50
+    material: HOPPER
+    name: "<yellow>Sort Guidance"
+    selected-format: "<yellow>> <white>%sort-format%"
+    unselected-format: "<dark_gray>› <gray>%sort-format%"
+    lore:
+      - "<dark_gray>ꜱᴏʀᴛ"
+      - " "
+      - "<gray>ᴄʟɪᴄᴋ ᴛᴏ ꜱᴏʀᴛ ᴛʜᴇ ɢᴜɪᴅᴀɴᴄᴇ"
+      - "<gray>ɪɴᴛᴏ ᴀ ꜱᴘᴇᴄɪꜰɪᴄ ꜰᴏʀᴍᴀᴛ."
+      - " "
+      - "%betterfioextensions_guide_sort_options%"
+      - " "
+      - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ꜱᴏʀᴛ"
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `settings`: Shared menu settings used by the renderer or generated entries.
+- `DEFAULT`: View used for normal team members.
+- `ADMIN`: View used for team admins.
+- `OWNER`: View used for team owners.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] GUIDE_SORT` | Cycles the team guide view. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This file is role-aware and has guide sorting.
+- Keep `[BETTERFIOEXTENSIONS] GUIDE_SORT` on the sort button if you want multiple guide views.
+
+:::info[Source]
+This page is based on `Team Menu/teamGuide.yml` from the BetterFioExtensions project.
+:::

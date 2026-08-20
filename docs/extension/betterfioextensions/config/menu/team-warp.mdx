@@ -5,25 +5,89 @@ sidebar_position: 29
 
 # teamWarp.yml
 
-`menu/Team Menu/Saved Location/teamWarp.yml` lists configured team warps.
+`Team Menu/Saved Location/teamWarp.yml` is part of the BetterFioExtensions bundled menu configuration. Generated team warp list.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴡᴀʀᴘꜱ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM WARPS"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴡᴀʀᴘꜱ"
 rows: 6
 
 items:
-  warp:
-    slots: []
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
-      left:
-        - "[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%"
-      right:
-        - "[BETTERFIOEXTENSIONS] DELETE_TEAM_WARP %warp%"
+      any:
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Keep `%warp%` in teleport and delete actions. The extension replaces it with the clicked warp id.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  warps:
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43]
+    material: ENDER_PEARL
+    name: "<yellow>Team Warp: <white>%betterfioextensions_warp_name%"
+    default:
+      lore:
+        - "<dark_gray>ᴡᴀʀᴘꜱ"
+        - ""
+        - " <gold>| <white>ᴡᴏʀʟᴅ<dark_gray>: <yellow>%betterfioextensions_warp_world%"
+        - " <gold>| <white>ᴄᴏᴏʀᴅꜱ<dark_gray>: <yellow>X:%betterfioextensions_warp_x% <dark_gray>| <yellow>Y:%betterfioextensions_warp_y% <dark_gray>| <yellow>Z:%betterfioextensions_warp_z%"
+        - ""
+        - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴛᴇʟᴇᴘᴏʀᴛ"
+      actions:
+        any:
+          - '[SOUND] ENTITY_ENDERMAN_TELEPORT 1 2 master'
+          - '[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+- `left`: Runs only when the player left-clicks the item.
+- `right`: Runs only when the player right-clicks the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] DELETE_TEAM_WARP %warp%` | Deletes the selected team warp. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%` | Teleports the player to the selected team warp. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_NOTE_BLOCK_PLING 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_ENDERMAN_TELEPORT 1 2 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Warp entries are generated dynamically.
+- Keep `%warp%` in teleport and delete actions.
+
+:::info[Source]
+This page is based on `Team Menu/Saved Location/teamWarp.yml` from the BetterFioExtensions project.
+:::

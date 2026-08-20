@@ -5,28 +5,103 @@ sidebar_position: 4
 
 # teamMenu.yml
 
-`menu/Team Menu/teamMenu.yml` is the main team hub for players who already belong to a BetterTeams team.
+`Team Menu/teamMenu.yml` is part of the BetterFioExtensions bundled menu configuration. Main team hub for players who already belong to a BetterTeams team.
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
+# teamMenu.yml
 DEFAULT:
-  title: "<black><bold>| <dark_gray>TEAM MENU"
+  title: "<same bundled small-cap title style>"
   rows: 6
-  items: {}
+  items:
+    item_key:
+      slot: 10
+      material: BOOK
+      name: "<yellow>Display Name"
+      lore: []
+      actions:
+        any:
+          - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 
 ADMIN:
-  title: "<black><bold>| <dark_gray>TEAM MENU"
+  title: "<admin view title>"
   rows: 6
   items: {}
 
 OWNER:
-  title: "<black><bold>| <dark_gray>TEAM MENU"
+  title: "<owner view title>"
   rows: 6
   items: {}
 ```
 
-## How to use
+## Bundled item style example
 
-Place normal member buttons under `DEFAULT`, staff controls under `ADMIN`, and owner-only controls under `OWNER`. Use `[OPEN_MENU]` for other menus, `[PLAYER]` for BetterTeams commands, and `[BETTERFIOEXTENSIONS] TEAM_LOGO` or `TEAM_INVITE_PROMPT` for extension behavior.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+    home:
+      slot: 11
+      material: RED_BED
+      name: "<yellow>Team Saved Location"
+      lore:
+        - '<dark_gray>ʜᴏᴍᴇ'
+        - ' '
+        - '<gray>ᴄʟɪᴄᴋ ᴛᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴛᴏ'
+        - '<gray>ʏᴏᴜʀ ᴛᴇᴀᴍ ʜᴏᴍᴇ.'
+        - ' '
+        - '<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ'
+      actions:
+        any:
+          - '[SOUND] UI_BUTTON_CLICK 1 1 master'
+          - '[OPEN_MENU] teamSavedLocation'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `DEFAULT`: View used for normal team members.
+- `ADMIN`: View used for team admins.
+- `OWNER`: View used for team owners.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] TEAM_INVITE_PROMPT` | Starts the invite-player prompt from the team menu. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] TEAM_LOGO` | Runs the team logo/banner interaction configured by the extension. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[OPEN_MENU] categoryLeaderboard` | Opens the configured menu target `categoryLeaderboard`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] confirmDisband` | Opens the configured menu target `confirmDisband`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] confirmLeave` | Opens the configured menu target `confirmLeave`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] invites` | Opens the configured menu target `invites`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamAllyRequest` | Opens the configured menu target `teamAllyRequest`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamBank` | Opens the configured menu target `teamBank`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamBanner` | Opens the configured menu target `teamBanner`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamControlPanel` | Opens the configured menu target `teamControlPanel`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamGuide` | Opens the configured menu target `teamGuide`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamLevels` | Opens the configured menu target `teamLevels`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamLogsCategory` | Opens the configured menu target `teamLogsCategory`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamMembers` | Opens the configured menu target `teamMembers`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamPermissions` | Opens the configured menu target `teamPermissions`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamSavedLocation` | Opens the configured menu target `teamSavedLocation`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] teamWarp` | Opens the configured menu target `teamWarp`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[PLAYER] fioteam requests` | Runs player command `fioteam requests`. | Use it only when the click should dispatch a command as the player. |
+| `[PLAYER] team echest` | Runs player command `team echest`. | Use it only when the click should dispatch a command as the player. |
+| `[PLAYER] team info` | Runs player command `team info`. | Use it only when the click should dispatch a command as the player. |
+| `[SOUND] BLOCK_SNIFFER_EGG_PLOP 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_CARTOGRAPHY_TABLE_TAKE_RESULT 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This file is role-aware. Edit `DEFAULT`, `ADMIN`, and `OWNER` separately.
+- Use `[OPEN_MENU]` for menu navigation and `[PLAYER]` only when you intentionally dispatch a player command.
+
+:::info[Source]
+This page is based on `Team Menu/teamMenu.yml` from the BetterFioExtensions project.
+:::

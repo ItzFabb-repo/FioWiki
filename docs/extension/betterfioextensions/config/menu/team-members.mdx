@@ -5,26 +5,84 @@ sidebar_position: 5
 
 # teamMembers.yml
 
-`menu/Team Menu/teamMembers.yml` lists team members.
+`Team Menu/teamMembers.yml` is part of the BetterFioExtensions bundled menu configuration. Generated list of members in the current team.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴍᴇᴍʙᴇʀꜱ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM MEMBERS"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴍᴇᴍʙᴇʀꜱ"
 rows: 6
 
 items:
-  member:
-    slots: []
-    material: PLAYER_HEAD
-    name: "%betterfioextensions_member_name%"
-    lore: []
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] MANAGE_PLAYER %player_name%"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu to style generated member entries. Keep `%player_name%` in the action so clicking a member opens `teamMemberManage.yml` for the selected player.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  members:
+    content-slots: [10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43]
+    material: PLAYER_HEAD
+    name: "<yellow>Member: <white>%betterfioextensions_member_name%"
+    lore:
+      - "<dark_gray>ᴍᴇᴍʙᴇʀꜱ"
+      - ""
+      - " <gold>| <white>ʀᴏʟᴇ<dark_gray>: <yellow>%betterfioextensions_member_role%"
+      - ""
+      - " <gold>[ᴘʟᴀʏᴇʀ ꜱᴛᴀᴛꜱ]"
+      - " <gold>| <white>ꜱᴄᴏʀᴇ<dark_gray>: <yellow>Ⓢ%betterfioextensions_member_score%"
+      - " <gold>| <white>ᴋɪʟʟꜱ<dark_gray>: <yellow>🗡%betterfioextensions_member_kills%"
+      - " <gold>| <white>ᴅᴇᴀᴛʜꜱ<dark_gray>: <yellow>☠%betterfioextensions_member_deaths%"
+      - ""
+      - "<gold>[ᴍᴀɴᴀɢᴇ ᴍᴇᴍʙᴇʀꜱ]"
+      - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴍᴀɴᴀɢᴇ ᴍᴇᴍʙᴇʀꜱ"
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] MANAGE_PLAYER %player_name%` | Opens the member management screen for the selected player. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Member entries are generated dynamically.
+- Keep `%player_name%` in `MANAGE_PLAYER` so the next menu receives the selected target.
+
+:::info[Source]
+This page is based on `Team Menu/teamMembers.yml` from the BetterFioExtensions project.
+:::

@@ -5,30 +5,91 @@ sidebar_position: 8
 
 # teamAllyRequest.yml
 
-`menu/Team Menu/teamAllyRequest.yml` manages ally requests and ally lists.
+`Team Menu/teamAllyRequest.yml` is part of the BetterFioExtensions bundled menu configuration. Ally request browser and ally relationship controls.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴀʟʟʏ ʀᴇǫᴜᴇꜱᴛ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM ALLY REQUEST"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ᴀʟʟʏ ʀᴇǫᴜᴇꜱᴛ"
 rows: 6
 
 items:
-  team:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%"
-  pending:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] VIEW_PENDING"
-  allied:
-    actions:
-      any:
-        - "[BETTERFIOEXTENSIONS] VIEW_ALLIED"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use `%team%` for generated team entries. `FILTER`, `VIEW_ALLIED`, and `VIEW_PENDING` control which ally list view is displayed.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+    available:
+      name: "<yellow>Team: <white>%betterfioextensions_ally_team_name%"
+      lore:
+        - '<dark_gray>ᴀʟʟɪᴇꜱ'
+        - ' '
+        - '<gold>| <white>ᴛᴇᴀᴍ<dark_gray>: <yellow>%betterfioextensions_ally_team_name%'
+        - '<gold>| <white>ꜱᴛᴀᴛᴜꜱ<dark_gray>: <yellow>%betterfioextensions_ally_team_status%'
+        - '<gold>| <white>ᴍᴇᴍʙᴇʀꜱ<dark_gray>: <yellow>%betterfioextensions_ally_team_members%'
+        - '<gold>| <white>ʀᴇʟᴀᴛɪᴏɴ<dark_gray>: <yellow>%betterfioextensions_ally_relation%'
+        - ' '
+        - '<gold>| <white>ʟᴀꜱᴛ ᴘᴠᴘ<dark_gray>: <yellow>%betterfioextensions_ally_last_pvp%'
+        - ' '
+        - '<yellow>ᴄʟɪᴄᴋ ᴛᴏ ꜱᴇɴᴅ ᴀɴ ᴀʟʟʏ ʀᴇǫᴜᴇꜱᴛ'
+      actions:
+        any:
+          - '[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%'
+          - '[SOUND] ENTITY_EGG_THROW 1 1 master'
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[BETTERFIOEXTENSIONS] ACCEPT_ALLY_REQUESTS` | Accepts the selected ally request. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] FILTER` | Cycles the ally request filter mode. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Moves the generated list to the next page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Moves the generated list to the previous page. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%` | Sends an ally request to the generated team represented by the clicked entry. | Keep the placeholder parameter because the extension replaces it with the clicked generated entry. |
+| `[BETTERFIOEXTENSIONS] VIEW_ALLIED` | Switches the ally menu to the allied-teams view. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[BETTERFIOEXTENSIONS] VIEW_PENDING` | Switches the ally menu to the pending-requests view. | Use this exact action name; it maps to a BetterFioExtensions handler. |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_EGG_THROW 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] ENTITY_VILLAGER_NO 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- Use `%team%` only on generated team entries.
+- `FILTER`, `VIEW_ALLIED`, and `VIEW_PENDING` control the current ally list mode.
+
+:::info[Source]
+This page is based on `Team Menu/teamAllyRequest.yml` from the BetterFioExtensions project.
+:::

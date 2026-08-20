@@ -5,23 +5,76 @@ sidebar_position: 33
 
 # anchor-remove.yml
 
-`menu/confirmationTeam/anchor-remove.yml` confirms team anchor removal.
+`confirmationTeam/anchor-remove.yml` is part of the BetterFioExtensions bundled menu configuration. Confirmation menu for removing team anchor.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴄᴏɴꜰɪʀᴍ ᴀɴᴄʜᴏʀ ʀᴇᴍᴏᴠᴇ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>CONFIRM ANCHOR REMOVE"
+title: "<black><bold>| <dark_gray>ᴄᴏɴꜰɪʀᴍ ᴀɴᴄʜᴏʀ ʀᴇᴍᴏᴠᴇ"
 rows: 3
 
 items:
-  confirm: {}
-  cancel:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[GOBACK]"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Open this menu from `savedLocationAnchor.yml`. The extension removes the anchor when the confirm item is clicked.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  confirm:
+    slot: 11
+    type: "CONFIRM"
+    material: LIME_DYE
+    name: "<green>Confirm Anchor Removal"
+    lore:
+      - "<dark_gray>ᴄᴏɴꜰɪʀᴍ"
+      - " "
+      - "<gray>ᴄᴏɴꜰɪʀᴍ ʏᴏᴜʀ ᴀᴄᴛɪᴏɴ ʙᴇꜰᴏʀᴇ"
+      - "<gray>ʀᴇᴍᴏᴠɪɴɢ ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ"
+      - "<gray>ᴛᴇᴀᴍ ᴀɴᴄʜᴏʀ ʟᴏᴄᴀᴛɪᴏɴ."
+      - " "
+      - "<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴄᴏɴꜰɪʀᴍ"
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This confirmation menu is opened from the team anchor menu.
+- The extension performs removal when the confirm item is clicked.
+
+:::info[Source]
+This page is based on `confirmationTeam/anchor-remove.yml` from the BetterFioExtensions project.
+:::

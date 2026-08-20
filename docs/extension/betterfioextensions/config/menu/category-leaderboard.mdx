@@ -5,23 +5,84 @@ sidebar_position: 19
 
 # categoryLeaderboard.yml
 
-`menu/Team Menu/Leaderboard/categoryLeaderboard.yml` is the leaderboard category menu.
+`Team Menu/Leaderboard/categoryLeaderboard.yml` is part of the BetterFioExtensions bundled menu configuration. Leaderboard metric selector.
+
+Bundled title line:
+
+```yaml
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ"
+```
 
 ## YAML format
 
+This is the structure you edit for this menu. The display text should keep the same MiniMessage and small-cap style used by the bundled BFE file unless you intentionally redesign the menu.
+
 ```yaml
-title: "<black><bold>| <dark_gray>TEAM LEADERBOARD"
+title: "<black><bold>| <dark_gray>ᴛᴇᴀᴍ ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ"
 rows: 5
-commands: []
 
 items:
-  money:
+  item_key:
+    slot: 10
+    material: BOOK
+    name: "<yellow>Display Name"
+    lore:
+      - "<gray>Description line"
     actions:
       any:
-        - "[OPEN_MENU] money"
+        - "[SOUND] UI_BUTTON_CLICK 1 1 master"
 ```
 
-## How to use
+## Bundled item style example
 
-Use this menu as a hub. Buttons should open `money`, `score`, `kills`, `deaths`, or `members`.
+This excerpt is copied from the bundled BFE YAML style so the menu keeps the same MiniMessage colors and small-cap text formatting.
 
+```yaml
+  money:
+    slot: 20
+    material: PLAYER_HEAD
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZkMTA4MzgzZGZhNWIwMmU4NjYzNTYwOTU0MTUyMGU0ZTE1ODk1MmQ2OGMxYzhmOGYyMDBlYzdlODg2NDJkIn19fQ=="
+    name: "<yellow>Money Team Leaderboard"
+    lore:
+      - '<dark_gray>ᴍᴏɴᴇʏ'
+      - ' '
+      - '<gray>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ ᴛʜᴇ'
+      - '<gray>ʀɪᴄʜᴇꜱᴛ ᴛᴇᴀᴍꜱ'
+      - '<gray>ᴏɴ ᴛʜᴇ ꜱᴇʀᴠᴇʀ.'
+      - ' '
+      - '<yellow>ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ'
+    actions:
+```
+
+### Click keys used here
+
+- `any`: Runs for any click type supported by the item.
+
+## Important sections
+
+- `title`: Inventory title shown at the top of the menu.
+- `rows`: Inventory height. One row equals 9 slots.
+- `commands`: Command aliases or command entry points configured for this menu.
+- `items`: Static or generated item definitions for the menu.
+
+## Actions
+
+| Action | What it does | How to use it |
+| --- | --- | --- |
+| `[GOBACK]` | Returns to the previous BetterFioExtensions menu in the navigation history. | Use it on back buttons. |
+| `[OPEN_MENU] deaths` | Opens the configured menu target `deaths`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] kills` | Opens the configured menu target `kills`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] members` | Opens the configured menu target `members`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] money` | Opens the configured menu target `money`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[OPEN_MENU] score` | Opens the configured menu target `score`. | Use it for menu navigation. If the target includes a parameter, keep that parameter in place. |
+| `[SOUND] BLOCK_WOODEN_DOOR_CLOSE 1 100 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+| `[SOUND] UI_BUTTON_CLICK 1 1 master` | Plays a Bukkit/Minecraft sound. | Use it as feedback before or after a menu action. Format is sound, volume, pitch, and sound category. |
+
+## How to use this menu
+
+- This menu opens leaderboard metric pages.
+- The `commands` section lets configured commands open the category menu.
+
+:::info[Source]
+This page is based on `Team Menu/Leaderboard/categoryLeaderboard.yml` from the BetterFioExtensions project.
+:::
