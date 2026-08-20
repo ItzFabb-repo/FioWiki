@@ -5,14 +5,6 @@ sidebar_position: 1
 
 # BetterFioExtensions
 
-BetterFioExtensions is a BetterTeams addon extension for Minecraft 1.21 servers. The jar name and plugin name in `plugin.yml` are `BetterFioExtension`, while the documentation route uses `BetterFioExtensions` to match the extension category naming.
-
-It is not placed under `Plugin` in FioWiki. This documentation lives under:
-
-```txt
-/extension/betterfioextensions
-```
-
 ## What the extension actually includes
 
 ### BetterTeams menu layer
