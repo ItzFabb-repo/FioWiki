@@ -45,81 +45,77 @@ Supported click sections:
 
 ## BetterFioExtensions actions
 
-Both tags are accepted:
-
-- `[BETTERFIOEXTENSIONS]`
-- `[BETTERFIOEXTENSION]`
-
-### General navigation
+### Navigation and pages
 
 | Action | Description |
 | --- | --- |
-| `BACK`, `GO_BACK`, `GOBACK` | Go back in menu history. |
-| `CLOSE` | Close the inventory. |
-| `OPEN_INVITES`, `TEAM_INVITATIONS`, `INVITATION_REQ` | Open invitation list. |
-| `TEAM_LISTS`, `TEAM_LIST` | Open public team list. |
-| `JOIN_REQUESTS` | Open team join requests. |
+| `[BETTERFIOEXTENSIONS] PREVIOUS_PAGE` | Move to the previous generated page. |
+| `[BETTERFIOEXTENSIONS] NEXT_PAGE` | Move to the next generated page. |
+| `[BETTERFIOEXTENSIONS] SORT` | Cycle the current menu sort mode. |
+| `[BETTERFIOEXTENSIONS] FILTER` | Cycle the current ally request filter. |
+| `[BETTERFIOEXTENSIONS] GUIDE_SORT` | Cycle the team guide view. |
 
-### Team creation and prompts
-
-| Action | Description |
-| --- | --- |
-| `CREATE_TEAM` | Open team creation chat prompt. |
-| `TEAM_INVITE`, `TEAM_INVITE_PROMPT`, `INVITE_PLAYER` | Start invite-player chat prompt. |
-| `TEAM_DESCRIPTION`, `MANAGE_DESCRIPTION`, `SET_TEAM_DESCRIPTION` | Start team description editor. |
-| `TEAM_RENAME`, `MANAGE_RENAME`, `RENAME_TEAM` | Start team rename editor. |
-| `TEAM_WARP_SET`, `SET_TEAM_WARP`, `SET_WARP` | Start team warp set prompt. |
-| `TEAM_COLOR_PROMPT`, `SET_TEAM_COLOR` | Start team color prompt. |
-| `TEAM_GLOW_PROMPT`, `SET_TEAM_GLOW` | Start team glow prompt. |
-
-### Team menus
+### Team creation and requests
 
 | Action | Description |
 | --- | --- |
-| `SWITCH_CHAT` | Cycle BetterTeams chat mode. |
-| `TEAM_LOGO` | Handle team logo/banner interaction. |
-| `TEAM_PERMISSIONS`, `TEAM_PERMISSION` | Open per-team permissions menu. |
-| `GUIDE_SORT` | Cycle team guide view. |
-| `TEAM_HOME`, `TEAM_HOMES`, `HOME_LIST` | Open saved location category. |
-| `TEAM_WARP`, `TEAM_WARPS`, `WARP_LIST` | Open team warp menu. |
-| `TEAM_BANK`, `TEAM_VAULT`, `BANK_MENU` | Open team bank. |
-| `TEAM_LEVELS`, `TEAM_RANKUP`, `LEVELS_MENU` | Open team levels. |
-| `TEAM_ALLY_REQUEST`, `TEAM_ALLIES` | Open ally request menu. |
-| `TEAM_CONTROL_PANEL`, `CONTROL_PANEL` | Open team control panel. |
-| `TEAM_MEMBERS`, `TEAM_MEMBER_LIST` | Open members menu. |
-| `TEAM_SAVED_LOCATION`, `SAVED_LOCATION` | Open saved locations. |
+| `[BETTERFIOEXTENSIONS] CREATE_TEAM` | Start the create-team flow. |
+| `[BETTERFIOEXTENSIONS] REQUEST_JOIN %team%` | Send a join request to the selected team. |
+| `[BETTERFIOEXTENSIONS] ACCEPT_INVITATION` | Accept the selected team invitation. |
+| `[BETTERFIOEXTENSIONS] ACCEPT_REQUEST` | Accept the selected join request. |
+| `[BETTERFIOEXTENSIONS] DENY_REQUEST` | Deny the selected join request. |
+| `[BETTERFIOEXTENSIONS] TEAM_INVITE_PROMPT` | Start the invite-player prompt from the team menu. |
 
-### Team settings
+### Team menu actions
 
 | Action | Description |
 | --- | --- |
-| `TEAM_PVP_TOGGLE` | Run BetterTeams PVP toggle and refresh. |
-| `TEAM_OPEN_TOGGLE` | Toggle public/private join state and refresh. |
-| `TEAM_HEAD_BANNER_TOGGLE` | Toggle head-banner visibility preference. |
-| `TEAM_GLOW_VIEW_TOGGLE` | Toggle glow visibility preference. |
-| `TEAM_COLOR` or `TEAM_COLOR_PICKER` | Open team color picker. |
-| `TEAM_GLOW` | Open team glow picker. |
-| `SELECT_COLOR [color]` | Select a team color. |
-| `SELECT_GLOW [color]` | Select a glow color. |
-| `CLEAR_GLOW_EFFECT`, `CLEAR_TEAM_GLOW`, `DISABLE_TEAM_GLOW` | Disable team glow. |
+| `[BETTERFIOEXTENSIONS] TEAM_LOGO` | Run the configured team logo interaction. |
+| `[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION` | Start editing the team description. |
+| `[BETTERFIOEXTENSIONS] MANAGE_RENAME` | Start editing the team name. |
+| `[BETTERFIOEXTENSIONS] TEAM_PVP_TOGGLE` | Toggle team PVP. |
+| `[BETTERFIOEXTENSIONS] TEAM_OPEN_TOGGLE` | Toggle public join state. |
+| `[BETTERFIOEXTENSIONS] TEAM_HEAD_BANNER_TOGGLE` | Toggle head banner visibility. |
+| `[BETTERFIOEXTENSIONS] TEAM_GLOW_VIEW_TOGGLE` | Toggle glow view visibility. |
 
-### Warps and members
+### Color and glow
 
 | Action | Description |
 | --- | --- |
-| `TELEPORT_TEAM_WARP [name]` | Teleport to a configured team warp. |
-| `DELETE_TEAM_WARP [name]` | Delete a configured team warp. |
-| `REMOVE_TEAM_WARP [name]` | Delete a configured team warp. |
-| `TELEPORT_TEAM_ANCHOR` | Teleport to team anchor. |
-| `SET_TEAM_ANCHOR` | Save current location as anchor. |
-| `MANAGE_PLAYER [name]` | Open member management menu for a player. |
-| `KICK [name]` | Kick a team member. |
-| `BAN [name]` | Ban a player from the team. |
-| `UNBAN [name]` | Unban a player. |
-| `PROMOTE [name]` | Promote a member. |
-| `DEMOTE [name]` | Demote a member. |
-| `TRANSFER_OWNERSHIP [name]` | Open ownership transfer flow. |
+| `[BETTERFIOEXTENSIONS] TEAM_GLOW` | Open the team glow picker. |
+| `[BETTERFIOEXTENSIONS] SELECT_COLOR %betterfioextensions_picker_color_id%` | Select the generated team color option. |
+| `[BETTERFIOEXTENSIONS] SELECT_GLOW %betterfioextensions_picker_color_id%` | Select the generated glow color option. |
+| `[BETTERFIOEXTENSIONS] CLEAR_GLOW_EFFECT` | Clear the active team glow effect. |
+
+### Members
+
+| Action | Description |
+| --- | --- |
+| `[BETTERFIOEXTENSIONS] MANAGE_PLAYER %player_name%` | Open management actions for the selected member. |
+| `[BETTERFIOEXTENSIONS] KICK %player_name%` | Kick the selected player from the team. |
+| `[BETTERFIOEXTENSIONS] BAN %player_name%` | Ban the selected player from the team. |
+| `[BETTERFIOEXTENSIONS] UNBAN %player_name%` | Unban the selected player. |
+| `[BETTERFIOEXTENSIONS] PROMOTE %player_name%` | Promote the selected team member. |
+| `[BETTERFIOEXTENSIONS] DEMOTE %player_name%` | Demote the selected team member. |
+
+### Saved locations
+
+| Action | Description |
+| --- | --- |
+| `[BETTERFIOEXTENSIONS] TELEPORT_TEAM_ANCHOR` | Teleport to the team anchor. |
+| `[BETTERFIOEXTENSIONS] SET_TEAM_ANCHOR` | Save the current location as the team anchor. |
+| `[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%` | Teleport to the selected team warp. |
+| `[BETTERFIOEXTENSIONS] DELETE_TEAM_WARP %warp%` | Delete the selected team warp. |
+
+### Allies
+
+| Action | Description |
+| --- | --- |
+| `[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%` | Send an ally request to the selected team. |
+| `[BETTERFIOEXTENSIONS] ACCEPT_ALLY_REQUESTS` | Accept the selected ally request. |
+| `[BETTERFIOEXTENSIONS] VIEW_ALLIED` | Show allied teams. |
+| `[BETTERFIOEXTENSIONS] VIEW_PENDING` | Show pending ally requests. |
 
 :::info[Page note]
-Unknown action targets are ignored or logged as warnings. Use canonical menu names from the Menu Overview page when possible.
+The BetterFioExtensions action list above follows the formats used in `src/main/resources/menu`.
 :::
