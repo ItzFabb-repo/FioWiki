@@ -12,6 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 import styles from './index.module.css';
 import TypingText from '@site/src/components/TypingText';
 import CountUpNumber from '@site/src/components/CountUpNumber';
+import featureOneImage from '@site/static/img/minecraft-cave-exploration.jpg';
 
 export const AboutLeft = () => (
   <>
@@ -75,7 +76,7 @@ export const AboutLeft = () => (
 
 <div className={styles.cardGrid}>
   <div className={styles.card}>
-    <img src="/img/minecraft1.jpg" alt="Feature one" />
+    <img src={featureOneImage} alt="Feature one" />
     <h3>What is this ?</h3>
     <p>A Dedicated page to explain how is things works, in minecraft and plugins.</p>
   </div>
