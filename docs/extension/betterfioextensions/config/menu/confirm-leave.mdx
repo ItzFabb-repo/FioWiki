@@ -1,0 +1,27 @@
+---
+title: leave.yml
+sidebar_position: 30
+---
+
+# leave.yml
+
+`menu/confirmationTeam/leave.yml` confirms leaving a team.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM LEAVE"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[OPEN_MENU] team"
+```
+
+## How to use
+
+Edit display items, but keep the confirm and cancel intent clear. The extension confirmation holder performs the leave action.
+

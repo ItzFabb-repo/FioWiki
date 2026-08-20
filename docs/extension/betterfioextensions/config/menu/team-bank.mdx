@@ -1,0 +1,33 @@
+---
+title: teamBank.yml
+sidebar_position: 9
+---
+
+# teamBank.yml
+
+`menu/Team Menu/teamBank.yml` is the deposit and withdraw UI.
+
+## YAML format
+
+```yaml
+settings:
+  title: "<black><bold>| <dark_gray>TEAM BANK"
+  rows: 6
+  items: {}
+
+STAFF:
+  deposit:
+    five:
+      percentage: "5"
+      actions:
+        any:
+          - "[SOUND] UI_BUTTON_CLICK 1 1 master"
+    custom:
+      slot: 38
+      material: OAK_SIGN
+```
+
+## How to use
+
+Edit percentage buttons by changing `percentage`, display item, name, and lore. Custom deposit/withdraw buttons open amount prompts handled by the extension. Keep bank placeholders such as `%betterfioextensions_team_money%` and `%betterfioextensions_player_balance%` when displaying balances.
+

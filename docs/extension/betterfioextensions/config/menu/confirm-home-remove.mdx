@@ -1,0 +1,27 @@
+---
+title: home-remove.yml
+sidebar_position: 32
+---
+
+# home-remove.yml
+
+`menu/confirmationTeam/home-remove.yml` confirms team home removal.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM HOME REMOVE"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Open this menu from `savedLocationHome.yml`. The extension removes the home when the confirm item is clicked.
+

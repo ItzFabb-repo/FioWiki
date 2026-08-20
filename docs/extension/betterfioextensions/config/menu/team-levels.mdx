@@ -1,0 +1,32 @@
+---
+title: teamLevels.yml
+sidebar_position: 13
+---
+
+# teamLevels.yml
+
+`menu/Team Menu/teamLevels.yml` renders BetterTeams level and perk information.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM LEVELS"
+rows: 6
+
+items:
+  level:
+    slots: []
+  previous:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
+  next:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
+```
+
+## How to use
+
+Use this menu to style generated level entries. Level state, price, and status are calculated by the extension and BetterTeams data.
+

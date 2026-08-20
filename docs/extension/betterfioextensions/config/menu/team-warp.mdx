@@ -1,0 +1,29 @@
+---
+title: teamWarp.yml
+sidebar_position: 29
+---
+
+# teamWarp.yml
+
+`menu/Team Menu/Saved Location/teamWarp.yml` lists configured team warps.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM WARPS"
+rows: 6
+
+items:
+  warp:
+    slots: []
+    actions:
+      left:
+        - "[BETTERFIOEXTENSIONS] TELEPORT_TEAM_WARP %warp%"
+      right:
+        - "[BETTERFIOEXTENSIONS] DELETE_TEAM_WARP %warp%"
+```
+
+## How to use
+
+Keep `%warp%` in teleport and delete actions. The extension replaces it with the clicked warp id.
+

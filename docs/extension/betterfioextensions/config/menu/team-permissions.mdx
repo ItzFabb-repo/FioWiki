@@ -1,0 +1,36 @@
+---
+title: teamPermissions.yml
+sidebar_position: 25
+---
+
+# teamPermissions.yml
+
+`menu/Team Menu/Permissions/teamPermissions.yml` renders per-team permission controls.
+
+## YAML format
+
+```yaml
+settings:
+  roleDisplay: {}
+  clickHint: {}
+
+OWNER:
+  title: "<title>"
+  rows: 6
+  permissionSlots: []
+  items: {}
+
+ADMIN: {}
+DEFAULT: {}
+
+permissions:
+  permission_key:
+    name: "<yellow>Permission Name"
+    material: PAPER
+    lore: []
+```
+
+## How to use
+
+Add permission definitions under `permissions`. Use `permissionSlots` to decide where generated permission items appear. Owners can edit more roles, admins have limited controls, and default members are view-only.
+

@@ -1,0 +1,40 @@
+---
+title: teamBanner.yml
+sidebar_position: 18
+---
+
+# teamBanner.yml
+
+`menu/Team Menu/Banner Style/teamBanner.yml` is the team banner style selector.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM BANNER"
+rows: 6
+
+items:
+  banner:
+    slots: []
+    material: WHITE_BANNER
+    name: "%betterfioextensions_banner_name%"
+    lore:
+      - "%betterfioextensions_banner_permission%"
+    actions:
+      any:
+        - "[SOUND] UI_LOOM_TAKE_RESULT 1 100 master"
+
+  previous:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
+  next:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
+```
+
+## How to use
+
+Edit this file when you want to change how banner styles are displayed. Generated banner entries are selected by the extension, so keep banner placeholders in the item name/lore and keep pagination buttons if you have many styles. Use permissions in the banner style configuration to restrict styles.
+

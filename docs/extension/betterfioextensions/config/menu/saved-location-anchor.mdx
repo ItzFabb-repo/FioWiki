@@ -1,0 +1,34 @@
+---
+title: savedLocationAnchor.yml
+sidebar_position: 28
+---
+
+# savedLocationAnchor.yml
+
+`menu/Team Menu/Saved Location/savedLocationAnchor.yml` controls the team anchor.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM ANCHOR"
+rows: 5
+
+items:
+  teleport:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] TELEPORT_TEAM_ANCHOR"
+  set:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] SET_TEAM_ANCHOR"
+  remove:
+    actions:
+      any:
+        - "[OPEN_MENU] confirmAnchorRemove"
+```
+
+## How to use
+
+Keep the anchor actions exactly as shown. The extension handles anchor saving, teleporting, and unsafe-location checks.
+

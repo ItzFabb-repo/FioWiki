@@ -1,0 +1,27 @@
+---
+title: anchor-remove.yml
+sidebar_position: 33
+---
+
+# anchor-remove.yml
+
+`menu/confirmationTeam/anchor-remove.yml` confirms team anchor removal.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM ANCHOR REMOVE"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Open this menu from `savedLocationAnchor.yml`. The extension removes the anchor when the confirm item is clicked.
+

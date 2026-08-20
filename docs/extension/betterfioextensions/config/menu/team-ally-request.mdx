@@ -1,0 +1,34 @@
+---
+title: teamAllyRequest.yml
+sidebar_position: 8
+---
+
+# teamAllyRequest.yml
+
+`menu/Team Menu/teamAllyRequest.yml` manages ally requests and ally lists.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM ALLY REQUEST"
+rows: 6
+
+items:
+  team:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] SEND_ALLY_REQUEST %team%"
+  pending:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] VIEW_PENDING"
+  allied:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] VIEW_ALLIED"
+```
+
+## How to use
+
+Use `%team%` for generated team entries. `FILTER`, `VIEW_ALLIED`, and `VIEW_PENDING` control which ally list view is displayed.
+

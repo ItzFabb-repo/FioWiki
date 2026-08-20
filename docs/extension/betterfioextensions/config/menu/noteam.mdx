@@ -1,0 +1,47 @@
+---
+title: noteam.yml
+sidebar_position: 1
+---
+
+# noteam.yml
+
+`menu/Create Team/noteam.yml` is the starter inventory for players who do not have a BetterTeams team.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>GET A TEAM"
+rows: 5
+
+items:
+  list:
+    slot: 20
+    material: BOOK
+    name: "<yellow>Team Lists"
+    lore: []
+    actions:
+      any:
+        - "[SOUND] BLOCK_COPPER_CHEST_OPEN 1 100 master"
+        - "[OPEN_MENU] teamlist"
+
+  create:
+    slot: 22
+    material: OAK_SIGN
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] CREATE_TEAM"
+
+  invites:
+    slot: 24
+    material:
+      noRequests: {}
+      hasRequests: {}
+    actions:
+      any:
+        - "[OPEN_MENU] invites"
+```
+
+## How to use
+
+Use `list` to send players to `teamlist.yml`, `create` to start the create-team flow, and `invites` to show active invitations. The `invites.material` state map changes the item display depending on whether the player has invitations.
+

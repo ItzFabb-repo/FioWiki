@@ -1,0 +1,30 @@
+---
+title: teamLogsCategory.yml
+sidebar_position: 11
+---
+
+# teamLogsCategory.yml
+
+`menu/Team Menu/teamLogsCategory.yml` is the category selector for logs.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM LOGS"
+rows: 3
+
+items:
+  bank:
+    actions:
+      any:
+        - "[OPEN_MENU] teamBankLogs"
+  activity:
+    actions:
+      any:
+        - "[OPEN_MENU] teamLogs"
+```
+
+## How to use
+
+Use this menu as a small hub. Buttons should open either transaction logs or team activity logs.
+

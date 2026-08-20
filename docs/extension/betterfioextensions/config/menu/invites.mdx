@@ -1,0 +1,43 @@
+---
+title: invites.yml
+sidebar_position: 3
+---
+
+# invites.yml
+
+`menu/Create Team/invites.yml` shows pending team invitations for a player without a team.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM INVITATIONS"
+rows: 6
+
+items:
+  invitation:
+    slots: []
+    material: PAPER
+    name: "%betterfioextensions_invitation_team_name%"
+    lore: []
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] ACCEPT_INVITATION"
+
+  previous:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
+  next:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
+  back:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Edit the generated invitation item to change how invitations look. Keep `[BETTERFIOEXTENSIONS] ACCEPT_INVITATION` on the clickable invitation entry so the selected invitation can be accepted.
+

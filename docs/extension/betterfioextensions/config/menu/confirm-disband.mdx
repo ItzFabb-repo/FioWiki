@@ -1,0 +1,27 @@
+---
+title: disband.yml
+sidebar_position: 31
+---
+
+# disband.yml
+
+`menu/confirmationTeam/disband.yml` confirms team disband.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM DISBAND"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[OPEN_MENU] team"
+```
+
+## How to use
+
+Use this menu only as a confirmation screen. Do not move disband logic into a random action alias; the extension handles it through the confirmation context.
+

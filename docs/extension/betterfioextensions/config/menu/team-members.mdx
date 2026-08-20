@@ -1,0 +1,30 @@
+---
+title: teamMembers.yml
+sidebar_position: 5
+---
+
+# teamMembers.yml
+
+`menu/Team Menu/teamMembers.yml` lists team members.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM MEMBERS"
+rows: 6
+
+items:
+  member:
+    slots: []
+    material: PLAYER_HEAD
+    name: "%betterfioextensions_member_name%"
+    lore: []
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] MANAGE_PLAYER %player_name%"
+```
+
+## How to use
+
+Use this menu to style generated member entries. Keep `%player_name%` in the action so clicking a member opens `teamMemberManage.yml` for the selected player.
+

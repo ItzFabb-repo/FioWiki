@@ -1,0 +1,34 @@
+---
+title: teamSavedLocation.yml
+sidebar_position: 26
+---
+
+# teamSavedLocation.yml
+
+`menu/Team Menu/Saved Location/teamSavedLocation.yml` is the saved location category menu.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM SAVED LOCATION"
+rows: 5
+
+items:
+  home:
+    actions:
+      any:
+        - "[OPEN_MENU] savedLocationHome"
+  anchor:
+    actions:
+      any:
+        - "[OPEN_MENU] savedLocationAnchor"
+  warps:
+    actions:
+      any:
+        - "[OPEN_MENU] teamWarp"
+```
+
+## How to use
+
+Use this file as a navigation menu for home, anchor, and warp pages.
+

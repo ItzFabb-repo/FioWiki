@@ -54,7 +54,7 @@ Use these pages next:
 - [Commands & Permissions](/extension/betterfioextensions/commands-permissions)
 - [Options & Configuration](/extension/betterfioextensions/options)
 - [Configuration](/extension/betterfioextensions/config/config.yml)
-- [Menu Overview](/extension/betterfioextensions/config/menu/overview)
+- [Menu: noteam.yml](/extension/betterfioextensions/config/menu/noteam)
 
 :::info[Page note]
 This page was scanned from `C:\Users\idfab\Downloads\Custom Build\BetterFioExtension`. The page structure follows the FioChatGames documentation style, but the route is under `Extension`.

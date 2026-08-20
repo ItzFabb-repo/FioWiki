@@ -1,0 +1,27 @@
+---
+title: ally-neutral.yml
+sidebar_position: 35
+---
+
+# ally-neutral.yml
+
+`menu/confirmationTeam/ally-neutral.yml` confirms neutralizing an ally relationship.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM NEUTRAL"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Use this menu as the final confirmation before removing an ally relation. Keep the confirmation item structure so the extension can map the clicked choice.
+

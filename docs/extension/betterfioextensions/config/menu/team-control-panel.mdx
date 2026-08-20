@@ -1,0 +1,32 @@
+---
+title: teamControlPanel.yml
+sidebar_position: 15
+---
+
+# teamControlPanel.yml
+
+`menu/Team Menu/teamControlPanel.yml` controls team settings and prompts.
+
+## YAML format
+
+```yaml
+OWNER:
+  title: "<title>"
+  rows: 6
+  items:
+    description:
+      actions:
+        any:
+          - "[BETTERFIOEXTENSIONS] MANAGE_DESCRIPTION"
+    rename:
+      actions:
+        any:
+          - "[BETTERFIOEXTENSIONS] MANAGE_RENAME"
+
+SETTINGS: {}
+```
+
+## How to use
+
+Use this menu for owner settings. Keep toggle actions exactly as shipped: `TEAM_PVP_TOGGLE`, `TEAM_OPEN_TOGGLE`, `TEAM_HEAD_BANNER_TOGGLE`, `TEAM_GLOW_VIEW_TOGGLE`, and `TEAM_GLOW`.
+

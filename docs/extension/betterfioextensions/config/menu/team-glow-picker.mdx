@@ -1,0 +1,32 @@
+---
+title: teamGlowPicker.yml
+sidebar_position: 17
+---
+
+# teamGlowPicker.yml
+
+`menu/Team Menu/teamGlowPicker.yml` lets owners choose or clear the team glow effect.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM GLOW"
+rows: 5
+
+items:
+  glow:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] SELECT_GLOW %betterfioextensions_picker_color_id%"
+  clear:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] CLEAR_GLOW_EFFECT"
+
+order: []
+```
+
+## How to use
+
+Use generated glow items for selectable colors. Keep the clear action on the clear item so players can disable glow.
+

@@ -1,0 +1,45 @@
+---
+title: teamlist.yml
+sidebar_position: 2
+---
+
+# teamlist.yml
+
+`menu/Create Team/teamlist.yml` renders public/open BetterTeams teams.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM LISTS"
+rows: 6
+
+items:
+  team:
+    slots: []
+    material: PLAYER_HEAD
+    name: "%betterfioextensions_list_team_name%"
+    lore: []
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] REQUEST_JOIN %team%"
+
+  previous:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] PREVIOUS_PAGE"
+
+  next:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] NEXT_PAGE"
+
+  back:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Use this file to style generated team entries. Keep `%team%` in the request action because the extension replaces it with the clicked team id. Keep previous and next page actions when the list can exceed one page.
+

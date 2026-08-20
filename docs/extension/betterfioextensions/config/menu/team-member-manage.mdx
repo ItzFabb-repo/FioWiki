@@ -1,0 +1,34 @@
+---
+title: teamMemberManage.yml
+sidebar_position: 6
+---
+
+# teamMemberManage.yml
+
+`menu/Team Menu/teamMemberManage.yml` displays actions for one selected team member.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>MANAGE: %betterfioextensions_member_name%"
+rows: 6
+
+items:
+  kick:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] KICK %player_name%"
+  ban:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] BAN %player_name%"
+  promote:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] PROMOTE %player_name%"
+```
+
+## How to use
+
+Keep `%player_name%` in management actions. The extension uses it to target the selected member for kick, ban, unban, promote, demote, or ownership transfer.
+

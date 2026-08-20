@@ -1,0 +1,27 @@
+---
+title: transfer-ownership.yml
+sidebar_position: 34
+---
+
+# transfer-ownership.yml
+
+`menu/confirmationTeam/transfer-ownership.yml` confirms ownership transfer to a selected player.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>CONFIRM TRANSFER"
+rows: 3
+
+items:
+  confirm: {}
+  cancel:
+    actions:
+      any:
+        - "[GOBACK]"
+```
+
+## How to use
+
+Open it with `[OPEN_MENU] transfer-ownership %player_name%` from `teamMemberManage.yml`. Keep `%player_name%` in the opener so the confirmation context knows the target.
+

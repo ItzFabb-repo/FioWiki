@@ -1,0 +1,28 @@
+---
+title: teamBankLogs.yml
+sidebar_position: 10
+---
+
+# teamBankLogs.yml
+
+`menu/Team Menu/teamBankLogs.yml` shows bank transaction history.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TRANSACTION LOGS"
+rows: 6
+
+items:
+  log:
+    slots: []
+  sort:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] SORT"
+```
+
+## How to use
+
+Use generated log placeholders for player, amount, before/after balance, action, and date. Keep `SORT`, `PREVIOUS_PAGE`, and `NEXT_PAGE` when the log list is long.
+

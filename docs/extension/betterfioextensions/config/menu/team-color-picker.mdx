@@ -1,0 +1,28 @@
+---
+title: teamColorPicker.yml
+sidebar_position: 16
+---
+
+# teamColorPicker.yml
+
+`menu/Team Menu/teamColorPicker.yml` lets owners choose a BetterTeams color.
+
+## YAML format
+
+```yaml
+title: "<black><bold>| <dark_gray>TEAM COLOR"
+rows: 5
+
+items:
+  color:
+    actions:
+      any:
+        - "[BETTERFIOEXTENSIONS] SELECT_COLOR %betterfioextensions_picker_color_id%"
+
+order: []
+```
+
+## How to use
+
+Use `order` and generated color items to control available colors. Keep `%betterfioextensions_picker_color_id%` in the select action.
+
