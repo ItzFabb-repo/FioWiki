@@ -840,7 +840,6 @@ const sidebars = {
             'extension/betterfioextensions/index',
             'extension/betterfioextensions/actions',
             'extension/betterfioextensions/commands-permissions',
-            'extension/betterfioextensions/api',
             'extension/betterfioextensions/options',
             'extension/betterfioextensions/placeholders',
             {

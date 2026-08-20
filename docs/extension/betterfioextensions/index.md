@@ -52,7 +52,6 @@ Use these pages next:
 
 - [Actions](/extension/betterfioextensions/actions)
 - [Commands & Permissions](/extension/betterfioextensions/commands-permissions)
-- [Developer API](/extension/betterfioextensions/api)
 - [Options & Configuration](/extension/betterfioextensions/options)
 - [Placeholders](/extension/betterfioextensions/placeholders)
 - [Configuration](/extension/betterfioextensions/config/config.yml)
