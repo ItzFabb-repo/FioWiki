@@ -1841,16 +1841,20 @@ footer.footer {
   .navbar-sidebar {
     width: var(--ifm-navbar-sidebar-width) !important;
     max-width: calc(100vw - 2rem) !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 0.75rem) !important;
+    bottom: auto !important;
+    overflow: hidden !important;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-    background: rgba(8, 14, 27, 0.94) !important;
+    background: #080e1b !important;
     backdrop-filter: blur(18px) saturate(145%);
     -webkit-backdrop-filter: blur(18px) saturate(145%);
     border-right: 1px solid rgba(134, 204, 255, 0.22);
+    border-bottom: 1px solid rgba(134, 204, 255, 0.22);
+    border-bottom-right-radius: 18px;
     box-shadow: 18px 0 38px rgba(2, 6, 23, 0.28);
     transform: translate3d(-100%, 0, 0) !important;
     transition: transform 220ms ease, visibility 220ms ease !important;
@@ -1869,13 +1873,15 @@ footer.footer {
 
   .navbar-sidebar__items {
     display: block !important;
-    height: calc(100dvh - var(--ifm-navbar-height) - env(safe-area-inset-top)) !important;
+    height: auto !important;
+    max-height: calc(100dvh - var(--ifm-navbar-height) - env(safe-area-inset-top) - 1rem) !important;
+    overflow-y: auto !important;
     transform: none !important;
   }
 
   .navbar-sidebar__item {
     width: 100% !important;
-    min-height: 100% !important;
+    min-height: 0 !important;
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom)) !important;
   }
 
@@ -1927,11 +1933,11 @@ footer.footer {
   }
 
   [data-theme='light'] .navbar-sidebar {
-    background: rgba(248, 251, 255, 0.95) !important;
+    background: #f8fbff !important;
   }
 
   [data-theme='sunset'] .navbar-sidebar {
-    background: rgba(34, 23, 39, 0.95) !important;
+    background: #221727 !important;
   }
 
   [data-theme='light'] .navbar-sidebar__backdrop {
