@@ -841,7 +841,6 @@ const sidebars = {
             'extension/betterfioextensions/actions',
             'extension/betterfioextensions/commands-permissions',
             'extension/betterfioextensions/options',
-            'extension/betterfioextensions/placeholders',
             {
               type: 'category',
               label: 'Configuration',
