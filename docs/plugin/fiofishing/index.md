@@ -13,7 +13,7 @@ This guide explains how players and administrators use FioFishing and where to e
 2. Open `plugins/FioFishing/`. The main settings are in `config.yml`; fish, bait, and rod definitions are stored in `Loots/`.
 3. Customize the fish and rods you want to use. The folders include sample files you can copy and edit.
 4. Save your changes, run `/fiofishing admin reload`, and check the console for configuration errors.
-5. Test the result in-game. Administrators can give fish, bait, and rods with `/fiofishing admin give <fish\|baits\|fishingrods> <id> <player> [amount]`.
+5. Test the result in-game. Administrators can give fish, bait, and rods with `/fiofishing admin give <fish|baits|fishingrods> <id> <player> [amount]`.
 
 ## File locations and purpose
 
