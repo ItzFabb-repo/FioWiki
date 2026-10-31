@@ -49,7 +49,7 @@ Halaman ini memandu pemain dan admin memakai FioFishing, lalu menunjukkan file y
 | `/fiofishing sell` | Membuka menu menjual ikan dan bait yang dapat dijual. |
 | `/fiofishing shop` | Membuka shop plugin. |
 | `/fiofishing admin reload` | Memuat ulang berkas konfigurasi. |
-| `/fiofishing admin give <fish|baits|fishingrods> <id> <pemain> [jumlah]` | Memberi item FioFishing berdasarkan ID konfigurasi. |
+| `/fiofishing admin give <fish\|baits\|fishingrods> <id> <pemain> [jumlah]` | Memberi item FioFishing berdasarkan ID konfigurasi. |
 
 Jual-beli membutuhkan Vault dan plugin ekonomi yang menyediakan economy. WorldGuard hanya diperlukan untuk aturan region. ItemsAdder, Oraxen, dan Nexo hanya diperlukan jika item memakai tekstur dari plugin tersebut.
 
