@@ -92,3 +92,11 @@ The current project targets Paper `1.21.11` through `26.3` and Java 21.
 :::info[Page note]
 This overview follows the current FioFishing source and bundled configuration, including its fishing, bait, rod, event, storage, and integration systems.
 :::
+
+## Documentation
+
+- [Commands & Permissions](./commands-permissions.mdx)
+- [Developer API](./api.mdx)
+- [Options & Configuration](./options.mdx)
+- [Placeholders](./placeholders.mdx)
+- Configuration guides: [main config](./config/config.mdx), [fish](./config/fish.mdx), [baits](./config/baits.mdx), [rods](./config/rods.mdx), [events](./config/events.mdx), [menus](./config/menus.mdx), and [language and names](./config/language-names.mdx).

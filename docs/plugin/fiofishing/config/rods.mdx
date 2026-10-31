@@ -1,0 +1,46 @@
+---
+title: Fishing rods
+sidebar_position: 4
+---
+
+# Fishing rods
+
+Rod templates are loaded from `plugins/FioFishing/Loots/Rods/*.yml`. Each file has a `fishingRods` section with a unique `id`, a `rarity`, and the item's display name and settings.
+
+## Durability and rules
+
+`settings.durability.enable` enables custom durability; `value` is the maximum. `dura-loss` separately sets loss for a failed reel, junk, each fish rarity, or the general catch fallback. The global warning toggle and threshold are configured in `config.yml`.
+
+```yaml
+fishingRods:
+  rarity: common
+  id: wooden_rod
+  display-name: '<white>Wooden Rod</white>'
+  default_vanilla: true
+  settings:
+    durability:
+      enable: true
+      value: 30
+      dura-loss:
+        loss-per-catch: 1
+        loss-on-failed-catch: 0
+        loss-on-junk: 1
+        loss-on-common: 2
+    enchants:
+      whitelist: []
+      blacklist: [MENDING, UNBREAKING]
+    others:
+      allow-vanilla-loot: false
+      allow-anvil-repair: true
+      drop-on-death: true
+```
+
+Only one rod can set `default_vanilla: true`; this applies its settings to untagged vanilla rods. Set it false on custom rod templates if you do not want that behavior.
+
+## Sounds, filters, appearance
+
+Each of `settings.sound.cast`, `reel`, `bite`, and `broken` can be enabled, and has a sound name, volume and pitch. `settings.allowed.fish` can restrict fish IDs, `allowed.rarity` can restrict rarities, and `allowed.baits` can restrict bait IDs. Use the enable/list structure from the bundled example when setting these filters; an empty list alone does not enable a filter.
+
+Rods are backed by the vanilla `FISHING_ROD` material. `item.custom.type` can use vanilla model data or item IDs from ItemsAdder, Oraxen, or Nexo; the optional `itemModel` supports vanilla item model identifiers. The rod's `display-name` and lore support MiniMessage.
+
+Give a configured rod with `/fiofishing admin give fishingrods <id> <player> [amount]`. If you rename the ID, update bait compatibility, menu entries and any command that refers to it.

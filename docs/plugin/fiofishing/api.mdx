@@ -1,0 +1,67 @@
+---
+title: Developer API
+sidebar_position: 3
+---
+
+# Developer API
+
+FioFishing exposes a small Bukkit API for looking up configured fish, creating fish items and observing a catch before it is awarded. The API package is `com.itzfabb.fiofishing.api`.
+
+## Obtain the API
+
+Declare FioFishing as a dependency in your plugin metadata if your plugin cannot work without it. If it is optional, check that FioFishing is enabled before calling `getApi()`.
+
+```java
+Plugin plugin = Bukkit.getPluginManager().getPlugin("FioFishing");
+if (!(plugin instanceof FioFishingPlugin fishingPlugin) || !plugin.isEnabled()) {
+    return;
+}
+
+FioFishingApi api = fishingPlugin.getApi();
+```
+
+Import `FioFishingPlugin` from `com.itzfabb.fiofishing` and `FioFishingApi` from `com.itzfabb.fiofishing.api`.
+
+## Fish lookup and item creation
+
+```java
+List<FishInfo> fish = api.getFish();
+Optional<FishInfo> info = api.getFish("river_carp");
+
+ItemStack item = api.createFishItem("river_carp");
+if (item != null) {
+    player.getInventory().addItem(item);
+}
+
+boolean isFioFish = api.isFish(item);
+Optional<FishData> caught = api.getFishData(item);
+```
+
+`getFish()` returns the loaded fish definitions. `getFish(id)` performs an ID lookup. `createFishItem(id)` returns `null` when the ID is unknown. Read a specific FioFishing item using `getFishData(item)`; both `FishData` and `FishInfo` are immutable Java records.
+
+### `FishInfo`
+
+`FishInfo` includes `id`, `displayName`, `rarity`, `material`, `weight`, minimum and maximum amount, minimum and maximum size, `worth`, `journalEnabled`, and `lore`.
+
+### `FishData`
+
+`FishData` describes a caught item: `id`, `displayName`, `rarity`, `size`, `worth`, and `journalEnabled`.
+
+## Catch event
+
+Listen for `FioFishingCatchEvent`, which fires immediately before FioFishing awards the catch.
+
+```java
+@EventHandler
+public void onFioFishingCatch(FioFishingCatchEvent event) {
+    Player player = event.getPlayer();
+    FishInfo fish = event.getFish();
+    ItemStack item = event.getItem(); // a clone
+
+    event.setExperience(event.getExperience() + 2);
+    // event.setItem(customItem); // FioFishing stores a clone of the supplied item
+    // event.setCancelled(true);  // cancel the catch and its normal catch/stat updates
+}
+```
+
+The event implements Bukkit's cancellable event contract. It exposes the player, fish data, item, and experience. Experience is clamped to zero or higher. Items returned from or passed to the event are cloned to protect event state from accidental external mutation.

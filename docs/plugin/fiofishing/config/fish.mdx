@@ -1,0 +1,84 @@
+---
+title: Fish definitions
+sidebar_position: 2
+---
+
+# Fish definitions
+
+Fish definitions are loaded from `plugins/FioFishing/Loots/Fish/*.yml`. Bundled files group fish by rarity, such as `common.yml` or `mythic.yml`. One file can define a rarity and its fish entries.
+
+## Rarity defaults
+
+The `rarity` section contains an `id`, GUI `weight`, `catch-weight`, `worth-multi`, animation entity, and broadcast options. The `default_settings` section supplies fallback values for every fish in the file:
+
+```yaml
+rarity:
+  id: common
+  weight: 1
+  catch-weight: 1
+  worth-multi: 1.0
+default_settings:
+  size:
+    min: 1
+    max: 20
+  fisherman: false
+  journal: true
+  worth: 0.50
+  conditions:
+    biome: []
+    time: []
+    weather: []
+```
+
+Use `default_settings` to change an entire rarity at once; an individual fish can override supported values.
+
+## Add a fish
+
+Add a unique key below `fish`. The key is the internal ID used by commands, APIs, bait boosts and menus.
+
+```yaml
+fish:
+  river_carp:
+    material: COD
+    displayName: '<aqua>River Carp'
+    settings:
+      weight: 12
+      worth: 8.5
+      size:
+        min: 15
+        max: 70
+      journal: true
+      fisherman: true
+    conditions:
+      biome: [RIVER]
+      time: [DAY]
+      weather: []
+    lore:
+      - '<gray>{length}cm</gray>'
+```
+
+`settings.weight` is a relative catch weight, not a percent. The effective weight is multiplied by the file's `rarity.catch-weight`. Larger values make a fish more likely relative to other eligible fish. Fish IDs must be unique across all rarity files.
+
+## Fish fields
+
+| Field | Purpose |
+| --- | --- |
+| `material` | Vanilla item material used to render the fish. |
+| `displayName` | MiniMessage display name; supports fish placeholders such as `{length}`. `FOLLOW_MATERIAL_ALIAS` uses a friendly material name. |
+| `model-data`, `resource-pack-id` | Optional resource-pack item appearance. |
+| `texture` | Optional player-head texture data for a head item. |
+| `settings.weight` | Relative selection weight. |
+| `settings.size.min` / `max` | Catch size range. |
+| `settings.worth` | Base selling value. The rarity's `worth-multi` also affects this value. |
+| `settings.journal` | Whether catches count in the fish journal. |
+| `settings.fisherman` | Whether catches count toward fisherman statistics. |
+| `conditions.biome` | Allowed biome IDs; empty means all. |
+| `conditions.time` | Allowed times; empty means all. |
+| `conditions.weather` | Allowed weather conditions; empty means all. |
+| `lore` | Item lore lines. |
+
+Item `behavior` options can enable the enchantment glint, block certain inventory interactions, control whether the item can be destroyed or eaten, and define placement/drop behavior. The bundled rarity file contains the full behavior key list; preserve its key names when changing those rules.
+
+## Display name and announcements
+
+Fish and rarity settings can customize catch announcements and actions. Text supports MiniMessage and fish/player placeholders shown in the bundled examples. Keep an existing example's action syntax and change only the text or sound value unless you have checked the corresponding action format.

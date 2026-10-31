@@ -1,0 +1,34 @@
+---
+title: Options & Configuration
+sidebar_position: 4
+---
+
+# Options & Configuration
+
+FioFishing splits settings by purpose. The main `plugins/FioFishing/config.yml` controls plugin-wide behavior. The `Loots/` folder contains fish, bait and rod definitions, while `Events/` and `Menu/` contain event schedules and inventory layouts.
+
+After editing YAML, save the file and run `/fiofishing admin reload`. If you change storage backend settings, schedule a server restart and back up the database or `data.yml` first.
+
+## Configuration map
+
+| File or folder | What it controls |
+| --- | --- |
+| `config.yml` | Animation, command aliases, AFK checks, leaderboards, language, enabled worlds, size formatting, and storage. |
+| `Loots/Fish/*.yml` | Fish definitions, rarity defaults, catch weights, sizes, biomes, weather, rewards, and item appearance. |
+| `Loots/Baits/*.yml` | Bait items, modifiers, requirements, use/return rules, and shop/sell prices. |
+| `Loots/Rods/*.yml` | Rod durability, enchantment rules, vanilla loot, sounds, supported fish/rarities, and bait. |
+| `Events/*.yml` and `Events/settings.yml` | Event rules, rewards, announcements, and weekly schedule. |
+| `Menu/**/*.yml` | Inventory titles, buttons, slots, item text and click actions. |
+| `Lang/messages_<code>.yml` | Plugin messages and text labels for the selected language. |
+| `CustomNaming/material.json`, `CustomNaming/biome.json` | Friendly names for Minecraft materials and biomes. |
+
+FioFishing creates these folders and sample files from bundled resources on first startup. The configuration pages in this section explain the available keys and include working examples.
+
+## Safe editing workflow
+
+1. Back up the file you will edit.
+2. Keep YAML indentation consistent (spaces, not tabs). Quote strings containing `:`, `#`, `%`, or MiniMessage tags when appropriate.
+3. Preserve unique IDs. Fish IDs must be unique across all fish files; bait and rod IDs are also used by menus and admin give commands.
+4. Reload with `/fiofishing admin reload` and read the server console for YAML errors or skipped entries.
+
+`config-version` is maintained internally. `force-update-config` is an update switch that allows the bundled config to overwrite the existing file during startup; leave it `false` during normal editing.

@@ -1,0 +1,18 @@
+---
+title: Language & Names
+sidebar_position: 7
+---
+
+# Language & Names
+
+## Language files
+
+Select a language with `settings.language` in `config.yml`: `en`, `id`, `jp`, or `ch`. The corresponding file is `plugins/FioFishing/Lang/messages_<code>.yml`. Edit the selected file to change messages and labels. Keep YAML keys unchanged and edit their values; other plugin features refer to those keys by name.
+
+Text fields support MiniMessage where the bundled value uses MiniMessage tags. Preserve placeholders such as `{player}`, `{fish}`, `{length}`, or `{eventName}` so the plugin can fill them in at runtime.
+
+## Friendly material and biome names
+
+`CustomNaming/material.json` maps Minecraft material identifiers to display names. `CustomNaming/biome.json` does the same for biome identifiers, including custom datapack biome IDs. Use valid JSON and keep the identifier-to-name mapping format used by the shipped files.
+
+Fish names can use `FOLLOW_MATERIAL_ALIAS` to display the material's friendly name from `material.json`. When a fish's `conditions.biome` contains a custom biome, add a matching alias to `biome.json` for readable labels in menus and messages.

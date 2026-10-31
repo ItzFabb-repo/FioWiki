@@ -1,0 +1,33 @@
+---
+title: Events
+sidebar_position: 5
+---
+
+# Fishing events
+
+Event definitions and the weekly timetable are in `plugins/FioFishing/Events/`. An event file defines one competition; `settings.yml` determines when events start automatically.
+
+## Event definition
+
+Bundled event examples include `Most Fish Caught.yml`, `Largest Fish Caught.yml`, `Most Bait Used.yml` and `Fishing Spree.yml`. The event ID is derived from the filename (lowercase with underscores), for example `most_fish_caught`.
+
+The definition contains `settings.enabled`, an event `settings.type`, optional sound settings, participation requirements, optional WorldGuard region checks, bossbar settings and rewards. Requirements can specify whether participation is enabled and minimum requirements. `event.whenStarted` and `event.whenStopped` can run commands. Rewards can be configured for participation and ranking tiers.
+
+The bundled event types include most fish, largest/smallest fish, rarity fish, junk, bait usage (including a specific bait), and fishing spree competitions. Copy the closest bundled event file when adding one, then change its ID/type and rewards. This keeps the supported type spelling and nested key structure intact.
+
+## Schedule
+
+Edit the day sections in `Events/settings.yml`. Each day can be enabled and can list event IDs. A plain ID schedules the event for the full day; a time range uses `event_id;HH:mm-HH:mm`.
+
+```yaml
+monday:
+  enabled: true
+  list-events:
+    - most_fish_caught;18:00-20:00
+```
+
+Times use the server's local timezone. Use `/fiofishing admin events list` and `running` to inspect events; admins can use the event start/freeze/stop subcommands to manage a live competition.
+
+## Actions and placeholders
+
+Use the bundled start, stop, tier and participation reward examples as templates. Supported action lines include console/player commands, messages, sounds, titles/subtitles, money, experience points/levels and items. Preserve the action prefix and argument layout shown by the corresponding example. Event text templates can use `{eventName}` and the placeholders present in that file; the bossbar's remaining-time token is `%time%`.

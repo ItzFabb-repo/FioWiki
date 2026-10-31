@@ -1,0 +1,61 @@
+---
+title: config.yml
+sidebar_position: 1
+---
+
+# `config.yml`
+
+This file controls plugin-wide options in `plugins/FioFishing/config.yml`. Omitted keys use their built-in defaults. After editing, run `/fiofishing admin reload`.
+
+## Fishing animation
+
+The section is spelled `fih-animation` in the file. `should-fih-have-animation-when-fihing` enables the custom bobber animation, and `smooth-movement` controls how smoothly it moves. `wander-speed`, `lured-speed`, and `bite-speed` tune the idle, approaching, and bite movement. `bite-visual-distance` controls the bite cue distance. `ready-indicator.enabled`, `duration-ticks`, and `interval-ticks` control the ready indicator.
+
+## General settings
+
+| Key | Effect |
+| --- | --- |
+| `command-aliases` | Additional command aliases. The default includes `ffishing` and `fiofishing`. |
+| `settings.language` | Selects `en`, `id`, `jp`, or `ch`. |
+| `settings.enabled-worlds` | World allowlist. Empty means all worlds. |
+| `settings.announce-rare-catches` | Broadcast rare catches. |
+| `settings.interaction.manage-baits` | Key/action for removing bait from a rod; default `SHIFT_Q`. |
+| `settings.interaction.apply-baits` | Inventory gesture to attach bait; default `LEFT_CLICK_DRAG`. |
+| `settings.durability-break-warning.enabled` | Enable low-durability warnings. |
+| `settings.durability-break-warning.threshold-percent` | Warning threshold as a percentage. |
+| `settings.time-units` | Labels used when formatting second through year durations. |
+
+### Fish size formatting
+
+`settings.fish-size.decimal-enabled` enables fractional sizes. Set `decimal-mode` to `RANDOM` or `LIST`. `decimal-places` controls displayed precision (0–3); `random-min` and `random-max` bound the fractional part in the configured precision (for two places, `0` to `99` means `.00` to `.99`). `decimal-values` supplies allowed fractional values for list mode. `trim-trailing-zeroes` removes redundant ending zeroes.
+
+## Anti-AFK fishing
+
+`settings.afk-feature.enabled` controls the player-started AFK feature and `settings.afk-feature.permission` sets its permission node. The AFK command feature is intended to be enabled when `anti-afk-fishing.enabled` is false. `settings.anti-afk-fishing.enabled` activates automatic idle checks. Tune `idle-seconds`, `challenge.steps`, `challenge.input-timeout-seconds`, and `challenge.display-refresh-ticks` to suit your server. The bypass permission is configurable. `indicators.sneak` and `indicators.jump` set the prompt symbols; `actions.sneak` and `actions.jump` set the corresponding labels.
+
+The `verify.title` and `verify.subtitle` support `{indicator}`, `{action}`, and `{timeout}`. `failed.title` and `failed.subtitle` control the failure prompt; `success.title` and `success.subtitle` control the success prompt. The failed display duration and title fade/stay timings are configurable. Punishment can be enabled and assigned escalating failure thresholds and durations. Punishment titles can display `{remaining}`. To disable penalties while retaining the challenge, set `punishment.enabled: false`.
+
+## Leaderboards and personal stats
+
+`settings.leaderboard.enabled` toggles the hologram/display system. `distance`, `max-entries`, and `refresh-seconds` control display range, number of entries, and refresh interval. `sneak-freeze.enabled` controls whether sneaking freezes the displays. `rank-change.enabled`, `append-to-entry`, and the `up`, `down`, `unchanged`, and `new` formats control rank-change indicators. The `score-format` section has separate catch, size, and bait formats. Customize the multiline `line` template with `{eventName}`, `{player_1}` through `{player_10}`, `{fish_1}` through `{fish_10}`, `{score_1}` through `{score_10}`, `{position}`, and `{when}`.
+
+`settings.leaderboard.personal-stats.enabled` toggles personal stats labels. `labels-offset` adjusts their horizontal position relative to the board. The label list supports `{eventName}`, `{position}`, `{catches}`, and `{score}` plus an optional fish-history block using `{pos}`, `{fishColor}`, `{fish}`, and `{size}`. `fishHistory.maxShown` and `fishHistory.position` control the maximum history entries and the label for each position. Edit only the label keys already present in the bundled config to preserve their expected structure.
+
+## Storage
+
+`storage.type` is `YAML` or `MYSQL`. YAML data is stored in `data.yml`. For MySQL, set the `storage.mysql` host, port, database, username, password, table and pool size. Back up existing player data before switching storage type; changing the setting does not migrate old records automatically.
+
+```yaml
+storage:
+  type: YAML
+  mysql:
+    host: localhost
+    port: 3306
+    database: minecraft
+    username: root
+    password: ''
+    table: fiofishing_players
+    pool-size: 5
+```
+
+`config-version` is internal. Leave it unchanged. `force-update-config` is normally `false`; setting it to `true` allows the bundled config to update/overwrite the config at startup. Keep a backup before using that update switch.

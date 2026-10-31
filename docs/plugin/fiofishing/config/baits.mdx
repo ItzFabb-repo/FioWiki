@@ -1,0 +1,70 @@
+---
+title: Bait definitions
+sidebar_position: 3
+---
+
+# Bait definitions
+
+Bait files are loaded from `plugins/FioFishing/Loots/Baits/*.yml`. Each file describes one bait item. The required ID is `baits.settings.id`; use it in rod allowlists, admin give commands and menus.
+
+## Main settings
+
+```yaml
+baits:
+  settings:
+    id: worm
+    enable: true
+    refund_if_empty_reel: true
+    consume_if_cancelled_cast: false
+    silent: false
+    keep:
+      enable: false
+      chance: '50'
+    max-bait-stack: 4
+    max-item-stack: 12
+    modifier:
+      multiplier:
+        rarity: 1.0
+        fish: 1.0
+        bite-speed: 1.15
+        xp: 1.25
+        size: 1.1
+    requirements:
+      permission: none
+      allowed-rods-id: []
+      worlds:
+        whitelist: []
+        blacklist: []
+      regions:
+        whitelist: []
+        blacklist: []
+```
+
+`refund_if_empty_reel` returns bait if the line is reeled in without a catch. `consume_if_cancelled_cast` controls whether bait is consumed if a cast is cancelled. `keep.enable` and `keep.chance` determine the chance that used bait remains. `max-bait-stack` limits how many pieces can be attached to one rod; `max-item-stack` limits bait stack size in inventory (maximum 64).
+
+## Modifiers and eligibility
+
+`modifier.multiplier.rarity`, `fish`, `bite-speed`, `xp`, and `size` adjust rarity selection, fish selection, bite timing, experience, and size. A multiplier of `1.0` leaves the value unchanged. `fish` boost entries can target a rarity and either `'*'` for every fish or a fish ID:
+
+```yaml
+modifier:
+  multiplier:
+    rarity: 1.15
+    fish: 1.0
+    bite-speed: 1.2
+    xp: 1.0
+    size: 1.05
+fish:
+  rare:
+    '*': '+15'
+  common:
+    river_carp: '/2'
+```
+
+For these per-fish adjustment strings, `+15` adds 15 percent, `/2` halves the selection weight, and a plain numeric string is used as a direct multiplier. A bait can require a permission and restrict compatible rods with `allowed-rods-id`. World and WorldGuard region whitelists/blacklists restrict where it can be used; WorldGuard is needed only when region restrictions are configured.
+
+## Item appearance and pricing
+
+`item.material` selects the backing material. `item.custom.type` can be `VANILLA`, `ITEMSADDER`, `ORAXEN`, or `NEXO`. Use `modelData` for a vanilla custom model or `custom` for the external plugin's item ID. `display_name` and `lore` support MiniMessage. `item.behavior.glow`, `block`, and `environment` control item behavior.
+
+Under `baits.settings.price`, configure whether the bait can be sold back, purchased, hidden when unavailable, its sell-refund percentage, and `bait-sell-price`. Selling requires the sell menu and an economy provider (Vault with an economy plugin). The bait can be attached to a rod using the configured `settings.interaction.apply-baits` inventory gesture; removal uses `manage-baits`.

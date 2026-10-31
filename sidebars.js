@@ -120,6 +120,23 @@ const sidebars = {
           collapsed: true,
           items: [
             'plugin/fiofishing/index',
+            'plugin/fiofishing/commands-permissions',
+            'plugin/fiofishing/api',
+            'plugin/fiofishing/options',
+            'plugin/fiofishing/placeholders',
+            {
+              type: 'category',
+              label: 'Configuration',
+              items: [
+                'plugin/fiofishing/config/config',
+                'plugin/fiofishing/config/fish',
+                'plugin/fiofishing/config/baits',
+                'plugin/fiofishing/config/rods',
+                'plugin/fiofishing/config/events',
+                'plugin/fiofishing/config/menus',
+                'plugin/fiofishing/config/language-names',
+              ],
+            },
           ],
         },
         {
