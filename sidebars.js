@@ -115,6 +115,15 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'FioFishing',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'plugin/fiofishing/index',
+          ],
+        },
+        {
+          type: 'category',
           label: 'FioAchievements',
           collapsible: true,
           collapsed: true,
