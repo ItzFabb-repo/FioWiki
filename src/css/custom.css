@@ -2165,3 +2165,470 @@ footer.footer {
   }
 }
 
+/*
+ * FioWiki color system
+ * Keep the existing Docusaurus layout and components; tune the color palette
+ * so navigation, reading surfaces, and accents feel like one product.
+ */
+:root,
+[data-theme='dark'] {
+  --ifm-color-primary: #42c8b4;
+  --ifm-color-primary-dark: #2eb5a2;
+  --ifm-color-primary-darker: #239f91;
+  --ifm-color-primary-darkest: #187f76;
+  --ifm-color-primary-light: #64d8c5;
+  --ifm-color-primary-lighter: #8be5d5;
+  --ifm-color-primary-lightest: #c2f4e9;
+  --ifm-background-color: #0d1418;
+  --ifm-background-surface-color: #141f24;
+  --ifm-font-color-base: #e5eef0;
+  --ifm-font-color-secondary: #a9bcc1;
+  --ifm-heading-color: #f1f7f7;
+  --ifm-color-emphasis-100: #17252a;
+  --ifm-color-emphasis-200: #24363c;
+  --ifm-color-emphasis-300: #354b51;
+  --ifm-navbar-background-color: rgba(12, 20, 24, 0.96);
+  --ifm-navbar-link-color: #d7e5e7;
+  --ifm-navbar-link-hover-color: #70dfce;
+  --ifm-footer-background-color: #0a1114;
+  --ifm-footer-color: #c0d0d2;
+  --ifm-menu-color: #c3d1d3;
+  --ifm-menu-color-active: #8be5d5;
+  --ifm-menu-color-background-active: rgba(66, 200, 180, 0.14);
+  --ifm-menu-color-background-hover: rgba(66, 200, 180, 0.08);
+  --ifm-toc-border-color: #2a5956;
+  --ifm-table-border-color: #2a3d43;
+  --ifm-table-stripe-background: rgba(66, 200, 180, 0.045);
+  --ifm-code-background: #1b2a30;
+  --ifm-code-color: #9ce8dc;
+  --ifm-link-hover-color: #a1eee2;
+  --ifm-hover-overlay: rgba(66, 200, 180, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(66, 200, 180, 0.13);
+  --ifm-navbar-shadow: 0 1px 0 rgba(140, 185, 188, 0.14);
+  --fiowiki-secondary: #b7a6f6;
+  --fiowiki-warning: #efb864;
+  --fiowiki-note: #42c8b4;
+}
+
+[data-theme='light'] {
+  --ifm-color-primary: #087f75;
+  --ifm-color-primary-dark: #076f67;
+  --ifm-color-primary-darker: #056058;
+  --ifm-color-primary-darkest: #034a45;
+  --ifm-color-primary-light: #258f85;
+  --ifm-color-primary-lighter: #51a99f;
+  --ifm-color-primary-lightest: #cce9e4;
+  --ifm-background-color: #f3f8f7;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #17282c;
+  --ifm-font-color-secondary: #53686c;
+  --ifm-heading-color: #122327;
+  --ifm-color-emphasis-100: #eaf2f1;
+  --ifm-color-emphasis-200: #d8e4e2;
+  --ifm-color-emphasis-300: #c1d1cf;
+  --ifm-navbar-background-color: rgba(250, 253, 252, 0.96);
+  --ifm-navbar-link-color: #243b3e;
+  --ifm-navbar-link-hover-color: #087f75;
+  --ifm-footer-background-color: #102126;
+  --ifm-footer-color: #d3e0e1;
+  --ifm-menu-color: #344a4e;
+  --ifm-menu-color-active: #087f75;
+  --ifm-menu-color-background-active: rgba(8, 127, 117, 0.1);
+  --ifm-menu-color-background-hover: rgba(8, 127, 117, 0.06);
+  --ifm-toc-border-color: #c4d9d5;
+  --ifm-table-border-color: #dce7e5;
+  --ifm-table-stripe-background: rgba(8, 127, 117, 0.035);
+  --ifm-code-background: #eaf3f1;
+  --ifm-code-color: #086d66;
+  --ifm-link-hover-color: #075f59;
+  --ifm-hover-overlay: rgba(8, 127, 117, 0.07);
+  --docusaurus-highlighted-code-line-bg: rgba(8, 127, 117, 0.1);
+  --ifm-navbar-shadow: 0 1px 0 rgba(24, 58, 61, 0.1);
+  --fiowiki-secondary: #6653aa;
+  --fiowiki-warning: #a96a12;
+  --fiowiki-note: #087f75;
+}
+
+[data-theme='sunset'] {
+  --ifm-color-primary: #e8b968;
+  --ifm-color-primary-dark: #d8a651;
+  --ifm-color-primary-darker: #c6913d;
+  --ifm-color-primary-darkest: #a8742b;
+  --ifm-color-primary-light: #f0c983;
+  --ifm-color-primary-lighter: #f5d9a6;
+  --ifm-color-primary-lightest: #faecd2;
+  --ifm-background-color: #17171d;
+  --ifm-background-surface-color: #222129;
+  --ifm-font-color-base: #efeaf1;
+  --ifm-font-color-secondary: #c2b9c8;
+  --ifm-heading-color: #fff5df;
+  --ifm-color-emphasis-100: #2a2932;
+  --ifm-color-emphasis-200: #3b3944;
+  --ifm-color-emphasis-300: #514e5b;
+  --ifm-navbar-background-color: rgba(22, 22, 29, 0.96);
+  --ifm-navbar-link-color: #e5ddec;
+  --ifm-navbar-link-hover-color: #f2cf91;
+  --ifm-footer-background-color: #111116;
+  --ifm-footer-color: #d4cbd8;
+  --ifm-menu-color: #d7cfdd;
+  --ifm-menu-color-active: #f2cf91;
+  --ifm-menu-color-background-active: rgba(232, 185, 104, 0.14);
+  --ifm-menu-color-background-hover: rgba(232, 185, 104, 0.08);
+  --ifm-toc-border-color: #69563c;
+  --ifm-table-border-color: #3c3945;
+  --ifm-table-stripe-background: rgba(232, 185, 104, 0.045);
+  --ifm-code-background: #302c35;
+  --ifm-code-color: #f0ce94;
+  --ifm-link-hover-color: #f5dcae;
+  --ifm-hover-overlay: rgba(232, 185, 104, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(232, 185, 104, 0.14);
+  --ifm-navbar-shadow: 0 1px 0 rgba(232, 185, 104, 0.18);
+  --fiowiki-secondary: #c0a6e8;
+  --fiowiki-warning: #f0bf72;
+  --fiowiki-note: #e8b968;
+}
+
+/* Apply the palette to custom surfaces that use explicit legacy colors. */
+.navbar::before {
+  background: linear-gradient(90deg, var(--ifm-color-primary), var(--fiowiki-secondary));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ifm-color-primary) 24%, transparent);
+}
+
+.navbar::after {
+  background: linear-gradient(180deg, var(--ifm-color-primary), var(--fiowiki-secondary));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--fiowiki-secondary) 22%, transparent);
+}
+
+.navbar__logo {
+  background: color-mix(in srgb, var(--ifm-color-primary) 14%, transparent);
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 30%, transparent);
+}
+
+.navbar__logo::before,
+.navbar__item.intro-nav-link .navbar__link:hover,
+.fiowiki-intro-hero h1 {
+  color: var(--ifm-color-primary-light);
+}
+
+.navbar__brand,
+.navbar__title,
+.navbar__link {
+  color: var(--ifm-navbar-link-color);
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.theme-doc-sidebar-container {
+  border-right-color: var(--ifm-color-emphasis-200) !important;
+}
+
+.theme-doc-sidebar-menu .menu__link--active,
+.menu__link--active {
+  background: var(--ifm-menu-color-background-active);
+  color: var(--ifm-menu-color-active);
+  box-shadow: inset 2px 0 0 var(--ifm-color-primary);
+}
+
+.theme-doc-sidebar-menu .menu__link:hover,
+.menu__link:hover {
+  background: var(--ifm-menu-color-background-hover);
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.theme-doc-markdown {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
+
+.theme-doc-markdown h1,
+.theme-doc-markdown h2,
+.theme-doc-markdown h3,
+.theme-doc-markdown h4,
+.theme-doc-markdown h5,
+.theme-doc-markdown h6 {
+  color: var(--ifm-heading-color);
+}
+
+.theme-doc-markdown a,
+.table-of-contents__link--active,
+.table-of-contents__link:hover {
+  color: var(--ifm-color-primary-light);
+}
+
+.breadcrumbs__link,
+.breadcrumbs__item-separator::before {
+  color: var(--ifm-font-color-secondary);
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ifm-heading-color);
+  background: var(--ifm-menu-color-background-active);
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 38%, transparent);
+}
+
+.table-of-contents {
+  border-left-color: var(--ifm-toc-border-color);
+}
+
+.table-of-contents__link {
+  color: var(--ifm-font-color-secondary);
+}
+
+.pagination-nav__link,
+.dropdown__menu,
+.DocSearch-Button {
+  border-color: var(--ifm-color-emphasis-200);
+}
+
+.dropdown__menu {
+  background: var(--ifm-background-surface-color);
+}
+
+.dropdown__link,
+.DocSearch-Button-Placeholder {
+  color: var(--ifm-font-color-base);
+}
+
+.dropdown__link:hover,
+.dropdown__link--active {
+  color: var(--ifm-color-primary);
+  background: var(--ifm-menu-color-background-hover);
+}
+
+.DocSearch-Button,
+[data-theme='dark'] .DocSearch-Button,
+[data-theme='sunset'] .DocSearch-Button {
+  background: var(--ifm-background-surface-color) !important;
+  color: var(--ifm-font-color-secondary) !important;
+}
+
+.alert--info {
+  --ifm-alert-background-color: color-mix(in srgb, var(--ifm-color-primary) 12%, var(--ifm-background-surface-color));
+  --ifm-alert-border-color: var(--ifm-color-primary);
+}
+
+.alert--warning {
+  --ifm-alert-background-color: color-mix(in srgb, var(--fiowiki-warning) 12%, var(--ifm-background-surface-color));
+  --ifm-alert-border-color: var(--fiowiki-warning);
+}
+
+footer.footer {
+  background: var(--ifm-footer-background-color);
+  border-top-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-footer-color);
+}
+
+.fiowiki-intro-btn-primary {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+}
+
+.fiowiki-intro-btn-ghost {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base) !important;
+}
+
+.fiowiki-navbar-theme-btn {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base);
+}
+
+.fiowiki-navbar-theme-btn.is-active {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .theme-doc-markdown,
+[data-theme='sunset'] .theme-doc-markdown {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='light'] .theme-doc-markdown {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='light'] .theme-doc-markdown p,
+[data-theme='light'] .theme-doc-markdown li,
+[data-theme='light'] .theme-doc-markdown td,
+[data-theme='light'] .theme-doc-markdown th,
+[data-theme='sunset'] .theme-doc-markdown p,
+[data-theme='sunset'] .theme-doc-markdown li,
+[data-theme='sunset'] .theme-doc-markdown td,
+[data-theme='sunset'] .theme-doc-markdown th {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='sunset'] .navbar__brand,
+[data-theme='sunset'] .navbar__title,
+[data-theme='sunset'] .navbar__link,
+[data-theme='sunset'] .menu__link,
+[data-theme='sunset'] .breadcrumbs__link {
+  color: var(--ifm-navbar-link-color);
+}
+
+[data-theme='sunset'] .theme-doc-markdown h1,
+[data-theme='sunset'] .theme-doc-markdown h2,
+[data-theme='sunset'] .theme-doc-markdown h3,
+[data-theme='sunset'] .theme-doc-markdown h4,
+[data-theme='sunset'] .theme-doc-markdown h5,
+[data-theme='sunset'] .theme-doc-markdown h6,
+[data-theme='sunset'] .theme-doc-markdown strong {
+  color: var(--ifm-heading-color);
+}
+
+[data-theme='sunset'] .theme-doc-markdown a {
+  color: var(--ifm-color-primary-light);
+}
+
+[data-theme='sunset'] .theme-doc-markdown a:hover {
+  color: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ifm-heading-color) !important;
+  background: var(--ifm-menu-color-background-active);
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 42%, transparent);
+}
+
+[data-theme='sunset'] .dropdown__menu .dropdown__link {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='sunset'] .dropdown__menu .dropdown__link:hover,
+[data-theme='sunset'] .dropdown__menu .dropdown__link--active {
+  color: var(--ifm-color-primary-lightest);
+  background: var(--ifm-menu-color-background-hover);
+}
+
+[data-theme='sunset'] .theme-doc-sidebar-container {
+  border-right-color: var(--ifm-color-emphasis-200) !important;
+}
+
+[data-theme='sunset'] .alert--info {
+  --ifm-alert-background-color: color-mix(in srgb, var(--ifm-color-primary) 15%, var(--ifm-background-surface-color));
+  --ifm-alert-border-color: var(--ifm-color-primary);
+  --ifm-alert-foreground-color: var(--ifm-font-color-base);
+  color: var(--ifm-font-color-base) !important;
+}
+
+[data-theme='sunset'] .alert--info .alert__title,
+[data-theme='sunset'] .alert--info p,
+[data-theme='sunset'] .alert--info li {
+  color: var(--ifm-font-color-base) !important;
+}
+
+[data-theme='sunset'] .alert--info a,
+[data-theme='sunset'] .alert--info strong {
+  color: var(--ifm-color-primary-lightest) !important;
+}
+
+[data-theme='sunset'] .fiowiki-navbar-theme-btn {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='sunset'] .fiowiki-navbar-theme-btn.is-active {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary);
+  color: #1a1b20;
+}
+
+[data-theme='sunset'] .dropdown__menu,
+[data-theme='sunset'] .theme-doc-sidebar-menu .menu__link--active {
+  background: var(--ifm-background-surface-color);
+}
+
+[data-theme='light'] .navbar__brand,
+[data-theme='light'] .navbar__link,
+[data-theme='light'] .breadcrumbs__link,
+[data-theme='light'] .menu__link {
+  color: var(--ifm-navbar-link-color);
+}
+
+[data-theme='light'] .theme-doc-markdown p,
+[data-theme='light'] .theme-doc-markdown li,
+[data-theme='light'] .theme-doc-markdown td,
+[data-theme='light'] .theme-doc-markdown th {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='light'] .fiowiki-intro-hero p,
+[data-theme='light'] .fiowiki-intro-btn-ghost:hover {
+  color: var(--ifm-font-color-secondary) !important;
+}
+
+[data-theme='dark'] .fiowiki-intro-hero p,
+[data-theme='dark'] .fiowiki-intro-btn-ghost:hover {
+  color: var(--ifm-font-color-secondary) !important;
+}
+
+[data-theme='sunset'] .fiowiki-intro-hero h1,
+[data-theme='sunset'] .navbar__logo::before {
+  color: var(--ifm-color-primary-light);
+}
+
+/* Recolor the existing ambient accents without changing their motion or layout. */
+.main-wrapper,
+[data-theme='dark'] .main-wrapper {
+  background-image:
+    radial-gradient(1000px 460px at -10% -14%, color-mix(in srgb, var(--ifm-color-primary) 9%, transparent), transparent 62%),
+    radial-gradient(720px 300px at 112% 10%, color-mix(in srgb, var(--fiowiki-secondary) 7%, transparent), transparent 64%),
+    linear-gradient(118deg, color-mix(in srgb, var(--ifm-color-primary) 6%, transparent) 0%, transparent 42%, color-mix(in srgb, var(--fiowiki-secondary) 5%, transparent) 78%, transparent 100%),
+    var(--ifm-background-color);
+}
+
+[data-theme='light'] .main-wrapper {
+  background-image:
+    radial-gradient(980px 450px at -10% -16%, color-mix(in srgb, var(--ifm-color-primary) 7%, transparent), transparent 62%),
+    radial-gradient(760px 320px at 110% 12%, color-mix(in srgb, var(--fiowiki-secondary) 6%, transparent), transparent 66%),
+    linear-gradient(120deg, color-mix(in srgb, var(--ifm-color-primary) 5%, transparent) 0%, transparent 40%, color-mix(in srgb, var(--fiowiki-secondary) 4%, transparent) 72%, transparent 100%),
+    var(--ifm-background-color);
+}
+
+[data-theme='sunset'] .main-wrapper {
+  background-image:
+    radial-gradient(980px 460px at -10% -14%, color-mix(in srgb, var(--ifm-color-primary) 8%, transparent), transparent 62%),
+    radial-gradient(730px 300px at 112% 10%, color-mix(in srgb, var(--fiowiki-secondary) 6%, transparent), transparent 66%),
+    linear-gradient(120deg, color-mix(in srgb, var(--ifm-color-primary) 6%, transparent) 0%, transparent 42%, color-mix(in srgb, var(--fiowiki-secondary) 4%, transparent) 76%, transparent 100%),
+    var(--ifm-background-color);
+}
+
+.navbar__toggle {
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 34%, transparent);
+}
+
+.fiowiki-scroll-down {
+  background: color-mix(in srgb, var(--ifm-background-surface-color) 92%, transparent);
+  border-color: color-mix(in srgb, var(--ifm-color-primary) 40%, transparent);
+  color: var(--ifm-color-primary-light);
+}
+
+.fiowiki-scroll-down:hover {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-light);
+  color: #ffffff;
+}
+
+@media (max-width: 996px) {
+  .navbar-sidebar {
+    background: var(--ifm-background-surface-color) !important;
+    border-right-color: var(--ifm-color-emphasis-200);
+    border-bottom-color: var(--ifm-color-emphasis-200);
+  }
+
+  .theme-doc-toc-mobile {
+    border-color: var(--ifm-color-emphasis-200) !important;
+    background: color-mix(in srgb, var(--ifm-background-surface-color) 92%, transparent) !important;
+  }
+}
+
