@@ -1,0 +1,50 @@
+---
+title: Developer API
+sidebar_position: 3
+---
+
+# Developer API
+
+FioFishing exposes Java classes under `com.itzfabb.fiofishing.api` for other plugins that need fish definitions, caught-item data, or catch-event integration.
+
+## Get the API
+
+Declare FioFishing as a dependency available to your plugin, then retrieve its API after FioFishing has loaded:
+
+```java
+FioFishingPlugin fishing = (FioFishingPlugin) Bukkit.getPluginManager().getPlugin("FioFishing");
+if (fishing == null) {
+    return;
+}
+
+FioFishingApi api = fishing.getApi();
+FishInfo salmon = api.getFish("salmon").orElse(null);
+if (salmon != null) {
+    String rarity = salmon.rarity();
+    int maximumSize = salmon.maxSize();
+}
+
+FishData caught = api.getFishData(item).orElse(null);
+if (caught != null) {
+    String fishId = caught.id();
+    double size = caught.size();
+}
+```
+
+`getFish(id)` looks up a configured fish by its internal ID. `getFishData(item)` reads FioFishing metadata from a caught fish item; ordinary items do not have that data.
+
+`FioFishingApi` also provides `getFish()` to list loaded fish, `createFishItem(id)` to create a configured fish item, and `isFish(item)` to check whether an item is a FioFishing fish.
+
+## Catch event
+
+Listen for `FioFishingCatchEvent` to inspect or modify a catch before the plugin gives it to the player. A listener can cancel the catch, replace the item, or change its experience reward. FioFishing records the catch statistics only if the event is not cancelled.
+
+```java
+@EventHandler
+public void onFioFishingCatch(FioFishingCatchEvent event) {
+    // Inspect the player, fish, item, or experience before it is awarded.
+    // event.setCancelled(true) prevents the catch from being awarded/recorded.
+}
+```
+
+Register listeners using Bukkit's plugin manager. Make sure your plugin declares FioFishing as a dependency if it must access these classes during startup.

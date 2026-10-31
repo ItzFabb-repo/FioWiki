@@ -1,0 +1,48 @@
+---
+title: Placeholders
+sidebar_position: 5
+---
+
+# Placeholders
+
+When PlaceholderAPI is installed, FioFishing registers the `fiofishing` expansion. Use its placeholders with the full `%fiofishing_<placeholder>%` syntax.
+
+## Player settings
+
+| Placeholder | Value |
+| --- | --- |
+| `%fiofishing_toggle_lootable%` | Whether the player has vanilla fishing loot enabled. |
+| `%fiofishing_toggle_fishingrod%` | Whether rare-catch announcements are enabled for the player. |
+| `%fiofishing_toggle_eventLeaderboards%` | Whether the player has event leaderboards enabled. |
+| `%fiofishing_toggle_durabilityBreaks%` | Whether the player has rod durability warnings enabled. |
+
+These placeholders depend on a player context. If the requesting plugin does not provide one, the expansion uses its documented fallback behavior.
+
+## Active event
+
+| Placeholder | Value |
+| --- | --- |
+| `%fiofishing_isThere_event%` | `true` when a fishing event is active. |
+| `%fiofishing_events_running_rawType%` | Active event ID in uppercase. |
+| `%fiofishing_events_running_formattedType%` | Active event ID with readable capitalization. |
+| `%fiofishing_events_running_formattedTime%` | Remaining time formatted as hours/minutes or minutes/seconds. |
+| `%fiofishing_events_running_rawTime_bySeconds%` (also `Minutes`, `Hours`, `Days`, `Weeks`, `Months`, `Years`) | Remaining time as a number in that unit. |
+| `%fiofishing_events_running_formatted_bySeconds%` (also `Minutes`, `Hours`, `Days`, `Weeks`, `Months`, `Years`) | Remaining time with a compact unit suffix. |
+| `%fiofishing_eventCompetition_fish_<place>%` | Fish ID at a competition rank. |
+| `%fiofishing_eventCompetition_player_<place>%` | Player name at a competition rank. |
+| `%fiofishing_eventCompetition_size_<place>%` | Competition score at a rank, formatted to two decimal places. |
+
+Replace `<place>` with the competition position, such as `1` for the first place. If there is no active event or that place has no entry, the result is empty.
+
+## Global statistics
+
+| Placeholder | Value |
+| --- | --- |
+| `%fiofishing_global_totalCatch%` | Total catches recorded by the server. |
+| `%fiofishing_global_totalWon%` | Total event wins recorded by the server. |
+| `%fiofishing_global_totalEarned%` | Total earnings, formatted to two decimal places. |
+| `%fiofishing_global_biggestSize_size%` | Largest recorded catch size, formatted to two decimal places. |
+| `%fiofishing_global_biggestSize_date%` | Date of the largest recorded catch. |
+| `%fiofishing_global_biggestSize_playerName%` | Player who caught the largest recorded fish. |
+
+Placeholder names are case-insensitive. The expansion is registered only when PlaceholderAPI is present. If a placeholder is not replaced, confirm both plugins are enabled and check spelling and the active expansion list.

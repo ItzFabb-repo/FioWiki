@@ -1,11 +1,26 @@
 ---
-title: Using FioFishing
+title: About
 sidebar_position: 1
 ---
 
-# Using FioFishing
+# FioFishing
 
-This guide explains how players and administrators use FioFishing and where to edit its settings. The plugin adds custom fish, bait, fishing rods, catch statistics and a journal, selling menus, and fishing competitions.
+FioFishing is a configurable fishing plugin for Paper servers. It adds custom fish, bait, rods, catch statistics, a fishing journal, shop and sell menus, anti-AFK checks, and timed fishing competitions.
+
+## What the plugin includes
+
+### Custom fishing content
+
+- Fish grouped by rarity, with configurable catch weights, size, price, biome, time, weather, lore, and item behavior.
+- Bait definitions with catch modifiers, usage requirements, prices, and custom item support.
+- Rod definitions with durability, enchantment filters, sounds, loot filters, and allowed bait.
+
+### Player and server features
+
+- Fishing journal, player statistics, selling, and shop menus.
+- Scheduled and manually managed fishing events with configurable scoring and rewards.
+- Optional anti-AFK verification, rare-catch announcements, and event leaderboards.
+- YAML or MySQL storage for player data.
 
 ## Quick start
 
@@ -15,7 +30,7 @@ This guide explains how players and administrators use FioFishing and where to e
 4. Save your changes, run `/fiofishing admin reload`, and check the console for configuration errors.
 5. Test the result in-game. Administrators can give fish, bait, and rods with `/fiofishing admin give <fish|baits|fishingrods> <id> <player> [amount]`.
 
-## File locations and purpose
+## Configuration files
 
 | Location in `plugins/FioFishing/` | Purpose |
 | --- | --- |
@@ -29,6 +44,8 @@ This guide explains how players and administrators use FioFishing and where to e
 | `CustomNaming/material.json`, `CustomNaming/biome.json` | Display names for materials and biomes in menus and the journal. |
 | `data.yml` or a MySQL database | Player statistics and journal data, depending on the `type` selected under `storage`. |
 
+The [Configuration](./config/config.mdx) guides explain the available values and accepted options in each file. They document how to use the plugin's settings; they do not require changes to the plugin source code.
+
 ## Safe editing practices
 
 - Make a backup before editing, especially of `config.yml`, `Loots/`, `Events/`, `Menu/`, and player data.
@@ -36,6 +53,20 @@ This guide explains how players and administrators use FioFishing and where to e
 - Keep the keys on the left unchanged. Edit values on the right or add entries that follow the same structure as the examples.
 - Every fish ID must be unique across all files in `Loots/Fish/*.yml`. Reuse matching IDs in bait, rod, and menu settings.
 - After editing, run `/fiofishing admin reload`. If a file has invalid syntax or duplicate IDs, the plugin reports the issue in the console and may skip that entry.
+
+## Documentation map
+
+- [Commands & Permissions](/plugin/fiofishing/commands-permissions)
+- [Developer API](/plugin/fiofishing/api)
+- [Options & Configuration](/plugin/fiofishing/options)
+- [Placeholders](/plugin/fiofishing/placeholders)
+- [General settings: `config.yml`](/plugin/fiofishing/config)
+- [Create Custom Fishs](/plugin/fiofishing/config/fish)
+- [Create Custom Baits](/plugin/fiofishing/config/baits)
+- [Fishing rods](/plugin/fiofishing/config/rods)
+- [Events and schedule](/plugin/fiofishing/config/events)
+- [GUI menus](/plugin/fiofishing/config/menus)
+- [Language and display names](/plugin/fiofishing/config/language-names)
 
 ## Common commands
 
@@ -52,15 +83,3 @@ This guide explains how players and administrators use FioFishing and where to e
 | `/fiofishing admin give <fish\|baits\|fishingrods> <id> <player> [amount]` | Give a FioFishing item by its configuration ID. |
 
 Selling requires Vault and an economy plugin. WorldGuard is only needed for region rules. ItemsAdder, Oraxen, and Nexo are only needed when item textures use those plugins.
-
-## Configuration guides
-
-Choose a guide below to learn each file's structure, what its settings do, which values are accepted, and how to change them:
-
-- [General settings: `config.yml`](./config/config.mdx)
-- [Create Custom Fishs](./config/fish.mdx)
-- [Create Custom Baits](./config/baits.mdx)
-- [Fishing rods](./config/rods.mdx)
-- [Events and schedule](./config/events.mdx)
-- [GUI menus](./config/menus.mdx)
-- [Language and display names](./config/language-names.mdx)

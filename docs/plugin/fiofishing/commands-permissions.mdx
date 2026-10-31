@@ -1,0 +1,64 @@
+---
+title: Commands & Permissions
+sidebar_position: 2
+---
+
+# Commands & Permissions
+
+All commands use `/fiofishing`. The `command-aliases` list in `config.yml` adds extra root command names; it does not replace `/fiofishing`.
+
+## Player commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiofishing` or `/fiofishing help` | `fiofishing.command.help` | Show command help. |
+| `/fiofishing stats [player]` | `fiofishing.command.stats`; another player: `fiofishing.command.stats.other` | View fishing statistics. |
+| `/fiofishing afk` | Configured by `settings.afk-feature.permission` | Toggle the player's AFK state when the AFK feature is enabled. |
+| `/fiofishing toggle lootable` | `fiofishing.command.toggle.lootable` | Toggle custom or vanilla fishing loot. |
+| `/fiofishing toggle fishingrod` | `fiofishing.command.toggle.fishingrod` | Toggle rare-catch announcements. |
+| `/fiofishing toggle eventLeaderboards` | `fiofishing.command.toggle.eventleaderboards` | Toggle the personal event leaderboard. |
+| `/fiofishing toggle durabilityBreaks` | `fiofishing.command.toggle.durabilitybreaks` | Toggle rod durability warnings. |
+| `/fiofishing events ...` | `fiofishing.command.events` | View available or running events. |
+| `/fiofishing leaderboards` | `fiofishing.command.leaderboards` | View the active event leaderboard. |
+| `/fiofishing modify <leaderboard\|personalstats> <background\|textBackground\|textColor> <value>` | Matching `fiofishing.command.modify.*` permission | Customize the player's leaderboard or personal-stats display. |
+| `/fiofishing journey` | `fiofishing.command.journey` | Open the fishing journal. |
+| `/fiofishing menu` | `fiofishing.command.menu` | Open the main menu. |
+| `/fiofishing sell` | `fiofishing.command.sell` | Open the sell menu. |
+| `/fiofishing shop` | `fiofishing.command.shop` | Open the shop. |
+
+The AFK command permission is configurable. Its default is `fiofishing.command.afk`. The command is intended for use when automatic anti-AFK fishing is disabled.
+
+## Administrator commands
+
+Administrator subcommands use the permission `fiofishing.admin.command.<subcommand>`. The aggregate permission `fiofishing.admin` and wildcard `fiofishing.admin.command.*` grant the admin command set; both default to operator access.
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/fiofishing admin help` | `fiofishing.admin.command.help` | Show administrator commands. |
+| `/fiofishing admin reload` | `fiofishing.admin.command.reload` | Reload plugin settings and content. |
+| `/fiofishing admin permissions` | `fiofishing.admin.command.permissions` | Display permission information. |
+| `/fiofishing admin author` | `fiofishing.admin.command.author` | Show the author. |
+| `/fiofishing admin placeholders` | `fiofishing.admin.command.placeholders` | Show placeholder information. |
+| `/fiofishing admin menu forceOpen <player> <menu>` | `fiofishing.admin.command.forceopen` | Open a configured menu for a player. |
+| `/fiofishing admin give <fish\|baits\|fishingrods> <id> <player> [amount]` | `fiofishing.admin.command.give` | Give a configured item. |
+| `/fiofishing admin blacklist <add\|remove> <player>` | `fiofishing.admin.command.blacklist` | Manage the player blacklist. |
+| `/fiofishing admin region ...` | `fiofishing.admin.command.region` | Create, remove, list, or teleport to a FioFishing region. |
+| `/fiofishing admin events ...` | `fiofishing.admin.command.events` | Manage timed fishing events. |
+| `/fiofishing admin freeze` and `/fiofishing admin unfreeze` | `fiofishing.admin.command.freeze` and `.unfreeze` | Pause or resume fishing activities. |
+| `/fiofishing admin clearPlayer <player> --confirm` | `fiofishing.admin.command.clearplayer` | Permanently clear a player's fishing statistics. |
+
+Use `/fiofishing admin help` in game for the syntax supported by the installed plugin version. Commands that open menus or edit regions must be run by a player; commands that manage server state can also be used from the console where applicable.
+
+## Permission defaults
+
+Most player permissions in the bundled `plugin.yml` default to `true`. Admin command permissions default to operator access through the aggregate admin permissions. A server permission manager can override these defaults per group or player.
+
+| Permission | Default | Purpose |
+| --- | --- | --- |
+| `fiofishing.use` | `true` | Use custom fishing. |
+| `fiofishing.command.*` | Varies by node | Access individual player commands. |
+| `fiofishing.bypass.anti-afk-fishing` | `op` | Bypass the anti-AFK challenge and its penalties. |
+| `fiofishing.admin` | `op` | Grant all administrator commands. |
+| `fiofishing.admin.command.*` | `op` | Grant every administrator subcommand. |
+
+The player command nodes and each admin subcommand node are listed in the tables above and in the plugin's permission file.

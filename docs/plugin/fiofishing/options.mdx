@@ -1,0 +1,33 @@
+---
+title: Options & Configuration
+sidebar_position: 4
+---
+
+# Options & Configuration
+
+FioFishing settings are split between a global `config.yml` and content files. Each guide in the Configuration section documents the YAML hierarchy, the purpose of each setting, accepted values, and examples for changing it.
+
+## Global behavior
+
+The main [`config.yml`](./config/config.mdx) controls visual fishing animations, enabled worlds, language, interactions for bait, anti-AFK challenges, leaderboards and personal statistics, durability warnings, fish-size formatting, time-unit labels, and data storage.
+
+Use this file for server-wide behavior. Fish, bait, and rod-specific behavior belongs in the matching definition files.
+
+## Content definitions
+
+| File group | What you can configure | Guide |
+| --- | --- | --- |
+| `Loots/Fish/*.yml` | Rarity groups, fish items, catch weights, size and price, conditions, announcements, and item behavior | [Create Custom Fishs](./config/fish.mdx) |
+| `Loots/Baits/*.yml` | Bait item appearance, catch modifiers, requirements, consumption, and shop/sell prices | [Create Custom Baits](./config/baits.mdx) |
+| `Loots/Rods/*.yml` | Durability, enchantment rules, sounds, allowed fish/rarities, and bait IDs | [Fishing rods](./config/rods.mdx) |
+| `Events/*.yml` and `Events/settings.yml` | Event types, eligibility, scoring, rewards, sounds, and weekly schedule | [Events and schedule](./config/events.mdx) |
+| `Menu/**/*.yml` | GUI titles, slots, items, lore, and click actions | [GUI menus](./config/menus.mdx) |
+| `Lang/messages_<code>.yml` and `CustomNaming/*.json` | Messages, language text, and display aliases for materials and biomes | [Language and display names](./config/language-names.mdx) |
+
+## Data storage choices
+
+Under `storage.type`, choose `YAML` to store player data in a local YAML file or `MYSQL` to store it in MySQL. The MySQL options include the host, port, database, username, password, table name, and connection-pool size. Changing the backend does not migrate existing data automatically.
+
+## Apply changes
+
+Back up the settings or content file before editing it. Use spaces for YAML indentation, keep IDs unique, and retain required menu keys. Run `/fiofishing admin reload` after editing reloadable files; restart the server after changing database connection details.
