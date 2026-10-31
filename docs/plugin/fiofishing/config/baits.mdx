@@ -1,86 +1,135 @@
 ---
-title: Umpan
+title: Create Custom Baits
 sidebar_position: 3
 ---
 
-# Umpan
+# Create Custom Baits
 
-File umpan ada di `plugins/FioFishing/Loots/Baits/`. Satu file berisi satu bait. Salin file contoh, ubah ID dan nilai yang diperlukan, lalu jalankan `/fiofishing admin reload`.
+Definisi bait ada di `plugins/FioFishing/Loots/Baits/`. Satu file `.yml` untuk satu jenis bait. Salin contoh, ubah ID/nilai, lalu simpan dan jalankan `/fiofishing admin reload`.
 
-## Struktur dan pengaturan penggunaan
-
-| Key | Opsi/nilai | Fungsi |
-| --- | --- | --- |
-| `baits.settings.id` | ID unik, huruf/angka/underscore disarankan | Wajib. Dipakai rod, menu, dan perintah admin. |
-| `baits.settings.enable` | Boolean | Mengaktifkan atau menonaktifkan bait. |
-| `refund_if_empty_reel` | Boolean | Mengembalikan bait jika kail ditarik tanpa menangkap ikan. |
-| `consume_if_cancelled_cast` | Boolean | Jika `true`, bait tetap dikonsumsi saat lemparan dibatalkan/diakhiri tanpa tangkapan sesuai alur cast. |
-| `silent` | Boolean | Menyembunyikan notifikasi penggunaan bait. |
-| `keep.enable` | Boolean | Mengaktifkan peluang bait tidak habis setelah dipakai. |
-| `keep.chance` | Persen, contoh `'50'` atau `'50%'` | Peluang bait tetap tersimpan ketika `keep.enable: true`. |
-| `max-bait-stack` | Bilangan bulat minimal 1 | Batas jumlah bait yang dapat dipasang pada satu rod. |
-| `max-item-stack` | Bilangan bulat 1–64 | Ukuran stack maksimal item bait di inventori; nilai di luar rentang disesuaikan. |
-
-## Modifier bait
-
-Atur di `baits.settings.modifier.multiplier`.
-
-| Key | Nilai | Dampak |
-| --- | --- | --- |
-| `rarity` | Angka persen | Bonus peluang untuk rarity `rare`, `epic`, `legendary`, dan `mythic`. `15` berarti bonus 15%; `0` tanpa bonus. |
-| `fish` | Angka; contoh bawaan `0` | Key yang ada pada contoh config. Untuk menaikkan/menurunkan bobot tangkapan tertentu, gunakan bagian `baits.settings.fish` yang dijelaskan di bawah. |
-| `bite-speed` | Pengali desimal | Mempercepat/memperlambat waktu gigitan. `1.0` normal; `1.2` lebih cepat; nilai di bawah `1.0` lebih lambat. |
-| `xp` | Pengali desimal | Pengali XP dari hasil memancing. `1.0` normal; `1.5` menjadi 1,5 kali. |
-| `size` | Pengali desimal | Pengali ukuran ikan. `1.0` normal; `1.2` menghasilkan ikan lebih besar. |
-
-### Pengaturan peluang untuk rarity/ikan tertentu
-
-`baits.settings.fish` memilih ID rarity sebagai parent. `'*'` menerapkan perubahan untuk semua ikan dalam rarity tersebut; nama fish ID menerapkan perubahan untuk satu ikan.
+## Struktur dan pengaturan bait
 
 ```yaml
 baits:
   settings:
+    # ID wajib dan harus unik. Dipakai oleh rod, menu, dan perintah give.
+    id: worm
+    # Menyalakan atau mematikan bait.
+    enable: true
+    # Kembalikan bait bila kail ditarik tanpa tangkapan.
+    refund_if_empty_reel: true
+    # Apakah bait habis ketika lemparan dibatalkan.
+    consume_if_cancelled_cast: false
+    # Sembunyikan pesan penggunaan bait.
+    silent: false
+    keep:
+      # Aktifkan peluang agar bait tetap ada setelah digunakan.
+      enable: false
+      # Peluang tetap ada, misalnya '50' atau '50%'.
+      chance: '50'
+    # Maksimum bait yang dapat dipasang pada satu rod.
+    max-bait-stack: 4
+    # Maksimum item bait per stack inventori (batas atas 64).
+    max-item-stack: 12
     modifier:
       multiplier:
+        # Bonus persen untuk rarity rare, epic, legendary, mythic.
         rarity: 15
+        # Nilai umum contoh; target ikan/rareness diatur pada bagian fish di bawah.
         fish: 0
-        bite-speed: 1.2
+        # Pengali kecepatan gigitan: 1 normal, 1.2 lebih cepat.
+        bite-speed: 1.15
+        # Pengali XP dan ukuran hasil.
         xp: 1.25
-        size: 1.1
+        size: 1.15
+    requirements:
+      # Permission wajib; none berarti tidak ada permission khusus.
+      permission: none
+      # ID rod yang menerima bait ini; [] berarti rod apa saja.
+      allowed-rods-id: []
+      worlds:
+        # Jika diisi, hanya world ini yang mengizinkan bait.
+        whitelist: []
+        # World tempat bait tidak dapat digunakan.
+        blacklist: []
+      regions:
+        # Region WorldGuard yang mengizinkan bait.
+        whitelist: []
+        # Region WorldGuard yang melarang bait.
+        blacklist: []
     fish:
+      # ID rarity: * menerapkan aturan ke semua ikan pada rarity tersebut.
       rare:
         '*': '+15'
       common:
+        # ID ikan tertentu dapat diberi aturan sendiri.
         river_carp: '/2'
+    price:
+      # Bisa dijual kembali dari menu sell.
+      should-this-bait-sell-able-again: true
+      # Tersedia di menu shop.
+      should-this-bait-be-purchaseable: true
+      # Sembunyikan di shop saat tidak dapat dibeli.
+      should-this-bait-hidden-if-not-purchaseable: false
+      # Persen harga yang dikembalikan saat dijual.
+      refund-if-sell: '25%'
+      # Harga bait dalam mata uang ekonomi server.
+      bait-sell-price: '100.0'
+
+item:
+  # Material dasar item Minecraft.
+  material: PAPER
+  custom:
+    # VANILLA, ITEMSADDER, ORAXEN, NEXO.
+    type: VANILLA
+    # CustomModelData ketika menggunakan model vanilla.
+    modelData: 1010
+    # ID item dari ItemsAdder/Oraxen/Nexo jika memakai plugin tersebut.
+    # custom: mypack:worm_bait
+  # Nama dan lore menerima teks MiniMessage.
+  display_name: '<green>Umpan Cacing</green>'
+  lore:
+    - '<gray>Umpan untuk ikan sungai.</gray>'
+    - '<yellow>Bonus rarity: 15%</yellow>'
+  behavior:
+    # Tampilkan glint enchant.
+    glow: true
+    # Aturan interaksi item. true memblokir, false membolehkan.
+    block:
+      HOPPER: false
+      CHEST: false
+      CRAFTER: true
+    # Aturan lingkungan. true mencegah aksi yang disebut.
+    environment:
+      DESTROYED_BY_CACTUS: true
+      DESTROYED_BY_LAVA: true
+      IS_EDIBLE: false
+      PLACE: false
+      DROP: false
 ```
 
-Format perubahan teks:
+## Arti modifier dan nilai yang dapat diisi
 
-| Nilai | Makna |
-| --- | --- |
-| `'+15'` | Tambah bobot peluang 15%. |
-| `'/2'` | Bagi bobot peluang dua, jadi setengahnya. |
-| `'2'` | Gunakan pengali langsung 2x. |
+- `rarity` berupa bonus persen. Contohnya `15` memberi bonus 15% pada kategori rarity langka (`rare`, `epic`, `legendary`, `mythic`); `0` berarti tanpa bonus.
+- `bite-speed`, `xp`, dan `size` adalah pengali angka. `1.0` netral, `1.2` meningkatkan 20%, `0.8` menurunkan nilai sekitar 20%.
+- Bagian `fish` memakai nama rarity dan fish ID. Nilai harus berupa string yang dikutip: `'+15'` menambah bobot 15%, `'/2'` membagi bobot menjadi setengah, sedangkan `'2'` berarti pengali langsung 2.
+- Persentase `chance` di bagian `keep` dan `refund-if-sell` dapat ditulis sebagai teks `'50%'` atau `'50'`.
+- Stack item berada pada rentang 1 sampai 64. Bait per rod minimal 1.
 
-Tulis nilai sebagai string yang dikutip agar YAML tidak mengubah formatnya. Perubahan diterapkan ke bobot tangkapan ikan, bukan persentase independen yang harus berjumlah 100.
+## Cara memasang bait dan mengatur syarat
 
-## Syarat pemakaian
+Untuk memasang bait, letakkan bait dan rod di inventori lalu gunakan gesture yang dikonfigurasi pada bagian `settings` → `interaction` di halaman [Pengaturan umum](./config.mdx). Default-nya `LEFT_CLICK_DRAG`; melepas/mengelola bait memakai `SHIFT_Q`.
 
-| Key | Bentuk nilai | Fungsi |
-| --- | --- | --- |
-| `requirements.permission` | Permission string atau `none` | Memerlukan permission tersebut untuk memakai bait. `none` tidak memerlukan permission khusus. |
-| `requirements.allowed-rods-id` | Daftar rod ID | Batasi bait agar hanya bisa dipasang pada pancing tertentu. Daftar kosong tidak membatasi rod. |
-| `requirements.worlds.whitelist` | Daftar nama world | Jika berisi, bait hanya dapat digunakan pada world yang dicantumkan. |
-| `requirements.worlds.blacklist` | Daftar nama world | World yang tidak boleh menggunakan bait. |
-| `requirements.regions.whitelist` | Daftar nama region | Batasi bait ke region WorldGuard tertentu. |
-| `requirements.regions.blacklist` | Daftar nama region | Cegah penggunaan bait di region WorldGuard tertentu. |
+`allowed-rods-id` di bawah `requirements` harus memuat ID rod dari file rod, bukan nama tampilan. Daftar dunia/region kosong berarti tidak membatasi. WorldGuard diperlukan bila menggunakan filter region.
 
-Untuk region, pasang WorldGuard. Contoh:
+Contoh syarat:
 
 ```yaml
 requirements:
   permission: fiofishing.bait.worm
-  allowed-rods-id: [wooden_rod, master_rod]
+  allowed-rods-id:
+    - wooden_rod
+    - master_rod
   worlds:
     whitelist: [fishing_world]
     blacklist: []
@@ -89,34 +138,6 @@ requirements:
     blacklist: [safe_zone]
 ```
 
-## Item, tekstur, dan harga
+Item custom mendukung `VANILLA`, `ITEMSADDER`, `ORAXEN`, atau `NEXO`. Untuk tiga opsi plugin, isi ID di `custom` dan pastikan pluginnya terpasang. Nama item/lore dapat memakai tag MiniMessage seperti `<aqua>` dan warna hex.
 
-| Key | Opsi/nilai | Fungsi |
-| --- | --- | --- |
-| `item.material` | Nama material Minecraft, mis. `PAPER` | Item dasar umpan. |
-| `item.custom.type` | `VANILLA`, `ITEMSADDER`, `ORAXEN`, `NEXO` | Sumber model/tekstur. Plugin terkait harus terpasang untuk tiga opsi terakhir. |
-| `item.custom.modelData` | Bilangan bulat | CustomModelData ketika `type: VANILLA`. `0` memakai tekstur material normal. |
-| `item.custom.custom` | ID item dari ItemsAdder/Oraxen/Nexo | ID item eksternal, mis. `mypack:worm_bait`. |
-| `item.display_name` | Teks MiniMessage | Nama item yang tampil. |
-| `item.lore` | Daftar teks | Baris deskripsi item. |
-| `item.behavior.glow` | Boolean | Efek enchant glint. |
-| `item.behavior.block` | Peta key boolean | Mencegah bait dipindah/dipakai pada inventori tertentu. `true` memblokir. Gunakan daftar key yang ada di file contoh fish/umpan. |
-| `item.behavior.environment` | Peta key boolean | Mengatur perlindungan dari kerusakan, drop, dimakan, atau ditempatkan. `true` memblokir aksi yang namanya tercantum. |
-| `baits.settings.price.should-this-bait-sell-able-again` | Boolean | Mengizinkan umpan dijual kembali. |
-| `baits.settings.price.should-this-bait-be-purchaseable` | Boolean | Menawarkan umpan di shop. |
-| `baits.settings.price.should-this-bait-hidden-if-not-purchaseable` | Boolean | Menyembunyikan item di shop jika tidak dapat dibeli. |
-| `baits.settings.price.refund-if-sell` | Persen | Bagian dari harga yang dikembalikan ketika bait dijual. |
-| `baits.settings.price.bait-sell-price` | Angka uang | Harga jual/beli yang dipakai menu shop dan sell. |
-
-Contoh harga:
-
-```yaml
-price:
-  should-this-bait-sell-able-again: true
-  should-this-bait-be-purchaseable: true
-  should-this-bait-hidden-if-not-purchaseable: false
-  refund-if-sell: '25%'
-  bait-sell-price: '100.0'
-```
-
-Harga menu memerlukan Vault dan plugin ekonomi. Untuk memasang bait, taruh bait dan fishing rod di inventori lalu gunakan gesture yang dipilih di `config.yml` pada `settings.interaction.apply-baits`. Default-nya `LEFT_CLICK_DRAG`. Pengelolaan bait pada rod memakai `settings.interaction.manage-baits` (default `SHIFT_Q`).
+Shop/sell bait menggunakan konfigurasi harga di atas, Vault, dan plugin ekonomi. `should-this-bait-be-purchaseable` mengontrol pembelian; `should-this-bait-sell-able-again` mengontrol penjualan kembali.

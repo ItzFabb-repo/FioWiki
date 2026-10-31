@@ -27,7 +27,7 @@ Halaman ini memandu pemain dan admin memakai FioFishing, lalu menunjukkan file y
 | `Menu/**/*.yml` | Tata letak GUI dan aksi tombol. Folder dibaca termasuk subfolder. |
 | `Lang/messages_<kode>.yml` | Pesan berdasarkan bahasa yang dipilih. Kode bawaan: `en`, `id`, `jp`, `ch`. |
 | `CustomNaming/material.json`, `CustomNaming/biome.json` | Nama tampilan material dan biome untuk menu/jurnal. |
-| `data.yml` atau database MySQL | Statistik dan jurnal pemain, bergantung `storage.type`. |
+| `data.yml` atau database MySQL | Statistik dan jurnal pemain, bergantung pilihan `type` di bagian `storage`. |
 
 ## Cara mengedit dengan aman
 
@@ -58,8 +58,8 @@ Jual-beli membutuhkan Vault dan plugin ekonomi yang menyediakan economy. WorldGu
 Pilih halaman di bagian **Panduan Pengaturan** untuk melihat struktur file, arti setiap pengaturan, opsi nilai yang diterima, serta contoh perubahan:
 
 - [Pengaturan umum `config.yml`](./config/config.mdx)
-- [Ikan dan rarity](./config/fish.mdx)
-- [Umpan](./config/baits.mdx)
+- [Create Custom Fishs](./config/fish.mdx)
+- [Create Custom Baits](./config/baits.mdx)
 - [Pancing](./config/rods.mdx)
 - [Event dan jadwal](./config/events.mdx)
 - [Menu GUI](./config/menus.mdx)

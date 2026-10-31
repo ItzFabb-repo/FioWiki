@@ -125,8 +125,8 @@ const sidebars = {
               label: 'Panduan Pengaturan',
               items: [
                 'plugin/fiofishing/config/config',
-                'plugin/fiofishing/config/fish',
-                'plugin/fiofishing/config/baits',
+                  'plugin/fiofishing/config/fish',
+                  'plugin/fiofishing/config/baits',
                 'plugin/fiofishing/config/rods',
                 'plugin/fiofishing/config/events',
                 'plugin/fiofishing/config/menus',

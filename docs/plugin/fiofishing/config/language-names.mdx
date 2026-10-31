@@ -7,7 +7,7 @@ sidebar_position: 7
 
 ## Mengubah bahasa pesan
 
-Pengaturan bahasa berada di `config.yml`:
+Pengaturan bahasa berada di dalam bagian `settings` pada `config.yml`:
 
 ```yaml
 settings:
@@ -18,7 +18,7 @@ Nilai bawaan: `en`, `id`, `jp`, dan `ch`. Plugin memilih file `plugins/FioFishin
 
 Untuk mengubah teks, edit nilai pesan pada file bahasa dan pertahankan key di sisi kiri. Placeholder seperti `{player}`, `{fish}`, `{length}`, `{eventName}` harus tetap ada bila diperlukan oleh pesan tersebut. Pesan menggunakan MiniMessage (contoh `<green>Teks</green>`) dan beberapa nilai lama dapat memakai format warna `&`.
 
-Anda dapat menambahkan kode bahasa sendiri dengan membuat `Lang/messages_<kode>.yml` berdasarkan file yang paling lengkap, lalu mengatur `settings.language` ke kode yang sama. Key yang belum tersedia di file pilihan memakai teks default bahasa itu atau fallback Inggris.
+Anda dapat menambahkan kode bahasa sendiri dengan membuat `Lang/messages_<kode>.yml` berdasarkan file yang paling lengkap, lalu mengatur `language` di bawah `settings` ke kode yang sama. Key yang belum tersedia di file pilihan memakai teks default bahasa itu atau fallback Inggris.
 
 ## Alias material dan biome
 
@@ -46,7 +46,7 @@ Keduanya berbentuk pasangan ID ke nama tampilan. Material/biome bawaan sudah ter
 }
 ```
 
-Format yang benar adalah JSON: gunakan tanda kutip ganda, koma di antara entri, dan jangan menaruh koma setelah entri terakhir. Plugin mencocokkan ID tanpa membedakan huruf besar/kecil. Untuk biome custom, gunakan ID namespaced yang sama pada `conditions.biome` di file ikan. Jika nama ikan menggunakan `displayName: FOLLOW_MATERIAL_ALIAS`, nama materialnya diambil dari `material.json`.
+Format yang benar adalah JSON: gunakan tanda kutip ganda, koma di antara entri, dan jangan menaruh koma setelah entri terakhir. Plugin mencocokkan ID tanpa membedakan huruf besar/kecil. Untuk biome custom, gunakan ID namespaced yang sama pada bagian `conditions`, key `biome` di file ikan. Jika nama ikan menggunakan `displayName: FOLLOW_MATERIAL_ALIAS`, nama materialnya diambil dari `material.json`.
 
 ## Format warna MiniMessage
 
