@@ -122,7 +122,7 @@ const sidebars = {
             'plugin/fiofishing/index',
             {
               type: 'category',
-              label: 'Panduan Pengaturan',
+              label: 'Configuration Guides',
               items: [
                 'plugin/fiofishing/config/config',
                   'plugin/fiofishing/config/fish',

@@ -1,7 +1,19 @@
 import React, {useEffect, useState} from 'react';
 
+const themes = ['dark', 'light', 'sunset'];
+const themeLabels = {
+  dark: 'Dark',
+  light: 'Light',
+  sunset: 'Sunset',
+};
+const themeIcons = {
+  dark: 'dark_mode',
+  light: 'light_mode',
+  sunset: 'wb_twilight',
+};
+
 const normalizeTheme = (themeName) =>
-  themeName === 'light' || themeName === 'sunset' ? themeName : 'dark';
+  themes.includes(themeName) ? themeName : 'dark';
 
 const persistTheme = (themeName) => {
   const normalized = normalizeTheme(themeName);
@@ -21,38 +33,35 @@ export default function NavbarThemeSwitcher() {
       window.localStorage.getItem('fiowiki-theme') ||
       document.documentElement.getAttribute('data-theme') ||
       'dark';
-    setActiveTheme(current);
+    setActiveTheme(normalizeTheme(current));
   }, []);
 
-  const applyTheme = (themeName) => {
-    const normalized = persistTheme(themeName);
-    setActiveTheme(normalized);
+  const cycleTheme = () => {
+    const current = normalizeTheme(
+      document.documentElement.getAttribute('data-theme') || activeTheme,
+    );
+    const nextTheme = themes[(themes.indexOf(current) + 1) % themes.length];
+
+    setActiveTheme(persistTheme(nextTheme));
     document.body.classList.add('theme-transitioning');
     window.setTimeout(() => {
       document.body.classList.remove('theme-transitioning');
-    }, 550);
+    }, 700);
   };
 
+  const nextTheme = themes[(themes.indexOf(activeTheme) + 1) % themes.length];
+
   return (
-    <div className="fiowiki-navbar-theme-switcher" role="group" aria-label="Theme Switcher">
-      <button
-        type="button"
-        className={`fiowiki-navbar-theme-btn${activeTheme === 'dark' ? ' is-active' : ''}`}
-        onClick={() => applyTheme('dark')}>
-        Dark
-      </button>
-      <button
-        type="button"
-        className={`fiowiki-navbar-theme-btn${activeTheme === 'light' ? ' is-active' : ''}`}
-        onClick={() => applyTheme('light')}>
-        Light
-      </button>
-      <button
-        type="button"
-        className={`fiowiki-navbar-theme-btn${activeTheme === 'sunset' ? ' is-active' : ''}`}
-        onClick={() => applyTheme('sunset')}>
-        Sunset
-      </button>
-    </div>
+    <button
+      type="button"
+      className={`fiowiki-navbar-theme-btn theme-${activeTheme}`}
+      onClick={cycleTheme}
+      aria-label={`Current theme: ${themeLabels[activeTheme]}. Switch to ${themeLabels[nextTheme]}.`}
+      title={`Switch to ${themeLabels[nextTheme]} theme`}>
+      <span className="material-symbols-rounded" aria-hidden="true">
+        {themeIcons[activeTheme]}
+      </span>
+      <span className="fiowiki-navbar-theme-label">{themeLabels[activeTheme]}</span>
+    </button>
   );
 }

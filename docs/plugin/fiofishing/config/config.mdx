@@ -1,79 +1,79 @@
 ---
-title: Pengaturan umum
+title: General Settings
 sidebar_position: 1
 ---
 
 # `config.yml`
 
-File ini berada di `plugins/FioFishing/config.yml`. Pengaturan ditampilkan dalam struktur bertingkat seperti di bawah. Baris komentar `#` menerangkan nilai di bawahnya; komentar tidak perlu disalin bila tidak dibutuhkan.
+This file is located at `plugins/FioFishing/config.yml`. Settings are shown below in their nested structure. The `#` comments explain the values; copy them only if you want to keep the notes in your own file.
 
-Setelah mengedit, jalankan `/fiofishing admin reload`. Pengaturan koneksi database sebaiknya diubah ketika server mati lalu dilanjutkan dengan restart.
+After editing, run `/fiofishing admin reload`. Change database connection settings while the server is stopped, then restart it.
 
-## Bagian utama dan animasi
+## Main settings and animations
 
 ```yaml
-# Set true hanya jika ingin file bawaan memperbarui/menimpa config saat startup.
+# Set to true only if bundled defaults should update or overwrite the config at startup.
 force-update-config: false
-# Versi internal plugin. Jangan diubah.
+# Internal plugin version. Do not change this value.
 config-version: 3
 
-# Alias tambahan. Perintah /fiofishing tetap tersedia walau daftar ini kosong.
+# Additional aliases. The /fiofishing command remains available even when this list is empty.
 command-aliases:
   - ffishing
   - fiofishing
 
-# Key animasi pada file memang ditulis fih/fihing.
+# The animation key is spelled fih/fihing in the configuration file.
 fih-animation:
-  # Aktifkan animasi ikan visual saat memancing.
+  # Enable the visual fish animation while fishing.
   should-fih-have-animation-when-fihing: true
-  # Gerakkan entity animasi dengan lebih halus.
+  # Move the animated entity more smoothly.
   smooth-movement: true
-  # Kecepatan visual pada tiap fase; desimal dalam blok per tick.
+  # Visual speed for each phase; decimal values are blocks per tick.
   wander-speed: 0.10
   lured-speed: 0.17
   bite-speed: 0.20
-  # Jarak ikan visual dari bobber saat menggigit.
+  # Distance between the visual fish and the bobber when it bites.
   bite-visual-distance: 0.45
   ready-indicator:
-    # Efek air ketika ikan siap ditarik.
+    # Water effect shown when the fish is ready to reel in.
     enabled: true
-    # Lama efek dan jarak antar efek, dihitung dalam tick (20 tick = 1 detik).
+    # Effect duration and spacing in ticks (20 ticks = 1 second).
     duration-ticks: 14
     interval-ticks: 3
 ```
 
-Untuk key boolean, gunakan `true` atau `false`. Nilai `force-update-config` biasanya tetap `false`; membuatnya `true` dapat mengganti perubahan server dengan konfigurasi bundled ketika server mulai.
+Boolean keys accept `true` or `false`. Keep `force-update-config` set to `false` in most cases; setting it to `true` can overwrite server changes with bundled defaults when the server starts.
 
-## Dunia, bahasa, pengumuman, dan interaksi
+## Worlds, language, announcements, and interactions
 
 ```yaml
 settings:
-  # Fitur memancing hanya aktif di world yang tertulis di sini.
-  # [] berarti semua world. Isi dengan nama world yang tepat.
+  # Fishing is enabled only in the worlds listed here.
+  # [] means all worlds. Use the exact world names.
   enabled-worlds: []
 
-  # Pilih file pesan: en, id, jp, ch; kode custom juga bisa dibuat.
+  # Select a message file: en, id, jp, ch. Custom language codes can also be created.
   language: en
 
-  # Umumkan tangkapan langka ke pemain lain.
+  # Announce rare catches to other players.
   announce-rare-catches: true
 
   interaction:
-    # Aksi melepas/mengelola umpan: Q, SHIFT_Q, LEFT_CLICK,
+    # Gestures for removing/managing bait: Q, SHIFT_Q, LEFT_CLICK,
     # SHIFT_LEFT_CLICK, RIGHT_CLICK, SHIFT_RIGHT_CLICK, SHIFT.
     manage-baits: SHIFT_Q
-    # Gesture inventori untuk memasang umpan: LEFT_CLICK_DRAG,
+    # Inventory gestures for attaching bait: LEFT_CLICK_DRAG,
     # RIGHT_CLICK_DRAG, ANY_CLICK_DRAG.
     apply-baits: LEFT_CLICK_DRAG
 
   durability-break-warning:
-    # Aktifkan pesan ketika durability rod hampir habis.
+    # Show a warning when rod durability is nearly depleted.
     enabled: true
-    # Ambang sisa durability dalam persen.
+    # Remaining durability threshold, as a percentage.
     threshold-percent: 10.0
 ```
 
-Contoh mengaktifkan plugin hanya di dua world:
+Example: enable the plugin in only two worlds.
 
 ```yaml
 settings:
@@ -82,61 +82,61 @@ settings:
     - fishing_world
 ```
 
-## Perintah AFK dan tantangan otomatis
+## AFK command and automatic challenge
 
 ```yaml
 settings:
   afk-feature:
-    # Fitur perintah /fiofishing afk; gunakan saat anti-AFK otomatis mati.
+    # Enable the /fiofishing afk command; use this when automatic anti-AFK is disabled.
     enabled: true
-    # Permission untuk perintah AFK.
+    # Permission required for the AFK command.
     permission: fiofishing.command.afk
 
   anti-afk-fishing:
-    # Menantang pemain yang diam lama sebelum boleh memancing lagi.
+    # Challenge players who have been idle for too long before allowing them to fish again.
     enabled: false
-    # Diam selama ini sebelum tantangan muncul.
+    # Idle time before the challenge appears.
     idle-seconds: 120
-    # Permission untuk melewati tantangan dan hukumannya.
+    # Permission to bypass the challenge and its penalties.
     bypass-permission: fiofishing.bypass.anti-afk-fishing
     challenge:
-      # Jumlah input Sneak/Jump dalam satu tantangan.
+      # Number of Sneak/Jump inputs in one challenge.
       steps: 5
-      # Batas waktu tiap input dalam detik.
+      # Time limit for each input, in seconds.
       input-timeout-seconds: 60
-      # Frekuensi pembaruan title dalam tick.
+      # Title refresh interval in ticks.
       display-refresh-ticks: 1
     indicators:
-      # Simbol input pada title.
+      # Input symbols shown in the title.
       sneak: '↓'
       jump: '↑'
     actions:
-      # Teks aksi pada subtitle.
+      # Action labels shown in the subtitle.
       sneak: '(Sneak)'
       jump: '(Jump)'
     verify:
-      # Saat tantangan berjalan. Placeholder: {indicator}, {action}, {timeout}.
+      # Shown while the challenge is active. Placeholders: {indicator}, {action}, {timeout}.
       title: '{indicator} <gray><italic>({timeout}s)</italic></gray>'
       subtitle: '<gold>{action}</gold>'
     failed:
-      # Pesan saat input salah atau melewati batas waktu.
-      title: '<red>Verifikasi gagal!</red>'
-      subtitle: '<gray>Coba urutan baru.</gray>'
+      # Shown when an input is incorrect or the time limit is exceeded.
+      title: '<red>Verification failed!</red>'
+      subtitle: '<gray>Try a new sequence.</gray>'
     success:
-      # Pesan saat tantangan berhasil.
-      title: '<green>Berhasil!</green>'
-      subtitle: '<gray>Kamu bisa memancing lagi.</gray>'
-    # Lama pesan gagal tampil dalam tick.
+      # Shown when the challenge is completed successfully.
+      title: '<green>Success!</green>'
+      subtitle: '<gray>You can fish again.</gray>'
+    # How long the failure message remains visible, in ticks.
     failed-display-ticks: 20
     title-timings:
-      # Animasi masuk, lama tampil, dan animasi keluar dalam tick.
+      # Fade-in, display, and fade-out durations in ticks.
       fade-in-ticks: 0
       stay-ticks: 30
       fade-out-ticks: 0
     punishment:
-      # Matikan agar tantangan tetap ada tanpa memberi penalti.
+      # Disable penalties while keeping the challenge active.
       enabled: true
-      # Ambang jumlah kegagalan : durasi hukuman. Contoh format durasi: 60s.
+      # Failure-count threshold: penalty duration. Example duration format: 60s.
       punished:
         3: ['60s']
         5: ['180s']
@@ -144,67 +144,67 @@ settings:
         10: ['600s']
         15: ['1800s']
         20: ['3600s']
-      # {remaining} menunjukkan waktu hukuman yang tersisa.
-      title: '<dark_red><bold>Memancing diblokir!</bold></dark_red>'
-      subtitle: '<white>Tunggu {remaining}</white>'
+      # {remaining} displays the remaining penalty time.
+      title: '<dark_red><bold>Fishing is blocked!</bold></dark_red>'
+      subtitle: '<white>Wait {remaining}</white>'
 ```
 
-Nilai durasi ditulis sebagai teks seperti `'60s'`; angka di kiri pada `punished` adalah jumlah kegagalan yang memicu durasi tersebut. Untuk mematikan sistem tantangan otomatis, ubah `enabled` di dalam bagian `anti-afk-fishing` menjadi `false`.
+Write durations as text, such as `'60s'`. The number on the left under `punished` is the failure count that triggers that duration. To disable automatic challenges, set `enabled` under `anti-afk-fishing` to `false`.
 
-## Leaderboard dan statistik pribadi
+## Leaderboard and personal statistics
 
 ```yaml
 settings:
   leaderboard:
-    # Menampilkan leaderboard event.
+    # Display the event leaderboard.
     enabled: true
-    # Jarak tampilan dalam blok, jumlah entri, dan interval pembaruan detik.
+    # Display distance in blocks, number of entries, and refresh interval in seconds.
     distance: 6.0
     max-entries: 10
     refresh-seconds: 60
     sneak-freeze:
-      # Sneak membekukan tampilan agar pemain bisa membaca.
+      # Sneaking freezes the display so players can read it.
       enabled: true
     rank-change:
-      # Format perpindahan posisi leaderboard.
+      # Format for leaderboard rank changes.
       enabled: true
-      # Tambahkan indikator ke baris pemain secara otomatis.
+      # Automatically append an indicator to each player's entry.
       append-to-entry: true
-      # {change} adalah jumlah posisi berubah.
+      # {change} is the number of positions changed.
       up: ' <green>(↑+{change})</green>'
       down: ' <red>(↓-{change})</red>'
       unchanged: ''
       new: '<green>♦</green>'
     score-format:
-      # {value} adalah skor mentah.
-      catches: '<yellow>{value}</yellow> <white>ikan</white>'
+      # {value} is the raw score.
+      catches: '<yellow>{value}</yellow> <white>fish</white>'
       size: '<yellow>{value}</yellow> <white>cm</white>'
-      bait: '<yellow>{value}</yellow> <white>umpan</white>'
-    # Susun baris leaderboard; tersedia eventName, player_1..10,
+      bait: '<yellow>{value}</yellow> <white>bait</white>'
+    # Compose leaderboard lines; available placeholders include eventName, player_1..10,
     # fish_1..10, score_1..10, position, when, rankChange_1..10.
     line:
-      - '<dark_aqua><bold>Leaderboard Memancing</bold></dark_aqua>'
+      - '<dark_aqua><bold>Fishing Leaderboard</bold></dark_aqua>'
       - '<white>{player_1}</white> - <aqua>{fish_1}</aqua> - {score_1}'
-      - '<gray>Posisi kamu: #{position}</gray>'
-      - '<gray>Pembaruan dalam {when}</gray>'
+      - '<gray>Your position: #{position}</gray>'
+      - '<gray>Refreshes in {when}</gray>'
     personal-stats:
-      # Panel statistik pribadi di sisi leaderboard.
+      # Personal statistics panel beside the leaderboard.
       enabled: true
-      # Jarak horizontal dari papan dalam blok.
+      # Horizontal distance from the board, in blocks.
       labels-offset: 4.5
-      # Placeholder: eventName, position, catches, score.
+      # Placeholders: eventName, position, catches, score.
       labels:
-        - '<yellow><bold>Statistik Pribadi</bold></yellow>'
-        - '<white>Posisi:</white> #{position}'
-        - '<white>Ikan:</white> {catches}'
-        - '<white>Skor:</white> {score}'
+        - '<yellow><bold>Personal Statistics</bold></yellow>'
+        - '<white>Position:</white> #{position}'
+        - '<white>Fish:</white> {catches}'
+        - '<white>Score:</white> {score}'
         - '<only-shown-if-existed>'
         - '{pos} {fishColor}{fish} - {size}cm'
         - '</only-shown-if-existed>'
       fishHistory:
-        # Maksimum ikan terakhir yang ditampilkan.
+        # Maximum number of recent fish to display.
         maxShown: 5
-        # Simbol yang dipakai untuk posisi riwayat.
+        # Symbols used for history positions.
         position:
           '1': '①'
           '2': '②'
@@ -213,28 +213,28 @@ settings:
           '5': '⑤'
 ```
 
-Dalam template `line`, gunakan baris satu sampai sepuluh sesuai jumlah `max-entries`. Tag dan placeholder adalah teks yang tampil pada papan; ubah teks tanpa mengganti nama placeholder jika masih ingin nilainya otomatis diisi.
+In the `line` template, use up to ten lines according to `max-entries`. Tags and placeholders become the text shown on the board; you can change the text, but keep placeholder names if you want their values to be filled in automatically.
 
-## Ukuran ikan dan label durasi
+## Fish sizes and duration labels
 
 ```yaml
 settings:
   fish-size:
-    # false = ukuran bulat; true = ukuran desimal.
+    # false = whole-number sizes; true = decimal sizes.
     decimal-enabled: true
-    # RANDOM memilih desimal dari rentang; LIST memilih dari decimal-values.
+    # RANDOM selects a decimal from a range; LIST selects from decimal-values.
     decimal-mode: RANDOM
-    # Presisi desimal 0 sampai 3 digit.
+    # Decimal precision from 0 to 3 digits.
     decimal-places: 2
-    # Batas rentang desimal inklusif; untuk dua digit 0..99 berarti .00.. .99.
+    # Inclusive decimal range; with two digits, 0..99 means .00 to .99.
     random-min: 0
     random-max: 99
-    # Nilai desimal untuk mode LIST; pada 2 digit angka 5 berarti .05.
+    # Decimal values for LIST mode; with two digits, 5 means .05.
     decimal-values: [0, 5, 15, 95]
-    # Hilangkan nol di belakang, mis. 8.50 menjadi 8.5.
+    # Remove trailing zeroes, for example, 8.50 becomes 8.5.
     trim-trailing-zeroes: true
 
-  # Label unit sisa waktu. Ubah nilainya menjadi kata lengkap bila diinginkan.
+  # Labels for remaining time units. Replace these abbreviations with full words if desired.
   time-units:
     second: 's'
     seconds: 's'
@@ -252,24 +252,24 @@ settings:
     years: 'y'
 ```
 
-`decimal-mode` menerima `RANDOM` atau `LIST`. Presisi desimal `decimal-places` menerima `0`, `1`, `2`, atau `3`. Dalam mode `LIST`, nilai yang tidak sesuai jumlah digit akan diformat mengikuti presisi yang dipilih.
+`decimal-mode` accepts `RANDOM` or `LIST`. `decimal-places` accepts `0`, `1`, `2`, or `3`. In `LIST` mode, values with a different number of digits are formatted to match the selected precision.
 
-## Penyimpanan data
+## Data storage
 
 ```yaml
 storage:
-  # YAML menyimpan data pada data.yml; MYSQL menyimpan di database.
+  # YAML stores data in data.yml; MYSQL stores it in a database.
   type: YAML
   mysql:
-    # Alamat/port database serta kredensial.
+    # Database address, port, and credentials.
     host: localhost
     port: 3306
     database: minecraft
     username: root
     password: ''
-    # Nama tabel dan ukuran connection pool.
+    # Table name and connection pool size.
     table: fiofishing_players
     pool-size: 5
 ```
 
-Key `type` di dalam bagian `storage` menerima `YAML` atau `MYSQL`. Pergantian backend tidak memindahkan isi `data.yml` secara otomatis. Cadangkan data dan migrasikan lebih dulu jika ingin mempertahankan statistik pemain.
+The `type` key under `storage` accepts `YAML` or `MYSQL`. Changing the backend does not automatically move data from `data.yml`. Back up and migrate the data first if you want to preserve player statistics.

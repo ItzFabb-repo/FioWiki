@@ -1,40 +1,40 @@
 ---
-title: Bahasa dan nama tampilan
+title: Language and Display Names
 sidebar_position: 7
 ---
 
-# Bahasa dan nama tampilan
+# Language and Display Names
 
-## Mengubah bahasa pesan
+## Change the message language
 
-Pengaturan bahasa berada di dalam bagian `settings` pada `config.yml`:
+The language setting is under `settings` in `config.yml`:
 
 ```yaml
 settings:
   language: id
 ```
 
-Nilai bawaan: `en`, `id`, `jp`, dan `ch`. Plugin memilih file `plugins/FioFishing/Lang/messages_<kode>.yml`. Contohnya `language: id` memakai `Lang/messages_id.yml`.
+Built-in values are `en`, `id`, `jp`, and `ch`. The plugin loads `plugins/FioFishing/Lang/messages_<code>.yml`. For example, `language: id` uses `Lang/messages_id.yml`.
 
-Untuk mengubah teks, edit nilai pesan pada file bahasa dan pertahankan key di sisi kiri. Placeholder seperti `{player}`, `{fish}`, `{length}`, `{eventName}` harus tetap ada bila diperlukan oleh pesan tersebut. Pesan menggunakan MiniMessage (contoh `<green>Teks</green>`) dan beberapa nilai lama dapat memakai format warna `&`.
+To change message text, edit the values in the language file and keep the keys on the left unchanged. Preserve placeholders such as `{player}`, `{fish}`, `{length}`, and `{eventName}` when the message uses them. Messages support MiniMessage (for example, `<green>Text</green>`); some legacy values may use `&` color codes.
 
-Anda dapat menambahkan kode bahasa sendiri dengan membuat `Lang/messages_<kode>.yml` berdasarkan file yang paling lengkap, lalu mengatur `language` di bawah `settings` ke kode yang sama. Key yang belum tersedia di file pilihan memakai teks default bahasa itu atau fallback Inggris.
+You can add a language code by creating `Lang/messages_<code>.yml` from the most complete language file, then setting the same code under `settings.language`. Missing keys use that language's default text or fall back to English.
 
-## Alias material dan biome
+## Material and biome aliases
 
-File alias berada di:
+Alias files are located at:
 
 - `plugins/FioFishing/CustomNaming/material.json`
 - `plugins/FioFishing/CustomNaming/biome.json`
 
-Keduanya berbentuk pasangan ID ke nama tampilan. Material/biome bawaan sudah terdaftar. Tambahkan baris baru untuk resource pack atau biome datapack:
+Both files map IDs to display names. Built-in materials and biomes are already registered. Add entries for resource-pack items or datapack biomes:
 
 `material.json`:
 
 ```json
 {
-  "minecraft:cod": "Ikan Sungai",
-  "mypack:river_carp": "Ikan Mas Sungai"
+  "minecraft:cod": "River Fish",
+  "mypack:river_carp": "River Carp"
 }
 ```
 
@@ -42,21 +42,21 @@ Keduanya berbentuk pasangan ID ke nama tampilan. Material/biome bawaan sudah ter
 
 ```json
 {
-  "my_datapack:crystal_lake": "Danau Kristal"
+  "my_datapack:crystal_lake": "Crystal Lake"
 }
 ```
 
-Format yang benar adalah JSON: gunakan tanda kutip ganda, koma di antara entri, dan jangan menaruh koma setelah entri terakhir. Plugin mencocokkan ID tanpa membedakan huruf besar/kecil. Untuk biome custom, gunakan ID namespaced yang sama pada bagian `conditions`, key `biome` di file ikan. Jika nama ikan menggunakan `displayName: FOLLOW_MATERIAL_ALIAS`, nama materialnya diambil dari `material.json`.
+Use valid JSON: double quotes, commas between entries, and no comma after the final entry. The plugin matches IDs without case sensitivity. For a custom biome, use the same namespaced ID in the fish file under `conditions.biome`. If a fish uses `displayName: FOLLOW_MATERIAL_ALIAS`, its material name is read from `material.json`.
 
-## Format warna MiniMessage
+## MiniMessage colors
 
-Nama item, lore, pesan, title, dan bossbar dapat mendukung MiniMessage. Contoh:
+Item names, lore, messages, titles, and bossbars can support MiniMessage. Example:
 
 ```yaml
-displayName: '<#45D6B5>Ikan Hijau</#45D6B5>'
+displayName: '<#45D6B5>Green Fish</#45D6B5>'
 lore:
-  - '<gray>Ikan dari danau khusus.</gray>'
-  - '<yellow>Harga: {worth}</yellow>'
+  - '<gray>A fish from a special lake.</gray>'
+  - '<yellow>Price: {worth}</yellow>'
 ```
 
-Pastikan tag dibuka dan ditutup dengan benar. Bila pesan tidak perlu warna, teks biasa juga bisa dipakai.
+Make sure every tag is properly opened and closed. Plain text also works when you do not need colors.

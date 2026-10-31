@@ -18,7 +18,6 @@ export default function Root({children}) {
   const [isLoading, setIsLoading] = useState(true);
   const [showScrollDown, setShowScrollDown] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
-  const [activeTheme, setActiveTheme] = useState('dark');
 
   const closeMobileSidebar = () => {
     const closeBtn = document.querySelector('.navbar-sidebar__close');
@@ -64,7 +63,6 @@ export default function Root({children}) {
       document.documentElement.getAttribute('data-theme') ||
       'dark';
     const normalized = normalizeTheme(initialTheme);
-    setActiveTheme(normalized);
     persistTheme(normalized);
   }, []);
 
@@ -72,15 +70,6 @@ export default function Root({children}) {
     // Any location change: ensure mobile sidebar state is fully reset
     closeMobileSidebar();
   }, [location.pathname, location.search, location.hash]);
-
-  const applyTheme = (themeName) => {
-    const normalized = persistTheme(themeName);
-    setActiveTheme(normalized);
-    document.body.classList.add('theme-transitioning');
-    window.setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
-    }, 550);
-  };
 
   useEffect(() => {
     let finished = false;
@@ -164,26 +153,6 @@ export default function Root({children}) {
           {isNearBottom ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
         </span>
       </button>
-      <div className="fiowiki-theme-switcher" role="group" aria-label="Theme Switcher">
-        <button
-          type="button"
-          className={`fiowiki-theme-btn${activeTheme === 'dark' ? ' is-active' : ''}`}
-          onClick={() => applyTheme('dark')}>
-          Dark
-        </button>
-        <button
-          type="button"
-          className={`fiowiki-theme-btn${activeTheme === 'light' ? ' is-active' : ''}`}
-          onClick={() => applyTheme('light')}>
-          Light
-        </button>
-        <button
-          type="button"
-          className={`fiowiki-theme-btn${activeTheme === 'sunset' ? ' is-active' : ''}`}
-          onClick={() => applyTheme('sunset')}>
-          Sunset
-        </button>
-      </div>
       {children}
     </>
   );

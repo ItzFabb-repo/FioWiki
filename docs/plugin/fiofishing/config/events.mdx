@@ -1,141 +1,141 @@
 ---
-title: Event dan jadwal
+title: Events and Schedule
 sidebar_position: 5
 ---
 
-# Event dan jadwal
+# Events and Schedule
 
-Semua file event berada di `plugins/FioFishing/Events/`. Satu file `.yml` untuk satu event. File `settings.yml` mengatur jadwal mingguan.
+Event files are stored in `plugins/FioFishing/Events/`, with one `.yml` file per event. `settings.yml` controls the weekly schedule.
 
-## ID dan jenis event
+## Event IDs and types
 
-Tuliskan ID huruf kecil di `id`; nama file sebaiknya menggambarkan ID tersebut. Pilih salah satu jenis yang tersedia:
+Use a lowercase ID in `id`; the file name should describe that ID. Choose one of the available event types:
 
-| ID event | Jenis yang diisi pada `type` | Kriteria |
+| Event ID | Value for `type` | Scoring criteria |
 | --- | --- | --- |
-| `most_fish_caught` | `MOST_FISH_CAUGHT` | Jumlah ikan terbanyak. |
-| `most_largest_fish_caught` | `MOST_LARGEST_FISH_CAUGHT` | Skor dari tangkapan ikan besar. |
-| `most_smallest_fish_caught` | `MOST_SMALLEST_FISH_CAUGHT` | Skor dari tangkapan ikan kecil. |
-| `largest_fish_caught` | `LARGEST_FISH_CAUGHT` | Ikan terbesar. |
-| `smallest_fish_caught` | `SMALLEST_FISH_CAUGHT` | Ikan terkecil. |
-| `most_rarity_fish_caught` | `MOST_RARITY_FISH_CAUGHT` | Jumlah ikan dari rarity tertentu. |
-| `most_junk_caught` | `MOST_JUNK_CAUGHT` | Jumlah junk. |
-| `most_bait_used` | `MOST_BAIT_USED` | Jumlah bait yang digunakan. |
-| `most_specific_bait_used` | `MOST_SPECIFIC_BAIT_USED` | Penggunaan bait tertentu. |
-| `fishing_spree` | `FISHING_SPREE` | Fishing spree; dapat mempercepat waktu bite. |
+| `most_fish_caught` | `MOST_FISH_CAUGHT` | Catch the highest number of fish. |
+| `most_largest_fish_caught` | `MOST_LARGEST_FISH_CAUGHT` | Score for catching large fish. |
+| `most_smallest_fish_caught` | `MOST_SMALLEST_FISH_CAUGHT` | Score for catching small fish. |
+| `largest_fish_caught` | `LARGEST_FISH_CAUGHT` | Catch the largest fish. |
+| `smallest_fish_caught` | `SMALLEST_FISH_CAUGHT` | Catch the smallest fish. |
+| `most_rarity_fish_caught` | `MOST_RARITY_FISH_CAUGHT` | Catch the most fish of a selected rarity. |
+| `most_junk_caught` | `MOST_JUNK_CAUGHT` | Catch the most junk. |
+| `most_bait_used` | `MOST_BAIT_USED` | Use the most bait. |
+| `most_specific_bait_used` | `MOST_SPECIFIC_BAIT_USED` | Use a specific bait the most. |
+| `fishing_spree` | `FISHING_SPREE` | Maintain a fishing spree; this can speed up bite times. |
 
-## Bentuk file event
+## Event file structure
 
 ```yaml
-# ID ini harus cocok dengan ID di jadwal mingguan.
+# This ID must match the ID in the weekly schedule.
 id: most_fish_caught
 
 settings:
-  # Aktifkan agar event dapat dimulai atau dijadwalkan.
+  # Enable the event so it can be started or scheduled.
   enabled: true
-  # Jenis event dari tabel di atas.
+  # Event type from the table above.
   type: MOST_FISH_CAUGHT
-  # Filter rarity dan fish/bait ID; [] tidak membatasi.
+  # Rarity and fish/bait ID filters; [] means no restrictions.
   list-rarities: []
   match-fish-ids: []
-  # Kecepatan bite, 1 normal dan lebih besar lebih cepat.
+  # Bite-speed multiplier; 1 is normal and higher values are faster.
   bite-speed-multiplier: 1.0
   soundsDuringEvent:
-    # Sound Minecraft yang dimainkan selama event.
+    # Minecraft sound played during the event.
     sound: MUSIC_DISC_CHIRP
-    # Tick antarulangan; -1 hanya dimainkan saat mulai.
+    # Ticks between repeats; -1 plays only when the event starts.
     tickLoop: 3700
     volume: 1.0
     pitch: 1.0
-    # Kategori suara Minecraft, contoh MASTER, MUSIC, RECORDS.
+    # Minecraft sound category, for example MASTER, MUSIC, RECORDS.
     category: MASTER
   requirements:
     player:
-      # Syarat jumlah pemain online.
+      # Minimum number of online players.
       enable: true
       value: 5
     region:
       inPlayer:
-        # Membutuhkan WorldGuard dan region yang ditulis di bawah.
+        # Requires WorldGuard and the region listed below.
         enable: false
         region:
           - fishing_dock
-        # Jumlah minimum pemain di region.
+        # Minimum number of players in the region.
         value: 5
 
 event:
   whenStarted:
-    # Jalankan aksi ketika event dimulai.
+    # Run actions when the event starts.
     enabled: true
     commands:
-      - '[MESSAGE] <green>Event {eventName} dimulai!</green>'
+      - '[MESSAGE] <green>Event {eventName} has started!</green>'
   whenStopped:
     enabled: false
     commands: []
 
 bossbar:
-  # Warna: BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW.
+  # Color: BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW.
   colour: BLUE
-  # %time% adalah sisa waktu; {eventName} adalah nama event.
-  message: '<aqua>Kontes Memancing</aqua>: <white>%time%</white>'
+  # %time% is the remaining time; {eventName} is the event name.
+  message: '<aqua>Fishing Contest</aqua>: <white>%time%</white>'
 
 rewards:
   participate:
-    # Hadiah untuk semua pemain yang mengikuti event.
+    # Rewards for every player who joins the event.
     enable: false
     commands:
       - '[MONEY] 100'
   tier:
     commands:
-      # Hadiah untuk ranking 1, 2, 3, dan peringkat lainnya (*).
+      # Rewards for ranks 1, 2, 3, and other ranks (*).
       '1': ['[EXP_POINTS] 10']
       '2': ['[EXP_POINTS] 5']
       '*': []
 ```
 
-## Opsi event
+## Event options
 
-- `list-rarities` berisi ID rarity seperti `common`, `rare`, atau `'*'`. Berlaku untuk event yang membatasi rarity.
-- `match-fish-ids` dapat diisi ID ikan atau bait sesuai tipe event; `'*'` berarti semua. Gunakan ID yang sama dengan file ikan/bait.
-- Key `sound` di dalam `soundsDuringEvent` adalah nama sound Minecraft; `tickLoop: -1` berarti sekali ketika mulai, selain itu angka tick sebagai interval. Volume/pitch berupa angka. Kategori memakai nama SoundCategory, misalnya `MASTER`, `MUSIC`, `RECORDS`, `PLAYERS`, `AMBIENT`.
-- Syarat pemain memakai jumlah minimum. Syarat region memerlukan WorldGuard, daftar nama region, dan jumlah pemain minimum.
-- Bossbar menerima warna `BLUE`, `GREEN`, `PINK`, `PURPLE`, `RED`, `WHITE`, atau `YELLOW`.
-- Reward tier menggunakan key ranking `'1'`, `'2'`, dan seterusnya; `'*'` adalah fallback untuk ranking tanpa key khusus.
+- `list-rarities` contains rarity IDs such as `common`, `rare`, or `'*'`. It applies to event types that filter by rarity.
+- `match-fish-ids` accepts fish or bait IDs, depending on the event type; `'*'` means all. Use the same IDs as the fish and bait files.
+- `sound` under `soundsDuringEvent` is a Minecraft sound name. `tickLoop: -1` plays it once at the start; other values are repeat intervals in ticks. Volume and pitch are numbers. Sound categories include `MASTER`, `MUSIC`, `RECORDS`, `PLAYERS`, and `AMBIENT`.
+- Player requirements use a minimum player count. Region requirements need WorldGuard, region names, and a minimum player count.
+- Bossbar colors accept `BLUE`, `GREEN`, `PINK`, `PURPLE`, `RED`, `WHITE`, or `YELLOW`.
+- Reward tiers use rank keys such as `'1'`, `'2'`, and so on; `'*'` is the fallback for ranks without a specific key.
 
-## Jadwal mingguan
+## Weekly schedule
 
-Edit `Events/settings.yml`. Setiap hari mempunyai `enable` dan `list-events`. Waktu menggunakan zona waktu lokal server.
+Edit `Events/settings.yml`. Each day has `enable` and `list-events` values. Times use the server's local time zone.
 
 ```yaml
 schedule:
   monday:
-    # Matikan satu hari penuh dengan false.
+    # Set to false to disable an entire day.
     enable: true
     list-events:
-      # Bentuk dengan waktu: id_event;HH:mm-HH:mm
+      # Timed format: event_id;HH:mm-HH:mm
       - 'most_fish_caught;18:00-19:00'
-      # Tanpa rentang berarti sepanjang hari tersebut.
+      # Without a time range, the event runs for the whole day.
       - fishing_spree
   tuesday:
     enable: false
     list-events: []
 ```
 
-Nama hari yang diterima: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`. ID event pada daftar harus sama dengan nilai `id` di file event.
+Accepted day names are `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, and `sunday`. Each scheduled event ID must match the `id` value in its event file.
 
-## Format aksi
+## Action format
 
 ```yaml
 commands:
-  - '[CONSOLE] say Event selesai'
-  - '[MESSAGE] <green>Selamat!</green>'
+  - '[CONSOLE] say Event finished'
+  - '[MESSAGE] <green>Congratulations!</green>'
   - '[SOUND] BLOCK_NOTE_BLOCK_PLING 1 2'
-  - '[TITLE] <gold>Juara!</gold>'
-  - '[SUBTITLE] Kamu mendapat hadiah'
+  - '[TITLE] <gold>Winner!</gold>'
+  - '[SUBTITLE] You received a reward'
   - '[MONEY] 100'
   - '[EXP_POINTS] 10'
   - '[EXP_LEVEL] 1'
   - '[ITEM] DIAMOND 1'
 ```
 
-`[MONEY]` memakai perintah `eco give` dan perlu plugin ekonomi. `[ITEM]` memberi material Minecraft sederhana dan jumlah opsional. Perintah `[CONSOLE]` dijalankan sebagai console; aksi pemain diberikan kepada penerima reward. Teks mendukung MiniMessage dan placeholder event seperti `{eventName}`.
+`[MONEY]` runs `eco give` and requires an economy plugin. `[ITEM]` gives a basic Minecraft material with an optional amount. `[CONSOLE]` commands run as the console; player actions are sent to the reward recipient. Text supports MiniMessage and event placeholders such as `{eventName}`.

@@ -5,64 +5,64 @@ sidebar_position: 2
 
 # Create Custom Fishs
 
-Buat dan ubah ikan di `plugins/FioFishing/Loots/Fish/*.yml`. File bawaan dikelompokkan berdasarkan rarity seperti `common.yml`, `rare.yml`, dan `mythic.yml`. Salin file contoh yang paling sesuai, lalu ubah nilai dan komentar sesuai kebutuhan.
+Create and edit fish in `plugins/FioFishing/Loots/Fish/*.yml`. Bundled files are grouped by rarity, such as `common.yml`, `rare.yml`, and `mythic.yml`. Copy the closest example, then update its values and comments as needed.
 
-## Struktur file ikan
+## Fish file structure
 
 ```yaml
 rarity:
-  # ID rarity untuk fish, filter pancing, dan modifier umpan.
+  # Rarity ID used by fish, rod filters, and bait modifiers.
   id: common
-  # Urutan rarity dalam menu; angka lebih kecil tampil dahulu.
+  # Order of this rarity in menus; lower numbers appear first.
   weight: 1
-  # Pengali bobot semua ikan di file; 1 normal, 0 menonaktifkan peluangnya.
+  # Multiplier for all fish weights in this file; 1 is normal, 0 disables their chance.
   catch-weight: 1
-  # Pengali harga jual; 1 berarti harga normal.
+  # Sell-price multiplier; 1 is the normal price.
   worth-multi: 1.0
   fih-animations:
-    # Entity animasi yang muncul saat ikan rarity ini menggigit.
+    # Animated entity shown when a fish of this rarity bites.
     entity: TROPICAL_FISH
   settings:
     broadcast:
-      # Aktifkan pengumuman tangkapan rarity ini.
+      # Enable announcements for catches of this rarity.
       enable: false
-      # Jika true, pengumuman hanya saat pemancing memegang rod.
+      # When true, announce only if the angler is holding a rod.
       if-only-holdingRods: true
-      # Daftar aksi; contoh format tersedia di bawah.
+      # List of actions; see the examples below for the format.
       message:
-        - '[MESSAGE] <gray>{player} mendapat {fish}</gray>'
+        - '[MESSAGE] <gray>{player} caught {fish}</gray>'
         - '[SOUND] BLOCK_BUBBLE_COLUMN_BUBBLE_POP 1 1 master'
   default_settings:
     size:
-      # Batas ukuran default ikan dalam cm.
+      # Default fish-size range in centimeters.
       min: 1
       max: 20
-    # Catat ikan pada statistik pemancing.
+    # Record the catch in angler statistics.
     fisherman: false
-    # Catat ikan pada jurnal/perjalanan.
+    # Record the catch in the journal.
     journal: true
-    # Harga dasar sebelum dikalikan worth-multi.
+    # Base price before worth-multi is applied.
     worth: 0.50
     conditions:
-      # Biome yang diizinkan; [] berarti semua biome.
+      # Allowed biomes; [] means every biome.
       biome: []
-      # Waktu: DAY, NIGHT, SUNRISE, SUNSET; [] berarti kapan saja.
+      # Time: DAY, NIGHT, SUNRISE, SUNSET; [] means any time.
       time: []
-      # Cuaca: NONE, RAIN, THUNDER; [] berarti semua cuaca.
+      # Weather: NONE, RAIN, THUNDER; [] means any weather.
       weather: []
-    # Lore default jika fish tidak punya lore sendiri.
+    # Default lore used when a fish has no custom lore.
     lore:
       - '<gray>{length}cm</gray>'
   behavior:
-    # Kilau seperti enchantment.
+    # Add an enchantment-like glint.
     glow: false
-    # true memblokir interaksi tersebut; false mengizinkan.
+    # true blocks the interaction; false allows it.
     block:
       HOPPER: false
       CHEST: false
       CRAFTER: true
       ANVIL: true
-    # true mencegah aksi/kerusakan yang tertulis; false tidak mencegah.
+    # true prevents the listed action or damage; false allows it.
     environment:
       DESTROYED_BY_CACTUS: true
       DESTROYED_BY_LAVA: true
@@ -71,67 +71,67 @@ rarity:
       DROP: false
 
 fish:
-  # ID unik ikan. Jangan gunakan ID yang sama di file rarity lain.
+  # Unique fish ID. Do not reuse an ID from another rarity file.
   river_carp:
-    # Material Minecraft yang menjadi item ikan.
+    # Minecraft material used for the fish item.
     material: COD
-    # Nama item; menerima teks MiniMessage.
+    # Item name; supports MiniMessage text.
     displayName: '<#bf8d52>River Carp'
-    # CustomModelData opsional untuk resource pack.
+    # Optional CustomModelData for a resource pack.
     model-data: 20001
-    # ID namespaced opsional untuk tampilan/resource pack.
+    # Optional namespaced ID for a resource-pack display/model.
     resource-pack-id: mypack:river_carp
-    # Opsional, untuk texture kepala PLAYER_HEAD: Base64 skin Mojang.
+    # Optional Base64 Mojang skin texture for a PLAYER_HEAD.
     # texture: 'BASE64_TEXTURE_PROPERTY'
     settings:
-      # Bobot peluang relatif: semakin tinggi semakin sering muncul.
+      # Relative catch weight; higher values make this fish appear more often.
       weight: 50
-      # Ukuran hasil dalam cm; config umum mengatur angka desimal.
+      # Catch size in centimeters; decimal precision is set in the main config.
       size:
         min: 40
         max: 80
-      # Harga dasar ikan; dikalikan pengali rarity.
+      # Base fish price; multiplied by the rarity multiplier.
       worth: 8.5
-      # Catat pada statistik pemancing dan jurnal.
+      # Record the catch in angler statistics and the journal.
       fisherman: true
       journal: true
-      # Sembunyikan notifikasi terkait ikan ini.
+      # Hide notifications related to this fish.
       silent: false
     conditions:
-      # Biome Minecraft atau key namespaced datapack.
+      # Minecraft biomes or namespaced datapack keys.
       biome: [RIVER, FROZEN_RIVER]
       # DAY, NIGHT, SUNRISE, SUNSET.
       time: [DAY, SUNRISE]
       # NONE, RAIN, THUNDER.
       weather: [NONE, RAIN]
-    # Lore khusus; jika dihilangkan, pakai lore default rarity.
+    # Custom lore; omitted keys use the rarity default.
     lore:
       - '<gray>{length}cm</gray>'
-      - '<dark_gray>Ditangkap oleh: {fisherman}</dark_gray>'
+      - '<dark_gray>Caught by: {fisherman}</dark_gray>'
 ```
 
-## Opsi nilai dan cara mengatur peluang
+## Accepted values and catch weights
 
-- **Rarity:** gunakan ID konsisten seperti `common`, `rare`, `epic`, `legendary`, atau `mythic`. Nilai rarity pada contoh adalah nama yang harus sama dengan file/fish ID dan filter rod/bait.
-- **Material:** nama material Minecraft huruf besar, misalnya `COD`, `PAPER`, atau `PLAYER_HEAD`.
-- **Nama dan lore:** nilai teks menerima MiniMessage, misalnya `<aqua>Nama Ikan</aqua>`. `{length}` dapat menampilkan panjang tangkapan; `{fisherman}` dapat menampilkan nama pemancing.
-- **Berat peluang:** nilai `weight` bukan persen. Misalnya ikan A berbobot `50` dan ikan B `10`, ikan A punya bobot relatif lebih besar jika keduanya memenuhi kondisi.
-- **Ukuran dan harga:** `min`/`max` menentukan rentang ukuran cm. Harga dasar di `worth` dikalikan `worth-multi` pada rarity.
-- **Syarat:** biome boleh nama enum Minecraft seperti `RIVER` atau ID custom seperti `my_datapack:crystal_lake`. Waktu hanya `DAY`, `NIGHT`, `SUNRISE`, `SUNSET`; cuaca hanya `NONE`, `RAIN`, `THUNDER`.
-- **Default dan override:** `default_settings` menjadi nilai umum. Jika fish memiliki nilai sendiri dengan key yang sama, pengaturan fish itu yang dipakai.
+- **Rarity:** Use consistent IDs such as `common`, `rare`, `epic`, `legendary`, or `mythic`. Fish definitions and rod/bait filters must use matching IDs.
+- **Material:** Use an uppercase Minecraft material name, such as `COD`, `PAPER`, or `PLAYER_HEAD`.
+- **Name and lore:** Text values support MiniMessage, for example `<aqua>Fish Name</aqua>`. `{length}` can show the catch size; `{fisherman}` can show the angler's name.
+- **Catch weight:** `weight` is not a percentage. For example, if fish A has weight `50` and fish B has weight `10`, fish A has a higher relative chance when both meet their conditions.
+- **Size and price:** `min` and `max` set the size range in centimeters. The base `worth` is multiplied by the rarity's `worth-multi`.
+- **Conditions:** Biomes can be Minecraft enum names such as `RIVER` or custom IDs such as `my_datapack:crystal_lake`. Time accepts `DAY`, `NIGHT`, `SUNRISE`, or `SUNSET`; weather accepts `NONE`, `RAIN`, or `THUNDER`.
+- **Defaults and overrides:** `default_settings` provides common values. A fish-specific value with the same key overrides the default.
 
-## Key perlindungan item
+## Item protection keys
 
-Di dalam bagian `block`, key dari contoh file mencakup `CRAFTER`, `HOPPER`, `CHEST`, `ENDER_CHEST`, `ALL_SHULKER_BOX`, `ALL_BUNDLE`, `CRAFTING_TABLE`, `VILLAGER_TRADING`, `TRAPPED_CHEST`, `BARREL`, `PIGLIN_TRADES`, `PICKED_BY_COPPER_GOLEM`, `COPPER_CHEST`, `EXPOSED_COPPER_CHEST`, `WEATHERED_COPPER_CHEST`, `OXIDIZED_COPPER_CHEST`, versi `WAXED_*` dari copper chest, `ANVIL`, `BEACON`, `BLAST_FURNACE`, `BREWING_STAND`, `DISPENSER`, `DROPPER`, `ENCHANTING_TABLE`, `FURNACE`, `GRINDSTONE`, `WEAR_CUSTOM_HEAD`, `WEAR_ARMOR`, `ITEM_FRAME`, dan `GLOW_ITEM_FRAME`.
+The example `block` section supports `CRAFTER`, `HOPPER`, `CHEST`, `ENDER_CHEST`, `ALL_SHULKER_BOX`, `ALL_BUNDLE`, `CRAFTING_TABLE`, `VILLAGER_TRADING`, `TRAPPED_CHEST`, `BARREL`, `PIGLIN_TRADES`, `PICKED_BY_COPPER_GOLEM`, `COPPER_CHEST`, `EXPOSED_COPPER_CHEST`, `WEATHERED_COPPER_CHEST`, `OXIDIZED_COPPER_CHEST`, the `WAXED_*` copper chest variants, `ANVIL`, `BEACON`, `BLAST_FURNACE`, `BREWING_STAND`, `DISPENSER`, `DROPPER`, `ENCHANTING_TABLE`, `FURNACE`, `GRINDSTONE`, `WEAR_CUSTOM_HEAD`, `WEAR_ARMOR`, `ITEM_FRAME`, and `GLOW_ITEM_FRAME`.
 
-Di dalam bagian `environment`, key yang tersedia adalah `DESTROYED_BY_CACTUS`, `DESTROYED_BY_LAVA`, `DESTROYED_BY_END_CRYSTAL`, `DESTROYED_BY_TNT_MINECART`, `DESTROYED_BY_WITHER_EXPLOSION`, `DESTROYED_BY_TNT`, `DESTROYED_BY_CREEPER`, `IS_EDIBLE`, `PLACE`, dan `DROP`.
+The `environment` section supports `DESTROYED_BY_CACTUS`, `DESTROYED_BY_LAVA`, `DESTROYED_BY_END_CRYSTAL`, `DESTROYED_BY_TNT_MINECART`, `DESTROYED_BY_WITHER_EXPLOSION`, `DESTROYED_BY_TNT`, `DESTROYED_BY_CREEPER`, `IS_EDIBLE`, `PLACE`, and `DROP`.
 
-## Membuat ikan baru
+## Create a fish
 
-1. Pilih file rarity yang sesuai, atau salin salah satu file rarity untuk membuat kelompok baru.
-2. Tambahkan fish ID di bawah `fish:`. Gunakan huruf kecil dan underscore, misalnya `crystal_carp`.
-3. Atur `material`, `displayName`, `settings`, kondisi, dan lore.
-4. Jika memakai model resource pack, isi `model-data` atau `resource-pack-id`. Untuk kepala, gunakan `PLAYER_HEAD` dan isi texture Base64.
-5. Reload dengan `/fiofishing admin reload`; cek console dan berikan sampel dengan `/fiofishing admin give fish <id> <pemain> [jumlah]`.
+1. Choose a rarity file, or copy one to create a new rarity group.
+2. Add a fish ID under `fish:`. Use lowercase letters and underscores, for example `crystal_carp`.
+3. Set `material`, `displayName`, `settings`, conditions, and lore.
+4. For a resource-pack model, set `model-data` or `resource-pack-id`. For a head texture, use `PLAYER_HEAD` and add the Base64 texture.
+5. Reload with `/fiofishing admin reload`, check the console, and give a test item with `/fiofishing admin give fish <id> <player> [amount]`.
 
-Fish ID harus unik di seluruh folder Fish. Untuk mengubah rarity ikan, pindahkan definisinya ke file rarity yang sesuai dan pastikan nilai ID rarity cocok.
+Fish IDs must be unique across the entire Fish folder. To change a fish's rarity, move its definition to the matching rarity file and make sure its rarity ID matches.
