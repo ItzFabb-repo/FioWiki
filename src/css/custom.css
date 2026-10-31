@@ -2121,7 +2121,6 @@ footer.footer {
  * Keep the existing Docusaurus layout and components; tune the color palette
  * so navigation, reading surfaces, and accents feel like one product.
  */
-:root,
 [data-fiowiki-theme='dark'] {
   --ifm-color-primary: #42c8b4;
   --ifm-color-primary-dark: #2eb5a2;
