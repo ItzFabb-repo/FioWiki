@@ -1,33 +1,108 @@
 ---
-title: Events
+title: Event dan jadwal
 sidebar_position: 5
 ---
 
-# Fishing events
+# Event dan jadwal
 
-Event definitions and the weekly timetable are in `plugins/FioFishing/Events/`. An event file defines one competition; `settings.yml` determines when events start automatically.
+Pengaturan kompetisi ada di `plugins/FioFishing/Events/`. Setiap event memiliki satu file `.yml`; jadwal otomatis mingguan berada di `Events/settings.yml`.
 
-## Event definition
+## ID dan jenis event
 
-Bundled event examples include `Most Fish Caught.yml`, `Largest Fish Caught.yml`, `Most Bait Used.yml` and `Fishing Spree.yml`. The event ID is derived from the filename (lowercase with underscores), for example `most_fish_caught`.
+File event memuat `id` yang harus memakai huruf kecil/angka/underscore atau tanda hubung. Jenis yang tersedia:
 
-The definition contains `settings.enabled`, an event `settings.type`, optional sound settings, participation requirements, optional WorldGuard region checks, bossbar settings and rewards. Requirements can specify whether participation is enabled and minimum requirements. `event.whenStarted` and `event.whenStopped` can run commands. Rewards can be configured for participation and ranking tiers.
+| ID/type | Aturan penilaian |
+| --- | --- |
+| `most_fish_caught` / `MOST_FISH_CAUGHT` | Jumlah ikan terbanyak. |
+| `most_largest_fish_caught` / `MOST_LARGEST_FISH_CAUGHT` | Mengumpulkan ikan besar dengan skor event. |
+| `most_smallest_fish_caught` / `MOST_SMALLEST_FISH_CAUGHT` | Mengumpulkan ikan kecil dengan skor event. |
+| `largest_fish_caught` / `LARGEST_FISH_CAUGHT` | Satu ikan terbesar. |
+| `smallest_fish_caught` / `SMALLEST_FISH_CAUGHT` | Satu ikan terkecil. |
+| `most_rarity_fish_caught` / `MOST_RARITY_FISH_CAUGHT` | Jumlah ikan dari rarity yang dipilih. |
+| `most_junk_caught` / `MOST_JUNK_CAUGHT` | Jumlah junk yang didapat. |
+| `most_bait_used` / `MOST_BAIT_USED` | Jumlah bait yang dipakai. |
+| `most_specific_bait_used` / `MOST_SPECIFIC_BAIT_USED` | Pemakaian bait tertentu. |
+| `fishing_spree` / `FISHING_SPREE` | Kompetisi fishing spree; dapat mengubah kecepatan bite. |
 
-The bundled event types include most fish, largest/smallest fish, rarity fish, junk, bait usage (including a specific bait), and fishing spree competitions. Copy the closest bundled event file when adding one, then change its ID/type and rewards. This keeps the supported type spelling and nested key structure intact.
+Nama file dan nilai `id` sebaiknya sama, misalnya `Most Fish Caught.yml` berisi `id: most_fish_caught`. Salin event contoh yang paling dekat dengan kebutuhan agar key lengkap.
 
-## Schedule
+## Pengaturan event
 
-Edit the day sections in `Events/settings.yml`. Each day can be enabled and can list event IDs. A plain ID schedules the event for the full day; a time range uses `event_id;HH:mm-HH:mm`.
+| Key | Tipe/nilai | Fungsi |
+| --- | --- | --- |
+| `settings.enabled` | Boolean | Mengaktifkan event agar bisa dijadwalkan/dimulai. |
+| `settings.type` | Salah satu tipe tabel di atas | Aturan kompetisi. Harus cocok dengan ID/jenis yang didukung. |
+| `settings.list-rarities` | Daftar rarity ID atau `'*'` | Rarity yang dihitung. Umumnya digunakan event berdasarkan rarity; kosong berarti tidak memfilter. |
+| `settings.match-fish-ids` | Daftar fish ID/bait ID atau `'*'` | Membatasi event pada ikan atau bait tertentu sesuai jenis event. |
+| `settings.bite-speed-multiplier` | Pengali desimal, minimal `0.01` | Kecepatan bite pada event yang memakai setting ini, terutama fishing spree. `1.0` normal; lebih besar lebih cepat. |
+| `settings.soundsDuringEvent.sound` | Nama sound Minecraft | Musik/suara selama event. |
+| `tickLoop` | Tick; `-1` sekali saat mulai | Interval ulang suara. `-1` berarti diputar sekali. |
+| `volume`, `pitch` | Angka desimal | Volume dan pitch sound. |
+| `category` | SoundCategory Minecraft | Kelompok suara, misalnya `MASTER`, `MUSIC`, `RECORDS`, `PLAYERS`, `AMBIENT`. |
+| `settings.requirements.player.enable` | Boolean | Memeriksa jumlah pemain minimum. |
+| `settings.requirements.player.value` | Bilangan bulat | Jumlah minimum pemain online. |
+| `settings.requirements.region.inPlayer.enable` | Boolean | Meminta pemain berada dalam region WorldGuard yang ditentukan. |
+| `region` | Daftar nama region WorldGuard | Region yang dihitung. Perlu WorldGuard. |
+| `requirements.region.inPlayer.value` | Bilangan bulat | Jumlah minimal pemain di region. |
+| `event.whenStarted.enabled` | Boolean | Menjalankan aksi saat event mulai. |
+| `event.whenStarted.commands` | Daftar aksi | Pesan/suara/perintah yang dijalankan saat event mulai. |
+| `event.whenStopped.enabled`, `commands` | Boolean dan daftar aksi | Aksi saat event berhenti. |
+| `bossbar.colour` | `BLUE`, `GREEN`, `PINK`, `PURPLE`, `RED`, `WHITE`, `YELLOW` | Warna bossbar. |
+| `bossbar.message` | Teks MiniMessage | Isi bossbar. `%time%` menampilkan sisa waktu; `{eventName}` nama event. |
+| `rewards.participate.enable` | Boolean | Memberi reward kepada setiap pemain yang ikut. |
+| `rewards.participate.commands` | Daftar aksi | Reward partisipasi. |
+| `rewards.tier.commands` | Peta peringkat ke daftar aksi | Key peringkat `1`, `2`, `3` dan `*` untuk peringkat lainnya. |
+
+Contoh syarat dan tampilan:
 
 ```yaml
-monday:
+settings:
   enabled: true
-  list-events:
-    - most_fish_caught;18:00-20:00
+  type: MOST_FISH_CAUGHT
+  requirements:
+    player:
+      enable: true
+      value: 5
+    region:
+      inPlayer:
+        enable: false
+        region: [fishing_dock]
+        value: 5
+bossbar:
+  colour: BLUE
+  message: '<aqua>Kontes Memancing</aqua>: <white>%time%</white>'
 ```
 
-Times use the server's local timezone. Use `/fiofishing admin events list` and `running` to inspect events; admins can use the event start/freeze/stop subcommands to manage a live competition.
+## Jadwal mingguan (`settings.yml`)
 
-## Actions and placeholders
+Setiap hari (`monday` hingga `sunday`) punya `enable` dan `list-events`. Waktu memakai zona waktu lokal server.
 
-Use the bundled start, stop, tier and participation reward examples as templates. Supported action lines include console/player commands, messages, sounds, titles/subtitles, money, experience points/levels and items. Preserve the action prefix and argument layout shown by the corresponding example. Event text templates can use `{eventName}` and the placeholders present in that file; the bossbar's remaining-time token is `%time%`.
+```yaml
+schedule:
+  monday:
+    enable: true
+    list-events:
+      - 'most_fish_caught;18:00-19:00'
+      - fishing_spree
+```
+
+- `event_id;HH:mm-HH:mm` menjalankan event pada rentang waktu yang ditulis.
+- `event_id` tanpa rentang menjadwalkan event untuk hari itu penuh.
+- ID harus cocok dengan `id` dalam file event. Event yang `enabled: false` tidak dijalankan.
+
+## Aksi hadiah
+
+Tiap baris aksi harus berupa salah satu format berikut. Ganti nilai contoh sesuai server.
+
+| Format | Fungsi |
+| --- | --- |
+| `[CONSOLE] <perintah>` | Menjalankan perintah dari console. |
+| `[MESSAGE] <teks>` | Mengirim pesan ke pemain penerima. |
+| `[SOUND] <SOUND> <volume> <pitch>` | Memutar sound kepada pemain. |
+| `[TITLE] <teks>` / `[SUBTITLE] <teks>` | Menampilkan title atau subtitle. |
+| `[MONEY] <angka>` | Memberi uang lewat perintah economy `eco give`; memerlukan plugin ekonomi yang sesuai. |
+| `[EXP_POINTS] <angka>` | Memberi XP points. |
+| `[EXP_LEVEL] <angka>` | Memberi XP levels. |
+| `[ITEM] <MATERIAL> [jumlah]` | Memberi item Minecraft sederhana. |
+
+`{eventName}` dapat dipakai dalam teks event. Gunakan contoh action yang sudah ada sebagai acuan format YAML dan MiniMessage.

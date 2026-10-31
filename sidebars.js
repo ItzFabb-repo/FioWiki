@@ -120,13 +120,9 @@ const sidebars = {
           collapsed: true,
           items: [
             'plugin/fiofishing/index',
-            'plugin/fiofishing/commands-permissions',
-            'plugin/fiofishing/api',
-            'plugin/fiofishing/options',
-            'plugin/fiofishing/placeholders',
             {
               type: 'category',
-              label: 'Configuration',
+              label: 'Panduan Pengaturan',
               items: [
                 'plugin/fiofishing/config/config',
                 'plugin/fiofishing/config/fish',

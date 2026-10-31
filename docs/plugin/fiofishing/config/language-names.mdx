@@ -1,18 +1,62 @@
 ---
-title: Language & Names
+title: Bahasa dan nama tampilan
 sidebar_position: 7
 ---
 
-# Language & Names
+# Bahasa dan nama tampilan
 
-## Language files
+## Mengubah bahasa pesan
 
-Select a language with `settings.language` in `config.yml`: `en`, `id`, `jp`, or `ch`. The corresponding file is `plugins/FioFishing/Lang/messages_<code>.yml`. Edit the selected file to change messages and labels. Keep YAML keys unchanged and edit their values; other plugin features refer to those keys by name.
+Pengaturan bahasa berada di `config.yml`:
 
-Text fields support MiniMessage where the bundled value uses MiniMessage tags. Preserve placeholders such as `{player}`, `{fish}`, `{length}`, or `{eventName}` so the plugin can fill them in at runtime.
+```yaml
+settings:
+  language: id
+```
 
-## Friendly material and biome names
+Nilai bawaan: `en`, `id`, `jp`, dan `ch`. Plugin memilih file `plugins/FioFishing/Lang/messages_<kode>.yml`. Contohnya `language: id` memakai `Lang/messages_id.yml`.
 
-`CustomNaming/material.json` maps Minecraft material identifiers to display names. `CustomNaming/biome.json` does the same for biome identifiers, including custom datapack biome IDs. Use valid JSON and keep the identifier-to-name mapping format used by the shipped files.
+Untuk mengubah teks, edit nilai pesan pada file bahasa dan pertahankan key di sisi kiri. Placeholder seperti `{player}`, `{fish}`, `{length}`, `{eventName}` harus tetap ada bila diperlukan oleh pesan tersebut. Pesan menggunakan MiniMessage (contoh `<green>Teks</green>`) dan beberapa nilai lama dapat memakai format warna `&`.
 
-Fish names can use `FOLLOW_MATERIAL_ALIAS` to display the material's friendly name from `material.json`. When a fish's `conditions.biome` contains a custom biome, add a matching alias to `biome.json` for readable labels in menus and messages.
+Anda dapat menambahkan kode bahasa sendiri dengan membuat `Lang/messages_<kode>.yml` berdasarkan file yang paling lengkap, lalu mengatur `settings.language` ke kode yang sama. Key yang belum tersedia di file pilihan memakai teks default bahasa itu atau fallback Inggris.
+
+## Alias material dan biome
+
+File alias berada di:
+
+- `plugins/FioFishing/CustomNaming/material.json`
+- `plugins/FioFishing/CustomNaming/biome.json`
+
+Keduanya berbentuk pasangan ID ke nama tampilan. Material/biome bawaan sudah terdaftar. Tambahkan baris baru untuk resource pack atau biome datapack:
+
+`material.json`:
+
+```json
+{
+  "minecraft:cod": "Ikan Sungai",
+  "mypack:river_carp": "Ikan Mas Sungai"
+}
+```
+
+`biome.json`:
+
+```json
+{
+  "my_datapack:crystal_lake": "Danau Kristal"
+}
+```
+
+Format yang benar adalah JSON: gunakan tanda kutip ganda, koma di antara entri, dan jangan menaruh koma setelah entri terakhir. Plugin mencocokkan ID tanpa membedakan huruf besar/kecil. Untuk biome custom, gunakan ID namespaced yang sama pada `conditions.biome` di file ikan. Jika nama ikan menggunakan `displayName: FOLLOW_MATERIAL_ALIAS`, nama materialnya diambil dari `material.json`.
+
+## Format warna MiniMessage
+
+Nama item, lore, pesan, title, dan bossbar dapat mendukung MiniMessage. Contoh:
+
+```yaml
+displayName: '<#45D6B5>Ikan Hijau</#45D6B5>'
+lore:
+  - '<gray>Ikan dari danau khusus.</gray>'
+  - '<yellow>Harga: {worth}</yellow>'
+```
+
+Pastikan tag dibuka dan ditutup dengan benar. Bila pesan tidak perlu warna, teks biasa juga bisa dipakai.

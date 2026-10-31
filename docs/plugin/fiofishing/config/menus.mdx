@@ -1,15 +1,28 @@
 ---
-title: Menus
+title: Menu GUI
 sidebar_position: 6
 ---
 
-# Menus
+# Menu GUI
 
-Menu YAML files are loaded recursively from `plugins/FioFishing/Menu/`. The path is significant: a menu at `Menu/Shop/Baits.yml` can be opened by its relative menu path. The bundled files cover bait display, selling, shop, admin give screens and the fish journey.
+Semua menu dibaca dari `plugins/FioFishing/Menu/`, termasuk subfoldernya. File `.yml` bisa berisi tampilan menu, tombol item, dan aksi ketika tombol diklik. Jangan mengganti nama menu bawaan tanpa memperbarui rujukan path menu lainnya.
 
-## Menu layout
+## Menu bawaan
 
-A menu has a title and either `rows` (1–6) or a `size` (9–54, in multiples of 9). Item entries define a material, slot or slot list/range, name, lore, flags and actions.
+| Lokasi | Fungsi |
+| --- | --- |
+| `Menu/baits.yml` | Inventori pengelolaan bait pada rod. |
+| `Menu/Sell.yml` | Area untuk menaruh item yang hendak dijual. |
+| `Menu/Shop/Menu.yml` | Halaman utama shop. |
+| `Menu/Shop/Baits.yml` | Daftar umpan shop. |
+| `Menu/Shop/FishingRods.yml` | Daftar rod shop. |
+| `Menu/Journey/menu.yml` | Halaman jurnal ikan. |
+| `Menu/Journey/Rarity/<rarity>.yml` | Halaman ikan per rarity. |
+| `Menu/Admin/Gives/...` | Menu untuk memberikan ikan, bait, atau rod. |
+
+Salin file terdekat sebelum membuat file menu baru agar ID item dinamis dan tombol bawaan tetap mengikuti format yang benar.
+
+## Key menu
 
 ```yaml
 title: '<dark_green>Fishing Shop</dark_green>'
@@ -18,27 +31,66 @@ items:
   back:
     material: ARROW
     slot: 49
-    name: '<yellow>Back</yellow>'
+    name: '<yellow>Kembali</yellow>'
+    lore:
+      - '<gray>Kembali ke halaman sebelumnya</gray>'
     actions:
       left:
         - '[BACK]'
 ```
 
-Slots use zero-based inventory slots. Lists can include ranges, for example `'1,3-5'` or `'0-44'`. Match the key structure in a bundled menu when editing dynamic menus so generated items and placeholders continue to work.
+| Key | Opsi/nilai | Fungsi |
+| --- | --- | --- |
+| `title` | Teks MiniMessage | Judul inventori. |
+| `rows` | `1`–`6` | Jumlah baris, 9 slot setiap baris. |
+| `size` | `9`, `18`, `27`, `36`, `45`, `54` | Alternatif ukuran langsung dalam slot; kelipatan 9. Jika `rows` valid, `rows` digunakan. |
+| `items` | Peta nama tombol/item | Setiap key anak menjadi satu item/menu control. |
+| `items.<nama>.material` | Nama material Minecraft | Item ikon. Material tidak valid membuat item tidak tampil. |
+| `slot` | Bilangan bulat 0-based | Satu slot item; slot `0` adalah pojok kiri atas. |
+| `slots` | Daftar rentang atau daftar angka string | Banyak slot, contoh `['0-44']` atau `['1,3-5']`. |
+| `name` | Teks MiniMessage | Nama ikon. |
+| `lore` | Daftar teks | Deskripsi ikon. |
+| `flags` | Daftar ItemFlag | Menyembunyikan bagian tooltip item. Misalnya `HIDE_ATTRIBUTES`, `HIDE_ENCHANTMENTS`. |
+| `hide_tooltip` | Boolean | Menyembunyikan seluruh tooltip item. |
+| `actions` | Peta click ke daftar aksi | Aksi saat pemain mengklik item. |
 
-## Click actions
+Rentang slot bersifat inklusif. Contoh `'45-53'` mencakup 9 slot. Gunakan slot 0 sampai ukuran menu dikurangi 1.
 
-Actions are listed under click names such as `left`, `shift_left`, `right`, `shift_right`, `q`, `shift_any` or `any`. Supported action prefixes include:
+## Opsi klik
 
-| Action | Effect |
+Tuliskan aksi di bawah nama klik berikut: `left`, `shift_left`, `right`, `shift_right`, `q`, `shift_any`, atau `any`.
+
+| Aksi | Efek |
 | --- | --- |
-| `[NONE]` | No action. |
-| `[CLOSE]` | Close the inventory. |
-| `[BACK]` | Return to the previous menu. |
-| `[OPENMENU] <path>` | Open a menu by its path under `Menu/`. |
-| `[PLAYER] <command>` | Run a command as the clicking player. |
-| `[CONSOLE] <command>` | Run a command as console. |
-| `[TITLE]`, `[SUBTITLE]`, `[ACTIONBAR]`, `[MESSAGE]` | Send text to the player. |
-| `[SOUND] <sound> [volume] [pitch]` | Play a sound. |
+| `[NONE]` | Tidak melakukan apa-apa. Gunakan untuk dekorasi. |
+| `[CLOSE]` | Menutup menu. |
+| `[BACK]` | Membuka menu sebelumnya. |
+| `[OPENMENU] Shop/Baits` | Membuka file relatif terhadap folder `Menu/`; ekstensi `.yml` boleh dicantumkan atau dihilangkan. |
+| `[PLAYER] <perintah>` | Menjalankan perintah sebagai pemain. |
+| `[CONSOLE] <perintah>` | Menjalankan perintah sebagai console. |
+| `[TITLE] <teks>` | Menampilkan title. |
+| `[SUBTITLE] <teks>` | Menampilkan subtitle. |
+| `[ACTIONBAR] <teks>` | Mengirim action bar. |
+| `[MESSAGE] <teks>` | Mengirim pesan chat. |
+| `[SOUND] <SOUND> <volume> <pitch> [kategori]` | Memainkan sound; kategori opsional, default `MASTER`. |
 
-Admins can inspect/open menu files with `/fiofishing admin menu forceopen <player> <Menu/path.yml>`. Use forward slashes in the menu path.
+Contoh tombol yang membuka sub-menu:
+
+```yaml
+items:
+  bait-shop:
+    material: WHEAT
+    slot: 20
+    name: '<green>Beli Umpan</green>'
+    lore:
+      - '<gray>Lihat semua bait</gray>'
+    actions:
+      left:
+        - '[OPENMENU] Shop/Baits.yml'
+      any:
+        - '[NONE]'
+```
+
+## Pengaturan menu dinamis
+
+Menu shop, sell, journal, dan admin dapat diisi oleh FioFishing menggunakan item atau slot yang didefinisikan plugin. Jangan menghapus section yang dipakai halaman dinamis, seperti `content.slots`, daftar item placeholder, atau aksi tombol navigasi. Untuk memberi menu kepada admin secara paksa, perintahnya `/fiofishing admin menu forceopen <pemain> <Menu/path.yml>`.

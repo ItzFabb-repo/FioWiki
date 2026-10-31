@@ -1,46 +1,87 @@
 ---
-title: Fishing rods
+title: Pancing
 sidebar_position: 4
 ---
 
-# Fishing rods
+# Pancing
 
-Rod templates are loaded from `plugins/FioFishing/Loots/Rods/*.yml`. Each file has a `fishingRods` section with a unique `id`, a `rarity`, and the item's display name and settings.
+Definisi rod ada di `plugins/FioFishing/Loots/Rods/*.yml`. Satu file mendefinisikan satu rod. Salin rod contoh, beri ID unik, atur ketahanan/filter, lalu reload.
 
-## Durability and rules
+## ID, rarity, dan tampilan
 
-`settings.durability.enable` enables custom durability; `value` is the maximum. `dura-loss` separately sets loss for a failed reel, junk, each fish rarity, or the general catch fallback. The global warning toggle and threshold are configured in `config.yml`.
+| Key | Nilai | Fungsi |
+| --- | --- | --- |
+| `fishingRods.id` | ID unik, mis. `wooden_rod` | Nama internal untuk menu dan perintah give. |
+| `fishingRods.rarity` | ID rarity | Rarity yang dipakai untuk pengelompokan/menu rod. |
+| `fishingRods.display-name` | MiniMessage | Nama rod pada item. |
+| `fishingRods.default_vanilla` | Boolean | Jika `true`, pengaturan rod ini diterapkan ke rod vanilla yang belum punya data custom. Hanya satu definisi boleh menjadi default. |
+| `fishingRods.item.material` | Selalu `FISHING_ROD` | Material dasar rod. |
+| `fishingRods.item.custom.type` | `VANILLA`, `ITEMSADDER`, `ORAXEN`, `NEXO` | Sumber tampilan custom. |
+| `item.custom.modelData` | Bilangan bulat | CustomModelData vanilla. |
+| `item.custom.itemModel` | ID namespaced | Item model vanilla, contoh `custom_rods:wooden_rod`. |
+| `item.custom.custom` | ID item plugin | ID dari ItemsAdder/Oraxen/Nexo, mis. `mypack:wooden_rod`. |
+| `fishingRods.lore` | Daftar teks | Deskripsi item. Mendukung placeholder dan tag tampilan yang dipakai contoh. |
+
+## Durability
+
+Di `settings.durability`:
+
+| Key | Nilai | Fungsi |
+| --- | --- | --- |
+| `enable` | Boolean | Mengaktifkan durability custom FioFishing. |
+| `value` | Bilangan bulat positif | Nilai durability maksimum. |
+| `dura-loss.loss-per-catch` | Bilangan bulat | Kehilangan durability umum per tangkapan jika jenis hasil tidak punya nilai khusus. |
+| `dura-loss.loss-on-failed-catch` | Bilangan bulat | Kehilangan pada reel gagal. |
+| `dura-loss.loss-on-junk` | Bilangan bulat | Kehilangan saat mendapat junk. |
+| `dura-loss.loss-on-common`, `loss-on-uncommon`, `loss-on-rare`, `loss-on-epic`, `loss-on-legendary`, `loss-on-mythic` | Bilangan bulat | Durability yang hilang untuk setiap rarity. |
+
+Nilai kehilangan tidak boleh negatif; nilai negatif dibatasi menjadi nol. Peringatan sisa durability diatur terpisah pada `config.yml` → `settings.durability-break-warning`.
+
+## Enchantment, perilaku, dan loot vanilla
+
+| Key | Bentuk/nilai | Fungsi |
+| --- | --- | --- |
+| `settings.enchants.whitelist` | Daftar nama enchantment | Jika tidak kosong, enchantment yang tidak tercantum tidak diizinkan. `[]` berarti tidak ada whitelist. |
+| `settings.enchants.blacklist` | Daftar nama enchantment | Enchantment yang tetap ditolak. Contoh: `MENDING`, `UNBREAKING`. |
+| `settings.others.allow-vanilla-loot` | Boolean | Mengizinkan loot memancing vanilla. |
+| `settings.others.allow-anvil-repair` | Boolean | Mengizinkan rod diperbaiki di anvil. |
+| `settings.others.drop-on-death` | Boolean | Apakah rod jatuh ketika pemegangnya mati. |
+
+Gunakan nama enchantment Bukkit/Minecraft huruf besar seperti `MENDING`, `LURE`, `LUCK_OF_THE_SEA`, `UNBREAKING`.
+
+## Suara rod
+
+Empat aksi pada `settings.sound`: `cast`, `reel`, `bite`, dan `broken`. Tiap aksi memiliki:
+
+| Key | Nilai | Fungsi |
+| --- | --- | --- |
+| `enable` | Boolean | Memainkan atau mematikan suara untuk aksi itu. |
+| `sound` | Nama sound Minecraft | Sound yang dimainkan. Contoh: `entity.fishing_bobber.throw`, `entity.fishing_bobber.retrieve`, `entity.fishing_bobber.splash`, `entity.item.break`. |
+| `volume` | Angka desimal | Volume; `1.0` nilai normal. |
+| `pitch` | Angka desimal | Pitch; `1.0` nilai normal. |
+
+## Filter ikan, rarity, dan umpan
+
+| Key | Nilai | Fungsi |
+| --- | --- | --- |
+| `settings.allowed.fish.enable` | Boolean | Mengaktifkan filter fish ID. |
+| `settings.allowed.fish.list` | Daftar fish ID atau `'*'` | Fish ID yang boleh ditangkap. `'*'` berarti semua ikan. |
+| `settings.allowed.rarities.enable` | Boolean | Mengaktifkan filter rarity. |
+| `settings.allowed.rarities.list` | Daftar rarity ID atau `'*'` | Rarity yang boleh ditangkap. |
+| `settings.allowed.baits` | Daftar bait ID | Bait yang dapat dipasang/dipakai pada rod. |
+
+Jika filter `enable` diset `false`, daftar terkait tidak membatasi rod. Pastikan ID sama persis dengan `fish` ID, `rarity.id`, dan `baits.settings.id` di file lainnya.
 
 ```yaml
-fishingRods:
-  rarity: common
-  id: wooden_rod
-  display-name: '<white>Wooden Rod</white>'
-  default_vanilla: true
-  settings:
-    durability:
+settings:
+  allowed:
+    fish:
       enable: true
-      value: 30
-      dura-loss:
-        loss-per-catch: 1
-        loss-on-failed-catch: 0
-        loss-on-junk: 1
-        loss-on-common: 2
-    enchants:
-      whitelist: []
-      blacklist: [MENDING, UNBREAKING]
-    others:
-      allow-vanilla-loot: false
-      allow-anvil-repair: true
-      drop-on-death: true
+      list: [river_carp]
+    rarities:
+      enable: true
+      list: [common, rare]
+    baits: [worm, shrimp]
 ```
 
-Only one rod can set `default_vanilla: true`; this applies its settings to untagged vanilla rods. Set it false on custom rod templates if you do not want that behavior.
-
-## Sounds, filters, appearance
-
-Each of `settings.sound.cast`, `reel`, `bite`, and `broken` can be enabled, and has a sound name, volume and pitch. `settings.allowed.fish` can restrict fish IDs, `allowed.rarity` can restrict rarities, and `allowed.baits` can restrict bait IDs. Use the enable/list structure from the bundled example when setting these filters; an empty list alone does not enable a filter.
-
-Rods are backed by the vanilla `FISHING_ROD` material. `item.custom.type` can use vanilla model data or item IDs from ItemsAdder, Oraxen, or Nexo; the optional `itemModel` supports vanilla item model identifiers. The rod's `display-name` and lore support MiniMessage.
-
-Give a configured rod with `/fiofishing admin give fishingrods <id> <player> [amount]`. If you rename the ID, update bait compatibility, menu entries and any command that refers to it.
+Pakai daftar yang berisi `'*'` bila ingin semua fish/rarity. Jangan membiarkan filter aktif dengan daftar kosong karena tidak ada nilai yang cocok.
