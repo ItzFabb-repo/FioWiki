@@ -6,10 +6,11 @@ const normalizeTheme = (themeName) =>
 
 const persistTheme = (themeName) => {
   const normalized = normalizeTheme(themeName);
-  document.documentElement.setAttribute('data-theme', normalized);
-  document.documentElement.setAttribute('data-theme-choice', normalized);
+  document.documentElement.setAttribute('data-fiowiki-theme', normalized);
+  const colorMode = normalized === 'light' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', colorMode);
+  window.localStorage.setItem('theme', colorMode);
   window.localStorage.setItem('fiowiki-theme', normalized);
-  window.localStorage.setItem('theme', normalized);
   return normalized;
 };
 
@@ -58,9 +59,8 @@ export default function Root({children}) {
 
   useEffect(() => {
     const initialTheme =
-      window.localStorage.getItem('theme') ||
       window.localStorage.getItem('fiowiki-theme') ||
-      document.documentElement.getAttribute('data-theme') ||
+      document.documentElement.getAttribute('data-fiowiki-theme') ||
       'dark';
     const normalized = normalizeTheme(initialTheme);
     persistTheme(normalized);

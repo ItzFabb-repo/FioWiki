@@ -91,75 +91,75 @@
 }
 
 /* Light theme readability fix */
-:global([data-theme='light']) .viewport {
+:global([data-fiowiki-theme='light']) .viewport {
   border-color: rgba(54, 105, 170, 0.35);
   background: #f7fbff;
 }
 
-:global([data-theme='light']) .slide {
+:global([data-fiowiki-theme='light']) .slide {
   background:
     radial-gradient(circle at 85% 15%, rgba(64, 132, 214, 0.16), transparent 35%),
     radial-gradient(circle at 15% 85%, rgba(116, 176, 240, 0.14), transparent 30%),
     #eef5ff;
 }
 
-:global([data-theme='light']) .kicker {
+:global([data-fiowiki-theme='light']) .kicker {
   color: #23466f;
 }
 
-:global([data-theme='light']) .title {
+:global([data-fiowiki-theme='light']) .title {
   color: #0f2742;
 }
 
-:global([data-theme='light']) .text,
-:global([data-theme='light']) .outsideNote {
+:global([data-fiowiki-theme='light']) .text,
+:global([data-fiowiki-theme='light']) .outsideNote {
   color: #1f3f63;
 }
 
-:global([data-theme='light']) .navBtn {
+:global([data-fiowiki-theme='light']) .navBtn {
   border-color: rgba(50, 111, 183, 0.48);
   background: #ffffff;
   color: #173d69;
 }
 
-:global([data-theme='light']) .navBtn:hover {
+:global([data-fiowiki-theme='light']) .navBtn:hover {
   background: #e9f3ff;
   border-color: #2d76d6;
 }
 
 /* Sunset theme alignment */
-:global([data-theme='sunset']) .viewport {
+:global([data-fiowiki-theme='sunset']) .viewport {
   border-color: rgba(255, 166, 96, 0.48);
   background: rgba(30, 18, 25, 0.9);
 }
 
-:global([data-theme='sunset']) .slide {
+:global([data-fiowiki-theme='sunset']) .slide {
   background:
     radial-gradient(circle at 85% 15%, rgba(255, 146, 72, 0.18), transparent 35%),
     radial-gradient(circle at 15% 85%, rgba(255, 190, 140, 0.14), transparent 30%),
     linear-gradient(120deg, #2b1c24 0%, #1d1422 45%, #2b1b29 100%);
 }
 
-:global([data-theme='sunset']) .kicker {
+:global([data-fiowiki-theme='sunset']) .kicker {
   color: #ffd4b0;
 }
 
-:global([data-theme='sunset']) .title {
+:global([data-fiowiki-theme='sunset']) .title {
   color: #ffe7d2;
 }
 
-:global([data-theme='sunset']) .text,
-:global([data-theme='sunset']) .outsideNote {
+:global([data-fiowiki-theme='sunset']) .text,
+:global([data-fiowiki-theme='sunset']) .outsideNote {
   color: #f2d2b8;
 }
 
-:global([data-theme='sunset']) .navBtn {
+:global([data-fiowiki-theme='sunset']) .navBtn {
   border-color: rgba(255, 179, 113, 0.58);
   background: rgba(44, 24, 32, 0.86);
   color: #ffe1c8;
 }
 
-:global([data-theme='sunset']) .navBtn:hover {
+:global([data-fiowiki-theme='sunset']) .navBtn:hover {
   background: rgba(255, 138, 52, 0.25);
   border-color: rgba(255, 201, 153, 0.9);
   color: #fff4ea;

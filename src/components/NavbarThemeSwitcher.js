@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useColorMode} from '@docusaurus/theme-common';
 
 const themes = ['dark', 'light', 'sunset'];
 const themeLabels = {
@@ -15,34 +16,33 @@ const themeIcons = {
 const normalizeTheme = (themeName) =>
   themes.includes(themeName) ? themeName : 'dark';
 
-const persistTheme = (themeName) => {
+const persistTheme = (themeName, setColorMode) => {
   const normalized = normalizeTheme(themeName);
-  document.documentElement.setAttribute('data-theme', normalized);
-  document.documentElement.setAttribute('data-theme-choice', normalized);
+  document.documentElement.setAttribute('data-fiowiki-theme', normalized);
+  setColorMode(normalized === 'light' ? 'light' : 'dark');
   window.localStorage.setItem('fiowiki-theme', normalized);
-  window.localStorage.setItem('theme', normalized);
   return normalized;
 };
 
 export default function NavbarThemeSwitcher() {
+  const {setColorMode} = useColorMode();
   const [activeTheme, setActiveTheme] = useState('dark');
 
   useEffect(() => {
     const current =
-      window.localStorage.getItem('theme') ||
       window.localStorage.getItem('fiowiki-theme') ||
-      document.documentElement.getAttribute('data-theme') ||
+      document.documentElement.getAttribute('data-fiowiki-theme') ||
       'dark';
     setActiveTheme(normalizeTheme(current));
   }, []);
 
   const cycleTheme = () => {
     const current = normalizeTheme(
-      document.documentElement.getAttribute('data-theme') || activeTheme,
+      document.documentElement.getAttribute('data-fiowiki-theme') || activeTheme,
     );
     const nextTheme = themes[(themes.indexOf(current) + 1) % themes.length];
 
-    setActiveTheme(persistTheme(nextTheme));
+    setActiveTheme(persistTheme(nextTheme, setColorMode));
     document.body.classList.add('theme-transitioning');
     window.setTimeout(() => {
       document.body.classList.remove('theme-transitioning');

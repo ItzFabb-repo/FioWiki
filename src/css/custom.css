@@ -33,7 +33,7 @@
   --fiowiki-article-font: 'Nunito Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-[data-theme='dark'] {
+[data-fiowiki-theme='dark'] {
   --ifm-color-primary: #86ccff;
   --ifm-color-primary-dark: #69bde9;
   --ifm-color-primary-darker: #58b4e6;
@@ -49,7 +49,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(134, 204, 255, 0.18);
 }
 
-[data-theme='sunset'] {
+[data-fiowiki-theme='sunset'] {
   --ifm-color-primary: #ff9f43;
   --ifm-color-primary-dark: #f08d2c;
   --ifm-color-primary-darker: #e9831f;
@@ -68,8 +68,8 @@
   --docusaurus-highlighted-code-line-bg: rgba(255, 166, 77, 0.2);
 }
 
-[data-theme='light'] {
-  --ifm-background-color: #f3f6fb;
+[data-fiowiki-theme='light'] {
+  --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #ffffff;
   --ifm-font-color-base: #111827;
   --ifm-font-color-secondary: #374151;
@@ -143,17 +143,17 @@ body.is-scrolled .navbar {
   background-color: var(--ifm-navbar-background-color);
 }
 
-[data-theme='dark'] body.is-scrolled .navbar {
+[data-fiowiki-theme='dark'] body.is-scrolled .navbar {
   background-color: var(--ifm-navbar-background-color);
   box-shadow: 0 10px 28px rgba(2, 6, 23, 0.45);
 }
 
-[data-theme='sunset'] body.is-scrolled .navbar {
+[data-fiowiki-theme='sunset'] body.is-scrolled .navbar {
   background-color: var(--ifm-navbar-background-color);
   box-shadow: 0 10px 28px rgba(22, 8, 14, 0.45);
 }
 
-[data-theme='light'] body.is-scrolled .navbar {
+[data-fiowiki-theme='light'] body.is-scrolled .navbar {
   background-color: var(--ifm-navbar-background-color);
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
 }
@@ -194,7 +194,7 @@ body.is-scrolled .navbar {
   border-radius: 10px;
 }
 
-[data-theme='dark'] .navbar__logo {
+[data-fiowiki-theme='dark'] .navbar__logo {
   background: rgba(15, 23, 42, 0.92);
   box-shadow: 0 2px 10px rgba(2, 6, 23, 0.45);
 }
@@ -211,7 +211,7 @@ body.is-scrolled .navbar {
   will-change: background-position;
 }
 
-[data-theme='dark'] .main-wrapper {
+[data-fiowiki-theme='dark'] .main-wrapper {
   background:
     radial-gradient(1000px 460px at -10% -14%, rgba(134, 204, 255, 0.13), transparent 62%),
     radial-gradient(720px 300px at 112% 10%, rgba(47, 140, 204, 0.14), transparent 64%),
@@ -219,7 +219,7 @@ body.is-scrolled .navbar {
     var(--ifm-background-color);
 }
 
-[data-theme='light'] .main-wrapper {
+[data-fiowiki-theme='light'] .main-wrapper {
   background:
     radial-gradient(980px 450px at -10% -16%, rgba(37, 99, 235, 0.12), transparent 62%),
     radial-gradient(760px 320px at 110% 12%, rgba(59, 130, 246, 0.13), transparent 66%),
@@ -227,8 +227,8 @@ body.is-scrolled .navbar {
     var(--ifm-background-color);
 }
 
-[data-theme='sunset'] body,
-[data-theme='sunset'] .main-wrapper {
+[data-fiowiki-theme='sunset'] body,
+[data-fiowiki-theme='sunset'] .main-wrapper {
   background:
     radial-gradient(980px 460px at -10% -14%, rgba(255, 170, 94, 0.11), transparent 62%),
     radial-gradient(730px 300px at 112% 10%, rgba(255, 111, 80, 0.12), transparent 66%),
@@ -254,14 +254,14 @@ body.is-scrolled .navbar {
 
 @media (prefers-reduced-motion: reduce) {
   .main-wrapper,
-  [data-theme='sunset'] .main-wrapper {
+  [data-fiowiki-theme='sunset'] .main-wrapper {
     animation: none !important;
   }
 }
 
 /* Performance mode for long docs pages */
 .docs-doc-page .main-wrapper,
-.docs-doc-page [data-theme='sunset'] .main-wrapper,
+.docs-doc-page [data-fiowiki-theme='sunset'] .main-wrapper,
 body.docs-doc-page .main-wrapper {
   animation: none !important;
   will-change: auto !important;
@@ -399,11 +399,11 @@ body.docs-doc-page .theme-doc-markdown > * {
   background: rgba(73, 132, 212, 0.12);
 }
 
-[data-theme='light'] .menu__link {
+[data-fiowiki-theme='light'] .menu__link {
   color: #1f2937;
 }
 
-[data-theme='light'] .menu__link:hover {
+[data-fiowiki-theme='light'] .menu__link:hover {
   color: #0f172a;
   background: rgba(31, 122, 194, 0.1);
 }
@@ -737,239 +737,239 @@ button[class*='backToTopButton'],
   border-color: rgba(176, 224, 255, 0.8);
 }
 
-[data-theme='sunset'] .fiowiki-scroll-down {
+[data-fiowiki-theme='sunset'] .fiowiki-scroll-down {
   background: rgba(42, 22, 30, 0.9);
   border-color: rgba(255, 171, 104, 0.6);
   color: #ffd8b8;
   box-shadow: 0 8px 22px rgba(20, 8, 12, 0.45);
 }
 
-[data-theme='sunset'] .fiowiki-scroll-down .material-symbols-rounded {
+[data-fiowiki-theme='sunset'] .fiowiki-scroll-down .material-symbols-rounded {
   color: #ffd8b8;
 }
 
-[data-theme='sunset'] .fiowiki-scroll-down:hover {
+[data-fiowiki-theme='sunset'] .fiowiki-scroll-down:hover {
   background: rgba(255, 132, 52, 0.92);
   border-color: rgba(255, 187, 130, 0.9);
   color: #fff4ea;
 }
 
-[data-theme='sunset'] .navbar__brand,
-[data-theme='sunset'] .navbar__title,
-[data-theme='sunset'] .navbar__link,
-[data-theme='sunset'] .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .navbar__brand,
+[data-fiowiki-theme='sunset'] .navbar__title,
+[data-fiowiki-theme='sunset'] .navbar__link,
+[data-fiowiki-theme='sunset'] .breadcrumbs__link {
   color: #ffd7b5;
 }
 
-[data-theme='sunset'] .theme-doc-sidebar-container {
+[data-fiowiki-theme='sunset'] .theme-doc-sidebar-container {
   border-right-color: rgba(255, 166, 96, 0.28) !important;
 }
 
-[data-theme='sunset'] .menu__link {
+[data-fiowiki-theme='sunset'] .menu__link {
   color: #ffd2b0;
 }
 
-[data-theme='sunset'] .theme-doc-sidebar-menu .menu__list .menu__list {
+[data-fiowiki-theme='sunset'] .theme-doc-sidebar-menu .menu__list .menu__list {
   border-left-color: rgba(255, 188, 131, 0.38);
 }
 
-[data-theme='sunset'] .menu__caret:before {
+[data-fiowiki-theme='sunset'] .menu__caret:before {
   color: #ffd9bc !important;
 }
 
-[data-theme='sunset'] .menu__link:hover + .menu__caret:before,
-[data-theme='sunset'] .menu__caret:hover:before {
+[data-fiowiki-theme='sunset'] .menu__link:hover + .menu__caret:before,
+[data-fiowiki-theme='sunset'] .menu__caret:hover:before {
   color: #fff2e8 !important;
 }
 
 /* Fallback for default Docusaurus caret renderer */
-[data-theme='sunset'] .menu__link--sublist-caret:after {
+[data-fiowiki-theme='sunset'] .menu__link--sublist-caret:after {
   filter: brightness(0) saturate(100%) invert(88%) sepia(18%) saturate(533%) hue-rotate(329deg) brightness(103%) contrast(103%);
 }
 
-[data-theme='sunset'] .menu__link:hover {
+[data-fiowiki-theme='sunset'] .menu__link:hover {
   color: #fff2e8;
   background: rgba(255, 148, 74, 0.16);
 }
 
-[data-theme='sunset'] .menu__link--active {
+[data-fiowiki-theme='sunset'] .menu__link--active {
   background: rgba(255, 138, 52, 0.2);
   color: #fff4ea;
   box-shadow: inset 2px 0 0 rgba(255, 197, 143, 0.98);
 }
 
-[data-theme='sunset'] .theme-doc-markdown {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown {
   background: #221926;
   border-color: rgba(255, 166, 96, 0.36);
   color: #fbe8d9;
   box-shadow: 0 10px 30px rgba(4, 2, 8, 0.35);
 }
 
-[data-theme='sunset'] .theme-doc-markdown h1,
-[data-theme='sunset'] .theme-doc-markdown h2,
-[data-theme='sunset'] .theme-doc-markdown h3,
-[data-theme='sunset'] .theme-doc-markdown h4,
-[data-theme='sunset'] .theme-doc-markdown strong {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h1,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h2,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h3,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h4,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown strong {
   color: #ffe2c9;
 }
 
-[data-theme='sunset'] .theme-doc-markdown p,
-[data-theme='sunset'] .theme-doc-markdown li,
-[data-theme='sunset'] .theme-doc-markdown td,
-[data-theme='sunset'] .theme-doc-markdown th {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown p,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown li,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown td,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown th {
   color: #f2d8c3;
 }
 
-[data-theme='sunset'] .alert {
+[data-fiowiki-theme='sunset'] .alert {
   color: #fbe9d9;
 }
 
-[data-theme='sunset'] .alert .alert__title,
-[data-theme='sunset'] .alert strong {
+[data-fiowiki-theme='sunset'] .alert .alert__title,
+[data-fiowiki-theme='sunset'] .alert strong {
   color: #ffe7cf;
 }
 
-[data-theme='sunset'] .alert--info {
+[data-fiowiki-theme='sunset'] .alert--info {
   --ifm-alert-background-color: #2a4478;
   --ifm-alert-border-color: #7fc0ff;
   --ifm-alert-foreground-color: #eaf6ff;
   color: #eaf6ff !important;
 }
 
-[data-theme='sunset'] .alert--info .alert__title,
-[data-theme='sunset'] .alert--info p,
-[data-theme='sunset'] .alert--info li {
+[data-fiowiki-theme='sunset'] .alert--info .alert__title,
+[data-fiowiki-theme='sunset'] .alert--info p,
+[data-fiowiki-theme='sunset'] .alert--info li {
   color: #f4f9ff !important;
 }
 
-[data-theme='sunset'] .alert--info a,
-[data-theme='sunset'] .alert--info strong {
+[data-fiowiki-theme='sunset'] .alert--info a,
+[data-fiowiki-theme='sunset'] .alert--info strong {
   color: #ffe1a8 !important;
 }
 
-[data-theme='sunset'] .alert--info .alert__icon {
+[data-fiowiki-theme='sunset'] .alert--info .alert__icon {
   color: #dff0ff !important;
   opacity: 1 !important;
   background: transparent !important;
 }
 
-[data-theme='sunset'] .alert--info .alert__icon svg,
-[data-theme='sunset'] .alert--info .alert__icon svg path {
+[data-fiowiki-theme='sunset'] .alert--info .alert__icon svg,
+[data-fiowiki-theme='sunset'] .alert--info .alert__icon svg path {
   color: #dff0ff !important;
   fill: #dff0ff !important;
   stroke: #dff0ff !important;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.28));
 }
 
-[data-theme='sunset'] .alert--success {
+[data-fiowiki-theme='sunset'] .alert--success {
   --ifm-alert-background-color: #e4f6e8;
   --ifm-alert-border-color: #2ea043;
   color: #12301a !important;
 }
 
-[data-theme='sunset'] .alert--success .alert__title,
-[data-theme='sunset'] .alert--success p,
-[data-theme='sunset'] .alert--success li,
-[data-theme='sunset'] .alert--success strong {
+[data-fiowiki-theme='sunset'] .alert--success .alert__title,
+[data-fiowiki-theme='sunset'] .alert--success p,
+[data-fiowiki-theme='sunset'] .alert--success li,
+[data-fiowiki-theme='sunset'] .alert--success strong {
   color: #12301a !important;
 }
 
-[data-theme='sunset'] .alert--success :not(pre) > code {
+[data-fiowiki-theme='sunset'] .alert--success :not(pre) > code {
   color: #1f3f22 !important;
   background: #d3ebd9;
   border: 1px solid #89c79a;
 }
 
-[data-theme='sunset'] .alert--warning {
+[data-fiowiki-theme='sunset'] .alert--warning {
   --ifm-alert-background-color: #fff1de;
   --ifm-alert-border-color: #ffbf73;
   --ifm-alert-foreground-color: #4a2a00;
 }
 
-[data-theme='sunset'] .alert--warning .alert__title,
-[data-theme='sunset'] .alert--warning p,
-[data-theme='sunset'] .alert--warning li,
-[data-theme='sunset'] .alert--warning strong {
+[data-fiowiki-theme='sunset'] .alert--warning .alert__title,
+[data-fiowiki-theme='sunset'] .alert--warning p,
+[data-fiowiki-theme='sunset'] .alert--warning li,
+[data-fiowiki-theme='sunset'] .alert--warning strong {
   color: #4a2a00 !important;
 }
 
-[data-theme='sunset'] .alert--warning a {
+[data-fiowiki-theme='sunset'] .alert--warning a {
   color: #7a3b00 !important;
 }
 
-[data-theme='sunset'] .alert--warning .alert__icon {
+[data-fiowiki-theme='sunset'] .alert--warning .alert__icon {
   color: #a85a00 !important;
   opacity: 1 !important;
   background: transparent !important;
 }
 
-[data-theme='sunset'] .alert--warning .alert__icon svg {
+[data-fiowiki-theme='sunset'] .alert--warning .alert__icon svg {
   color: #a85a00 !important;
   fill: #a85a00 !important;
   stroke: #a85a00 !important;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
 }
 
-[data-theme='sunset'] .alert--warning .alert__icon svg path {
+[data-fiowiki-theme='sunset'] .alert--warning .alert__icon svg path {
   fill: #a85a00 !important;
   stroke: #a85a00 !important;
 }
 
 /* Sunset search readability */
-[data-theme='sunset'] .DocSearch-Button {
+[data-fiowiki-theme='sunset'] .DocSearch-Button {
   background: #fff7ef !important;
   border-color: #ffb86a;
   color: #3d2200 !important;
 }
 
-[data-theme='sunset'] .DocSearch-Button-Placeholder,
-[data-theme='sunset'] .DocSearch-Button-Keys {
+[data-fiowiki-theme='sunset'] .DocSearch-Button-Placeholder,
+[data-fiowiki-theme='sunset'] .DocSearch-Button-Keys {
   color: #6a3b00 !important;
 }
 
-[data-theme='sunset'] .navbar__search-input {
+[data-fiowiki-theme='sunset'] .navbar__search-input {
   color: #2b1700 !important;
   font-weight: 500;
 }
 
-[data-theme='sunset'] .navbar__search-input::placeholder {
+[data-fiowiki-theme='sunset'] .navbar__search-input::placeholder {
   color: #8a5a2a !important;
   opacity: 1;
 }
 
-[data-theme='sunset'] .navbar__search-input:focus,
-[data-theme='sunset'] .navbar__search-input:active {
+[data-fiowiki-theme='sunset'] .navbar__search-input:focus,
+[data-fiowiki-theme='sunset'] .navbar__search-input:active {
   color: #2b1700 !important;
 }
 
 /* Sunset: force readable text inside search dropdown/panel */
-[data-theme='sunset'] [class*='searchBarContainer'] {
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] {
   color: #2b1700 !important;
 }
 
-[data-theme='sunset'] [class*='searchBarContainer'] [class*='menu'],
-[data-theme='sunset'] [class*='searchBarContainer'] [class*='dropdown'],
-[data-theme='sunset'] [class*='searchBarContainer'] [class*='panel'],
-[data-theme='sunset'] [class*='searchBarContainer'] [class*='suggestion'],
-[data-theme='sunset'] [class*='searchBarContainer'] p,
-[data-theme='sunset'] [class*='searchBarContainer'] span,
-[data-theme='sunset'] [class*='searchBarContainer'] li {
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] [class*='menu'],
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] [class*='dropdown'],
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] [class*='panel'],
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] [class*='suggestion'],
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] p,
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] span,
+[data-fiowiki-theme='sunset'] [class*='searchBarContainer'] li {
   color: #3a2100 !important;
 }
 
-[data-theme='sunset'] .theme-doc-markdown a {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown a {
   color: #ffd29f;
 }
 
-[data-theme='sunset'] .theme-doc-markdown a:hover {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown a:hover {
   color: #ffe7c9;
 }
 
-[data-theme='sunset'] .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .breadcrumbs__link {
   color: #ffd8b8;
 }
 
-[data-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
   color: #ffcc90;
 }
 
@@ -1035,12 +1035,12 @@ button[class*='backToTopButton'],
   transform: translateY(0) scaleY(1.25);
 }
 
-[data-theme='sunset'] .fiowiki-navbar-theme-btn {
+[data-fiowiki-theme='sunset'] .fiowiki-navbar-theme-btn {
   border-color: rgba(255, 179, 113, 0.5);
   color: #ffe1c9;
 }
 
-[data-theme='sunset'] .fiowiki-navbar-separator {
+[data-fiowiki-theme='sunset'] .fiowiki-navbar-separator {
   color: #ffe0c2;
 }
 
@@ -1070,20 +1070,20 @@ button[class*='backToTopButton'],
   font-family: var(--fiowiki-article-font);
 }
 
-[data-theme='light'] .theme-doc-markdown {
+[data-fiowiki-theme='light'] .theme-doc-markdown {
   color: #111827;
 }
 
-[data-theme='light'] .theme-doc-markdown p,
-[data-theme='light'] .theme-doc-markdown li,
-[data-theme='light'] .theme-doc-markdown td,
-[data-theme='light'] .theme-doc-markdown th {
+[data-fiowiki-theme='light'] .theme-doc-markdown p,
+[data-fiowiki-theme='light'] .theme-doc-markdown li,
+[data-fiowiki-theme='light'] .theme-doc-markdown td,
+[data-fiowiki-theme='light'] .theme-doc-markdown th {
   color: #1f2937;
 }
 
-[data-theme='light'] .navbar__brand,
-[data-theme='light'] .navbar__link,
-[data-theme='light'] .breadcrumbs__link {
+[data-fiowiki-theme='light'] .navbar__brand,
+[data-fiowiki-theme='light'] .navbar__link,
+[data-fiowiki-theme='light'] .breadcrumbs__link {
   color: #1f2937;
 }
 
@@ -1095,143 +1095,143 @@ button[class*='backToTopButton'],
   font-family: var(--fiowiki-article-font);
 }
 
-[data-theme='dark'] .theme-doc-markdown {
+[data-fiowiki-theme='dark'] .theme-doc-markdown {
   background: #0f172a;
   border-color: #1e293b;
   box-shadow: none;
 }
 
 /* Dark mode: avoid bright white code blocks */
-[data-theme='dark'] .theme-doc-markdown pre,
-[data-theme='dark'] .theme-doc-markdown .theme-code-block,
-[data-theme='dark'] .theme-doc-markdown div[class*='codeBlockContainer'] {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .theme-code-block,
+[data-fiowiki-theme='dark'] .theme-doc-markdown div[class*='codeBlockContainer'] {
   background: #0b1220 !important;
   border: 1px solid rgba(71, 85, 105, 0.55);
 }
 
-[data-theme='dark'] .theme-doc-markdown pre code,
-[data-theme='dark'] .theme-doc-markdown .theme-code-block code {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre code,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .theme-code-block code {
   color: #cdd8e8 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre .token,
-[data-theme='dark'] .theme-doc-markdown code .token {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre .token,
+[data-fiowiki-theme='dark'] .theme-doc-markdown code .token {
   color: #c6d3e5 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre .token.comment,
-[data-theme='dark'] .theme-doc-markdown pre .token.prolog,
-[data-theme='dark'] .theme-doc-markdown pre .token.doctype,
-[data-theme='dark'] .theme-doc-markdown pre .token.cdata {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre .token.comment,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre .token.prolog,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre .token.doctype,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre .token.cdata {
   color: #7f8fa6 !important;
 }
 
 /* Dark theme: JavaScript syntax colors */
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.keyword,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.keyword,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.keyword,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.keyword {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.keyword,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.keyword,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.keyword,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.keyword {
   color: #7cc3ff !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.string,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.string,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.string,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.string {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.string {
   color: #ffb4d2 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.number,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.number,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.number,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.number,
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.boolean {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.boolean {
   color: #9ee6a0 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.function,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.function,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.function,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.function {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.function,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.function,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.function,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.function {
   color: #ffd58a !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.operator,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.operator,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.operator,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.operator,
-[data-theme='dark'] .theme-doc-markdown pre.language-js .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown pre.language-javascript .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.punctuation {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.operator,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.operator,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.operator,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.operator,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-js .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-javascript .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-js'] .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-javascript'] .token.punctuation {
   color: #d9e6f7 !important;
 }
 
 /* Dark theme: richer YAML syntax contrast (avoid bland single-color blocks) */
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.atrule,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.atrule,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.atrule,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.atrule {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.atrule,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.atrule,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.atrule,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.atrule {
   color: #7cc3ff !important; /* keys */
   font-weight: 700;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.punctuation,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.punctuation {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.punctuation,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.punctuation {
   color: #b7c6db !important; /* :, -, [ ] */
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.string,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.string,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.string,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.string {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.string,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.string {
   color: #ffb4d2 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.number,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.number,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.number,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.number {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.number,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.number {
   color: #9ee6a0 !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.boolean,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.boolean,
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.null,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.null,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.null,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.null {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.boolean,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.null,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.null,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.null,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.null {
   color: #ffd58a !important;
   font-weight: 700;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.tag,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.tag,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.tag,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.tag,
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.important,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.important,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.important,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.important {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.tag,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.tag,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.tag,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.tag,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.important,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.important,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.important,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.important {
   color: #c9a4ff !important;
 }
 
-[data-theme='dark'] .theme-doc-markdown pre.language-yaml .token.comment,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.comment,
-[data-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.comment,
-[data-theme='dark'] .theme-doc-markdown .language-yaml .token.comment {
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre.language-yaml .token.comment,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yaml'] .token.comment,
+[data-fiowiki-theme='dark'] .theme-doc-markdown pre[class*='language-yml'] .token.comment,
+[data-fiowiki-theme='dark'] .theme-doc-markdown .language-yaml .token.comment {
   color: #7d8ea8 !important;
   font-style: italic;
 }
 
-[data-theme='dark'] .theme-doc-markdown :not(pre) > code {
+[data-fiowiki-theme='dark'] .theme-doc-markdown :not(pre) > code {
   color: #d9e5f5 !important;
   background: rgba(148, 163, 184, 0.2);
   border: 1px solid rgba(148, 163, 184, 0.36);
@@ -1247,58 +1247,58 @@ button[class*='backToTopButton'],
   border-radius: 12px;
 }
 
-[data-theme='light'] .theme-doc-markdown pre,
-[data-theme='light'] .theme-doc-markdown .theme-code-block,
-[data-theme='light'] .theme-doc-markdown div[class*='codeBlockContainer'] {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre,
+[data-fiowiki-theme='light'] .theme-doc-markdown .theme-code-block,
+[data-fiowiki-theme='light'] .theme-doc-markdown div[class*='codeBlockContainer'] {
   background: #0f172a !important;
   border: 1px solid rgba(30, 41, 59, 0.65);
 }
 
-[data-theme='light'] .theme-doc-markdown pre code,
-[data-theme='light'] .theme-doc-markdown .theme-code-block code {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre code,
+[data-fiowiki-theme='light'] .theme-doc-markdown .theme-code-block code {
   color: #e5eefc !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token,
-[data-theme='light'] .theme-doc-markdown code .token {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token,
+[data-fiowiki-theme='light'] .theme-doc-markdown code .token {
   color: #dbeafe !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.comment,
-[data-theme='light'] .theme-doc-markdown pre .token.prolog,
-[data-theme='light'] .theme-doc-markdown pre .token.doctype,
-[data-theme='light'] .theme-doc-markdown pre .token.cdata {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.comment,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.prolog,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.doctype,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.cdata {
   color: #93a4bd !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.keyword,
-[data-theme='light'] .theme-doc-markdown pre .token.selector,
-[data-theme='light'] .theme-doc-markdown pre .token.important {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.keyword,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.selector,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.important {
   color: #7cc3ff !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.string,
-[data-theme='light'] .theme-doc-markdown pre .token.attr-value,
-[data-theme='light'] .theme-doc-markdown pre .token.char {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.string,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.attr-value,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.char {
   color: #ffb6d1 !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.function,
-[data-theme='light'] .theme-doc-markdown pre .token.class-name {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.function,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.class-name {
   color: #ffd693 !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.number,
-[data-theme='light'] .theme-doc-markdown pre .token.boolean {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.number,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.boolean {
   color: #9de8b7 !important;
 }
 
-[data-theme='light'] .theme-doc-markdown pre .token.operator,
-[data-theme='light'] .theme-doc-markdown pre .token.punctuation {
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.operator,
+[data-fiowiki-theme='light'] .theme-doc-markdown pre .token.punctuation {
   color: #d9e3f2 !important;
 }
 
-[data-theme='light'] .theme-doc-markdown :not(pre) > code {
+[data-fiowiki-theme='light'] .theme-doc-markdown :not(pre) > code {
   color: #0f172a !important;
   background: rgba(148, 163, 184, 0.2);
   border: 1px solid rgba(148, 163, 184, 0.5);
@@ -1307,65 +1307,65 @@ button[class*='backToTopButton'],
   font-weight: 700;
 }
 
-[data-theme='sunset'] .theme-doc-markdown pre,
-[data-theme='sunset'] .theme-doc-markdown .theme-code-block,
-[data-theme='sunset'] .theme-doc-markdown div[class*='codeBlockContainer'] {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown pre,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown .theme-code-block,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown div[class*='codeBlockContainer'] {
   background: #15111a !important;
   border: 1px solid rgba(255, 171, 104, 0.34);
 }
 
-[data-theme='sunset'] .theme-doc-markdown pre code,
-[data-theme='sunset'] .theme-doc-markdown .theme-code-block code {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown pre code,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown .theme-code-block code {
   color: #ffe8d6 !important;
 }
 
 /* Global syntax contrast tuning (home cards + custom pre blocks included) */
-[data-theme='sunset'] pre,
-[data-theme='sunset'] code {
+[data-fiowiki-theme='sunset'] pre,
+[data-fiowiki-theme='sunset'] code {
   color: #f7e7d8;
 }
 
-[data-theme='sunset'] pre .token,
-[data-theme='sunset'] code .token {
+[data-fiowiki-theme='sunset'] pre .token,
+[data-fiowiki-theme='sunset'] code .token {
   color: #f2dfcf;
 }
 
-[data-theme='sunset'] pre .token.comment,
-[data-theme='sunset'] pre .token.prolog,
-[data-theme='sunset'] pre .token.doctype,
-[data-theme='sunset'] pre .token.cdata {
+[data-fiowiki-theme='sunset'] pre .token.comment,
+[data-fiowiki-theme='sunset'] pre .token.prolog,
+[data-fiowiki-theme='sunset'] pre .token.doctype,
+[data-fiowiki-theme='sunset'] pre .token.cdata {
   color: #c9ac95 !important;
 }
 
-[data-theme='sunset'] pre .token.keyword,
-[data-theme='sunset'] pre .token.selector,
-[data-theme='sunset'] pre .token.important {
+[data-fiowiki-theme='sunset'] pre .token.keyword,
+[data-fiowiki-theme='sunset'] pre .token.selector,
+[data-fiowiki-theme='sunset'] pre .token.important {
   color: #7bc6ff !important;
 }
 
-[data-theme='sunset'] pre .token.string,
-[data-theme='sunset'] pre .token.attr-value,
-[data-theme='sunset'] pre .token.char {
+[data-fiowiki-theme='sunset'] pre .token.string,
+[data-fiowiki-theme='sunset'] pre .token.attr-value,
+[data-fiowiki-theme='sunset'] pre .token.char {
   color: #ffb0cf !important;
 }
 
-[data-theme='sunset'] pre .token.function,
-[data-theme='sunset'] pre .token.class-name {
+[data-fiowiki-theme='sunset'] pre .token.function,
+[data-fiowiki-theme='sunset'] pre .token.class-name {
   color: #ffd38e !important;
 }
 
-[data-theme='sunset'] pre .token.number,
-[data-theme='sunset'] pre .token.boolean {
+[data-fiowiki-theme='sunset'] pre .token.number,
+[data-fiowiki-theme='sunset'] pre .token.boolean {
   color: #9be8b1 !important;
 }
 
-[data-theme='sunset'] pre .token.operator,
-[data-theme='sunset'] pre .token.punctuation {
+[data-fiowiki-theme='sunset'] pre .token.operator,
+[data-fiowiki-theme='sunset'] pre .token.punctuation {
   color: #d8c4b2 !important;
 }
 
 /* Inline code/chips like Syntax tags in docs */
-[data-theme='sunset'] .theme-doc-markdown :not(pre) > code {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown :not(pre) > code {
   color: #ffe1bf !important;
   background: rgba(255, 171, 104, 0.2);
   border: 1px solid rgba(255, 171, 104, 0.42);
@@ -1387,25 +1387,25 @@ button[class*='backToTopButton'],
 }
 
 /* Right TOC readability in sunset */
-[data-theme='sunset'] .table-of-contents {
+[data-fiowiki-theme='sunset'] .table-of-contents {
   border-left: 1px solid rgba(255, 171, 104, 0.4);
 }
 
-[data-theme='sunset'] .table-of-contents__link {
+[data-fiowiki-theme='sunset'] .table-of-contents__link {
   color: #f3d3ba;
 }
 
-[data-theme='sunset'] .table-of-contents__link:hover {
+[data-fiowiki-theme='sunset'] .table-of-contents__link:hover {
   color: #ffe8d2;
 }
 
-[data-theme='sunset'] .table-of-contents__link--active {
+[data-fiowiki-theme='sunset'] .table-of-contents__link--active {
   color: #ffbe84;
   font-weight: 700;
 }
 
 /* Sunset: TOC inline-code chips must stay readable */
-[data-theme='sunset'] .table-of-contents :not(pre) > code {
+[data-fiowiki-theme='sunset'] .table-of-contents :not(pre) > code {
   color: #3a291a !important;
   background: #ffd9b5;
   border: 1px solid #ffb87a;
@@ -1451,81 +1451,81 @@ button[class*='backToTopButton'],
   font-weight: 600;
 }
 
-[data-theme='dark'] .dropdown__menu {
+[data-fiowiki-theme='dark'] .dropdown__menu {
   background: #111827;
   border-color: rgba(96, 165, 250, 0.28);
 }
 
-[data-theme='dark'] .dropdown__menu .dropdown__link {
+[data-fiowiki-theme='dark'] .dropdown__menu .dropdown__link {
   color: #dbeafe;
 }
 
-[data-theme='dark'] .dropdown__menu .dropdown__link:hover {
+[data-fiowiki-theme='dark'] .dropdown__menu .dropdown__link:hover {
   color: #ffffff;
   background: rgba(59, 130, 246, 0.2);
 }
 
-[data-theme='dark'] .dropdown__menu .dropdown__link--active {
+[data-fiowiki-theme='dark'] .dropdown__menu .dropdown__link--active {
   color: #93c5fd;
   background: rgba(37, 99, 235, 0.16);
 }
 
-[data-theme='light'] .dropdown__menu {
+[data-fiowiki-theme='light'] .dropdown__menu {
   background: #ffffff;
   border-color: rgba(148, 163, 184, 0.45);
 }
 
-[data-theme='light'] .dropdown__menu .dropdown__link {
+[data-fiowiki-theme='light'] .dropdown__menu .dropdown__link {
   color: #1f2937;
 }
 
-[data-theme='light'] .dropdown__menu .dropdown__link:hover {
+[data-fiowiki-theme='light'] .dropdown__menu .dropdown__link:hover {
   color: #0f172a;
   background: rgba(31, 122, 194, 0.12);
 }
 
-[data-theme='light'] .dropdown__menu .dropdown__link--active {
+[data-fiowiki-theme='light'] .dropdown__menu .dropdown__link--active {
   color: #1f7ac2;
   background: rgba(31, 122, 194, 0.14);
 }
 
-[data-theme='light'] .table-of-contents {
+[data-fiowiki-theme='light'] .table-of-contents {
   border-left: 1px solid rgba(100, 116, 139, 0.35);
 }
 
-[data-theme='light'] .table-of-contents__link {
+[data-fiowiki-theme='light'] .table-of-contents__link {
   color: #334155;
 }
 
-[data-theme='light'] .table-of-contents__link:hover {
+[data-fiowiki-theme='light'] .table-of-contents__link:hover {
   color: #0f172a;
 }
 
-[data-theme='light'] .table-of-contents__link--active {
+[data-fiowiki-theme='light'] .table-of-contents__link--active {
   color: #0f172a;
   font-weight: 700;
 }
 
-[data-theme='light'] .alert--info,
-[data-theme='light'] .alert--warning {
+[data-fiowiki-theme='light'] .alert--info,
+[data-fiowiki-theme='light'] .alert--warning {
   color: #0f172a;
 }
 
-[data-theme='sunset'] .dropdown__menu {
+[data-fiowiki-theme='sunset'] .dropdown__menu {
   background: #221727;
   border-color: rgba(255, 171, 104, 0.38);
 }
 
-[data-theme='sunset'] .dropdown__menu .dropdown__link {
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link {
   color: #ffd9bc;
 }
 
-[data-theme='sunset'] .dropdown__menu .dropdown__link:hover {
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link:hover {
   color: #fff2e8;
   background: rgba(255, 149, 76, 0.2);
 }
 
-[data-theme='sunset'] .dropdown__menu .dropdown__link--active {
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link--active {
   color: #ffbe8e;
   background: rgba(255, 138, 52, 0.22);
 }
@@ -1537,7 +1537,7 @@ button[class*='backToTopButton'],
   background: #ffffff !important;
 }
 
-[data-theme='dark'] .DocSearch-Button {
+[data-fiowiki-theme='dark'] .DocSearch-Button {
   border-color: #334155;
   background: #0f172a !important;
 }
@@ -1556,7 +1556,7 @@ footer.footer {
   border-top: 1px solid #1f2937;
 }
 
-[data-theme='sunset'] footer.footer {
+[data-fiowiki-theme='sunset'] footer.footer {
   background: #1b1116;
   border-top-color: rgba(255, 166, 96, 0.26);
 }
@@ -1589,8 +1589,8 @@ footer.footer {
   font-weight: 500 !important;
 }
 
-[data-theme='sunset'] .DocSearch-Button-Placeholder,
-[data-theme='sunset'] .DocSearch-Input {
+[data-fiowiki-theme='sunset'] .DocSearch-Button-Placeholder,
+[data-fiowiki-theme='sunset'] .DocSearch-Input {
   font-weight: 500 !important;
 }
 
@@ -1638,31 +1638,31 @@ footer.footer {
   opacity: 0.65;
 }
 
-[data-theme='sunset'] .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .breadcrumbs__link {
   color: #ffd8b8 !important;
   opacity: 0.96;
 }
 
-[data-theme='sunset'] .breadcrumbs__item-separator::before {
+[data-fiowiki-theme='sunset'] .breadcrumbs__item-separator::before {
   color: #ffbb86;
 }
 
-[data-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
   color: #fff7ef !important;
   background: rgba(255, 138, 52, 0.3);
   border: 1px solid rgba(255, 201, 150, 0.72);
   box-shadow: 0 0 0 1px rgba(255, 159, 86, 0.18) inset;
 }
 
-[data-theme='light'] .breadcrumbs__link {
+[data-fiowiki-theme='light'] .breadcrumbs__link {
   color: #334155;
 }
 
-[data-theme='light'] .breadcrumbs__item-separator::before {
+[data-fiowiki-theme='light'] .breadcrumbs__item-separator::before {
   color: #64748b;
 }
 
-[data-theme='light'] .breadcrumbs__item--active .breadcrumbs__link {
+[data-fiowiki-theme='light'] .breadcrumbs__item--active .breadcrumbs__link {
   color: #0f172a;
   background: rgba(59, 130, 246, 0.16);
   border: 1px solid rgba(96, 165, 250, 0.45);
@@ -1877,19 +1877,19 @@ footer.footer {
     pointer-events: auto !important;
   }
 
-  [data-theme='light'] .navbar-sidebar {
+  [data-fiowiki-theme='light'] .navbar-sidebar {
     background: #f8fbff !important;
   }
 
-  [data-theme='sunset'] .navbar-sidebar {
+  [data-fiowiki-theme='sunset'] .navbar-sidebar {
     background: #221727 !important;
   }
 
-  [data-theme='light'] .navbar-sidebar__backdrop {
+  [data-fiowiki-theme='light'] .navbar-sidebar__backdrop {
     background: rgba(15, 23, 42, 0.36) !important;
   }
 
-  [data-theme='sunset'] .navbar-sidebar__backdrop {
+  [data-fiowiki-theme='sunset'] .navbar-sidebar__backdrop {
     background: rgba(24, 10, 16, 0.62) !important;
   }
 
@@ -2103,13 +2103,13 @@ footer.footer {
     background: transparent !important;
   }
 
-  [data-theme='light'] .theme-doc-toc-mobile {
+  [data-fiowiki-theme='light'] .theme-doc-toc-mobile {
     border-color: rgba(100, 116, 139, 0.2) !important;
     background: rgba(255, 255, 255, 0.88) !important;
     box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1) !important;
   }
 
-  [data-theme='sunset'] .theme-doc-toc-mobile {
+  [data-fiowiki-theme='sunset'] .theme-doc-toc-mobile {
     border-color: rgba(255, 171, 104, 0.26) !important;
     background: rgba(34, 23, 39, 0.84) !important;
     box-shadow: 0 12px 28px rgba(20, 8, 12, 0.24) !important;
@@ -2122,7 +2122,7 @@ footer.footer {
  * so navigation, reading surfaces, and accents feel like one product.
  */
 :root,
-[data-theme='dark'] {
+[data-fiowiki-theme='dark'] {
   --ifm-color-primary: #42c8b4;
   --ifm-color-primary-dark: #2eb5a2;
   --ifm-color-primary-darker: #239f91;
@@ -2161,7 +2161,7 @@ footer.footer {
   --fiowiki-note: #42c8b4;
 }
 
-[data-theme='light'] {
+[data-fiowiki-theme='light'] {
   --ifm-color-primary: #087f75;
   --ifm-color-primary-dark: #076f67;
   --ifm-color-primary-darker: #056058;
@@ -2169,7 +2169,7 @@ footer.footer {
   --ifm-color-primary-light: #258f85;
   --ifm-color-primary-lighter: #51a99f;
   --ifm-color-primary-lightest: #cce9e4;
-  --ifm-background-color: #f3f8f7;
+  --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #ffffff;
   --ifm-font-color-base: #17282c;
   --ifm-font-color-secondary: #53686c;
@@ -2177,7 +2177,7 @@ footer.footer {
   --ifm-color-emphasis-100: #eaf2f1;
   --ifm-color-emphasis-200: #d8e4e2;
   --ifm-color-emphasis-300: #c1d1cf;
-  --ifm-navbar-background-color: rgba(250, 253, 252, 0.96);
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.97);
   --ifm-navbar-link-color: #243b3e;
   --ifm-navbar-link-hover-color: #087f75;
   --ifm-footer-background-color: #102126;
@@ -2200,7 +2200,7 @@ footer.footer {
   --fiowiki-note: #087f75;
 }
 
-[data-theme='sunset'] {
+[data-fiowiki-theme='sunset'] {
   --ifm-color-primary: #e8b968;
   --ifm-color-primary-dark: #d8a651;
   --ifm-color-primary-darker: #c6913d;
@@ -2351,8 +2351,8 @@ footer.footer {
 }
 
 .DocSearch-Button,
-[data-theme='dark'] .DocSearch-Button,
-[data-theme='sunset'] .DocSearch-Button {
+[data-fiowiki-theme='dark'] .DocSearch-Button,
+[data-fiowiki-theme='sunset'] .DocSearch-Button {
   background: var(--ifm-background-surface-color) !important;
   color: var(--ifm-font-color-secondary) !important;
 }
@@ -2390,100 +2390,100 @@ footer.footer {
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='dark'] .theme-doc-markdown,
-[data-theme='sunset'] .theme-doc-markdown {
+[data-fiowiki-theme='dark'] .theme-doc-markdown,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown {
   background: var(--ifm-background-surface-color);
   border-color: var(--ifm-color-emphasis-200);
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='light'] .theme-doc-markdown {
+[data-fiowiki-theme='light'] .theme-doc-markdown {
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='light'] .theme-doc-markdown p,
-[data-theme='light'] .theme-doc-markdown li,
-[data-theme='light'] .theme-doc-markdown td,
-[data-theme='light'] .theme-doc-markdown th,
-[data-theme='sunset'] .theme-doc-markdown p,
-[data-theme='sunset'] .theme-doc-markdown li,
-[data-theme='sunset'] .theme-doc-markdown td,
-[data-theme='sunset'] .theme-doc-markdown th {
+[data-fiowiki-theme='light'] .theme-doc-markdown p,
+[data-fiowiki-theme='light'] .theme-doc-markdown li,
+[data-fiowiki-theme='light'] .theme-doc-markdown td,
+[data-fiowiki-theme='light'] .theme-doc-markdown th,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown p,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown li,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown td,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown th {
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='sunset'] .navbar__brand,
-[data-theme='sunset'] .navbar__title,
-[data-theme='sunset'] .navbar__link,
-[data-theme='sunset'] .menu__link,
-[data-theme='sunset'] .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .navbar__brand,
+[data-fiowiki-theme='sunset'] .navbar__title,
+[data-fiowiki-theme='sunset'] .navbar__link,
+[data-fiowiki-theme='sunset'] .menu__link,
+[data-fiowiki-theme='sunset'] .breadcrumbs__link {
   color: var(--ifm-navbar-link-color);
 }
 
-[data-theme='sunset'] .theme-doc-markdown h1,
-[data-theme='sunset'] .theme-doc-markdown h2,
-[data-theme='sunset'] .theme-doc-markdown h3,
-[data-theme='sunset'] .theme-doc-markdown h4,
-[data-theme='sunset'] .theme-doc-markdown h5,
-[data-theme='sunset'] .theme-doc-markdown h6,
-[data-theme='sunset'] .theme-doc-markdown strong {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h1,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h2,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h3,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h4,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h5,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown h6,
+[data-fiowiki-theme='sunset'] .theme-doc-markdown strong {
   color: var(--ifm-heading-color);
 }
 
-[data-theme='sunset'] .theme-doc-markdown a {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown a {
   color: var(--ifm-color-primary-light);
 }
 
-[data-theme='sunset'] .theme-doc-markdown a:hover {
+[data-fiowiki-theme='sunset'] .theme-doc-markdown a:hover {
   color: var(--ifm-color-primary-lightest);
 }
 
-[data-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
+[data-fiowiki-theme='sunset'] .breadcrumbs__item--active .breadcrumbs__link {
   color: var(--ifm-heading-color) !important;
   background: var(--ifm-menu-color-background-active);
   border-color: color-mix(in srgb, var(--ifm-color-primary) 42%, transparent);
 }
 
-[data-theme='sunset'] .dropdown__menu .dropdown__link {
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link {
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='sunset'] .dropdown__menu .dropdown__link:hover,
-[data-theme='sunset'] .dropdown__menu .dropdown__link--active {
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link:hover,
+[data-fiowiki-theme='sunset'] .dropdown__menu .dropdown__link--active {
   color: var(--ifm-color-primary-lightest);
   background: var(--ifm-menu-color-background-hover);
 }
 
-[data-theme='sunset'] .theme-doc-sidebar-container {
+[data-fiowiki-theme='sunset'] .theme-doc-sidebar-container {
   border-right-color: var(--ifm-color-emphasis-200) !important;
 }
 
-[data-theme='sunset'] .alert--info {
+[data-fiowiki-theme='sunset'] .alert--info {
   --ifm-alert-background-color: color-mix(in srgb, var(--ifm-color-primary) 15%, var(--ifm-background-surface-color));
   --ifm-alert-border-color: var(--ifm-color-primary);
   --ifm-alert-foreground-color: var(--ifm-font-color-base);
   color: var(--ifm-font-color-base) !important;
 }
 
-[data-theme='sunset'] .alert--info .alert__title,
-[data-theme='sunset'] .alert--info p,
-[data-theme='sunset'] .alert--info li {
+[data-fiowiki-theme='sunset'] .alert--info .alert__title,
+[data-fiowiki-theme='sunset'] .alert--info p,
+[data-fiowiki-theme='sunset'] .alert--info li {
   color: var(--ifm-font-color-base) !important;
 }
 
-[data-theme='sunset'] .alert--info a,
-[data-theme='sunset'] .alert--info strong {
+[data-fiowiki-theme='sunset'] .alert--info a,
+[data-fiowiki-theme='sunset'] .alert--info strong {
   color: var(--ifm-color-primary-lightest) !important;
 }
 
-[data-theme='sunset'] .fiowiki-navbar-theme-btn {
+[data-fiowiki-theme='sunset'] .fiowiki-navbar-theme-btn {
   background: var(--ifm-background-surface-color);
   border-color: var(--ifm-color-emphasis-300);
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='sunset'] .dropdown__menu,
-[data-theme='sunset'] .theme-doc-sidebar-menu .menu__link--active {
+[data-fiowiki-theme='sunset'] .dropdown__menu,
+[data-fiowiki-theme='sunset'] .theme-doc-sidebar-menu .menu__link--active {
   background: var(--ifm-background-surface-color);
 }
 
@@ -2546,38 +2546,38 @@ body.docs-doc-page .theme-doc-markdown > :nth-child(n + 6) { animation-delay: 17
   }
 }
 
-[data-theme='light'] .navbar__brand,
-[data-theme='light'] .navbar__link,
-[data-theme='light'] .breadcrumbs__link,
-[data-theme='light'] .menu__link {
+[data-fiowiki-theme='light'] .navbar__brand,
+[data-fiowiki-theme='light'] .navbar__link,
+[data-fiowiki-theme='light'] .breadcrumbs__link,
+[data-fiowiki-theme='light'] .menu__link {
   color: var(--ifm-navbar-link-color);
 }
 
-[data-theme='light'] .theme-doc-markdown p,
-[data-theme='light'] .theme-doc-markdown li,
-[data-theme='light'] .theme-doc-markdown td,
-[data-theme='light'] .theme-doc-markdown th {
+[data-fiowiki-theme='light'] .theme-doc-markdown p,
+[data-fiowiki-theme='light'] .theme-doc-markdown li,
+[data-fiowiki-theme='light'] .theme-doc-markdown td,
+[data-fiowiki-theme='light'] .theme-doc-markdown th {
   color: var(--ifm-font-color-base);
 }
 
-[data-theme='light'] .fiowiki-intro-hero p,
-[data-theme='light'] .fiowiki-intro-btn-ghost:hover {
+[data-fiowiki-theme='light'] .fiowiki-intro-hero p,
+[data-fiowiki-theme='light'] .fiowiki-intro-btn-ghost:hover {
   color: var(--ifm-font-color-secondary) !important;
 }
 
-[data-theme='dark'] .fiowiki-intro-hero p,
-[data-theme='dark'] .fiowiki-intro-btn-ghost:hover {
+[data-fiowiki-theme='dark'] .fiowiki-intro-hero p,
+[data-fiowiki-theme='dark'] .fiowiki-intro-btn-ghost:hover {
   color: var(--ifm-font-color-secondary) !important;
 }
 
-[data-theme='sunset'] .fiowiki-intro-hero h1,
-[data-theme='sunset'] .navbar__logo::before {
+[data-fiowiki-theme='sunset'] .fiowiki-intro-hero h1,
+[data-fiowiki-theme='sunset'] .navbar__logo::before {
   color: var(--ifm-color-primary-light);
 }
 
 /* Recolor the existing ambient accents without changing their motion or layout. */
 .main-wrapper,
-[data-theme='dark'] .main-wrapper {
+[data-fiowiki-theme='dark'] .main-wrapper {
   background-image:
     radial-gradient(1000px 460px at -10% -14%, color-mix(in srgb, var(--ifm-color-primary) 9%, transparent), transparent 62%),
     radial-gradient(720px 300px at 112% 10%, color-mix(in srgb, var(--fiowiki-secondary) 7%, transparent), transparent 64%),
@@ -2585,15 +2585,24 @@ body.docs-doc-page .theme-doc-markdown > :nth-child(n + 6) { animation-delay: 17
     var(--ifm-background-color);
 }
 
-[data-theme='light'] .main-wrapper {
+[data-fiowiki-theme='light'] .main-wrapper {
   background-image:
-    radial-gradient(980px 450px at -10% -16%, color-mix(in srgb, var(--ifm-color-primary) 7%, transparent), transparent 62%),
-    radial-gradient(760px 320px at 110% 12%, color-mix(in srgb, var(--fiowiki-secondary) 6%, transparent), transparent 66%),
-    linear-gradient(120deg, color-mix(in srgb, var(--ifm-color-primary) 5%, transparent) 0%, transparent 40%, color-mix(in srgb, var(--fiowiki-secondary) 4%, transparent) 72%, transparent 100%),
+    radial-gradient(980px 450px at -10% -16%, color-mix(in srgb, var(--ifm-color-primary) 2%, transparent), transparent 62%),
+    radial-gradient(760px 320px at 110% 12%, color-mix(in srgb, var(--fiowiki-secondary) 2%, transparent), transparent 66%),
+    linear-gradient(120deg, color-mix(in srgb, var(--ifm-color-primary) 1.5%, transparent) 0%, transparent 40%, color-mix(in srgb, var(--fiowiki-secondary) 1.5%, transparent) 72%, transparent 100%),
     var(--ifm-background-color);
 }
 
-[data-theme='sunset'] .main-wrapper {
+[data-fiowiki-theme='light'] body,
+[data-fiowiki-theme='light'] .theme-doc-sidebar-container,
+[data-fiowiki-theme='light'] .theme-doc-markdown,
+[data-fiowiki-theme='light'] .navbar,
+[data-fiowiki-theme='light'] .navbar-sidebar,
+[data-fiowiki-theme='light'] .theme-doc-toc-desktop {
+  background-color: #ffffff;
+}
+
+[data-fiowiki-theme='sunset'] .main-wrapper {
   background-image:
     radial-gradient(980px 460px at -10% -14%, color-mix(in srgb, var(--ifm-color-primary) 8%, transparent), transparent 62%),
     radial-gradient(730px 300px at 112% 10%, color-mix(in srgb, var(--fiowiki-secondary) 6%, transparent), transparent 66%),
