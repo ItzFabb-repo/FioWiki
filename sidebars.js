@@ -745,10 +745,8 @@ const sidebars = {
                       label: 'Server Display Tag',
                       items: [
                         'plugin/fiochat/modules/display-tag-animations',
-                        'plugin/fiochat/modules/display-tag-scoreboard',
                         'plugin/fiochat/modules/display-tag-bossbar',
                         'plugin/fiochat/modules/display-tag-gamertag',
-                        'plugin/fiochat/modules/display-tag-tab',
                       ],
                     },
                   ],

@@ -153,14 +153,10 @@ One of the larger sub-systems in this build is the display-tag group. The source
 
 and `modules/settings.yml` shows its split sub-settings for:
 
-- scoreboard
 - bossbar
-- tab
 - nametag
 
 ![FioChat Announcements](../../img/fiochat/Announcements.png)
-
-![FioChat Scoreboard Display Tag](../../img/fiochat/Scoreboard%20Display%20Tag.png)
 
 ## Data and integrations
 

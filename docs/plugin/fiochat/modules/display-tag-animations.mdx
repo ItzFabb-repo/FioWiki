@@ -10,7 +10,7 @@ Source file:
 modules/display/Server Display Tag/animations.yml
 ```
 
-`animations.yml` is the shared animation registry for the Server Display Tag group. You use it to create animated text once, then reuse that animation in the scoreboard, bossbar, and TAB profiles.
+`animations.yml` is the shared animation registry for the Server Display Tag group. Create animated text once, then reference it in supported display settings such as the bossbar.
 
 ## How it works
 
@@ -50,11 +50,7 @@ For example:
 title: "{anim:java_title}"
 ```
 
-You can use the same animation id in:
-
-- scoreboard titles and lines
-- bossbar text
-- TAB header, footer, or list-name text
+The current Bossbar configuration uses animation IDs for its text, color, style, and progress settings.
 
 ## Practical tips
 
